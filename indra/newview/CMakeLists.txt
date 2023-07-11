@@ -47,7 +47,7 @@ include(ZLIBNG)
 include(URIPARSER)
 include(LLPrimitive)
 
-if (NOT HAVOK_TPV)
+if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
    # When using HAVOK_TPV, the library is precompiled, so no need for this
 
    # Stub and probably havok lib itself is a hack, autobuild loads a 3p that really is a source tarball
@@ -68,7 +68,7 @@ if (NOT HAVOK_TPV)
         target_compile_options( llphysicsextensions  PRIVATE -Wno-unused-local-typedef)
       endif (DARWIN)
    endif()
-endif (NOT HAVOK_TPV)
+endif ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
 
 
 set(viewer_SOURCE_FILES

@@ -66,6 +66,10 @@ target_link_libraries(llprimitive
         ll::glh_linear
         )
 
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	add_subdirectory(llphysicsextensions)
+endif ()
+
 #add unit tests
 if (LL_TESTS)
     INCLUDE(LLAddBuildTest)
