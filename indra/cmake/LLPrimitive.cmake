@@ -11,6 +11,16 @@ add_library( ll::minizip-ng INTERFACE IMPORTED )
 add_library( ll::libxml INTERFACE IMPORTED )
 add_library( ll::colladadom INTERFACE IMPORTED )
 
+if ( NOT (USE_AUTOBUILD_3P OR USE_CONAN) )
+  include(FindPkgConfig)
+  pkg_check_modules(Colladadom REQUIRED collada-dom)
+  target_compile_definitions( ll::colladadom INTERFACE COLLADA_DOM_SUPPORT141 )
+  target_include_directories( ll::colladadom SYSTEM INTERFACE ${Colladadom_INCLUDE_DIRS} ${Colladadom_INCLUDE_DIRS}/1.4 )
+  target_link_directories( ll::colladadom INTERFACE ${Colladadom_LIBRARY_DIRS} )
+  target_link_libraries( ll::colladadom INTERFACE ${Colladadom_LIBRARIES} )
+  return ()
+endif ()
+
 # ND, needs fixup in collada conan pkg
 if( USE_CONAN )
   target_include_directories( ll::colladadom SYSTEM INTERFACE
