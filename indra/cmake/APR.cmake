@@ -5,6 +5,15 @@ include_guard()
 
 add_library( ll::apr INTERFACE IMPORTED )
 
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+  include(FindPkgConfig)
+  pkg_check_modules(Apr REQUIRED apr-1 apr-util-1)
+  target_include_directories(ll::apr SYSTEM INTERFACE ${Apr_INCLUDE_DIRS})
+  target_link_directories(ll::apr INTERFACE ${Apr_LIBRARY_DIRS})
+  target_link_libraries(ll::apr INTERFACE ${Apr_LIBRARIES})
+  return ()
+endif ()
+
 use_system_binary( apr apr-util )
 use_prebuilt_binary(apr_suite)
 
