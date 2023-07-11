@@ -18,6 +18,17 @@ endif()
 
 if (USE_OPENAL)
   add_library( ll::openal INTERFACE IMPORTED )
+
+  if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+    target_compile_definitions( ll::openal INTERFACE LL_OPENAL=1)
+    include(FindPkgConfig)
+    pkg_check_modules(Openal REQUIRED freealut)
+    target_include_directories(ll::openal SYSTEM INTERFACE ${Openal_INCLUDE_DIRS})
+    target_link_directories(ll::openal INTERFACE ${Openal_LIBRARY_DIRS})
+    target_link_libraries(ll::openal INTERFACE ${Openal_LIBRARIES})
+    return ()
+  endif ()
+
   target_include_directories( ll::openal SYSTEM INTERFACE "${LIBS_PREBUILT_DIR}/include/AL")
   target_compile_definitions( ll::openal INTERFACE LL_OPENAL=1)
   use_prebuilt_binary(openal)
