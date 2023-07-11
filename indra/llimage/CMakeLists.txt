@@ -8,9 +8,13 @@ include(LLImage)
 include(JPEG)
 include(LLKDU)
 include(ZLIBNG)
+if (LL_TESTS)
 include(LLAddBuildTest)
+endif ()
 include(bugsplat)
+if (LL_TESTS)
 include(Tut)
+endif ()
 
 set(llimage_SOURCE_FILES
     llimagebmp.cpp
