@@ -281,6 +281,8 @@ target_include_directories(llcommon PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 if (USE_AUTOBUILD_3P OR USE_CONAN)
 add_dependencies(llcommon stage_third_party_libs)
+else ()
+	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-deprecated-declarations)
 endif ()
 
 if (LL_TESTS)
