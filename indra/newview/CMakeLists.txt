@@ -9,7 +9,9 @@ include(Linking)
 
 include(Boost)
 include(bugsplat)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(BuildPackagesInfo)
+endif ()
 include(BuildVersion)
 include(CMakeCopyIfDifferent)
 if (USE_AUTOBUILD_3P OR USE_CONAN)
@@ -1616,6 +1618,10 @@ set(viewer_APPSETTINGS_FILES
     featuretable.txt
     featuretable_mac.txt
     )
+
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	list(REMOVE_ITEM viewer_APPSETTINGS_FILES packages-info.txt)
+endif ()
 
 source_group("App Settings" FILES ${viewer_APPSETTINGS_FILES})
 
