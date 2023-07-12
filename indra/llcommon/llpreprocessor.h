@@ -80,7 +80,7 @@
 #endif
 
 // Deal with minor differences on Unixy OSes.
-#if LL_DARWIN || LL_LINUX
+#if LL_DARWIN || LL_LINUX || LL_FREEBSD
 	// Different name, same functionality.
 	#define stricmp strcasecmp
 	#define strnicmp strncasecmp
