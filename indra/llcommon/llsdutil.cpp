@@ -36,7 +36,7 @@
 #	include <winsock2.h>	// for htonl
 #elif LL_LINUX
 #	include <netinet/in.h>
-#elif LL_DARWIN
+#elif LL_DARWIN || LL_FREEBSD
 #	include <arpa/inet.h>
 #endif
 
