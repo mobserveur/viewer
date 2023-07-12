@@ -35,8 +35,10 @@
 
 #include <boost/align/aligned_allocator.hpp>
 
+#ifndef LL_USESYSTEMLIBS
 class daeElement;
 class domMesh;
+#endif
 
 #define MAX_MODEL_FACES 8
 

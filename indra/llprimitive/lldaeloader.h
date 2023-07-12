@@ -29,6 +29,7 @@
 
 #include "llmodelloader.h"
 
+#ifndef LL_USESYSTEMLIBS
 class DAE;
 class daeElement;
 class domProfile_COMMON;
@@ -38,6 +39,7 @@ class domTranslate;
 class domController;
 class domSkin;
 class domMesh;
+#endif
 
 class LLDAELoader : public LLModelLoader
 {
