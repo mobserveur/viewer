@@ -131,7 +131,7 @@
 #include "stringize.h"
 #include "llcoros.h"
 #include "llexception.h"
-#if !LL_LINUX
+#if !LL_LINUX && !LL_FREEBSD
 #include "cef/dullahan_version.h"
 #include "vlc/libvlc_version.h"
 #endif // LL_LINUX
@@ -262,7 +262,7 @@ using namespace LL;
 // define a self-registering event API object
 #include "llappviewerlistener.h"
 
-#if LL_LINUX && LL_GTK
+#if (LL_LINUX || LL_FREEBSD) && LL_GTK
 #include "glib.h"
 #endif // (LL_LINUX) && LL_GTK
 
@@ -308,6 +308,8 @@ S32 gLastExecDuration = -1; // (<0 indicates unknown)
 #   define LL_PLATFORM_KEY "mac"
 #elif LL_LINUX
 #   define LL_PLATFORM_KEY "lnx"
+#elif LL_FREEBSD
+#   define LL_PLATFORM_KEY "bsd"
 #else
 #   error "Unknown Platform"
 #endif
@@ -891,7 +893,7 @@ bool LLAppViewer::init()
 	std::string mime_types_name;
 #if LL_DARWIN
 	mime_types_name = "mime_types_mac.xml";
-#elif LL_LINUX
+#elif LL_LINUX || LL_FREEBSD
 	mime_types_name = "mime_types_linux.xml";
 #else
 	mime_types_name = "mime_types.xml";
@@ -1751,7 +1753,7 @@ bool LLAppViewer::cleanup()
 	// one because it happens just after mFastTimerLogThread is deleted. This
 	// comment is in case we guessed wrong, so we can move it here instead.
 
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 	// remove any old breakpad minidump files from the log directory
 	if (! isError())
 	{
@@ -3336,7 +3338,7 @@ LLSD LLAppViewer::getViewerInfo() const
 		info["VOICE_VERSION"] = LLTrans::getString("NotConnected");
 	}
 
-#if !LL_LINUX
+#if !LL_LINUX && !LL_FREEBSD
 	std::ostringstream cef_ver_codec;
 	cef_ver_codec << "Dullahan: ";
 	cef_ver_codec << DULLAHAN_VERSION_MAJOR;
@@ -3366,7 +3368,7 @@ LLSD LLAppViewer::getViewerInfo() const
 	info["LIBCEF_VERSION"] = "Undefined";
 #endif
 
-#if !LL_LINUX
+#if !LL_LINUX && !LL_FREEBSD
 	std::ostringstream vlc_ver_codec;
 	vlc_ver_codec << LIBVLC_VERSION_MAJOR;
 	vlc_ver_codec << ".";
