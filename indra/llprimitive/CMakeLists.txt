@@ -67,6 +67,8 @@ target_link_libraries(llprimitive
         )
 
 if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	set_source_files_properties(lldaeloader.cpp PROPERTIES COMPILE_FLAGS
+		-std=c++14)
 	add_subdirectory(llphysicsextensions)
 endif ()
 
