@@ -1930,6 +1930,12 @@ endif()
 set(ARTWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH
     "Path to artwork files.")
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	set_source_files_properties(llappviewerlinux.cpp PROPERTIES
+		COMPILE_FLAGS -Wno-dangling-gsl
+	)
+endif ()
+
 if (LINUX)
   set(product SecondLife-${ARCH}-${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION})
 
