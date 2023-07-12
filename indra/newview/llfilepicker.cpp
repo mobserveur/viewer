@@ -40,7 +40,7 @@
 #include "llwindowsdl.h" // for some X/GTK utils to help with filepickers
 #endif // LL_SDL
 
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 #include "llhttpconstants.h"    // file picker uses some of thes constants on Linux
 #endif
 
@@ -1053,7 +1053,7 @@ BOOL LLFilePicker::getSaveFileModeless(ESaveFilter filter,
 }
 //END LL_DARWIN
 
-#elif LL_LINUX
+#elif LL_LINUX || LL_FREEBSD
 
 # if LL_GTK
 
