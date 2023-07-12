@@ -114,6 +114,10 @@ typedef U32				TPACKETID;
 #define FALSE			(0)
 #endif
 
+#if LL_FREEBSD
+#undef NULL
+#endif
+
 #ifndef NULL
 #define NULL			(0)
 #endif
