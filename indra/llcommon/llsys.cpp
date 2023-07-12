@@ -83,6 +83,9 @@ using namespace llsd;
 #   include <stdexcept>
 const char MEMINFO_FILE[] = "/proc/meminfo";
 #   include <gnu/libc-version.h>
+#elif LL_FREEBSD
+#	include <sys/sysctl.h>
+#	include <sys/utsname.h>
 #endif
 
 LLCPUInfo gSysCPU;
@@ -435,6 +438,14 @@ LLOSInfo::LLOSInfo() :
 			if (simple.length() > 0)
 				mOSStringSimple = simple;
 		}
+		else if (ostype == "FreeBSD")
+		{
+			// Only care about major and minor FreeBSD versions, truncate at first '-'
+			std::string simple = mOSStringSimple.substr(0,
+					mOSStringSimple.find_first_of("-", 0));
+			if (simple.length() > 0)
+				mOSStringSimple = simple;
+		}
 	}
 	else
 	{
@@ -776,10 +787,14 @@ U32Kilobytes LLMemoryInfo::getPhysicalMemoryKB() const
 #if LL_WINDOWS
 	return LLMemoryAdjustKBResult(U32Kilobytes(mStatsMap["Total Physical KB"].asInteger()));
 
-#elif LL_DARWIN
+#elif LL_DARWIN || LL_FREEBSD
 	// This might work on Linux as well.  Someone check...
 	uint64_t phys = 0;
+#if LL_DARWIN
 	int mib[2] = { CTL_HW, HW_MEMSIZE };
+#else
+	int mib[2] = { CTL_HW, HW_PHYSMEM };
+#endif
 
 	size_t len = sizeof(phys);	
 	sysctl(mib, 2, &phys, &len, NULL, 0);
