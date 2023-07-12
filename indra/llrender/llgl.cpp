@@ -156,7 +156,7 @@ LLMatrix4 gGLObliqueProjectionInverse;
 
 std::list<LLGLUpdate*> LLGLUpdate::sGLQ;
 
-#if (LL_WINDOWS || LL_LINUX)  && !LL_MESA_HEADLESS
+#if (LL_WINDOWS || LL_LINUX || LL_FREEBSD)  && !LL_MESA_HEADLESS
 
 #if LL_WINDOWS
 PFNGLGETSTRINGIPROC glGetStringi = NULL;
@@ -317,7 +317,7 @@ PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 #endif
 
 // vertex shader prototypes
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 PFNGLVERTEXATTRIB1DARBPROC glVertexAttrib1dARB = NULL;
 PFNGLVERTEXATTRIB1DVARBPROC glVertexAttrib1dvARB = NULL;
 PFNGLVERTEXATTRIB1FARBPROC glVertexAttrib1fARB = NULL;
@@ -344,7 +344,7 @@ PFNGLVERTEXATTRIB4NUBARBPROC glVertexAttrib4nubARB = NULL;
 PFNGLVERTEXATTRIB4NUBVARBPROC glVertexAttrib4nubvARB = NULL;
 PFNGLVERTEXATTRIB4NUIVARBPROC glVertexAttrib4nuivARB = NULL;
 PFNGLVERTEXATTRIB4NUSVARBPROC glVertexAttrib4nusvARB = NULL;
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 PFNGLVERTEXATTRIB4BVARBPROC glVertexAttrib4bvARB = NULL;
 PFNGLVERTEXATTRIB4DARBPROC glVertexAttrib4dARB = NULL;
 PFNGLVERTEXATTRIB4DVARBPROC glVertexAttrib4dvARB = NULL;
@@ -616,7 +616,7 @@ bool LLGLManager::initGL()
 		mIsNVIDIA = TRUE;
 	}
 	else if (mGLVendor.find("INTEL") != std::string::npos
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 		 // The Mesa-based drivers put this in the Renderer string,
 		 // not the Vendor string.
 		 || mGLRenderer.find("INTEL") != std::string::npos
@@ -1060,7 +1060,7 @@ void LLGLManager::initExtensions()
 #endif
 #endif
 
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 	LL_INFOS() << "initExtensions() checking shell variables to adjust features..." << LL_ENDL;
 	// Our extension support for the Linux Client is very young with some
 	// potential driver gotchas, so offer a semi-secret way to turn it off.
@@ -1180,7 +1180,7 @@ void LLGLManager::initExtensions()
 	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, (GLint*) &mGLMaxIndexRange);
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint*) &mGLMaxTextureSize);
 
-#if (LL_WINDOWS || LL_LINUX) && !LL_MESA_HEADLESS
+#if (LL_WINDOWS || LL_LINUX || LL_FREEBSD) && !LL_MESA_HEADLESS
 	LL_DEBUGS("RenderInit") << "GL Probe: Getting symbols" << LL_ENDL;
 	if (mHasVertexBufferObject)
 	{
@@ -1279,7 +1279,7 @@ void LLGLManager::initExtensions()
 		glDebugMessageCallbackARB = (PFNGLDEBUGMESSAGECALLBACKARBPROC) GLH_EXT_GET_PROC_ADDRESS("glDebugMessageCallbackARB");
 		glGetDebugMessageLogARB = (PFNGLGETDEBUGMESSAGELOGARBPROC) GLH_EXT_GET_PROC_ADDRESS("glGetDebugMessageLogARB");
 	}
-#if (!LL_LINUX) || LL_LINUX_NV_GL_HEADERS
+#if (!LL_LINUX && !LL_FREEBSD) || LL_LINUX_NV_GL_HEADERS
 	// This is expected to be a static symbol on Linux GL implementations, except if we use the nvidia headers - bah
 	glDrawRangeElements = (PFNGLDRAWRANGEELEMENTSPROC)GLH_EXT_GET_PROC_ADDRESS("glDrawRangeElements");
 	if (!glDrawRangeElements)

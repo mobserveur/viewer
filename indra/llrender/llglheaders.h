@@ -41,7 +41,7 @@
 # include "GL/glh_extensions.h"
 # undef __APPLE__
 
-#elif LL_LINUX
+#elif LL_LINUX || LL_FREEBSD
 //----------------------------------------------------------------------------
 // LL_LINUX
 
@@ -53,7 +53,7 @@
 #include "GL/glu.h"
 
 
-#if LL_LINUX && !LL_MESA_HEADLESS
+#if (LL_LINUX || LL_FREEBSD) && !LL_MESA_HEADLESS
 // The __APPLE__ kludge is to make glh_extensions.h not symbol-clash horribly
 # define __APPLE__
 # include "GL/glh_extensions.h"
