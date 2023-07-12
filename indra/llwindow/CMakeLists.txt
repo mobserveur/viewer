@@ -61,7 +61,7 @@ set(llwindow_LINK_LIBRARIES
         )
 # Libraries on which this library depends, needed for Linux builds
 # Sort by high-level to low-level
-if (LINUX)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   list(APPEND viewer_SOURCE_FILES 
        llkeyboardsdl.cpp 
        llwindowsdl.cpp
@@ -84,7 +84,7 @@ if (LINUX)
         )
   endif (BUILD_HEADLESS)
 
-endif (LINUX)
+endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 
 if (DARWIN)
   list(APPEND llwindow_SOURCE_FILES
