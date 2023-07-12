@@ -67,6 +67,12 @@ target_link_libraries(llimage
         ll::libjpeg
     )
 
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+		set_source_files_properties(llimageworker.cpp PROPERTIES COMPILE_FLAGS -Wno-int-in-bool-context)
+	endif()
+endif ()
+
 # Add tests
 if (LL_TESTS)
   SET(llimage_TEST_SOURCE_FILES
