@@ -144,6 +144,7 @@ const F32 LLSettingsSky::DOME_RADIUS(15000.f);
 
 namespace
 {
+    using boost::placeholders::_1, boost::placeholders::_2;
 
 LLSettingsSky::validation_list_t legacyHazeValidationList()
 {

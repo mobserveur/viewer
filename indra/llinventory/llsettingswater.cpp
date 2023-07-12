@@ -223,6 +223,7 @@ LLSettingsWater::validation_list_t LLSettingsWater::validationList()
 
     if (validation.empty())
     {
+        using boost::placeholders::_1, boost::placeholders::_2;
         validation.push_back(Validator(SETTING_BLUR_MULTIPLIER, true, LLSD::TypeReal,
             boost::bind(&Validator::verifyFloatRange, _1, _2, llsd::array(-0.5f, 0.5f))));
         validation.push_back(Validator(SETTING_FOG_COLOR, true, LLSD::TypeArray,
