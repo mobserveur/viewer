@@ -1411,7 +1411,7 @@ if (DARWIN)
   list(APPEND viewer_SOURCE_FILES ${viewer_RESOURCE_FILES})
 endif (DARWIN)
 
-if (LINUX)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
     LIST(APPEND viewer_SOURCE_FILES llappviewerlinux.cpp)
     set_source_files_properties(
       llappviewerlinux.cpp
@@ -1421,7 +1421,7 @@ if (LINUX)
     LIST(APPEND viewer_SOURCE_FILES llappviewerlinux_api_dbus.cpp)
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
 
-endif (LINUX)
+endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 
 if (WINDOWS)
     list(APPEND viewer_SOURCE_FILES
