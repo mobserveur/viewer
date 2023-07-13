@@ -7,6 +7,7 @@
 	<string name="MacLocale">C</string>
 	<string name="DarwinLocale">C</string>
 	<string name="LinuxLocale">C</string>
+	<string name="FreeBSDLocale">C</string>
   
   <!-- Note: for plural nouns, see strings.xml.  For example:
        AgeYearsA = singular,
