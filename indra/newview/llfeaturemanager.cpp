@@ -62,7 +62,7 @@
 
 #if LL_DARWIN
 const char FEATURE_TABLE_FILENAME[] = "featuretable_mac.txt";
-#elif LL_LINUX
+#elif LL_LINUX || LL_FREEBSD
 const char FEATURE_TABLE_FILENAME[] = "featuretable_linux.txt";
 #else
 const char FEATURE_TABLE_FILENAME[] = "featuretable.txt";
