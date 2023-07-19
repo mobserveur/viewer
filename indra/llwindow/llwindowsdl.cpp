@@ -1432,7 +1432,7 @@ BOOL LLWindowSDL::convertCoords(LLCoordGL from, LLCoordWindow *to)
     if (!to)
         return FALSE;
 
-	to->mX = from.mX;
+    to->mX = from.mX;
 	to->mY = mWindow->h - from.mY - 1;
 
 	return TRUE;
@@ -1443,7 +1443,7 @@ BOOL LLWindowSDL::convertCoords(LLCoordWindow from, LLCoordGL* to)
     if (!to)
         return FALSE;
 
-	to->mX = from.mX;
+    to->mX = from.mX;
 	to->mY = mWindow->h - from.mY - 1;
 
 	return TRUE;

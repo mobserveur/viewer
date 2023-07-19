@@ -3855,7 +3855,7 @@ void LLPanelRegionEnvironment::onChkAllowOverride(bool value)
     if (LLPanelEstateInfo::isLindenEstate())
         notification = "ChangeLindenEstate";
 
-	LLSD args;
+    LLSD args;
 	args["ESTATENAME"] = LLEstateInfoModel::instance().getName();
 	LLNotification::Params params(notification);
 	params.substitutions(args);
