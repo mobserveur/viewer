@@ -32,9 +32,11 @@
 #ifdef LL_LINUX
 #define __ENABLE_WSTRING
 #include <endian.h>
+#elif defined(LL_FREEBSD)
+#include <sys/endian.h>
 #endif	//	LL_LINUX
 
-#if (defined(LL_WINDOWS) || (defined(LL_LINUX) && (__BYTE_ORDER == __LITTLE_ENDIAN)) || (defined(LL_DARWIN) && defined(__LITTLE_ENDIAN__)))
+#if (defined(LL_WINDOWS) || (defined(LL_LINUX) && (__BYTE_ORDER == __LITTLE_ENDIAN)) || (defined(LL_DARWIN) && defined(__LITTLE_ENDIAN__)) || (defined(LL_FREEBSD) && (_BYTE_ORDER == _LITTLE_ENDIAN)))
 #define LL_LITTLE_ENDIAN 1
 #else
 #define LL_BIG_ENDIAN 1
