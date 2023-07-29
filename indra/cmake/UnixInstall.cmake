@@ -6,7 +6,7 @@ set(INSTALL OFF CACHE BOOL
     "Generate install target.")
 
 if (INSTALL)
-  set(INSTALL_PREFIX /usr CACHE PATH
+  set(INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE PATH
       "Top-level installation directory.")
 
   if (EXISTS /lib64)
@@ -21,11 +21,11 @@ if (INSTALL)
   set(INSTALL_SHARE_DIR ${INSTALL_PREFIX}/share CACHE PATH
       "Installation directory for read-only shared files.")
 
-  set(APP_BINARY_DIR ${INSTALL_LIBRARY_DIR}/secondlife-${viewer_VERSION}
+  set(APP_BINARY_DIR ${INSTALL_PREFIX}/bin
       CACHE PATH
       "Installation directory for binaries.")
 
-  set(APP_SHARE_DIR ${INSTALL_SHARE_DIR}/secondlife-${viewer_VERSION}
+  set(APP_SHARE_DIR ${INSTALL_SHARE_DIR}/${VIEWER_BINARY_NAME}
       CACHE PATH
       "Installation directory for read-only data files.")
 endif (INSTALL)

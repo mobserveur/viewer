@@ -59,6 +59,7 @@ include(ZLIBNG)
 include(URIPARSER)
 include(LLPrimitive)
 include(LibVLCPlugin)
+include(UnixInstall)
 
 if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
    # When using HAVOK_TPV, the library is precompiled, so no need for this

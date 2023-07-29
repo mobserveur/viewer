@@ -19,7 +19,8 @@ else (IS_ARTWORK_PRESENT)
   message(STATUS "WARNING: Artwork is not present, and will not be installed")
 endif (IS_ARTWORK_PRESENT)
 
-install(FILES featuretable_linux.txt featuretable_solaris.txt
+install(FILES featuretable_linux.txt
+	#featuretable_solaris.txt
         DESTINATION ${APP_SHARE_DIR}
         )
 
