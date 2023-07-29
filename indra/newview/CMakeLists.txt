@@ -58,6 +58,7 @@ include(VisualLeakDetector)
 include(ZLIBNG)
 include(URIPARSER)
 include(LLPrimitive)
+include(LibVLCPlugin)
 
 if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
    # When using HAVOK_TPV, the library is precompiled, so no need for this
@@ -1917,6 +1918,7 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ${LLPHYSICSEXTENSIONS_LIBRARIES}
         ll::bugsplat
         ll::tracy
+        ll::libvlc
         )
 
 if( TARGET ll::intel_memops )
@@ -2081,7 +2083,11 @@ if (DARWIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
 
+  if (USE_AUTOBUILD_3P OR USE_CONAN)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
+  else ()
+    add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc)
+  endif ()
 
   if (ENABLE_SIGNING)
       set(SIGNING_SETTING "--signature=${SIGNING_IDENTITY}")
