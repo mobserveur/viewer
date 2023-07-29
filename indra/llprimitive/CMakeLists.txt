@@ -72,6 +72,8 @@ if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
 	add_subdirectory(llphysicsextensions)
 endif ()
 
+include(LibraryInstall)
+
 #add unit tests
 if (LL_TESTS)
     INCLUDE(LLAddBuildTest)

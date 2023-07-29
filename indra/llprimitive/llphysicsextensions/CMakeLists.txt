@@ -74,6 +74,12 @@ list(APPEND llphysicsextensionsstub_SOURCE_FILES ${llphysicsextensions_HEADER_FI
 add_library(${PROJECT_NAME}stub ${${PROJECT_NAME}_SOURCE_FILES})
 target_include_directories(${PROJECT_NAME}stub INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(${PROJECT_NAME}stub llmath llcommon)
+list(REMOVE_ITEM ${PROJECT_NAME}_HEADER_FILES
+	LLPathingLibStubImpl.h
+	LLConvexDecompositionStubImpl.h
+	LLPhysicsExtensionsStubImpl.h)
+install(FILES ${${PROJECT_NAME}_HEADER_FILES} DESTINATION include/${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME}stub DESTINATION lib)
 
 if (LINUX)
     IF(CMAKE_BUILD_TYPE MATCHES Release)

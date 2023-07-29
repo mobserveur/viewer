@@ -136,6 +136,7 @@ set(llmessage_HEADER_FILES
     llmessagebuilder.h
     llmessageconfig.h
     llmessagereader.h
+    llmessagesenderinterface.h
     llmessagetemplate.h
     llmessagetemplateparser.h
     llmessagethrottle.h
@@ -209,6 +210,8 @@ if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
 			COMPILE_FLAGS -Wno-stringop-truncation)
 	endif()
 endif ()
+
+include(LibraryInstall)
 
 # tests
 if (LL_TESTS)

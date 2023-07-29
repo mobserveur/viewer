@@ -158,6 +158,7 @@ set(llcommon_HEADER_FILES
     lleventdispatcher.h
     lleventfilter.h
     llevents.h
+    lleventtimer.h
     lleventemitter.h
     llexception.h
     llfasttimer.h
@@ -181,12 +182,14 @@ set(llcommon_HEADER_FILES
     llliveappconfig.h
     lllivefile.h
     llmainthreadtask.h
+    llmake.h
     llmd5.h
     llmemory.h
     llmemorystream.h
     llmetrics.h
     llmetricperformancetester.h
     llmortician.h
+    llmutex.h
     llnametable.h
     llpointer.h
     llprofiler.h
@@ -243,7 +246,9 @@ set(llcommon_HEADER_FILES
     llwin32headerslean.h
     llworkerthread.h
     hbxxh.h
+    is_approx_equal_fraction.h
     lockstatic.h
+    mutex.h
     stdtypes.h
     stringize.h
     threadpool.h
@@ -288,6 +293,8 @@ else ()
 			COMPILE_FLAGS -Wno-stringop-truncation)
 	endif()
 endif ()
+
+include(LibraryInstall)
 
 if (LL_TESTS)
   include(LLAddBuildTest)

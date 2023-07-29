@@ -186,3 +186,5 @@ if (DARWIN)
   find_library(CARBON_LIBRARY Carbon)
   target_link_libraries(llwindow ${CARBON_LIBRARY})
 endif (DARWIN)
+
+include(LibraryInstall)

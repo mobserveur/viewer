@@ -86,3 +86,5 @@ if (BUILD_HEADLESS)
           llcommon
       )
 endif (BUILD_HEADLESS)
+
+include(LibraryInstall)

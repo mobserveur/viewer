@@ -28,3 +28,4 @@ target_link_libraries( llimagej2coj
         ll::openjpeg
     )
 
+include(LibraryInstall)

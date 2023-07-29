@@ -59,6 +59,7 @@ set(llmath_HEADER_FILES
     llmath.h
     llmatrix3a.h
     llmatrix3a.inl
+    llmatrix4a.h
     llmodularmath.h
     lloctree.h
     llperlin.h
@@ -102,6 +103,8 @@ add_library (llmath ${llmath_SOURCE_FILES})
 include_directories(${CMAKE_SOURCE_DIR}/llmeshoptimizer)
 target_link_libraries(llmath llcommon)
 target_include_directories( llmath  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
+
+include(LibraryInstall)
 
 # Add tests
 if (LL_TESTS)

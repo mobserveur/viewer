@@ -73,6 +73,8 @@ if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
 	endif()
 endif ()
 
+include(LibraryInstall)
+
 # Add tests
 if (LL_TESTS)
   SET(llimage_TEST_SOURCE_FILES

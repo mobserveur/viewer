@@ -56,6 +56,8 @@ target_link_libraries(llfilesystem
     )
 target_include_directories( llfilesystem  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
+include(LibraryInstall)
+
 # Add tests
 if (LL_TESTS)
     include(LLAddBuildTest)
