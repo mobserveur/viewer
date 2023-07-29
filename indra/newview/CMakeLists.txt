@@ -1942,6 +1942,8 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 		llhttpretrypolicy.cpp
 		llpanelface.cpp
 		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
+	set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
+		-Wno-stringop-truncation)
 endif ()
 
 if (LINUX)

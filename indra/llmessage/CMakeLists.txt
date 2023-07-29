@@ -203,6 +203,13 @@ target_link_libraries(
 )
 target_include_directories( llmessage  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+		set_source_files_properties(llnamevalue.cpp PROPERTIES
+			COMPILE_FLAGS -Wno-stringop-truncation)
+	endif()
+endif ()
+
 # tests
 if (LL_TESTS)
   SET(llmessage_TEST_SOURCE_FILES

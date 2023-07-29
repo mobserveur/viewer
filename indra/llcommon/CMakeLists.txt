@@ -283,6 +283,10 @@ if (USE_AUTOBUILD_3P OR USE_CONAN)
 add_dependencies(llcommon stage_third_party_libs)
 else ()
 	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-deprecated-declarations)
+	if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+		set_source_files_properties(llsdutil.cpp PROPERTIES
+			COMPILE_FLAGS -Wno-stringop-truncation)
+	endif()
 endif ()
 
 if (LL_TESTS)
