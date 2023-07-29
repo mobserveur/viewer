@@ -17,5 +17,6 @@ target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}
 elseif (LINUX)
 target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE /usr/include/xmlrpc-epi)
 elseif (DARWIN)
+target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE /usr/local/include)
 target_link_directories( ll::xmlrpc-epi SYSTEM INTERFACE /usr/local/lib)
 endif ()
