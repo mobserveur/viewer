@@ -12,7 +12,7 @@ set(LIBVLCPLUGIN ON CACHE BOOL
 else ()
     include(FindPkgConfig)
     if (DARWIN)
-        set(CMAKE_PREFIX_PATH /opt/local/libexec/vlc3/lib/pkgconfig)
+        set(CMAKE_PREFIX_PATH "/opt/local/libexec/vlc3/lib/pkgconfig")
         pkg_check_modules(Libvlc REQUIRED libvlc)
         target_link_libraries( ll::libvlc INTERFACE vlccore )
     else ()
