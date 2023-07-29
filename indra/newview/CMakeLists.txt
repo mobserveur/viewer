@@ -1936,6 +1936,12 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	set_source_files_properties(llappviewerlinux.cpp PROPERTIES
 		COMPILE_FLAGS -Wno-dangling-gsl
 	)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+	set_source_files_properties(
+		llface.cpp
+		llhttpretrypolicy.cpp
+		llpanelface.cpp
+		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
 endif ()
 
 if (LINUX)
