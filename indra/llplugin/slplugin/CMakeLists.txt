@@ -60,6 +60,11 @@ if (DARWIN)
   )
 endif (DARWIN)
 
+if (BUILD_SHARED_LIBS)
+  set_target_properties(SLPlugin PROPERTIES LINK_FLAGS_RELEASE
+    "${LINK_FLAGS_RELEASE} -Wl,--allow-shlib-undefined")
+endif ()
+
 if (LL_TESTS)
   ll_deploy_sharedlibs_command(SLPlugin)
 endif (LL_TESTS)

@@ -99,7 +99,8 @@ list(APPEND llmath_SOURCE_FILES ${llmath_HEADER_FILES})
 
 add_library (llmath ${llmath_SOURCE_FILES})
 
-target_link_libraries(llmath llcommon llmeshoptimizer)
+include_directories(${CMAKE_SOURCE_DIR}/llmeshoptimizer)
+target_link_libraries(llmath llcommon)
 target_include_directories( llmath  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Add tests

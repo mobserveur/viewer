@@ -51,7 +51,7 @@ set(llwindow_LINK_LIBRARIES
         llcommon
         llimage
         llmath
-        llrender
+        #llrender
         llfilesystem
         llxml
         ll::glh_linear
@@ -59,6 +59,9 @@ set(llwindow_LINK_LIBRARIES
         ll::uilibraries
         ll::SDL
         )
+
+include_directories(${CMAKE_SOURCE_DIR}/llrender)
+
 # Libraries on which this library depends, needed for Linux builds
 # Sort by high-level to low-level
 if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")

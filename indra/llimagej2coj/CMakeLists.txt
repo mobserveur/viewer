@@ -21,9 +21,10 @@ list(APPEND llimagej2coj_SOURCE_FILES ${llimagej2coj_HEADER_FILES})
 
 add_library (llimagej2coj ${llimagej2coj_SOURCE_FILES})
 
+include_directories( ${CMAKE_SOURCE_DIR}/llimage )
 target_link_libraries( llimagej2coj
         llcommon
-        llimage
+        #llimage
         ll::openjpeg
     )
 
