@@ -2081,11 +2081,7 @@ if (DARWIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
 
-  if (ENABLE_MEDIA_PLUGINS)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
-  else ()
-      add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
-  endif ()
 
   if (ENABLE_SIGNING)
       set(SIGNING_SETTING "--signature=${SIGNING_IDENTITY}")
