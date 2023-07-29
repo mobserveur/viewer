@@ -55,7 +55,9 @@ if( WINDOWS )
           )
 endif()
 
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 target_include_directories( ll::uilibraries SYSTEM INTERFACE
         ${LIBS_PREBUILT_DIR}/include
         )
+endif ()
 
