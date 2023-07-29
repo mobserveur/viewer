@@ -124,7 +124,7 @@ else (USE_BUGSPLAT)
 endif (USE_BUGSPLAT)
 
 add_subdirectory(${VIEWER_PREFIX}newview)
-add_dependencies(viewer secondlife-bin)
+add_dependencies(viewer ${VIEWER_BINARY_NAME})
 
 add_subdirectory(${VIEWER_PREFIX}doxygen EXCLUDE_FROM_ALL)
 
