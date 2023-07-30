@@ -37,7 +37,7 @@ if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   if (INSTALL)
     set_source_files_properties(lldir_linux.cpp
                                 PROPERTIES COMPILE_FLAGS
-                                "-DAPP_RO_DATA_DIR=\\\"${APP_SHARE_DIR}\\\""
+                                "-DAPP_RO_DATA_DIR=\\\"${APP_SHARE_DIR}\\\" -DAPP_LIBEXEC_DIR=\\\"${APP_LIBEXEC_DIR}\\\""
                                 )
   endif (INSTALL)
 endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")

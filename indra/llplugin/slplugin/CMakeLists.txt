@@ -65,6 +65,10 @@ if (BUILD_SHARED_LIBS)
     "${LINK_FLAGS_RELEASE} -Wl,--allow-shlib-undefined")
 endif ()
 
+if (INSTALL)
+  install(TARGETS ${PROJECT_NAME} DESTINATION ${APP_LIBEXEC_DIR})
+endif ()
+
 if (LL_TESTS)
   ll_deploy_sharedlibs_command(SLPlugin)
 endif (LL_TESTS)

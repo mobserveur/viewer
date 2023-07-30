@@ -83,7 +83,11 @@ LLDir_Linux::LLDir_Linux()
 
 	mExecutableFilename = "";
 	mExecutablePathAndName = "";
+#ifdef APP_LIBEXEC_DIR
+	mExecutableDir = APP_LIBEXEC_DIR;
+#else
 	mExecutableDir = tmp_str;
+#endif
 	mWorkingDir = tmp_str;
 #ifdef APP_RO_DATA_DIR
 	mAppRODataDir = APP_RO_DATA_DIR;
