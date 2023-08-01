@@ -104,6 +104,12 @@ include_directories(${CMAKE_SOURCE_DIR}/llmeshoptimizer)
 target_link_libraries(llmath llcommon)
 target_include_directories( llmath  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
+if (USESYSTEMLIBS)
+  AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  set_source_files_properties(llcalc.cpp PROPERTIES
+    COMPILE_FLAGS -Wno-dangling-pointer)
+endif ()
+
 include(LibraryInstall)
 
 # Add tests
