@@ -409,7 +409,7 @@ LLWindow* LLWindowManager::createWindow(
 	BOOL ignore_pixel_depth,
 	U32 fsaa_samples)
 {
-	LLWindow* new_window;
+	LLWindow* new_window = nullptr;
 
 	if (use_gl)
 	{
