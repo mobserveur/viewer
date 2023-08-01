@@ -66,7 +66,7 @@ $ megapahit
 
 ## Example
 
-![FreeBSD][doc/freebsd.jpg]
+![FreeBSD](doc/freebsd.jpg)
 
 Running natively on FreeBSD (not with Linux binary compatibility).
 
