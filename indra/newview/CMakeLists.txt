@@ -1942,6 +1942,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 		llface.cpp
 		llhttpretrypolicy.cpp
 		llpanelface.cpp
+		lltexturefetch.cpp
 		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
 	set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
 		-Wno-stringop-truncation)
