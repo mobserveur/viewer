@@ -31,21 +31,21 @@ Third party maintained forks, which include Linux compatible builds, are indexed
 ### macOS
 
 ```
-# port install git cmake pkgconfig apr-util boost collada-dom freealut hunspell jsoncpp libsdl uriparser VLC
+# port install git cmake pkgconfig apr-util boost collada-dom freealut hunspell jsoncpp libsdl2 uriparser VLC
 $ export LL_BUILD="-DLL_DARWIN=1 -DPIC -fPIC -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1"
 ```
 
 ### GNU/Linux
 
 ```
-# apt install git cmake pkg-config libalut-dev libaprutil-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libglu1-mesa-dev libgtk2.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnghttp2-dev libopenjp2-dev libsdl1.2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
+# apt install git cmake pkg-config libalut-dev libaprutil-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libglu1-mesa-dev libgtk2.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnghttp2-dev libopenjp2-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
 $ export LL_BUILD="-DLL_LINUX=1 -fPIC"
 ```
 
 ### FreeBSD
 
 ```
-# portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl12 devel/xxhash audio/freealut audio/libvorbis graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/gtk20
+# portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/gtk20
 $ setenv LL_BUILD "-DLL_FREEBSD=1 -fPIC"
 ```
 

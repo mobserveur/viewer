@@ -32,12 +32,12 @@
 #include "llwindow.h"
 #include "lltimer.h"
 
-#include "SDL/SDL.h"
-#include "SDL/SDL_endian.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_endian.h"
 
 #if LL_X11
 // get X11-specific headers for use in low-level stuff like copy-and-paste support
-#include "SDL/SDL_syswm.h"
+#include "SDL2/SDL_syswm.h"
 #endif
 
 // AssertMacros.h does bad things.
@@ -181,15 +181,15 @@ protected:
 	void destroyContext();
 	void setupFailure(const std::string& text, const std::string& caption, U32 type);
 	void fixWindowSize(void);
-	U32 SDLCheckGrabbyKeys(SDLKey keysym, BOOL gain);
-	BOOL SDLReallyCaptureInput(BOOL capture);
+	U32 SDLCheckGrabbyKeys(SDL_Keycode keysym, BOOL gain);
+	//BOOL SDLReallyCaptureInput(BOOL capture);
 
 	//
 	// Platform specific variables
 	//
 	U32             mGrabbyKeyFlags;
 	int			mReallyCapturedCount;
-	SDL_Surface *	mWindow;
+	SDL_Window *	mWindow;
 	std::string mWindowTitle;
 	double		mOriginalAspectRatio;
 	BOOL		mNeedsResize;		// Constructor figured out the window is too big, it needs a resize.
@@ -215,7 +215,7 @@ private:
 	
 	U32 mKeyScanCode;
         U32 mKeyVirtualKey;
-	SDLMod mKeyModifiers;
+	Uint16 mKeyModifiers;
 };
 
 
