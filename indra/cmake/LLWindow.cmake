@@ -13,7 +13,7 @@ if (NOT (USE_AUTOBUILD_3P OR USE_CONAN) AND NOT DARWIN)
   target_compile_definitions( ll::SDL INTERFACE LL_SDL=1)
   target_include_directories(ll::SDL SYSTEM INTERFACE ${Sdl2_INCLUDE_DIRS})
   target_link_directories(ll::SDL INTERFACE ${Sdl2_LIBRARY_DIRS})
-  target_link_libraries(ll::SDL INTERFACE ${Sdl2_LIBRARIES} X11)
+  target_link_libraries(ll::SDL INTERFACE ${Sdl2_LIBRARIES})
   return ()
 endif ()
 
