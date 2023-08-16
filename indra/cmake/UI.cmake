@@ -5,8 +5,7 @@ include(FreeType)
 add_library( ll::uilibraries INTERFACE IMPORTED )
 
 if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
-  #target_compile_definitions(ll::uilibraries INTERFACE LL_GTK=1 LL_X11=1 )
-  target_compile_definitions(ll::uilibraries INTERFACE LL_GTK=1)
+  target_compile_definitions(ll::uilibraries INTERFACE LL_GTK=1 LL_X11=1 )
 
   if( USE_CONAN )
     target_link_libraries( ll::uilibraries INTERFACE CONAN_PKG::gtk )
