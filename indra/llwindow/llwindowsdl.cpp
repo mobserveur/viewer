@@ -1903,13 +1903,16 @@ void LLWindowSDL::gatherInput()
 				{
 				    mCallbacks->handleMiddleMouseDown(this, openGlCoord, mask);
 				}
-                else if (event.button.button == 4)  // mousewheel up...thanks to X11 for making SDL consider these "buttons".
-					mCallbacks->handleScrollWheel(this, -1);
-                else if (event.button.button == 5)  // mousewheel down...thanks to X11 for making SDL consider these "buttons".
-					mCallbacks->handleScrollWheel(this, 1);
 
                 break;
             }
+
+            case SDL_MOUSEWHEEL:
+                if (event.wheel.y > 0)  // mousewheel up
+					mCallbacks->handleScrollWheel(this, -1);
+                else if (event.wheel.y < 0)  // mousewheel down
+					mCallbacks->handleScrollWheel(this, 1);
+                break;
 
             case SDL_MOUSEBUTTONUP:
             {
