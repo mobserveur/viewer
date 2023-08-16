@@ -1180,7 +1180,6 @@ void LLWindowSDL::beforeDialog()
 
 	LL_INFOS() << "LLWindowSDL::beforeDialog()" << LL_ENDL;
 
-	/*
 	if (SDLReallyCaptureInput(FALSE)) // must ungrab input so popup works!
 	{
 		if (mFullscreen)
@@ -1190,11 +1189,10 @@ void LLWindowSDL::beforeDialog()
 			// it only works in X11
 			if (running_x11 && mWindow)
 			{
-				SDL_WM_ToggleFullScreen(mWindow);
+				SDL_SetWindowFullscreen(mWindow, SDL_WINDOW_FULLSCREEN);
 			}
 		}
 	}
-	*/
 
 #if LL_X11
 	if (mSDL_Display)
@@ -1528,7 +1526,6 @@ void LLWindowSDL::setupFailure(const std::string& text, const std::string& capti
 	OSMessageBox(text, caption, type);
 }
 
-/*
 BOOL LLWindowSDL::SDLReallyCaptureInput(BOOL capture)
 {
 	// note: this used to be safe to call nestedly, but in the
@@ -1539,13 +1536,13 @@ BOOL LLWindowSDL::SDLReallyCaptureInput(BOOL capture)
 	else
 		mReallyCapturedCount = 0;
 	
-	SDL_GrabMode wantmode, newmode;
+	SDL_bool wantmode, newmode;
 	if (mReallyCapturedCount <= 0) // uncapture
 	{
-		wantmode = SDL_GRAB_OFF;
+		wantmode = SDL_FALSE;
 	} else // capture
 	{
-		wantmode = SDL_GRAB_ON;
+		wantmode = SDL_TRUE;
 	}
 	
 	if (mReallyCapturedCount < 0) // yuck, imbalance.
@@ -1554,12 +1551,12 @@ BOOL LLWindowSDL::SDLReallyCaptureInput(BOOL capture)
 		LL_WARNS() << "ReallyCapture count was < 0" << LL_ENDL;
 	}
 
-	if (!mFullscreen) // only bother if we're windowed anyway
+	if (!mFullscreen) /* only bother if we're windowed anyway */
 	{
 #if LL_X11
 		if (mSDL_Display)
 		{
-			// we dirtily mix raw X11 with SDL so that our pointer
+			/* we dirtily mix raw X11 with SDL so that our pointer
 			   isn't (as often) constrained to the limits of the
 			   window while grabbed, which feels nicer and
 			   hopefully eliminates some reported 'sticky pointer'
@@ -1567,9 +1564,9 @@ BOOL LLWindowSDL::SDLReallyCaptureInput(BOOL capture)
 			   SDL_WM_GrabInput() because the latter constrains
 			   the pointer to the window and also steals all
 			   *keyboard* input from the window manager, which was
-			   frustrating users. *
+			   frustrating users. */
 			int result;
-			if (wantmode == SDL_GRAB_ON)
+			if (wantmode == SDL_TRUE)
 			{
 				//LL_INFOS() << "X11 POINTER GRABBY" << LL_ENDL;
 				//newmode = SDL_WM_GrabInput(wantmode);
@@ -1580,13 +1577,13 @@ BOOL LLWindowSDL::SDLReallyCaptureInput(BOOL capture)
 						      None, None, CurrentTime);
 				maybe_unlock_display();
 				if (GrabSuccess == result)
-					newmode = SDL_GRAB_ON;
+					newmode = SDL_TRUE;
 				else
-					newmode = SDL_GRAB_OFF;
-			} else if (wantmode == SDL_GRAB_OFF)
+					newmode = SDL_FALSE;
+			} else if (wantmode == SDL_FALSE)
 			{
 				//LL_INFOS() << "X11 POINTER UNGRABBY" << LL_ENDL;
-				newmode = SDL_GRAB_OFF;
+				newmode = SDL_FALSE;
 				//newmode = SDL_WM_GrabInput(SDL_GRAB_OFF);
 				
 				maybe_lock_display();
@@ -1596,7 +1593,7 @@ BOOL LLWindowSDL::SDLReallyCaptureInput(BOOL capture)
 				maybe_unlock_display();
 			} else
 			{
-				newmode = SDL_GRAB_QUERY; // neutral
+				//newmode = SDL_GRAB_QUERY; // neutral
 			}
 		} else // not actually running on X11, for some reason
 			newmode = wantmode;
@@ -1607,10 +1604,9 @@ BOOL LLWindowSDL::SDLReallyCaptureInput(BOOL capture)
 	}
 	
 	// return boolean success for whether we ended up in the desired state
-	return (capture && SDL_GRAB_ON==newmode) ||
-		(!capture && SDL_GRAB_OFF==newmode);
+	return (capture && SDL_TRUE==newmode) ||
+		(!capture && SDL_FALSE==newmode);
 }
-*/
 
 U32 LLWindowSDL::SDLCheckGrabbyKeys(SDL_Keycode keysym, BOOL gain)
 {
@@ -1817,10 +1813,8 @@ void LLWindowSDL::gatherInput()
 
 		    gKeyboard->handleKeyDown(event.key.keysym.sym, event.key.keysym.mod);
 		    // part of the fix for SL-13243
-		    /*
 		    if (SDLCheckGrabbyKeys(event.key.keysym.sym, TRUE) != 0)
 			    SDLReallyCaptureInput(TRUE);
-		    */
 
 		    if (event.key.keysym.sym < SDLK_SPACE)
 		    {
@@ -1839,10 +1833,8 @@ void LLWindowSDL::gatherInput()
 		    mKeyScanCode = event.key.keysym.scancode;
 		    mKeyModifiers = event.key.keysym.mod;
 
-		    /*
 		    if (SDLCheckGrabbyKeys(event.key.keysym.sym, FALSE) == 0)
 			    SDLReallyCaptureInput(FALSE); // part of the fix for SL-13243
-			    */
 
 		    gKeyboard->handleKeyUp(event.key.keysym.sym, event.key.keysym.mod);
 		    break;

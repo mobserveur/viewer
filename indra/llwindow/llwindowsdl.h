@@ -182,7 +182,7 @@ protected:
 	void setupFailure(const std::string& text, const std::string& caption, U32 type);
 	void fixWindowSize(void);
 	U32 SDLCheckGrabbyKeys(SDL_Keycode keysym, BOOL gain);
-	//BOOL SDLReallyCaptureInput(BOOL capture);
+	BOOL SDLReallyCaptureInput(BOOL capture);
 
 	//
 	// Platform specific variables
