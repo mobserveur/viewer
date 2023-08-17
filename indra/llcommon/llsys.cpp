@@ -82,7 +82,9 @@ using namespace llsd;
 #	include <sys/sysinfo.h>
 #   include <stdexcept>
 const char MEMINFO_FILE[] = "/proc/meminfo";
+#ifdef __GNU__
 #   include <gnu/libc-version.h>
+#endif
 #elif LL_FREEBSD
 #	include <sys/sysctl.h>
 #	include <sys/utsname.h>
@@ -353,6 +355,7 @@ LLOSInfo::LLOSInfo() :
 	boost::regex os_version_parse(OS_VERSION_MATCH_EXPRESSION);
 	boost::smatch matched;
 
+#ifdef __GNU__
 	std::string glibc_version(gnu_get_libc_version());
 	if ( ll_regex_match(glibc_version, matched, os_version_parse) )
 	{
@@ -411,6 +414,7 @@ LLOSInfo::LLOSInfo() :
 	{
 		LL_WARNS("AppInit") << "glibc version '" << glibc_version << "' cannot be parsed to three numbers; using all zeros" << LL_ENDL;
 	}
+#endif // __GNU__
 
 #else
 	
