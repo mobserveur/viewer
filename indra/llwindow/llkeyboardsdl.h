@@ -28,6 +28,9 @@
 #define LL_LLKEYBOARDSDL_H
 
 #include "llkeyboard.h"
+#if !defined(__i386__) && !defined(__x86_64__)
+#define SDL_DISABLE_IMMINTRIN_H
+#endif
 #include "SDL2/SDL.h"
 
 class LLKeyboardSDL : public LLKeyboard
