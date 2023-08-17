@@ -625,7 +625,6 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 		bmpsurface = NULL;
 	}
 	
-	/*
 	// Detect video memory size.
 # if LL_X11
 	gGLManager.mVRAM = x11_detect_VRAM_kb() / 1024;
@@ -635,6 +634,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 	} else
 # endif // LL_X11
 	{
+		/*
 		// fallback to letting SDL detect VRAM.
 		// note: I've not seen SDL's detection ever actually find
 		// VRAM != 0, but if SDL *does* detect it then that's a bonus.
@@ -643,8 +643,8 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 		{
 			LL_INFOS() << "SDL detected " << gGLManager.mVRAM << "MB VRAM." << LL_ENDL;
 		}
+		*/
 	}
-	*/
 	// If VRAM is not detected, that is handled later
 
 	// *TODO: Now would be an appropriate time to check for some
