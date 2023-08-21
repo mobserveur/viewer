@@ -522,7 +522,7 @@ S32	LLUUID::getNodeID(unsigned char	*node_id)
 #include <net/if.h>
 #include <net/if_types.h>
 #include <net/if_dl.h>
-#include <net/route.h>
+//#include <net/route.h>
 #include <ifaddrs.h>
 
 // static
