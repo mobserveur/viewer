@@ -76,7 +76,7 @@ public:
 	virtual BOOL	handleKeyUp(const U32 key, MASK mask) = 0;
 	virtual BOOL	handleKeyDown(const U32 key, MASK mask) = 0;
 	
-#ifdef LL_DARWIN
+#if defined(LL_DARWIN) && !defined(LL_SDL)
 	// We only actually use this for OS X.
 	virtual void	handleModifier(MASK mask) = 0;
 #endif // LL_DARWIN

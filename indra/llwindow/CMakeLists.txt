@@ -89,7 +89,7 @@ if (USESYSTEMLIBS)
 
 endif (USESYSTEMLIBS)
 
-if (DARWIN)
+if (DARWIN AND (NOT USESYSTEMLIBS))
   list(APPEND llwindow_SOURCE_FILES
     llkeyboardmacosx.cpp
     llwindowmacosx.cpp
@@ -111,7 +111,7 @@ if (DARWIN)
       PROPERTIES
       COMPILE_FLAGS "-Wno-deprecated-declarations -fpascal-strings"
       )
-endif (DARWIN)
+endif (DARWIN AND (NOT USESYSTEMLIBS))
 
 
 if (WINDOWS)
@@ -181,10 +181,10 @@ endif (SDL_FOUND)
   target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
   target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
   
-if (DARWIN)
+if (DARWIN AND (NOT USESYSTEMLIBS))
   include(CMakeFindFrameworks)
   find_library(CARBON_LIBRARY Carbon)
   target_link_libraries(llwindow ${CARBON_LIBRARY})
-endif (DARWIN)
+endif (DARWIN AND (NOT USESYSTEMLIBS))
 
 include(LibraryInstall)

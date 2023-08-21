@@ -36,7 +36,7 @@
 #ifndef LL_USESYSTEMLIBS
 extern LLControlGroup gSavedSettings;
 #endif
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL
 extern BOOL gHiDPISupport;
 #endif
 
@@ -370,7 +370,7 @@ void LLPluginClassMedia::setSizeInternal(void)
 		mRequestedMediaHeight = nextPowerOf2(mRequestedMediaHeight);
 	}
 
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL
     if (!gHiDPISupport)
 #endif
     {

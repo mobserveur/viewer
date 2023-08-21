@@ -288,7 +288,7 @@ extern BOOL gRandomizeFramerate;
 extern BOOL gPeriodicSlowFrame;
 extern BOOL gDebugGL;
 
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL
 extern BOOL gHiDPISupport;
 #endif
 
@@ -568,7 +568,7 @@ static void settings_to_globals()
 	gShowObjectUpdates = gSavedSettings.getBOOL("ShowObjectUpdates");
     LLWorldMapView::setScaleSetting(gSavedSettings.getF32("MapScale"));
 	
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL
     LLWindowMacOSX::sUseMultGL = gSavedSettings.getBOOL("RenderAppleUseMultGL");
 	gHiDPISupport = gSavedSettings.getBOOL("RenderHiDPI");
 #endif
@@ -3310,7 +3310,7 @@ LLSD LLAppViewer::getViewerInfo() const
     info["GPU_SHADERS"] = gSavedSettings.getBOOL("RenderDeferred") ? "Enabled" : "Disabled";
     info["TEXTURE_MEMORY"] = gSavedSettings.getS32("TextureMemory");
 
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL
     info["HIDPI"] = gHiDPISupport;
 #endif
 
