@@ -1425,7 +1425,9 @@ if (USESYSTEMLIBS)
       COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}"
       )
     #LIST(APPEND viewer_SOURCE_FILES llappviewerlinux_api_dbus.cpp)
+    if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "AppleClang"))
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+    endif ()
 
 endif (USESYSTEMLIBS)
 
