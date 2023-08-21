@@ -330,7 +330,7 @@ void LLAppViewerLinux::initCrashReporting(bool reportFreeze)
 {
 	std::string cmd =gDirUtilp->getExecutableDir();
 	cmd += gDirUtilp->getDirDelimiter();
-#if LL_LINUX || LL_FREEBSD
+#if LL_LINUX
 	cmd += "linux-crash-logger.bin";
 #else
 # error Unknown platform
