@@ -330,11 +330,13 @@ void LLAppViewerLinux::initCrashReporting(bool reportFreeze)
 {
 	std::string cmd =gDirUtilp->getExecutableDir();
 	cmd += gDirUtilp->getDirDelimiter();
-#if LL_LINUX
+//#if LL_LINUX
 	cmd += "linux-crash-logger.bin";
+/*
 #else
 # error Unknown platform
 #endif
+*/
 
     std::stringstream pid_str;
     pid_str <<  LLApp::getPid();
