@@ -128,7 +128,7 @@ public:
 #endif
 
 
-#if (LL_LINUX) && !(defined(__i386__) || defined(__amd64__))
+#if (LL_LINUX || LL_DARWIN) && !(defined(__i386__) || defined(__amd64__))
 	//
 	// Linux implementation of CPU clock - non-x86.
 	// This is accurate but SLOW!  Only use out of desperation.
