@@ -64,7 +64,7 @@ include_directories(${CMAKE_SOURCE_DIR}/llrender)
 
 # Libraries on which this library depends, needed for Linux builds
 # Sort by high-level to low-level
-if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+if (USESYSTEMLIBS)
   list(APPEND viewer_SOURCE_FILES 
        llkeyboardsdl.cpp 
        llwindowsdl.cpp
@@ -87,7 +87,7 @@ if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
         )
   endif (BUILD_HEADLESS)
 
-endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+endif (USESYSTEMLIBS)
 
 if (DARWIN)
   list(APPEND llwindow_SOURCE_FILES

@@ -1374,12 +1374,15 @@ set_source_files_properties(
    )
 
 if (DARWIN)
+  if (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx.cpp)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.mm)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.h)
+  endif (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llfilepicker_mac.mm)
   LIST(APPEND viewer_HEADER_FILES llfilepicker_mac.h)
 
+  if (NOT USESYSTEMLIBS)
   # This should be compiled with the viewer.
   LIST(APPEND viewer_SOURCE_FILES llappdelegate-objc.mm)
   set_source_files_properties(
@@ -1394,6 +1397,7 @@ if (DARWIN)
     # warnings.
     COMPILE_FLAGS "-fmodules -fcxx-modules -Wno-nullability-completeness"
     )
+  endif (NOT USESYSTEMLIBS)
 
   # Add resource files to the project.
   set(viewer_RESOURCE_FILES
@@ -1920,6 +1924,7 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ll::bugsplat
         ll::tracy
         ll::libvlc
+        ll::fontconfig
         )
 
 if( TARGET ll::intel_memops )

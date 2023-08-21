@@ -66,6 +66,33 @@ const S32 MAX_NUM_RESOLUTIONS = 200;
 // static variable for ATI mouse cursor crash work-around:
 static bool ATIbug = false; 
 
+#if LL_DARWIN
+
+namespace
+{
+	struct NativeKeyEventData {
+		enum EventType {
+			KEYUNKNOWN,
+			KEYUP,
+			KEYDOWN,
+			KEYCHAR
+		};
+
+		EventType   mKeyEvent = KEYUNKNOWN;
+		uint32_t    mEventType = 0;
+		uint32_t    mEventModifiers = 0;
+		uint32_t    mEventKeyCode = 0;
+		uint32_t    mEventChars = 0;
+		uint32_t    mEventUnmodChars = 0;
+		bool        mEventRepeat = false;
+	} *mRawKeyEvent = NULL;
+}
+//
+// LLWindowMacOSX
+//
+
+#endif
+
 //
 // LLWindowSDL
 //
@@ -2535,6 +2562,30 @@ BOOL LLWindowSDL::dialogColorPicker( F32 *r, F32 *g, F32 *b)
 {
 	return (FALSE);
 }
+
+#if LL_DARWIN
+
+LLSD LLWindowSDL::getNativeKeyData()
+{
+	LLSD result = LLSD::emptyMap();
+
+	if(mRawKeyEvent)
+	{
+        result["event_type"] = LLSD::Integer(mRawKeyEvent->mEventType);
+        result["event_modifiers"] = LLSD::Integer(mRawKeyEvent->mEventModifiers);
+        result["event_keycode"] = LLSD::Integer(mRawKeyEvent->mEventKeyCode);
+        result["event_chars"] = (mRawKeyEvent->mEventChars) ? LLSD(LLSD::Integer(mRawKeyEvent->mEventChars)) : LLSD();
+        result["event_umodchars"] = (mRawKeyEvent->mEventUnmodChars) ? LLSD(LLSD::Integer(mRawKeyEvent->mEventUnmodChars)) : LLSD();
+        result["event_isrepeat"] = LLSD::Boolean(mRawKeyEvent->mEventRepeat);
+	}
+
+	LL_DEBUGS() << "native key data is: " << result << LL_ENDL;
+
+	return result;
+}
+
+#endif // LL_DARWIN
+
 #endif // LL_GTK
 
 #if LL_LINUX || LL_FREEBSD
