@@ -741,7 +741,7 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 				if (is_compressed)
 				{
  					S32 tex_size = dataFormatBytes(mFormatPrimary, w, h);
-					glCompressedTexImage2DARB(mTarget, gl_level, mFormatPrimary, w, h, 0, tex_size, (GLvoid *)data_in);
+					glCompressedTexImage2D(mTarget, gl_level, mFormatPrimary, w, h, 0, tex_size, (GLvoid *)data_in);
 					stop_glerror();
 				}
 				else
@@ -943,7 +943,7 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 		if (is_compressed)
 		{
 			S32 tex_size = dataFormatBytes(mFormatPrimary, w, h);
-			glCompressedTexImage2DARB(mTarget, 0, mFormatPrimary, w, h, 0, tex_size, (GLvoid *)data_in);
+			glCompressedTexImage2D(mTarget, 0, mFormatPrimary, w, h, 0, tex_size, (GLvoid *)data_in);
 			stop_glerror();
 		}
 		else
@@ -1837,7 +1837,7 @@ BOOL LLImageGL::readBackRaw(S32 discard_level, LLImageRaw* imageraw, bool compre
 			return FALSE ;
 		}
 
-		glGetCompressedTexImageARB(mTarget, gl_discard, (GLvoid*)(imageraw->getData()));		
+		glGetCompressedTexImage(mTarget, gl_discard, (GLvoid*)(imageraw->getData()));
 		//stop_glerror();
 	}
 	else

@@ -1604,7 +1604,7 @@ void LLGLState::resetTextureStates()
 	for (S32 j = maxTextureUnits-1; j >=0; j--)
 	{
 		gGL.getTexUnit(j)->activate();
-		glClientActiveTextureARB(GL_TEXTURE0_ARB+j);
+		glClientActiveTexture(GL_TEXTURE0_ARB+j);
 		j == 0 ? gGL.getTexUnit(j)->enable(LLTexUnit::TT_TEXTURE) : gGL.getTexUnit(j)->disable();
 	}
 }
