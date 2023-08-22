@@ -18,6 +18,6 @@ elseif (LINUX)
 	target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE
 		${CMAKE_SYSROOT}/usr/include/xmlrpc-epi)
 elseif (DARWIN)
-target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE /usr/local/include)
-target_link_directories( ll::xmlrpc-epi INTERFACE /usr/local/lib)
+	target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE /usr/local/include)
+	target_link_directories( ll::xmlrpc-epi INTERFACE /usr/local/lib)
 endif ()
