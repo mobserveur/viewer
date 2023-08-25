@@ -163,7 +163,7 @@ void LLViewerStatsRecorder::writeToLog( F32 interval )
     if (delta_time < interval)
         return;
 
-	if (mSkipSaveIfZeros)
+    if (mSkipSaveIfZeros)
 	{
         S32 total_events = mObjectCacheHitCount + mObjectCacheMissCrcCount + mObjectCacheMissFullCount + mObjectFullUpdates +
                             mObjectTerseUpdates + mObjectCacheMissRequests + mObjectCacheUpdateDupes +
