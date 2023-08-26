@@ -110,7 +110,7 @@ if (WINDOWS)
 endif (WINDOWS)
 
 
-if (LINUX)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   set(CMAKE_SKIP_RPATH TRUE)
 
    # EXTERNAL_TOS
@@ -151,7 +151,7 @@ if (LINUX)
   set(CMAKE_CXX_LINK_FLAGS "-Wl,--no-keep-memory")
 
   set(CMAKE_CXX_FLAGS_DEBUG "-fno-inline ${CMAKE_CXX_FLAGS_DEBUG}")
-endif (LINUX)
+endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 
 
 if (DARWIN)
