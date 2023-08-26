@@ -79,7 +79,9 @@ list(REMOVE_ITEM ${PROJECT_NAME}_HEADER_FILES
 	LLConvexDecompositionStubImpl.h
 	LLPhysicsExtensionsStubImpl.h)
 #install(FILES ${${PROJECT_NAME}_HEADER_FILES} DESTINATION include/${PROJECT_NAME})
-install(TARGETS ${PROJECT_NAME}stub DESTINATION lib)
+if (BUILD_SHARED_LIBS)
+	install(TARGETS ${PROJECT_NAME}stub DESTINATION lib)
+endif ()
 
 if (LINUX)
     IF(CMAKE_BUILD_TYPE MATCHES Release)
