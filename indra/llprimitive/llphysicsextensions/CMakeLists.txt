@@ -78,7 +78,7 @@ list(REMOVE_ITEM ${PROJECT_NAME}_HEADER_FILES
 	LLPathingLibStubImpl.h
 	LLConvexDecompositionStubImpl.h
 	LLPhysicsExtensionsStubImpl.h)
-install(FILES ${${PROJECT_NAME}_HEADER_FILES} DESTINATION include/${PROJECT_NAME})
+#install(FILES ${${PROJECT_NAME}_HEADER_FILES} DESTINATION include/${PROJECT_NAME})
 install(TARGETS ${PROJECT_NAME}stub DESTINATION lib)
 
 if (LINUX)
