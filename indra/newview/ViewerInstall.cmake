@@ -2,7 +2,7 @@ install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}
         DESTINATION bin
         )
 
-install(DIRECTORY skins app_settings linux_tools
+install(DIRECTORY skins app_settings linux_tools fonts
         DESTINATION share/${VIEWER_BINARY_NAME}
         PATTERN ".svn" EXCLUDE
         )
