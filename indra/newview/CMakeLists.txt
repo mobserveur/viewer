@@ -1955,6 +1955,8 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 		-Wno-stringop-truncation)
 endif ()
 
+if (NOT USESYSTEMLIBS)
+
 if (LINUX)
   set(product SecondLife-${ARCH}-${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION})
 
@@ -2140,6 +2142,8 @@ if (DARWIN)
       )
   endif (PACKAGE)
 endif (DARWIN)
+
+endif (NOT USESYSTEMLIBS)
 
 if (INSTALL)
   include(${CMAKE_CURRENT_SOURCE_DIR}/ViewerInstall.cmake)

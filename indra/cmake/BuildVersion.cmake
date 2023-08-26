@@ -55,4 +55,10 @@ if (NOT DEFINED VIEWER_SHORT_VERSION) # will be true in indra/, false in indra/n
         "LL_VIEWER_VERSION_BUILD=${VIEWER_VERSION_REVISION}"
         "LLBUILD_CONFIG=\"${CMAKE_BUILD_TYPE}\""
         )
+if (PACKAGE)
+	include(CPack)
+	set(CPACK_PACKAGE_VERSION
+		${VIEWER_VERSION_MAJOR}.${VIEWER_VERSION_MINOR}.${VIEWER_VERSION_PATCH}.${VIEWER_VERSION_REVISION}
+		CACHE STRING "Viewer major.minor.patch.revision versions.")
+endif (PACKAGE)
 endif (NOT DEFINED VIEWER_SHORT_VERSION)
