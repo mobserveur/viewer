@@ -138,8 +138,11 @@ if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
           -pthread
           -Wno-parentheses
           -Wno-deprecated
-          -fvisibility=hidden
   )
+
+  if (NOT BUILD_SHARED_LIBS)
+    add_compile_options(-fvisibility=hidden)
+  endif (NOT BUILD_SHARED_LIBS)
 
   if (ADDRESS_SIZE EQUAL 32)
     add_compile_options(-march=pentium4)
