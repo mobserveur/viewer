@@ -11,6 +11,10 @@ install(DIRECTORY skins app_settings fonts
         PATTERN ".svn" EXCLUDE
         )
 
+install(DIRECTORY icons/hicolor
+        DESTINATION share/icons
+        )
+
 find_file(IS_ARTWORK_PRESENT NAMES have_artwork_bundle.marker
           PATHS ${VIEWER_DIR}/newview/res)
 
