@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Megapahit
+Comment=A fork of the Second Life viewer
+Exec=megapahit
+Icon=megapahit
+Terminal=false
+Type=Application
+Categories=Application;Network;
+StartupNotify=true
+X-Desktop-File-Install-Version=3.0"
