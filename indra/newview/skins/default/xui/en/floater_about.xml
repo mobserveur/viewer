@@ -93,35 +93,50 @@ Dummy Name replaced at run time
        top="5"
        width="465"
        word_wrap="true">
-        3Dconnexion SDK Copyright (C) 1992-2009 3Dconnexion
-        APR Copyright (C) 2011 The Apache Software Foundation
-        Collada DOM Copyright 2006 Sony Computer Entertainment Inc.
-        cURL Copyright (C) 1996-2010, Daniel Stenberg, (daniel@haxx.se)
-        DBus/dbus-glib Copyright (C) 2002, 2003  CodeFactory AB / Copyright (C) 2003, 2004 Red Hat, Inc.
-        expat Copyright (C) 1998, 1999, 2000 Thai Open Source Software Center Ltd.
-        FreeType Copyright (C) 1996-2002, 2006 David Turner, Robert Wilhelm, and Werner Lemberg.
-        GL Copyright (C) 1999-2004 Brian Paul.
-        google-perftools Copyright (c) 2005, Google Inc.
-        Havok.com(TM) Copyright (C) 1999-2001, Telekinesys Research Limited.
-        jpeg2000 Copyright (C) 2001, David Taubman, The University of New South Wales (UNSW)
-        jpeglib Copyright (C) 1991-1998, Thomas G. Lane.
-        meshoptimizer Copyright (c) 2016-2021 Arseny Kapoulkine
-        ogg/vorbis Copyright (C) 2002, Xiphophorus
-        OpenSSL Copyright (C) 1998-2008 The OpenSSL Project.
-        PCRE Copyright (c) 1997-2012 University of Cambridge
-        SDL Copyright (C) 1997, 1998, 1999, 2000, 2001, 2002 Sam Lantinga
-        SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
-        xmlrpc-epi Copyright (C) 2000 Epinions, Inc.
-        xxHash Copyright (C) 2012-2020 Yann Collet.
-        zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
-
-        Second Life Viewer uses Havok (TM) Physics. (c)Copyright 1999-2010 Havok.com Inc. (and its Licensors). All Rights Reserved. See www.havok.com for details.
+        The library that is linked statically to this software is OpenJPEG v2.5.0. See the license below.
+/*
+ * The copyright in this software is being made available under the 2-clauses 
+ * BSD License, included below. This software may be subject to other third 
+ * party and contributor rights, including patent rights, and no such rights
+ * are granted under this license.
+ *
+ * Copyright (c) 2002-2014, Universite catholique de Louvain (UCL), Belgium
+ * Copyright (c) 2002-2014, Professor Benoit Macq
+ * Copyright (c) 2003-2014, Antonin Descampe
+ * Copyright (c) 2003-2009, Francois-Olivier Devaux
+ * Copyright (c) 2005, Herve Drolon, FreeImage Team
+ * Copyright (c) 2002-2003, Yannick Verschueren
+ * Copyright (c) 2001-2003, David Janssens
+ * Copyright (c) 2011-2012, Centre National d'Etudes Spatiales (CNES), France 
+ * Copyright (c) 2012, CS Systemes d'Information, France
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS `AS IS'
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
         This software contains source code provided by NVIDIA Corporation.
 
         All rights reserved.  See licenses.txt for details.
-
-        Voice chat Audio coding: Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
       </text_editor>
       </panel>
     </tab_container>
