@@ -162,6 +162,8 @@ std::list<LLGLUpdate*> LLGLUpdate::sGLQ;
 PFNGLGETSTRINGIPROC glGetStringi = NULL;
 #endif
 
+/*
+
 // vertex blending prototypes
 PFNGLWEIGHTPOINTERARBPROC			glWeightPointerARB = NULL;
 PFNGLVERTEXBLENDARBPROC				glVertexBlendARB = NULL;
@@ -399,6 +401,7 @@ PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
 PFNGLDRAWRANGEELEMENTSPROC glDrawRangeElements = NULL;
 #endif // LL_LINUX_NV_GL_HEADERS
+*/
 #endif
 
 LLGLManager gGLManager;

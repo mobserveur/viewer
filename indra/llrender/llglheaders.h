@@ -48,6 +48,7 @@
 //----------------------------------------------------------------------------
 // Linux, MESA headers, but not necessarily assuming MESA runtime.
 // quotes so we get libraries/.../GL/ version
+#define GL_GLEXT_PROTOTYPES 1
 #include "GL/gl.h"
 #include "GL/glext.h"
 #include "GL/glu.h"
@@ -82,6 +83,8 @@ extern PFNGLACTIVETEXTUREARBPROC	glActiveTextureARB;
 extern PFNGLCLIENTACTIVETEXTUREARBPROC	glClientActiveTextureARB;
 extern PFNGLDRAWRANGEELEMENTSPROC 	glDrawRangeElements;
 #endif // LL_LINUX_NV_GL_HEADERS
+
+/*
 
 // GL_ARB_vertex_array_object
 extern PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
@@ -307,6 +310,7 @@ extern PFNGLTRANSFORMFEEDBACKVARYINGSPROC glTransformFeedbackVaryings;
 extern PFNGLBINDBUFFERRANGEPROC glBindBufferRange;
 extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 
+*/
 
 #elif LL_WINDOWS
 //----------------------------------------------------------------------------
