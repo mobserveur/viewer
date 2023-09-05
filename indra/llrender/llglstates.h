@@ -56,42 +56,71 @@ private:
 class LLGLSDefault
 {
 protected:
+#if GL_VERSION_1_1
 	LLGLEnable mColorMaterial;
-	LLGLDisable mAlphaTest, mBlend, mCullFace, mDither, mFog, 
-		mLineSmooth, mLineStipple, mNormalize, mPolygonSmooth,
-		mGLMultisample;
+#endif
+	LLGLDisable
+#if GL_VERSION_1_1
+		mAlphaTest,
+#endif
+		mBlend, mCullFace, mDither
+#if GL_VERSION_1_1
+		, mFog,
+		mLineSmooth, mLineStipple, mNormalize, mPolygonSmooth
+#if GL_VERSION_1_3
+		,
+		mGLMultisample
+#endif // GL_VERSION_1_3
+#endif // GL_VERSION_1_1
+			;
 public:
 	LLGLSDefault()
 		:
 		// Enable
+#if GL_VERSION_1_1
 		mColorMaterial(GL_COLOR_MATERIAL),
 		// Disable
 		mAlphaTest(GL_ALPHA_TEST),
+#endif
 		mBlend(GL_BLEND), 
 		mCullFace(GL_CULL_FACE),
-		mDither(GL_DITHER),
+		mDither(GL_DITHER)
+#if GL_VERSION_1_1
+		,
 		mFog(GL_FOG), 
 		mLineSmooth(GL_LINE_SMOOTH),
 		mLineStipple(GL_LINE_STIPPLE),
 		mNormalize(GL_NORMALIZE),
-		mPolygonSmooth(GL_POLYGON_SMOOTH),
-		mGLMultisample(GL_MULTISAMPLE_ARB)
+		mPolygonSmooth(GL_POLYGON_SMOOTH)
+#if GL_VERSION_1_3
+		,
+		mGLMultisample(GL_MULTISAMPLE)
+#endif // GL_VERSION_1_3
+#endif // GL_VERSION_1_1
 	{ }
 };
 
 class LLGLSObjectSelect
 { 
 protected:
-	LLGLDisable mBlend, mFog, mAlphaTest;
+	LLGLDisable mBlend
+#if GL_VERSION_1_1
+		, mFog, mAlphaTest
+#endif
+		;
 	LLGLEnable mCullFace;
 public:
 	LLGLSObjectSelect()
-		: mBlend(GL_BLEND), mFog(GL_FOG), 
+		: mBlend(GL_BLEND),
+#if GL_VERSION_1_1
+		  mFog(GL_FOG),
 		  mAlphaTest(GL_ALPHA_TEST),
+#endif
 		  mCullFace(GL_CULL_FACE)
 	{ }
 };
 
+#if GL_VERSION_1_1
 class LLGLSObjectSelectAlpha
 {
 protected:
@@ -101,23 +130,32 @@ public:
 		: mAlphaTest(GL_ALPHA_TEST)
 	{}
 };
+#endif
 
 //----------------------------------------------------------------------------
 
 class LLGLSUIDefault
 { 
 protected:
-	LLGLEnable mBlend, mAlphaTest;
+	LLGLEnable mBlend
+#if GL_VERSION_1_1
+		, mAlphaTest
+#endif
+		;
 	LLGLDisable mCullFace;
 	LLGLDepthTest mDepthTest;
 public:
 	LLGLSUIDefault() 
-		: mBlend(GL_BLEND), mAlphaTest(GL_ALPHA_TEST),
+		: mBlend(GL_BLEND),
+#if GL_VERSION_1_1
+		  mAlphaTest(GL_ALPHA_TEST),
+#endif
 		  mCullFace(GL_CULL_FACE),
 		  mDepthTest(GL_FALSE, GL_TRUE, GL_LEQUAL)
 	{}
 };
 
+#if GL_VERSION_1_1
 class LLGLSNoAlphaTest // : public LLGLSUIDefault
 {
 protected:
@@ -149,6 +187,7 @@ public:
 		: mFog(GL_FOG)
 	{}
 };
+#endif
 
 //----------------------------------------------------------------------------
 
@@ -167,14 +206,22 @@ public:
 class LLGLSPipelineAlpha // : public LLGLSPipeline
 { 
 protected:
-	LLGLEnable mBlend, mAlphaTest;
+	LLGLEnable mBlend
+#if GL_VERSION_1_1
+		, mAlphaTest
+#endif
+		;
 public:
 	LLGLSPipelineAlpha()
-		: mBlend(GL_BLEND),
+		: mBlend(GL_BLEND)
+#if GL_VERSION_1_1
+		  ,
 		  mAlphaTest(GL_ALPHA_TEST)
+#endif
 	{ }
 };
 
+#if GL_VERSION_1_1
 class LLGLSPipelineEmbossBump
 {
 protected:
@@ -184,6 +231,7 @@ public:
 		: mFog(GL_FOG)
 	{ }
 };
+#endif
 
 class LLGLSPipelineSelection
 { 
@@ -195,6 +243,7 @@ public:
 	{}
 };
 
+#if GL_VERSION_1_1
 class LLGLSPipelineAvatar
 {
 protected:
@@ -204,11 +253,14 @@ public:
 		: mNormalize(GL_NORMALIZE)
 	{}
 };
+#endif
 
 class LLGLSPipelineSkyBox
 { 
 protected:
+#if GL_VERSION_1_1
 	LLGLDisable mAlphaTest;
+#endif
     LLGLDisable mCullFace;
     LLGLSquashToFarClip mSquashClip;
 public:
@@ -234,18 +286,26 @@ public:
 class LLGLSTracker
 {
 protected:
-	LLGLEnable mCullFace, mBlend, mAlphaTest;
+	LLGLEnable mCullFace, mBlend
+#if GL_VERSION_1_1
+		, mAlphaTest
+#endif
+		;
 public:
 	LLGLSTracker() :
 		mCullFace(GL_CULL_FACE),
-		mBlend(GL_BLEND),
+		mBlend(GL_BLEND)
+#if GL_VERSION_1_1
+		,
 		mAlphaTest(GL_ALPHA_TEST)
+#endif
 		
 	{ }
 };
 
 //----------------------------------------------------------------------------
 
+#if GL_VERSION_1_1
 class LLGLSSpecular
 {
 public:
@@ -270,6 +330,7 @@ public:
 		}
 	}
 };
+#endif
 
 //----------------------------------------------------------------------------
 

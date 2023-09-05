@@ -761,7 +761,9 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 
 
 	//make sure multisampling is disabled by default
+#if GL_VERSION_1_3
 	glDisable(GL_MULTISAMPLE_ARB);
+#endif
 	
 	// We need to do this here, once video is init'd
 	/*

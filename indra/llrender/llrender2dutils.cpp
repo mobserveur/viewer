@@ -716,8 +716,10 @@ void gl_draw_scaled_rotated_image(S32 x, S32 y, S32 width, S32 height, F32 degre
 
 void gl_stippled_line_3d( const LLVector3& start, const LLVector3& end, const LLColor4& color, F32 phase )
 {
+#if GL_VERSION_1_1
 	// Stippled line
 	LLGLEnable stipple(GL_LINE_STIPPLE);
+#endif
 	
 	gGL.color4f(color.mV[VRED], color.mV[VGREEN], color.mV[VBLUE], color.mV[VALPHA]);
 

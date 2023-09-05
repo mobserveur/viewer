@@ -35,6 +35,7 @@
 #include "llglheaders.h"
 
 
+#if GL_VERSION_1_1
 //------------------------------------------------------------------------
 // cmstr()
 //------------------------------------------------------------------------
@@ -50,6 +51,7 @@ const char *cmstr(int i)
 	}
 	return "UNKNOWN";
 }
+#endif
 
 //------------------------------------------------------------------------
 // facestr()
@@ -116,6 +118,7 @@ void llgl_dump()
 	LL_INFOS() << "OpenGL State" << LL_ENDL;
 	LL_INFOS() << "==========================" << LL_ENDL;
 
+#if GL_VERSION_1_1
 	LL_INFOS() << "-----------------------------------" << LL_ENDL;
 	LL_INFOS() << "Current Values" << LL_ENDL;
 	LL_INFOS() << "-----------------------------------" << LL_ENDL;
@@ -211,6 +214,7 @@ void llgl_dump()
 	LL_INFOS() << "-----------------------------------" << LL_ENDL;
 
 	LL_INFOS() << "GL_ALPHA_TEST              : " << boolstr(glIsEnabled(GL_ALPHA_TEST)) << LL_ENDL;
+#endif
 	LL_INFOS() << "GL_DEPTH_TEST              : " << boolstr(glIsEnabled(GL_DEPTH_TEST)) << LL_ENDL;
 
 	glGetBooleanv(GL_DEPTH_WRITEMASK, &b);

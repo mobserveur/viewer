@@ -560,7 +560,9 @@ void LLRenderTarget::bindTexture(U32 index, S32 channel, LLTexUnit::eTextureFilt
     {
         case GL_SRGB:
         case GL_SRGB8:
+#if GL_VERSION_2_1
         case GL_SRGB_ALPHA:
+#endif
         case GL_SRGB8_ALPHA8:
             isSRGB = true;
             break;

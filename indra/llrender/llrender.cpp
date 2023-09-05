@@ -69,9 +69,13 @@ static const U32 LL_NUM_LIGHT_UNITS = 8;
 static const GLenum sGLTextureType[] =
 {
 	GL_TEXTURE_2D,
+#if GL_VERSION_3_1
 	GL_TEXTURE_RECTANGLE_ARB,
+#endif
 	GL_TEXTURE_CUBE_MAP_ARB,
+#if GL_VERSION_3_2
 	GL_TEXTURE_2D_MULTISAMPLE,
+#endif
     GL_TEXTURE_3D
 };
 
@@ -537,6 +541,7 @@ void LLTexUnit::setTextureFilteringOption(LLTexUnit::eTextureFilterOptions optio
 
 GLint LLTexUnit::getTextureSource(eTextureBlendSrc src)
 {
+#if GL_VERSION_1_3
 	switch(src)
 	{
 		// All four cases should return the same value.
@@ -551,8 +556,10 @@ GLint LLTexUnit::getTextureSource(eTextureBlendSrc src)
 		case TBS_TEX_ALPHA:
 		case TBS_ONE_MINUS_TEX_COLOR:
 		case TBS_ONE_MINUS_TEX_ALPHA:
+#endif
 			return GL_TEXTURE;
 
+#if GL_VERSION_1_3
 		// All four cases should return the same value.
 		case TBS_VERT_COLOR:
 		case TBS_VERT_ALPHA:
@@ -571,6 +578,7 @@ GLint LLTexUnit::getTextureSource(eTextureBlendSrc src)
 			LL_WARNS() << "Unknown eTextureBlendSrc: " << src << ".  Using Vertex Color instead." << LL_ENDL;
 			return GL_PRIMARY_COLOR_ARB;
 	}
+#endif
 }
 
 GLint LLTexUnit::getTextureSourceType(eTextureBlendSrc src, bool isAlpha)
@@ -617,7 +625,9 @@ void LLTexUnit::setColorScale(S32 scale)
 	{
 		mCurrColorScale = scale;
 		gGL.flush();
+#if GL_VERSION_1_1
 		glTexEnvi( GL_TEXTURE_ENV, GL_RGB_SCALE, scale );
+#endif
 	}
 }
 
@@ -627,7 +637,9 @@ void LLTexUnit::setAlphaScale(S32 scale)
 	{
 		mCurrAlphaScale = scale;
 		gGL.flush();
+#if GL_VERSION_1_1
 		glTexEnvi( GL_TEXTURE_ENV, GL_ALPHA_SCALE, scale );
+#endif
 	}
 }
 
@@ -1995,10 +2007,12 @@ void LLRender::diffuseColor3f(F32 r, F32 g, F32 b)
 	{
 		shader->uniform4f(LLShaderMgr::DIFFUSE_COLOR, r,g,b,1.f);
 	}
+#if GL_VERSION_1_1
 	else
 	{
 		glColor3f(r,g,b);
 	}
+#endif
 }
 
 void LLRender::diffuseColor3fv(const F32* c)
@@ -2010,10 +2024,12 @@ void LLRender::diffuseColor3fv(const F32* c)
 	{
 		shader->uniform4f(LLShaderMgr::DIFFUSE_COLOR, c[0], c[1], c[2], 1.f);
 	}
+#if GL_VERSION_1_1
 	else
 	{
 		glColor3fv(c);
 	}
+#endif
 }
 
 void LLRender::diffuseColor4f(F32 r, F32 g, F32 b, F32 a)
@@ -2025,10 +2041,12 @@ void LLRender::diffuseColor4f(F32 r, F32 g, F32 b, F32 a)
 	{
 		shader->uniform4f(LLShaderMgr::DIFFUSE_COLOR, r,g,b,a);
 	}
+#if GL_VERSION_1_1
 	else
 	{
 		glColor4f(r,g,b,a);
 	}
+#endif
 }
 
 void LLRender::diffuseColor4fv(const F32* c)
@@ -2040,10 +2058,12 @@ void LLRender::diffuseColor4fv(const F32* c)
 	{
 		shader->uniform4fv(LLShaderMgr::DIFFUSE_COLOR, 1, c);
 	}
+#if GL_VERSION_1_1
 	else
 	{
 		glColor4fv(c);
 	}
+#endif
 }
 
 void LLRender::diffuseColor4ubv(const U8* c)
@@ -2055,10 +2075,12 @@ void LLRender::diffuseColor4ubv(const U8* c)
 	{
 		shader->uniform4f(LLShaderMgr::DIFFUSE_COLOR, c[0]/255.f, c[1]/255.f, c[2]/255.f, c[3]/255.f);
 	}
+#if GL_VERSION_1_1
 	else
 	{
 		glColor4ubv(c);
 	}
+#endif
 }
 
 void LLRender::diffuseColor4ub(U8 r, U8 g, U8 b, U8 a)
@@ -2070,10 +2092,12 @@ void LLRender::diffuseColor4ub(U8 r, U8 g, U8 b, U8 a)
 	{
 		shader->uniform4f(LLShaderMgr::DIFFUSE_COLOR, r/255.f, g/255.f, b/255.f, a/255.f);
 	}
+#if GL_VERSION_1_1
 	else
 	{
 		glColor4ub(r,g,b,a);
 	}
+#endif
 }
 
 
