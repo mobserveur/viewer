@@ -57,7 +57,7 @@
 #include "llmatrix4a.h"
 #include "llperfstats.h" 
 
-#if !LL_DARWIN && !LL_LINUX
+#if !LL_DARWIN && !LL_LINUX && !LL_FREEBSD
 extern PFNGLWEIGHTPOINTERARBPROC glWeightPointerARB;
 extern PFNGLWEIGHTFVARBPROC glWeightfvARB;
 extern PFNGLVERTEXBLENDARBPROC glVertexBlendARB;
