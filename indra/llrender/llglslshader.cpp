@@ -272,6 +272,8 @@ void LLGLSLShader::placeProfileQuery()
 #if GL_VERSION_3_3
     glBeginQuery(GL_TIME_ELAPSED, mTimerQuery);
 #endif // GL_VERSION_3_3
+#else
+    glBeginQuery(GL_TIME_ELAPSED_EXT, mTimerQuery);
 #endif // GL_VERSION_1_5
 #endif
 }
@@ -284,6 +286,8 @@ void LLGLSLShader::readProfileQuery(U32 count, U32 mode)
     glEndQuery(GL_TIME_ELAPSED);
 #endif // GL_VERSION_3_3
     glEndQuery(GL_SAMPLES_PASSED);
+#else
+    glEndQuery(GL_TIME_ELAPSED_EXT);
 #endif // GL_VERSION_1_5
     
     GLuint64 time_elapsed = 0;
