@@ -1500,7 +1500,7 @@ U8* LLVertexBuffer::mapVertexBuffer(S32 type, S32 index, S32 count, bool map_ran
 				{
 					if (map_range)
 					{
-#ifdef GL_ARB_map_buffer_range
+#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 						S32 offset = mOffsets[type] + sTypeSize[type]*index;
 						S32 length = (sTypeSize[type]*count+0xF) & ~0xF;
 						src = (U8*) glMapBufferRange(GL_ARRAY_BUFFER, offset, length,
@@ -1511,7 +1511,7 @@ U8* LLVertexBuffer::mapVertexBuffer(S32 type, S32 index, S32 count, bool map_ran
 					}
 					else
 					{
-#ifdef GL_ARB_map_buffer_range
+#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 
 						if (gDebugGL)
 						{
@@ -1687,7 +1687,7 @@ U8* LLVertexBuffer::mapIndexBuffer(S32 index, S32 count, bool map_range)
 				{
 					if (map_range)
 					{
-#ifdef GL_ARB_map_buffer_range
+#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 						S32 offset = sizeof(U16)*index;
 						S32 length = sizeof(U16)*count;
 						src = (U8*) glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, offset, length,
@@ -1698,7 +1698,7 @@ U8* LLVertexBuffer::mapIndexBuffer(S32 index, S32 count, bool map_range)
 					}
 					else
 					{
-#ifdef GL_ARB_map_buffer_range
+#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 						src = (U8*) glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(U16)*mNumIndices,
 							GL_MAP_WRITE_BIT | 
 							GL_MAP_FLUSH_EXPLICIT_BIT);
@@ -1840,7 +1840,7 @@ void LLVertexBuffer::unmapBuffer()
 						S32 length = sTypeSize[region.mType]*region.mCount;
 						if (gGLManager.mHasMapBufferRange)
 						{
-#ifdef GL_ARB_map_buffer_range
+#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 							glFlushMappedBufferRange(GL_ARRAY_BUFFER, offset, length);
 #endif
 						}
@@ -1920,7 +1920,7 @@ void LLVertexBuffer::unmapBuffer()
 						S32 length = sizeof(U16)*region.mCount;
 						if (gGLManager.mHasMapBufferRange)
 						{
-#ifdef GL_ARB_map_buffer_range
+#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 							glFlushMappedBufferRange(GL_ELEMENT_ARRAY_BUFFER, offset, length);
 #endif
 						}
