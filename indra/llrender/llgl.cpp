@@ -72,7 +72,7 @@ static const std::string HEADLESS_VERSION_STRING("1.0");
 
 llofstream gFailLog;
 
-#if GL_ARB_debug_output
+#if GL_ARB_debug_output || GL_KHR_debug
 
 #ifndef APIENTRY
 #define APIENTRY
@@ -86,14 +86,24 @@ void APIENTRY gl_debug_callback(GLenum source,
                                 const GLchar* message,
                                 GLvoid* userParam)
 {
+#if GL_ARB_debug_output
     if (severity != GL_DEBUG_SEVERITY_HIGH_ARB &&
         severity != GL_DEBUG_SEVERITY_MEDIUM_ARB &&
         severity != GL_DEBUG_SEVERITY_LOW_ARB)
+#elif GL_KHR_debug
+    if (severity != GL_DEBUG_SEVERITY_HIGH_KHR &&
+        severity != GL_DEBUG_SEVERITY_MEDIUM_KHR &&
+        severity != GL_DEBUG_SEVERITY_LOW_KHR)
+#endif
     { //suppress out-of-spec messages sent by nvidia driver (mostly vertexbuffer hints)
         return;
     }
 
+#if GL_ARB_debug_output
 	if (severity == GL_DEBUG_SEVERITY_HIGH_ARB)
+#elif GL_KHR_debug
+	if (severity == GL_DEBUG_SEVERITY_HIGH_KHR)
+#endif
 	{
 		LL_WARNS() << "----- GL ERROR --------" << LL_ENDL;
 	}
@@ -106,7 +116,11 @@ void APIENTRY gl_debug_callback(GLenum source,
 	LL_WARNS() << "Severity: " << std::hex << severity << LL_ENDL;
 	LL_WARNS() << "Message: " << message << LL_ENDL;
 	LL_WARNS() << "-----------------------" << LL_ENDL;
+#if GL_ARB_debug_output
 	if (severity == GL_DEBUG_SEVERITY_HIGH_ARB)
+#elif GL_KHR_debug
+	if (severity == GL_DEBUG_SEVERITY_HIGH_KHR)
+#endif
 	{
 		LL_ERRS() << "Halting on GL Error" << LL_ENDL;
 	}
@@ -1060,7 +1074,11 @@ void LLGLManager::initExtensions()
 	mHasBlendFuncSeparate = ExtensionExists("GL_EXT_blend_func_separate", gGLHExts.mSysExts);
 	mHasTextureRectangle = ExtensionExists("GL_ARB_texture_rectangle", gGLHExts.mSysExts);
 	mHasTextureMultisample = ExtensionExists("GL_ARB_texture_multisample", gGLHExts.mSysExts);
+#if GL_ARB_debug_output
 	mHasDebugOutput = ExtensionExists("GL_ARB_debug_output", gGLHExts.mSysExts);
+#else
+	mHasDebugOutput = ExtensionExists("GL_KHR_debug", gGLHExts.mSysExts);
+#endif
 	mHasTransformFeedback = mGLVersion >= 4.f ? TRUE : FALSE;
 #if !LL_DARWIN
 	mHasPointParameters = ExtensionExists("GL_ARB_point_parameters", gGLHExts.mSysExts);
