@@ -491,7 +491,8 @@ void LLRenderTarget::bindTarget()
 		if (mTex.empty())
 		{ //no color buffer to draw to
 			LL_PROFILER_GPU_ZONEC( "gl.DrawBuffer", 0x0000FF )
-			glDrawBuffer(GL_NONE);
+			GLenum drawbuffers[] = {GL_NONE};
+			glDrawBuffers(0, drawbuffers);
 			glReadBuffer(GL_NONE);
 		}
 
