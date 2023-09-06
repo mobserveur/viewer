@@ -1505,7 +1505,7 @@ void LLRender::blendFunc(eBlendFactor color_sfactor, eBlendFactor color_dfactor,
 		mCurrBlendColorDFactor = color_dfactor;
 		mCurrBlendAlphaDFactor = alpha_dfactor;
 		flush();
-		glBlendFuncSeparateEXT(sGLBlendFactor[color_sfactor], sGLBlendFactor[color_dfactor],
+		glBlendFuncSeparate(sGLBlendFactor[color_sfactor], sGLBlendFactor[color_dfactor],
 				       sGLBlendFactor[alpha_sfactor], sGLBlendFactor[alpha_dfactor]);
 	}
 }
