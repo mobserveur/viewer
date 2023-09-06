@@ -519,6 +519,7 @@ void LLTexUnit::setTextureFilteringOption(LLTexUnit::eTextureFilterOptions optio
 		}
 	}
 
+#if GL_EXT_texture_filter_anisotropic
 	if (gGLManager.mHasAnisotropic)
 	{
 		if (LLImageGL::sGlobalUseAnisotropic && option == TFO_ANISOTROPIC)
@@ -537,6 +538,7 @@ void LLTexUnit::setTextureFilteringOption(LLTexUnit::eTextureFilterOptions optio
 			glTexParameterf(sGLTextureType[mCurrTexType], GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.f);
 		}
 	}
+#endif
 }
 
 GLint LLTexUnit::getTextureSource(eTextureBlendSrc src)
