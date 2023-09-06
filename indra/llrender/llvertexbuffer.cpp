@@ -1924,6 +1924,7 @@ void LLVertexBuffer::unmapBuffer()
 							glFlushMappedBufferRange(GL_ELEMENT_ARRAY_BUFFER, offset, length);
 #endif
 						}
+						/*
 						else if (gGLManager.mHasFlushBufferRange)
 						{
 #ifdef GL_APPLE_flush_buffer_range
@@ -1932,6 +1933,7 @@ void LLVertexBuffer::unmapBuffer()
 #endif
 #endif
 						}
+						*/
 						stop_glerror();
 					}
 
