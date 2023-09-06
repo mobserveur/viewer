@@ -11131,7 +11131,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar, bool preview_avatar)
 		{
 			GLuint buff = GL_COLOR_ATTACHMENT0;
 			LL_PROFILER_GPU_ZONEC( "gl.DrawBuffersARB", 0x8000FF );
-			glDrawBuffersARB(1, &buff);
+			glDrawBuffers(1, &buff);
 		}
 
 		LLGLDisable blend(GL_BLEND);
