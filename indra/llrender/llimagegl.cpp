@@ -203,12 +203,16 @@ S32 LLImageGL::dataFormatBits(S32 dataformat)
 {
     switch (dataformat)
     {
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1
     case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:	        return 4;
-    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:    return 4;
     case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:	        return 8;
-    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT:    return 8;
     case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:	        return 8;
+#endif
+#if GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
+    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:    return 4;
+    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT:    return 8;
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT:    return 8;
+#endif
     case GL_LUMINANCE:						        return 8;
     case GL_ALPHA:							        return 8;
     case GL_RED:                                    return 8;
@@ -235,6 +239,8 @@ S32 LLImageGL::dataFormatBytes(S32 dataformat, S32 width, S32 height)
 {
     switch (dataformat)
     {
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1 \
+	    || GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
     case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
@@ -244,6 +250,7 @@ S32 LLImageGL::dataFormatBytes(S32 dataformat, S32 width, S32 height)
         if (width < 4) width = 4;
         if (height < 4) height = 4;
         break;
+#endif
     default:
         break;
     }
@@ -257,12 +264,16 @@ S32 LLImageGL::dataFormatComponents(S32 dataformat)
 {
 	switch (dataformat)
 	{
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1
 	  case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:	return 3;
-	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: return 3;
 	  case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:	return 4;
-	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: return 4;
 	  case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:	return 4;
+#endif
+#if GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
+	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: return 3;
+	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: return 4;
 	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: return 4;
+#endif
 	  case GL_LUMINANCE:						return 1;
 	  case GL_ALPHA:							return 1;
       case GL_RED:                              return 1;
@@ -692,6 +703,8 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 
     switch (mFormatPrimary)
     {
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1 \
+	    || GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
     case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
@@ -700,6 +713,7 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT:
         is_compressed = true;
         break;
+#endif
     default:
         break;
     }
