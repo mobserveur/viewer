@@ -1554,6 +1554,8 @@ BOOL LLImageGL::createGLTexture(S32 discard_level, const LLImageRaw* imageraw, S
             // Use luminance alpha (for fonts)
 #if GL_VERSION_1_1
             mFormatInternal = GL_LUMINANCE8;
+#else
+            mFormatInternal = GL_LUMINANCE;
 #endif
             mFormatPrimary = GL_LUMINANCE;
             mFormatType = GL_UNSIGNED_BYTE;
@@ -1562,6 +1564,8 @@ BOOL LLImageGL::createGLTexture(S32 discard_level, const LLImageRaw* imageraw, S
             // Use luminance alpha (for fonts)
 #if GL_VERSION_1_1
             mFormatInternal = GL_LUMINANCE8_ALPHA8;
+#else
+            mFormatInternal = GL_LUMINANCE_ALPHA;
 #endif
             mFormatPrimary = GL_LUMINANCE_ALPHA;
             mFormatType = GL_UNSIGNED_BYTE;
