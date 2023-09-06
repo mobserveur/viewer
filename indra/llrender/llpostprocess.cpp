@@ -345,7 +345,7 @@ void LLPostProcess::createBloomShader(void)
 	bloomBlurUniforms[sBlurWidth] = 0;
 }
 
-void LLPostProcess::getShaderUniforms(glslUniforms & uniforms, GLhandleARB & prog)
+void LLPostProcess::getShaderUniforms(glslUniforms & uniforms, GLuint & prog)
 {
 	/// Find uniform locations and insert into map	
 	glslUniforms::iterator i;
@@ -569,7 +569,7 @@ bool LLPostProcess::checkError(void)
     return retCode;
 }
 
-void LLPostProcess::checkShaderError(GLhandleARB shader)
+void LLPostProcess::checkShaderError(GLuint shader)
 {
     GLint infologLength = 0;
     GLint charsWritten  = 0;

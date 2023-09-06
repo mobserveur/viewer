@@ -47,7 +47,7 @@ using std::pair;
 using std::make_pair;
 using std::string;
 
-GLhandleARB LLGLSLShader::sCurBoundShader = 0;
+GLuint LLGLSLShader::sCurBoundShader = 0;
 LLGLSLShader* LLGLSLShader::sCurBoundShaderPtr = NULL;
 S32 LLGLSLShader::sIndexedTextureChannels = 0;
 bool LLGLSLShader::sProfileEnabled = false;
@@ -347,7 +347,7 @@ void LLGLSLShader::unloadInternal()
 
     if (mProgramObject)
     {
-        GLhandleARB obj[1024];
+        GLuint obj[1024];
         GLsizei count;
         glGetAttachedObjectsARB(mProgramObject, 1024, &count, obj);
 
@@ -425,7 +425,7 @@ BOOL LLGLSLShader::createShader(std::vector<LLStaticHashedString> * attributes,
     vector< pair<string,GLenum> >::iterator fileIter = mShaderFiles.begin();
     for ( ; fileIter != mShaderFiles.end(); fileIter++ )
     {
-        GLhandleARB shaderhandle = LLShaderMgr::instance()->loadShaderFile((*fileIter).first, mShaderLevel, (*fileIter).second, &mDefines, mFeatures.mIndexedTextureChannels);
+        auto shaderhandle = LLShaderMgr::instance()->loadShaderFile((*fileIter).first, mShaderLevel, (*fileIter).second, &mDefines, mFeatures.mIndexedTextureChannels);
         LL_DEBUGS("ShaderLoading") << "SHADER FILE: " << (*fileIter).first << " mShaderLevel=" << mShaderLevel << LL_ENDL;
         if (shaderhandle)
         {
@@ -505,7 +505,7 @@ BOOL LLGLSLShader::createShader(std::vector<LLStaticHashedString> * attributes,
 }
 
 #if DEBUG_SHADER_INCLUDES
-void dumpAttachObject( const char *func_name, GLhandleARB program_object, const std::string &object_path )
+void dumpAttachObject( const char *func_name, GLuint program_object, const std::string &object_path )
 {
     GLcharARB* info_log;
     GLint      info_len_expect = 0;
@@ -563,7 +563,7 @@ BOOL LLGLSLShader::attachFragmentObject(std::string object_path)
     }
 }
 
-void LLGLSLShader::attachObject(GLhandleARB object)
+void LLGLSLShader::attachObject(GLuint object)
 {
     if (object != 0)
     {
@@ -581,7 +581,7 @@ void LLGLSLShader::attachObject(GLhandleARB object)
     }
 }
 
-void LLGLSLShader::attachObjects(GLhandleARB* objects, S32 count)
+void LLGLSLShader::attachObjects(GLuint* objects, S32 count)
 {
     for (S32 i = 0; i < count; i++)
     {

@@ -550,7 +550,7 @@ BOOL LLShaderMgr::attachShaderFeatures(LLGLSLShader * shader)
 //============================================================================
 // Load Shader
 
-static std::string get_object_log(GLhandleARB ret)
+static std::string get_object_log(GLuint ret)
 {
 	std::string res;
 	
@@ -584,7 +584,7 @@ void LLShaderMgr::dumpShaderSource(U32 shader_code_count, GLcharARB** shader_cod
     LL_CONT << LL_ENDL;
 }
 
-void LLShaderMgr::dumpObjectLog(GLhandleARB ret, BOOL warns, const std::string& filename) 
+void LLShaderMgr::dumpObjectLog(GLuint ret, BOOL warns, const std::string& filename)
 {
 	std::string log = get_object_log(ret);
     std::string fname = filename;
@@ -600,7 +600,7 @@ void LLShaderMgr::dumpObjectLog(GLhandleARB ret, BOOL warns, const std::string& 
 	}
  }
 
-GLhandleARB LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_level, GLenum type, std::unordered_map<std::string, std::string>* defines, S32 texture_index_channels)
+GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_level, GLenum type, std::unordered_map<std::string, std::string>* defines, S32 texture_index_channels)
 {
 
 // endsure work-around for missing GLSL funcs gets propogated to feature shader files (e.g. srgbF.glsl)
@@ -964,7 +964,7 @@ GLhandleARB LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shade
 	fclose(file);
 
 	//create shader object
-	GLhandleARB ret = glCreateShaderObjectARB(type);
+	auto ret = glCreateShader(type);
 
 	error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -1042,7 +1042,7 @@ GLhandleARB LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shade
 	return ret;
 }
 
-BOOL LLShaderMgr::linkProgramObject(GLhandleARB obj, BOOL suppress_errors) 
+BOOL LLShaderMgr::linkProgramObject(GLuint obj, BOOL suppress_errors)
 {
 	//check for errors
 	glLinkProgramARB(obj);
@@ -1065,7 +1065,7 @@ BOOL LLShaderMgr::linkProgramObject(GLhandleARB obj, BOOL suppress_errors)
 	return success;
 }
 
-BOOL LLShaderMgr::validateProgramObject(GLhandleARB obj)
+BOOL LLShaderMgr::validateProgramObject(GLuint obj)
 {
 	//check program validity against current GL
 	glValidateProgramARB(obj);
