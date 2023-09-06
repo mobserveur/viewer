@@ -793,7 +793,10 @@ GLint LLGLSLShader::mapUniformTextureChannel(GLint location, GLenum type)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_SHADER;
 
-    if ((type >= GL_SAMPLER_1D_ARB && type <= GL_SAMPLER_2D_RECT_SHADOW_ARB) ||
+    if (
+#if GL_VERSION_2_0
+    (type >= GL_SAMPLER_1D_ARB && type <= GL_SAMPLER_2D_RECT_SHADOW_ARB) ||
+#endif
         type == GL_SAMPLER_2D_MULTISAMPLE)
     {   //this here is a texture
         glUniform1i(location, mActiveTextureChannels);
