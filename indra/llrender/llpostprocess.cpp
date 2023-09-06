@@ -577,7 +577,7 @@ void LLPostProcess::checkShaderError(GLuint shader)
 
     checkError();  // Check for OpenGL errors
 
-    glGetObjectParameterivARB(shader, GL_OBJECT_INFO_LOG_LENGTH_ARB, &infologLength);
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLength);
 
     checkError();  // Check for OpenGL errors
 
@@ -589,7 +589,7 @@ void LLPostProcess::checkShaderError(GLuint shader)
             /// Could not allocate infolog buffer
             return;
         }
-        glGetInfoLogARB(shader, infologLength, &charsWritten, infoLog);
+        glGetShaderInfoLog(shader, infologLength, &charsWritten, infoLog);
 		// shaderErrorLog << (char *) infoLog << std::endl;
 		mShaderErrorString = (char *) infoLog;
         free(infoLog);

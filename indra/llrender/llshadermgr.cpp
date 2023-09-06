@@ -556,12 +556,12 @@ static std::string get_object_log(GLuint ret)
 	
 	//get log length 
 	GLint length;
-	glGetObjectParameterivARB(ret, GL_OBJECT_INFO_LOG_LENGTH_ARB, &length);
+	glGetShaderiv(ret, GL_INFO_LOG_LENGTH, &length);
 	if (length > 0)
 	{
 		//the log could be any size, so allocate appropriately
-		GLcharARB* log = new GLcharARB[length];
-		glGetInfoLogARB(ret, length, &length, log);
+		auto log = new GLchar[length];
+		glGetShaderInfoLog(ret, length, &length, log);
 		res = std::string((char *)log);
 		delete[] log;
 	}
@@ -569,7 +569,7 @@ static std::string get_object_log(GLuint ret)
 }
 
 //dump shader source for debugging
-void LLShaderMgr::dumpShaderSource(U32 shader_code_count, GLcharARB** shader_code_text)
+void LLShaderMgr::dumpShaderSource(U32 shader_code_count, GLchar** shader_code_text)
 {
 	char num_str[16]; // U32 = max 10 digits
 
@@ -671,9 +671,9 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 
 	//we can't have any lines longer than 1024 characters 
 	//or any shaders longer than 4096 lines... deal - DaveP
-    GLcharARB buff[1024];
-    GLcharARB *extra_code_text[1024];
-    GLcharARB *shader_code_text[4096 + LL_ARRAY_SIZE(extra_code_text)] = { NULL };
+    GLchar buff[1024];
+    GLchar *extra_code_text[1024];
+    GLchar *shader_code_text[4096 + LL_ARRAY_SIZE(extra_code_text)] = { NULL };
     GLuint extra_code_count = 0, shader_code_count = 0;
     BOOST_STATIC_ASSERT(LL_ARRAY_SIZE(extra_code_text) < LL_ARRAY_SIZE(shader_code_text));
     
@@ -778,7 +778,7 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 		for (std::unordered_map<std::string,std::string>::iterator iter = defines->begin(); iter != defines->end(); ++iter)
 		{
 			std::string define = "#define " + iter->first + " " + iter->second + "\n";
-			extra_code_text[extra_code_count++] = (GLcharARB *) strdup(define.c_str());
+			extra_code_text[extra_code_count++] = (GLchar *) strdup(define.c_str());
 		}
 	}
 
@@ -927,7 +927,7 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 		}
         else
         {
-            shader_code_text[shader_code_count] = (GLcharARB *)strdup((char *)buff);
+            shader_code_text[shader_code_count] = (GLchar *)strdup((char *)buff);
 		
             if(flag_write_to_out_of_extra_block_area & flags)
             {
@@ -973,7 +973,7 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 	}
 
 	//load source
-	glShaderSourceARB(ret, shader_code_count, (const GLcharARB**) shader_code_text, NULL);
+	glShaderSource(ret, shader_code_count, (const GLchar**) shader_code_text, NULL);
 
 	error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -982,7 +982,7 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 	}
 
 	//compile source
-	glCompileShaderARB(ret);
+	glCompileShader(ret);
 
 	error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -994,7 +994,7 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 	{
 		//check for errors
 		GLint success = GL_TRUE;
-		glGetObjectParameterivARB(ret, GL_OBJECT_COMPILE_STATUS_ARB, &success);
+		glGetShaderiv(ret, GL_COMPILE_STATUS, &success);
 
 		error = glGetError();
 		if (error != GL_NO_ERROR || success == GL_FALSE) 
