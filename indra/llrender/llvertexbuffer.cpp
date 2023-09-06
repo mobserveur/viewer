@@ -451,14 +451,14 @@ void LLVertexBuffer::setupClientArrays(U32 data_mask)
 			{ //was enabled
 				if (!(data_mask & mask))
 				{ //needs to be disabled
-					glDisableVertexAttribArrayARB(loc);
+					glDisableVertexAttribArray(loc);
 				}
 			}
 			else 
 			{	//was disabled
 				if (data_mask & mask)
 				{ //needs to be enabled
-					glEnableVertexAttribArrayARB(loc);
+					glEnableVertexAttribArray(loc);
 				}
 			}
 		}
