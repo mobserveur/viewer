@@ -230,8 +230,8 @@ void LLGLSLShader::placeProfileQuery()
 #if !LL_DARWIN
     if (mTimerQuery == 0)
     {
-        glGenQueriesARB(1, &mSamplesQuery);
-        glGenQueriesARB(1, &mTimerQuery);
+        glGenQueries(1, &mSamplesQuery);
+        glGenQueries(1, &mTimerQuery);
     }
 
     if (!mTextureStateFetched)
@@ -267,16 +267,24 @@ void LLGLSLShader::placeProfileQuery()
     }
 
 
-    glBeginQueryARB(GL_SAMPLES_PASSED, mSamplesQuery);
-    glBeginQueryARB(GL_TIME_ELAPSED, mTimerQuery);
+#if GL_VERSION_1_5
+    glBeginQuery(GL_SAMPLES_PASSED, mSamplesQuery);
+#if GL_VERSION_3_3
+    glBeginQuery(GL_TIME_ELAPSED, mTimerQuery);
+#endif // GL_VERSION_3_3
+#endif // GL_VERSION_1_5
 #endif
 }
 
 void LLGLSLShader::readProfileQuery(U32 count, U32 mode)
 {
 #if !LL_DARWIN
-    glEndQueryARB(GL_TIME_ELAPSED);
-    glEndQueryARB(GL_SAMPLES_PASSED);
+#if GL_VERSION_1_5
+#if GL_VERSION_3_3
+    glEndQuery(GL_TIME_ELAPSED);
+#endif // GL_VERSION_3_3
+    glEndQuery(GL_SAMPLES_PASSED);
+#endif // GL_VERSION_1_5
     
     GLuint64 time_elapsed = 0;
     glGetQueryObjectui64v(mTimerQuery, GL_QUERY_RESULT, &time_elapsed);
@@ -364,13 +372,13 @@ void LLGLSLShader::unloadInternal()
 
     if (mTimerQuery)
     {
-        glDeleteQueriesARB(1, &mTimerQuery);
+        glDeleteQueries(1, &mTimerQuery);
         mTimerQuery = 0;
     }
 
     if (mSamplesQuery)
     {
-        glDeleteQueriesARB(1, &mSamplesQuery);
+        glDeleteQueries(1, &mSamplesQuery);
         mSamplesQuery = 0;
     }
 
