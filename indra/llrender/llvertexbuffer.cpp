@@ -403,9 +403,9 @@ U32 LLVertexBuffer::getVAOName()
 	}
 	else
 	{
-#ifdef GL_ARB_vertex_array_object
+//#ifdef GL_ARB_vertex_array_object
 		glGenVertexArrays(1, &ret);
-#endif
+//#endif
 	}
 
 	return ret;		
@@ -757,9 +757,9 @@ void LLVertexBuffer::unbind()
 {
 	if (sGLRenderArray)
 	{
-#if GL_ARB_vertex_array_object
+//#if GL_ARB_vertex_array_object
 		glBindVertexArray(0);
-#endif
+//#endif
 		sGLRenderArray = 0;
 		sGLRenderIndices = 0;
 		sIBOActive = false;
@@ -927,9 +927,9 @@ LLVertexBuffer::~LLVertexBuffer()
 
 	if (mGLArray)
 	{
-#if GL_ARB_vertex_array_object
+//#if GL_ARB_vertex_array_object
 		releaseVAOName(mGLArray);
-#endif
+//#endif
 	}
 
 	sCount--;
@@ -1240,9 +1240,9 @@ bool LLVertexBuffer::allocateBuffer(S32 nverts, S32 nindices, bool create)
 
 		if (gGLManager.mHasVertexArrayObject && useVBOs() && sUseVAO)
 		{
-#if GL_ARB_vertex_array_object
+//#if GL_ARB_vertex_array_object
 			mGLArray = getVAOName();
-#endif
+//#endif
 			setupVertexArray();
 		}
 	}
@@ -1258,9 +1258,9 @@ void LLVertexBuffer::setupVertexArray()
 	}
 
     LL_PROFILE_ZONE_SCOPED_CATEGORY_VERTEX;
-#if GL_ARB_vertex_array_object
+//#if GL_ARB_vertex_array_object
 	glBindVertexArray(mGLArray);
-#endif
+//#endif
 	sGLRenderArray = mGLArray;
 
 	static const U32 attrib_size[] = 
@@ -2064,9 +2064,9 @@ bool LLVertexBuffer::bindGLArray()
 	{
 		{
             LL_PROFILE_ZONE_SCOPED_CATEGORY_VERTEX;
-#if GL_ARB_vertex_array_object
+//#if GL_ARB_vertex_array_object
 			glBindVertexArray(mGLArray);
-#endif
+//#endif
 			sGLRenderArray = mGLArray;
 		}
 
@@ -2294,9 +2294,9 @@ void LLVertexBuffer::setBuffer(U32 data_mask)
 	{	
 		if (sGLRenderArray)
 		{
-#if GL_ARB_vertex_array_object
+//#if GL_ARB_vertex_array_object
 			glBindVertexArray(0);
-#endif
+//#endif
 			sGLRenderArray = 0;
 			sGLRenderIndices = 0;
 			sIBOActive = false;

@@ -902,11 +902,11 @@ void LLRender::init(bool needs_vertex_buffer)
 
 	if (sGLCoreProfile && !LLVertexBuffer::sUseVAO)
 	{ //bind a dummy vertex array object so we're core profile compliant
-#ifdef GL_ARB_vertex_array_object
+//#ifdef GL_ARB_vertex_array_object
 		U32 ret;
 		glGenVertexArrays(1, &ret);
 		glBindVertexArray(ret);
-#endif
+//#endif
 	}
 
     if (needs_vertex_buffer)
