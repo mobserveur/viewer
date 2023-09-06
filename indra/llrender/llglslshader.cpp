@@ -788,7 +788,7 @@ GLint LLGLSLShader::mapUniformTextureChannel(GLint location, GLenum type)
     if ((type >= GL_SAMPLER_1D_ARB && type <= GL_SAMPLER_2D_RECT_SHADOW_ARB) ||
         type == GL_SAMPLER_2D_MULTISAMPLE)
     {   //this here is a texture
-        glUniform1iARB(location, mActiveTextureChannels);
+        glUniform1i(location, mActiveTextureChannels);
         LL_DEBUGS("ShaderUniform") << "Assigned to texture channel " << mActiveTextureChannels << LL_ENDL;
         return mActiveTextureChannels++;
     }
@@ -1136,7 +1136,7 @@ void LLGLSLShader::uniform1i(U32 index, GLint x)
             const auto& iter = mValue.find(mUniform[index]);
             if (iter == mValue.end() || iter->second.mV[0] != x)
             {
-                glUniform1iARB(mUniform[index], x);
+                glUniform1i(mUniform[index], x);
                 mValue[mUniform[index]] = LLVector4(x,0.f,0.f,0.f);
             }
         }
@@ -1159,7 +1159,7 @@ void LLGLSLShader::uniform1f(U32 index, GLfloat x)
             const auto& iter = mValue.find(mUniform[index]);
             if (iter == mValue.end() || iter->second.mV[0] != x)
             {
-                glUniform1fARB(mUniform[index], x);
+                glUniform1f(mUniform[index], x);
                 mValue[mUniform[index]] = LLVector4(x,0.f,0.f,0.f);
             }
         }
@@ -1182,7 +1182,7 @@ void LLGLSLShader::uniform2f(U32 index, GLfloat x, GLfloat y)
             LLVector4 vec(x,y,0.f,0.f);
             if (iter == mValue.end() || shouldChange(iter->second,vec))
             {
-                glUniform2fARB(mUniform[index], x, y);
+                glUniform2f(mUniform[index], x, y);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1205,7 +1205,7 @@ void LLGLSLShader::uniform3f(U32 index, GLfloat x, GLfloat y, GLfloat z)
             LLVector4 vec(x,y,z,0.f);
             if (iter == mValue.end() || shouldChange(iter->second,vec))
             {
-                glUniform3fARB(mUniform[index], x, y, z);
+                glUniform3f(mUniform[index], x, y, z);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1228,7 +1228,7 @@ void LLGLSLShader::uniform4f(U32 index, GLfloat x, GLfloat y, GLfloat z, GLfloat
             LLVector4 vec(x,y,z,w);
             if (iter == mValue.end() || shouldChange(iter->second,vec))
             {
-                glUniform4fARB(mUniform[index], x, y, z, w);
+                glUniform4f(mUniform[index], x, y, z, w);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1251,7 +1251,7 @@ void LLGLSLShader::uniform1iv(U32 index, U32 count, const GLint* v)
             LLVector4 vec(v[0],0.f,0.f,0.f);
             if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
             {
-                glUniform1ivARB(mUniform[index], count, v);
+                glUniform1iv(mUniform[index], count, v);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1274,7 +1274,7 @@ void LLGLSLShader::uniform1fv(U32 index, U32 count, const GLfloat* v)
             LLVector4 vec(v[0],0.f,0.f,0.f);
             if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
             {
-                glUniform1fvARB(mUniform[index], count, v);
+                glUniform1fv(mUniform[index], count, v);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1297,7 +1297,7 @@ void LLGLSLShader::uniform2fv(U32 index, U32 count, const GLfloat* v)
             LLVector4 vec(v[0],v[1],0.f,0.f);
             if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
             {
-                glUniform2fvARB(mUniform[index], count, v);
+                glUniform2fv(mUniform[index], count, v);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1320,7 +1320,7 @@ void LLGLSLShader::uniform3fv(U32 index, U32 count, const GLfloat* v)
             LLVector4 vec(v[0],v[1],v[2],0.f);
             if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
             {
-                glUniform3fvARB(mUniform[index], count, v);
+                glUniform3fv(mUniform[index], count, v);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1344,7 +1344,7 @@ void LLGLSLShader::uniform4fv(U32 index, U32 count, const GLfloat* v)
             if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
             {
                 LL_PROFILE_ZONE_SCOPED_CATEGORY_SHADER;
-                glUniform4fvARB(mUniform[index], count, v);
+                glUniform4fv(mUniform[index], count, v);
                 mValue[mUniform[index]] = vec;
             }
         }
@@ -1363,7 +1363,7 @@ void LLGLSLShader::uniformMatrix2fv(U32 index, U32 count, GLboolean transpose, c
 
         if (mUniform[index] >= 0)
         {
-            glUniformMatrix2fvARB(mUniform[index], count, transpose, v);
+            glUniformMatrix2fv(mUniform[index], count, transpose, v);
         }
     }
 }
@@ -1380,7 +1380,7 @@ void LLGLSLShader::uniformMatrix3fv(U32 index, U32 count, GLboolean transpose, c
 
         if (mUniform[index] >= 0)
         {
-            glUniformMatrix3fvARB(mUniform[index], count, transpose, v);
+            glUniformMatrix3fv(mUniform[index], count, transpose, v);
         }
     }
 }
@@ -1416,7 +1416,7 @@ void LLGLSLShader::uniformMatrix4fv(U32 index, U32 count, GLboolean transpose, c
 
         if (mUniform[index] >= 0)
         {
-            glUniformMatrix4fvARB(mUniform[index], count, transpose, v);
+            glUniformMatrix4fv(mUniform[index], count, transpose, v);
         }
     }
 }
@@ -1489,7 +1489,7 @@ void LLGLSLShader::uniform1i(const LLStaticHashedString& uniform, GLint v)
         LLVector4 vec(v,0.f,0.f,0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec))
         {
-            glUniform1iARB(location, v);
+            glUniform1i(location, v);
             mValue[location] = vec;
         }
     }
@@ -1505,7 +1505,7 @@ void LLGLSLShader::uniform2i(const LLStaticHashedString& uniform, GLint i, GLint
         LLVector4 vec(i,j,0.f,0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec))
         {
-            glUniform2iARB(location, i, j);
+            glUniform2i(location, i, j);
             mValue[location] = vec;
         }
     }
@@ -1522,7 +1522,7 @@ void LLGLSLShader::uniform1f(const LLStaticHashedString& uniform, GLfloat v)
         LLVector4 vec(v,0.f,0.f,0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec))
         {
-            glUniform1fARB(location, v);
+            glUniform1f(location, v);
             mValue[location] = vec;
         }
     }
@@ -1538,7 +1538,7 @@ void LLGLSLShader::uniform2f(const LLStaticHashedString& uniform, GLfloat x, GLf
         LLVector4 vec(x,y,0.f,0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec))
         {
-            glUniform2fARB(location, x,y);
+            glUniform2f(location, x,y);
             mValue[location] = vec;
         }
     }
@@ -1555,7 +1555,7 @@ void LLGLSLShader::uniform3f(const LLStaticHashedString& uniform, GLfloat x, GLf
         LLVector4 vec(x,y,z,0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec))
         {
-            glUniform3fARB(location, x,y,z);
+            glUniform3f(location, x,y,z);
             mValue[location] = vec;
         }
     }
@@ -1571,7 +1571,7 @@ void LLGLSLShader::uniform1fv(const LLStaticHashedString& uniform, U32 count, co
         LLVector4 vec(v[0],0.f,0.f,0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
         {
-            glUniform1fvARB(location, count, v);
+            glUniform1fv(location, count, v);
             mValue[location] = vec;
         }
     }
@@ -1587,7 +1587,7 @@ void LLGLSLShader::uniform2fv(const LLStaticHashedString& uniform, U32 count, co
         LLVector4 vec(v[0],v[1],0.f,0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
         {
-            glUniform2fvARB(location, count, v);
+            glUniform2fv(location, count, v);
             mValue[location] = vec;
         }
     }
@@ -1603,7 +1603,7 @@ void LLGLSLShader::uniform3fv(const LLStaticHashedString& uniform, U32 count, co
         LLVector4 vec(v[0],v[1],v[2],0.f);
         if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
         {
-            glUniform3fvARB(location, count, v);
+            glUniform3fv(location, count, v);
             mValue[location] = vec;
         }
     }
@@ -1620,7 +1620,7 @@ void LLGLSLShader::uniform4fv(const LLStaticHashedString& uniform, U32 count, co
         if (iter == mValue.end() || shouldChange(iter->second,vec) || count != 1)
         {
             LL_PROFILE_ZONE_SCOPED_CATEGORY_SHADER;
-            glUniform4fvARB(location, count, v);
+            glUniform4fv(location, count, v);
             mValue[location] = vec;
         }
     }
@@ -1633,7 +1633,7 @@ void LLGLSLShader::uniformMatrix4fv(const LLStaticHashedString& uniform, U32 cou
     if (location >= 0)
     {
         stop_glerror();
-        glUniformMatrix4fvARB(location, count, transpose, v);
+        glUniformMatrix4fv(location, count, transpose, v);
         stop_glerror();
     }
 }
