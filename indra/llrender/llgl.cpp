@@ -1083,7 +1083,11 @@ void LLGLManager::initExtensions()
 #else
 	mHasDebugOutput = ExtensionExists("GL_KHR_debug", gGLHExts.mSysExts);
 #endif
+#if GL_EXT_draw_transform_feedback
+	mHasTransformFeedback = ExtensionExists("GL_EXT_draw_transform_feedback", gGLHExts.mSysExts);
+#else
 	mHasTransformFeedback = mGLVersion >= 4.f ? TRUE : FALSE;
+#endif
 #if !LL_DARWIN
 	mHasPointParameters = ExtensionExists("GL_ARB_point_parameters", gGLHExts.mSysExts);
 #endif
