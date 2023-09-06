@@ -720,7 +720,7 @@ bool LLGLManager::initGL()
 	stop_glerror();
 
 	GLint num_tex_image_units;
-	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS_ARB, &num_tex_image_units);
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &num_tex_image_units);
 	mNumTextureImageUnits = llmin(num_tex_image_units, 32);
 
     if (mHasMultitexture)
@@ -1593,8 +1593,8 @@ void LLGLState::initClass()
 	// sStateMap[GL_TEXTURE_2D] = GL_TRUE;
 	
 	//make sure multisample defaults to disabled
-	sStateMap[GL_MULTISAMPLE_ARB] = GL_FALSE;
-	glDisable(GL_MULTISAMPLE_ARB);
+	sStateMap[GL_MULTISAMPLE_EXT] = GL_FALSE;
+	glDisable(GL_MULTISAMPLE_EXT);
 }
 
 //static

@@ -72,7 +72,7 @@ static const GLenum sGLTextureType[] =
 #if GL_VERSION_3_1
 	GL_TEXTURE_RECTANGLE_ARB,
 #endif
-	GL_TEXTURE_CUBE_MAP_ARB,
+	GL_TEXTURE_CUBE_MAP,
 #if GL_VERSION_3_2
 	GL_TEXTURE_2D_MULTISAMPLE,
 #endif
@@ -126,7 +126,7 @@ void LLTexUnit::refreshState(void)
 
 	gGL.flush();
 	
-	glActiveTexture(GL_TEXTURE0_ARB + mIndex);
+	glActiveTexture(GL_TEXTURE0 + mIndex);
 
 	if (mCurrTexType != TT_NONE)
 	{
@@ -147,7 +147,7 @@ void LLTexUnit::activate(void)
 	if ((S32)gGL.mCurrTextureUnitIndex != mIndex || gGL.mDirty)
 	{
 		gGL.flush();
-		glActiveTexture(GL_TEXTURE0_ARB + mIndex);
+		glActiveTexture(GL_TEXTURE0 + mIndex);
 		gGL.mCurrTextureUnitIndex = mIndex;
 	}
 }
@@ -191,7 +191,7 @@ void LLTexUnit::bindFast(LLTexture* texture)
 {
     LLImageGL* gl_tex = texture->getGLTexture();
 
-    glActiveTexture(GL_TEXTURE0_ARB + mIndex);
+    glActiveTexture(GL_TEXTURE0 + mIndex);
     gGL.mCurrTextureUnitIndex = mIndex;
     mCurrTexture = gl_tex->getTexName();
     if (!mCurrTexture)
@@ -343,7 +343,7 @@ bool LLTexUnit::bind(LLCubeMap* cubeMap)
 			activate();
 			enable(LLTexUnit::TT_CUBE_MAP);
             mCurrTexture = cubeMap->mImages[0]->getTexName();
-			glBindTexture(GL_TEXTURE_CUBE_MAP_ARB, mCurrTexture);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrTexture);
 			mHasMipMaps = cubeMap->mImages[0]->mHasMipMaps;
 			cubeMap->mImages[0]->updateBindStats(cubeMap->mImages[0]->mTextureMemory);
 			if (cubeMap->mImages[0]->mTexOptionsDirty)
@@ -473,7 +473,7 @@ void LLTexUnit::setTextureAddressMode(eTextureAddressMode mode)
 	glTexParameteri (sGLTextureType[mCurrTexType], GL_TEXTURE_WRAP_T, sGLAddressMode[mode]);
 	if (mCurrTexType == TT_CUBE_MAP)
 	{
-		glTexParameteri (GL_TEXTURE_CUBE_MAP_ARB, GL_TEXTURE_WRAP_R, sGLAddressMode[mode]);
+		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, sGLAddressMode[mode]);
 	}
 }
 
@@ -650,10 +650,10 @@ void LLTexUnit::debugTextureUnit(void)
 	if (mIndex < 0) return;
 
 	GLint activeTexture;
-	glGetIntegerv(GL_ACTIVE_TEXTURE_ARB, &activeTexture);
-	if ((GL_TEXTURE0_ARB + mIndex) != activeTexture)
+	glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
+	if ((GL_TEXTURE0 + mIndex) != activeTexture)
 	{
-		U32 set_unit = (activeTexture - GL_TEXTURE0_ARB);
+		U32 set_unit = (activeTexture - GL_TEXTURE0);
 		LL_WARNS() << "Incorrect Texture Unit!  Expected: " << set_unit << " Actual: " << mIndex << LL_ENDL;
 	}
 }

@@ -748,7 +748,7 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 
 		extra_code_text[extra_code_count++] = strdup("#define ATTRIBUTE in\n");
 
-		if (type == GL_VERTEX_SHADER_ARB)
+		if (type == GL_VERTEX_SHADER)
 		{ //"varying" state is "out" in a vertex program, "in" in a fragment program 
 			// ("varying" is deprecated after version 1.20)
 			extra_code_text[extra_code_count++] = strdup("#define VARYING out\n");
@@ -787,7 +787,7 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 		extra_code_text[extra_code_count++] = strdup( "#define IS_AMD_CARD 1\n" );
 	}
 	
-	if (texture_index_channels > 0 && type == GL_FRAGMENT_SHADER_ARB)
+	if (texture_index_channels > 0 && type == GL_FRAGMENT_SHADER)
 	{
 		//use specified number of texture channels for indexed texture rendering
 
@@ -1022,10 +1022,10 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 	if (ret)
 	{
 		// Add shader file to map
-        if (type == GL_VERTEX_SHADER_ARB) {
+        if (type == GL_VERTEX_SHADER) {
             mVertexShaderObjects[filename] = ret;
         }
-        else if (type == GL_FRAGMENT_SHADER_ARB) {
+        else if (type == GL_FRAGMENT_SHADER) {
             mFragmentShaderObjects[filename] = ret;
         }
 		shader_level = try_gpu_class;
