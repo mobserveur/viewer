@@ -1847,7 +1847,7 @@ void LLVertexBuffer::unmapBuffer()
 						else if (gGLManager.mHasFlushBufferRange)
                         {
 #ifndef LL_MESA_HEADLESS
-							glFlushMappedBufferRangeAPPLE(GL_ARRAY_BUFFER_ARB, offset, length);
+							glFlushMappedBufferRange(GL_ARRAY_BUFFER, offset, length);
 #endif
 						}
 					}
