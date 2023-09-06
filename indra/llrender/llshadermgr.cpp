@@ -1045,9 +1045,9 @@ GLuint LLShaderMgr::loadShaderFile(const std::string& filename, S32 & shader_lev
 BOOL LLShaderMgr::linkProgramObject(GLuint obj, BOOL suppress_errors)
 {
 	//check for errors
-	glLinkProgramARB(obj);
+	glLinkProgram(obj);
 	GLint success = GL_TRUE;
-	glGetObjectParameterivARB(obj, GL_OBJECT_LINK_STATUS_ARB, &success);
+	glGetProgramiv(obj, GL_LINK_STATUS, &success);
 	if (!suppress_errors && success == GL_FALSE) 
 	{
 		//an error occured, print log
@@ -1068,9 +1068,9 @@ BOOL LLShaderMgr::linkProgramObject(GLuint obj, BOOL suppress_errors)
 BOOL LLShaderMgr::validateProgramObject(GLuint obj)
 {
 	//check program validity against current GL
-	glValidateProgramARB(obj);
+	glValidateProgram(obj);
 	GLint success = GL_TRUE;
-	glGetObjectParameterivARB(obj, GL_OBJECT_VALIDATE_STATUS_ARB, &success);
+	glGetProgramiv(obj, GL_VALIDATE_STATUS, &success);
 	if (success == GL_FALSE)
 	{
 		LL_SHADER_LOADING_WARNS() << "GLSL program not valid: " << LL_ENDL;

@@ -350,7 +350,7 @@ void LLPostProcess::getShaderUniforms(glslUniforms & uniforms, GLuint & prog)
 	/// Find uniform locations and insert into map	
 	glslUniforms::iterator i;
 	for (i  = uniforms.begin(); i != uniforms.end(); ++i){
-		i->second = glGetUniformLocationARB(prog, i->first.String().c_str());
+		i->second = glGetUniformLocation(prog, i->first.String().c_str());
 	}
 }
 

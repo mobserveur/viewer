@@ -349,15 +349,15 @@ void LLGLSLShader::unloadInternal()
     {
         GLuint obj[1024];
         GLsizei count;
-        glGetAttachedObjectsARB(mProgramObject, 1024, &count, obj);
+        glGetAttachedShaders(mProgramObject, 1024, &count, obj);
 
         for (GLsizei i = 0; i < count; i++)
         {
-            glDetachObjectARB(mProgramObject, obj[i]);
-            glDeleteObjectARB(obj[i]);
+            glDetachShader(mProgramObject, obj[i]);
+            glDeleteShader(obj[i]);
         }
 
-        glDeleteObjectARB(mProgramObject);
+        glDeleteProgram(mProgramObject);
 
         mProgramObject = 0;
     }
@@ -401,7 +401,7 @@ BOOL LLGLSLShader::createShader(std::vector<LLStaticHashedString> * attributes,
     llassert_always(!mShaderFiles.empty());
 
     // Create program
-    mProgramObject = glCreateProgramObjectARB();
+    mProgramObject = glCreateProgram();
     if (mProgramObject == 0)
     {
         // Shouldn't happen if shader related extensions, like ARB_vertex_shader, exist.
@@ -530,7 +530,7 @@ BOOL LLGLSLShader::attachVertexObject(std::string object_path)
     if (LLShaderMgr::instance()->mVertexShaderObjects.count(object_path) > 0)
     {
         stop_glerror();
-        glAttachObjectARB(mProgramObject, LLShaderMgr::instance()->mVertexShaderObjects[object_path]);
+        glAttachShader(mProgramObject, LLShaderMgr::instance()->mVertexShaderObjects[object_path]);
 #if DEBUG_SHADER_INCLUDES
         dumpAttachObject("attachVertexObject", mProgramObject, object_path);
 #endif // DEBUG_SHADER_INCLUDES
@@ -549,7 +549,7 @@ BOOL LLGLSLShader::attachFragmentObject(std::string object_path)
     if (LLShaderMgr::instance()->mFragmentShaderObjects.count(object_path) > 0)
     {
         stop_glerror();
-        glAttachObjectARB(mProgramObject, LLShaderMgr::instance()->mFragmentShaderObjects[object_path]);
+        glAttachShader(mProgramObject, LLShaderMgr::instance()->mFragmentShaderObjects[object_path]);
 #if DEBUG_SHADER_INCLUDES
         dumpAttachObject("attachFragmentObject", mProgramObject, object_path);
 #endif // DEBUG_SHADER_INCLUDES
@@ -568,7 +568,7 @@ void LLGLSLShader::attachObject(GLuint object)
     if (object != 0)
     {
         stop_glerror();
-        glAttachObjectARB(mProgramObject, object);
+        glAttachShader(mProgramObject, object);
 #if DEBUG_SHADER_INCLUDES
         std::string object_path("???");
         dumpAttachObject("attachObject", mProgramObject, object_path);
@@ -597,7 +597,7 @@ BOOL LLGLSLShader::mapAttributes(const std::vector<LLStaticHashedString> * attri
     for (U32 i = 0; i < LLShaderMgr::instance()->mReservedAttribs.size(); i++)
     {
         const char* name = LLShaderMgr::instance()->mReservedAttribs[i].c_str();
-        glBindAttribLocationARB(mProgramObject, i, (const GLcharARB *) name);
+        glBindAttribLocation(mProgramObject, i, (const GLchar *) name);
     }
     
     //link the program
@@ -620,7 +620,7 @@ BOOL LLGLSLShader::mapAttributes(const std::vector<LLStaticHashedString> * attri
         for (U32 i = 0; i < LLShaderMgr::instance()->mReservedAttribs.size(); i++)
         {
             const char* name = LLShaderMgr::instance()->mReservedAttribs[i].c_str();
-            S32 index = glGetAttribLocationARB(mProgramObject, (const GLcharARB *)name);
+            S32 index = glGetAttribLocation(mProgramObject, (const GLchar *)name);
             if (index != -1)
             {
 #if LL_RELEASE_WITH_DEBUG_INFO
@@ -637,7 +637,7 @@ BOOL LLGLSLShader::mapAttributes(const std::vector<LLStaticHashedString> * attri
             for (U32 i = 0; i < numAttributes; i++)
             {
                 const char* name = (*attributes)[i].String().c_str();
-                S32 index = glGetAttribLocationARB(mProgramObject, name);
+                S32 index = glGetAttribLocation(mProgramObject, name);
                 if (index != -1)
                 {
                     mAttribute[LLShaderMgr::instance()->mReservedAttribs.size() + i] = index;
@@ -668,7 +668,7 @@ void LLGLSLShader::mapUniform(GLint index, const vector<LLStaticHashedString> * 
     name[0] = 0;
 
 
-    glGetActiveUniformARB(mProgramObject, index, 1024, &length, &size, &type, (GLcharARB *)name);
+    glGetActiveUniform(mProgramObject, index, 1024, &length, &size, &type, (GLchar *)name);
 #if !LL_DARWIN
     if (size > 0)
     {
@@ -719,7 +719,7 @@ void LLGLSLShader::mapUniform(GLint index, const vector<LLStaticHashedString> * 
     }
 #endif
 
-    S32 location = glGetUniformLocationARB(mProgramObject, name);
+    S32 location = glGetUniformLocation(mProgramObject, name);
     if (location != -1)
     {
         //chop off "[0]" so we can always access the first element
@@ -817,7 +817,7 @@ BOOL LLGLSLShader::mapUniforms(const vector<LLStaticHashedString> * uniforms)
 
 	//get the number of active uniforms
 	GLint activeCount;
-	glGetObjectParameterivARB(mProgramObject, GL_OBJECT_ACTIVE_UNIFORMS_ARB, &activeCount);
+	glGetProgramiv(mProgramObject, GL_ACTIVE_UNIFORMS, &activeCount);
 
 	//........................................................................................................................................
 	//........................................................................................
@@ -841,11 +841,11 @@ BOOL LLGLSLShader::mapUniforms(const vector<LLStaticHashedString> * uniforms)
 	*/
 
 
-	S32 diffuseMap = glGetUniformLocationARB(mProgramObject, "diffuseMap");
-	S32 specularMap = glGetUniformLocationARB(mProgramObject, "specularMap");
-	S32 bumpMap = glGetUniformLocationARB(mProgramObject, "bumpMap");
-    S32 altDiffuseMap = glGetUniformLocationARB(mProgramObject, "altDiffuseMap");
-	S32 environmentMap = glGetUniformLocationARB(mProgramObject, "environmentMap");
+	S32 diffuseMap = glGetUniformLocation(mProgramObject, "diffuseMap");
+	S32 specularMap = glGetUniformLocation(mProgramObject, "specularMap");
+	S32 bumpMap = glGetUniformLocation(mProgramObject, "bumpMap");
+    S32 altDiffuseMap = glGetUniformLocation(mProgramObject, "altDiffuseMap");
+	S32 environmentMap = glGetUniformLocation(mProgramObject, "environmentMap");
 
 	std::set<S32> skip_index;
 
@@ -862,7 +862,7 @@ BOOL LLGLSLShader::mapUniforms(const vector<LLStaticHashedString> * uniforms)
 		{
 			name[0] = '\0';
 
-			glGetActiveUniformARB(mProgramObject, i, 1024, &length, &size, &type, (GLcharARB *)name);
+			glGetActiveUniform(mProgramObject, i, 1024, &length, &size, &type, (GLchar *)name);
 
 			if (-1 == diffuseMap && std::string(name) == "diffuseMap")
 			{
@@ -963,7 +963,7 @@ void LLGLSLShader::bind()
     if (sCurBoundShader != mProgramObject)  // Don't re-bind current shader
     {
         LLVertexBuffer::unbind();
-        glUseProgramObjectARB(mProgramObject);
+        glUseProgram(mProgramObject);
         sCurBoundShader = mProgramObject;
         sCurBoundShaderPtr = this;
     }
@@ -995,7 +995,7 @@ void LLGLSLShader::unbind()
     gGL.flush();
     stop_glerror();
     LLVertexBuffer::unbind();
-    glUseProgramObjectARB(0);
+    glUseProgram(0);
     sCurBoundShader = 0;
     sCurBoundShaderPtr = NULL;
     stop_glerror();
@@ -1006,7 +1006,7 @@ void LLGLSLShader::bindNoShader(void)
     LL_PROFILE_ZONE_SCOPED_CATEGORY_SHADER;
 
     LLVertexBuffer::unbind();
-    glUseProgramObjectARB(0);
+    glUseProgram(0);
     sCurBoundShader = 0;
     sCurBoundShaderPtr = NULL;
 }
@@ -1434,7 +1434,7 @@ GLint LLGLSLShader::getUniformLocation(const LLStaticHashedString& uniform)
             if (gDebugGL)
             {
                 stop_glerror();
-                if (iter->second != glGetUniformLocationARB(mProgramObject, uniform.String().c_str()))
+                if (iter->second != glGetUniformLocation(mProgramObject, uniform.String().c_str()))
                 {
                     LL_ERRS() << "Uniform does not match." << LL_ENDL;
                 }
