@@ -1621,8 +1621,13 @@ void LLGLState::initClass()
 	// sStateMap[GL_TEXTURE_2D] = GL_TRUE;
 	
 	//make sure multisample defaults to disabled
+#if GL_ARB_multisample
+	sStateMap[GL_MULTISAMPLE_ARB] = GL_FALSE;
+	glDisable(GL_MULTISAMPLE_ARB);
+#else
 	sStateMap[GL_MULTISAMPLE_EXT] = GL_FALSE;
 	glDisable(GL_MULTISAMPLE_EXT);
+#endif
 }
 
 //static
