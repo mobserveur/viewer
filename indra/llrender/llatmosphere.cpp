@@ -241,7 +241,11 @@ LLGLTexture* LLAtmosphere::getTransmittance()
         m_transmittance->generateGLTexture();
         m_transmittance->setAddressMode(LLTexUnit::eTextureAddressMode::TAM_CLAMP);
         m_transmittance->setFilteringOption(LLTexUnit::eTextureFilterOptions::TFO_BILINEAR);
+#if GL_ARB_texture_float
+        m_transmittance->setExplicitFormat(GL_RGB32F_ARB, GL_RGB, GL_FLOAT);
+#else
         m_transmittance->setExplicitFormat(GL_RGB32F, GL_RGB, GL_FLOAT);
+#endif
         m_transmittance->setTarget(GL_TEXTURE_2D, LLTexUnit::TT_TEXTURE);
     }
     return m_transmittance;
@@ -255,7 +259,11 @@ LLGLTexture* LLAtmosphere::getScattering()
         m_scattering->generateGLTexture();
         m_scattering->setAddressMode(LLTexUnit::eTextureAddressMode::TAM_CLAMP);
         m_scattering->setFilteringOption(LLTexUnit::eTextureFilterOptions::TFO_BILINEAR);
+#if GL_ARB_texture_float
+        m_scattering->setExplicitFormat(GL_RGB16F_ARB, GL_RGB, GL_FLOAT);
+#else
         m_scattering->setExplicitFormat(GL_RGB16F, GL_RGB, GL_FLOAT);
+#endif
         m_scattering->setTarget(GL_TEXTURE_3D, LLTexUnit::TT_TEXTURE_3D);
     }
     return m_scattering;
@@ -269,7 +277,11 @@ LLGLTexture* LLAtmosphere::getMieScattering()
         m_mie_scatter_texture->generateGLTexture();
         m_mie_scatter_texture->setAddressMode(LLTexUnit::eTextureAddressMode::TAM_CLAMP);
         m_mie_scatter_texture->setFilteringOption(LLTexUnit::eTextureFilterOptions::TFO_BILINEAR);
+#if GL_ARB_texture_float
+        m_mie_scatter_texture->setExplicitFormat(GL_RGB16F_ARB, GL_RGB, GL_FLOAT);
+#else
         m_mie_scatter_texture->setExplicitFormat(GL_RGB16F, GL_RGB, GL_FLOAT);
+#endif
         m_mie_scatter_texture->setTarget(GL_TEXTURE_3D, LLTexUnit::TT_TEXTURE_3D);
     }
     return m_mie_scatter_texture;
@@ -283,7 +295,11 @@ LLGLTexture* LLAtmosphere::getIlluminance()
         m_illuminance->generateGLTexture();
         m_illuminance->setAddressMode(LLTexUnit::eTextureAddressMode::TAM_CLAMP);
         m_illuminance->setFilteringOption(LLTexUnit::eTextureFilterOptions::TFO_BILINEAR);
+#if GL_ARB_texture_float
+        m_illuminance->setExplicitFormat(GL_RGB32F_ARB, GL_RGB, GL_FLOAT);
+#else
         m_illuminance->setExplicitFormat(GL_RGB32F, GL_RGB, GL_FLOAT);
+#endif
         m_illuminance->setTarget(GL_TEXTURE_2D, LLTexUnit::TT_TEXTURE);
     }
     return m_illuminance;

@@ -404,8 +404,11 @@ U32 LLVertexBuffer::getVAOName()
 	else
 	{
 //#ifdef GL_ARB_vertex_array_object
+#if GL_APPLE_vertex_array_object
+		glGenVertexArraysAPPLE(1, &ret);
+#else
 		glGenVertexArrays(1, &ret);
-//#endif
+#endif
 	}
 
 	return ret;		
@@ -758,8 +761,11 @@ void LLVertexBuffer::unbind()
 	if (sGLRenderArray)
 	{
 //#if GL_ARB_vertex_array_object
+#if GL_APPLE_vertex_array_object
+		glBindVertexArrayAPPLE(0);
+#else
 		glBindVertexArray(0);
-//#endif
+#endif
 		sGLRenderArray = 0;
 		sGLRenderIndices = 0;
 		sIBOActive = false;
@@ -1259,8 +1265,11 @@ void LLVertexBuffer::setupVertexArray()
 
     LL_PROFILE_ZONE_SCOPED_CATEGORY_VERTEX;
 //#if GL_ARB_vertex_array_object
+#if GL_APPLE_vertex_array_object
+	glBindVertexArrayAPPLE(mGLArray);
+#else
 	glBindVertexArray(mGLArray);
-//#endif
+#endif
 	sGLRenderArray = mGLArray;
 
 	static const U32 attrib_size[] = 
@@ -1534,12 +1543,10 @@ U8* LLVertexBuffer::mapVertexBuffer(S32 type, S32 index, S32 count, bool map_ran
 				{
 					if (map_range)
 					{
-/*
-#ifndef LL_MESA_HEADLESS
+#if !LL_MESA_HEADLESS && GL_APPLE_flush_buffer_range && LL_DARWIN
 						glBufferParameteriAPPLE(GL_ARRAY_BUFFER_ARB, GL_BUFFER_SERIALIZED_MODIFY_APPLE, GL_FALSE);
 						glBufferParameteriAPPLE(GL_ARRAY_BUFFER_ARB, GL_BUFFER_FLUSHING_UNMAP_APPLE, GL_FALSE);
 #endif
-*/
 						src = (U8*) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 					}
 					else
@@ -1709,12 +1716,10 @@ U8* LLVertexBuffer::mapIndexBuffer(S32 index, S32 count, bool map_range)
 				{
 					if (map_range)
 					{
-/*
-#ifndef LL_MESA_HEADLESS
+#if !LL_MESA_HEADLESS && GL_APPLE_flush_buffer_range && LL_DARWIN
 						glBufferParameteriAPPLE(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_BUFFER_SERIALIZED_MODIFY_APPLE, GL_FALSE);
 						glBufferParameteriAPPLE(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_BUFFER_FLUSHING_UNMAP_APPLE, GL_FALSE);
 #endif
-*/
 						src = (U8*) glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
 					}
 					else
@@ -1840,13 +1845,17 @@ void LLVertexBuffer::unmapBuffer()
 						S32 length = sTypeSize[region.mType]*region.mCount;
 						if (gGLManager.mHasMapBufferRange)
 						{
-#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
+#if GL_APPLE_flush_buffer_range && LL_DARWIN
+							glFlushMappedBufferRangeAPPLE(GL_ARRAY_BUFFER, offset, length);
+#elif GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 							glFlushMappedBufferRange(GL_ARRAY_BUFFER, offset, length);
 #endif
 						}
 						else if (gGLManager.mHasFlushBufferRange)
                         {
-#ifndef LL_MESA_HEADLESS
+#if !LL_MESA_HEADLESS && GL_APPLE_flush_buffer_range && LL_DARWIN
+							glFlushMappedBufferRangeAPPLE(GL_ARRAY_BUFFER, offset, length);
+#else
 							glFlushMappedBufferRange(GL_ARRAY_BUFFER, offset, length);
 #endif
 						}
@@ -1920,20 +1929,20 @@ void LLVertexBuffer::unmapBuffer()
 						S32 length = sizeof(U16)*region.mCount;
 						if (gGLManager.mHasMapBufferRange)
 						{
-#if GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
+#if GL_APPLE_flush_buffer_range && LL_DARWIN
+							glFlushMappedBufferRangeAPPLE(GL_ELEMENT_ARRAY_BUFFER, offset, length);
+#elif GL_ARB_map_buffer_range || GL_EXT_map_buffer_range
 							glFlushMappedBufferRange(GL_ELEMENT_ARRAY_BUFFER, offset, length);
 #endif
 						}
-						/*
 						else if (gGLManager.mHasFlushBufferRange)
 						{
-#ifdef GL_APPLE_flush_buffer_range
+#if GL_APPLE_flush_buffer_range && LL_DARWIN
 #ifndef LL_MESA_HEADLESS
 							glFlushMappedBufferRangeAPPLE(GL_ELEMENT_ARRAY_BUFFER_ARB, offset, length);
 #endif
 #endif
 						}
-						*/
 						stop_glerror();
 					}
 
@@ -2071,8 +2080,11 @@ bool LLVertexBuffer::bindGLArray()
 		{
             LL_PROFILE_ZONE_SCOPED_CATEGORY_VERTEX;
 //#if GL_ARB_vertex_array_object
+#if GL_APPLE_vertex_array_object
+			glBindVertexArrayAPPLE(mGLArray);
+#else
 			glBindVertexArray(mGLArray);
-//#endif
+#endif
 			sGLRenderArray = mGLArray;
 		}
 
@@ -2301,8 +2313,11 @@ void LLVertexBuffer::setBuffer(U32 data_mask)
 		if (sGLRenderArray)
 		{
 //#if GL_ARB_vertex_array_object
+#if GL_APPLE_vertex_array_object
+			glBindVertexArrayAPPLE(0);
+#else
 			glBindVertexArray(0);
-//#endif
+#endif
 			sGLRenderArray = 0;
 			sGLRenderIndices = 0;
 			sIBOActive = false;
