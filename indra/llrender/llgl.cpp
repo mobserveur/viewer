@@ -777,12 +777,10 @@ bool LLGLManager::initGL()
 
 	if (mHasTextureMultisample)
 	{
-#if GL_VERSION_3_2
 		glGetIntegerv(GL_MAX_COLOR_TEXTURE_SAMPLES, &mMaxColorTextureSamples);
 		glGetIntegerv(GL_MAX_DEPTH_TEXTURE_SAMPLES, &mMaxDepthTextureSamples);
 		glGetIntegerv(GL_MAX_INTEGER_SAMPLES, &mMaxIntegerSamples);
 		glGetIntegerv(GL_MAX_SAMPLE_MASK_WORDS, &mMaxSampleMaskWords);
-#endif
 	}
 
 	stop_glerror();
@@ -1623,13 +1621,8 @@ void LLGLState::initClass()
 	// sStateMap[GL_TEXTURE_2D] = GL_TRUE;
 	
 	//make sure multisample defaults to disabled
-#if GL_ARB_multisample
-	sStateMap[GL_MULTISAMPLE_ARB] = GL_FALSE;
-	glDisable(GL_MULTISAMPLE_ARB);
-#elif GL_EXT_multisample || GL_EXT_multisample_compatibility
 	sStateMap[GL_MULTISAMPLE_EXT] = GL_FALSE;
 	glDisable(GL_MULTISAMPLE_EXT);
-#endif
 }
 
 //static
