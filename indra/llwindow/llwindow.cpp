@@ -33,8 +33,10 @@
 #include "llwindowsdl.h"
 #elif LL_WINDOWS
 #include "llwindowwin32.h"
+/*
 #elif LL_DARWIN
 #include "llwindowmacosx.h"
+*/
 #endif
 
 #include "llerror.h"
