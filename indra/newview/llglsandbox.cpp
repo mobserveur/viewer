@@ -1122,7 +1122,7 @@ F32 gpu_benchmark()
 	// ensure matched pair of bind() and unbind() calls
 	ShaderBinder binder(gBenchmarkProgram);
 
-#ifdef GL_ARB_vertex_array_object
+//#ifdef GL_ARB_vertex_array_object
     U32 glarray = 0;
 
     if (LLRender::sGLCoreProfile)
@@ -1130,7 +1130,7 @@ F32 gpu_benchmark()
         glGenVertexArrays(1, &glarray);
         glBindVertexArray(glarray);
     }
-#endif
+//#endif
 
 	buff->setBuffer(LLVertexBuffer::MAP_VERTEX);
 	glFinish();
@@ -1164,13 +1164,13 @@ F32 gpu_benchmark()
 		}
 	}
 
-#ifdef GL_ARB_vertex_array_object
+//#ifdef GL_ARB_vertex_array_object
     if (LLRender::sGLCoreProfile)
     {
         glBindVertexArray(0);
         glDeleteVertexArrays(1, &glarray);
     }
-#endif
+//#endif
 
 
 	std::sort(results.begin(), results.end());
