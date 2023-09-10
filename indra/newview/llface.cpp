@@ -1225,7 +1225,7 @@ void LLFace::cacheFaceInVRAM(const LLVolumeFace& vf)
 		mask |= LLVertexBuffer::MAP_WEIGHT4;
 	}
 
-	LLVertexBuffer* buff = new LLVertexBuffer(mask, GL_STATIC_DRAW_ARB);
+	LLVertexBuffer* buff = new LLVertexBuffer(mask, GL_STATIC_DRAW);
 	vf.mVertexBuffer = buff;
 
 	buff->allocateBuffer(vf.mNumVertices, 0, true);
@@ -1535,7 +1535,7 @@ BOOL LLFace::getGeometryVolume(const LLVolume& volume,
 
 #ifdef GL_TRANSFORM_FEEDBACK_BUFFER
 	if (use_transform_feedback &&
-		mVertexBuffer->getUsage() == GL_DYNAMIC_COPY_ARB &&
+		mVertexBuffer->getUsage() == GL_DYNAMIC_COPY &&
 		gTransformPositionProgram.mProgramObject && //transform shaders are loaded
 		mVertexBuffer->useVBOs() && //target buffer is in VRAM
 		!rebuild_weights && //TODO: add support for weights

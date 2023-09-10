@@ -55,7 +55,7 @@
 #include "llperfstats.h"
 
 static U32 sDataMask = LLDrawPoolAvatar::VERTEX_DATA_MASK;
-static U32 sBufferUsage = GL_STREAM_DRAW_ARB;
+static U32 sBufferUsage = GL_STREAM_DRAW;
 static U32 sShaderLevel = 0;
 
 LLGLSLShader* LLDrawPoolAvatar::sVertexProgram = NULL;
@@ -147,11 +147,11 @@ void LLDrawPoolAvatar::prerender()
 	
 	if (sShaderLevel > 0)
 	{
-		sBufferUsage = GL_DYNAMIC_DRAW_ARB;
+		sBufferUsage = GL_DYNAMIC_DRAW;
 	}
 	else
 	{
-		sBufferUsage = GL_STREAM_DRAW_ARB;
+		sBufferUsage = GL_STREAM_DRAW;
 	}
 }
 
@@ -939,7 +939,7 @@ LLColor3 LLDrawPoolAvatar::getDebugColor() const
 
 LLVertexBufferAvatar::LLVertexBufferAvatar()
 : LLVertexBuffer(sDataMask, 
-	GL_STREAM_DRAW_ARB) //avatars are always stream draw due to morph targets
+	GL_STREAM_DRAW) //avatars are always stream draw due to morph targets
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_AVATAR
 }
