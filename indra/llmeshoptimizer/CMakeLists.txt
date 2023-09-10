@@ -25,9 +25,9 @@ list(APPEND llmeshoptimizer_SOURCE_FILES ${llmeshoptimizer_HEADER_FILES})
 add_library (llmeshoptimizer ${llmeshoptimizer_SOURCE_FILES})
 target_include_directories( llmeshoptimizer INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
+include_directories(${CMAKE_SOURCE_DIR}/llmath)
 target_link_libraries(llmeshoptimizer
         llcommon
-        llmath
         ll::meshoptimizer)
 
 include(LibraryInstall)
