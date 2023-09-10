@@ -70,3 +70,5 @@ target_link_libraries(
         llfilesystem
         llxml
     )
+
+include(LibraryInstall)

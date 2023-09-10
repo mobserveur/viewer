@@ -83,7 +83,11 @@ LLDir_Linux::LLDir_Linux()
 
 	mExecutableFilename = "";
 	mExecutablePathAndName = "";
+#ifdef APP_LIBEXEC_DIR
+	mExecutableDir = APP_LIBEXEC_DIR;
+#else
 	mExecutableDir = tmp_str;
+#endif
 	mWorkingDir = tmp_str;
 #ifdef APP_RO_DATA_DIR
 	mAppRODataDir = APP_RO_DATA_DIR;
@@ -205,7 +209,7 @@ void LLDir_Linux::initAppDirs(const std::string &app_name,
 		LL_WARNS() << "Couldn't create LL_PATH_CACHE dir " << getExpandedFilename(LL_PATH_CACHE,"") << LL_ENDL;
 	}
 
-	mCAFile = getExpandedFilename(LL_PATH_EXECUTABLE, "ca-bundle.crt");
+	mCAFile = add(mAppRODataDir, "ca-bundle.crt");
 }
 
 U32 LLDir_Linux::countFilesInDir(const std::string &dirname, const std::string &mask)

@@ -59,6 +59,7 @@ set(llmath_HEADER_FILES
     llmath.h
     llmatrix3a.h
     llmatrix3a.inl
+    llmatrix4a.h
     llmodularmath.h
     lloctree.h
     llperlin.h
@@ -99,8 +100,16 @@ list(APPEND llmath_SOURCE_FILES ${llmath_HEADER_FILES})
 
 add_library (llmath ${llmath_SOURCE_FILES})
 
-target_link_libraries(llmath llcommon llmeshoptimizer)
+include_directories(${CMAKE_SOURCE_DIR}/llmeshoptimizer)
+target_link_libraries(llmath llcommon)
 target_include_directories( llmath  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (USESYSTEMLIBS AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  set_source_files_properties(llcalc.cpp PROPERTIES
+    COMPILE_FLAGS -Wno-dangling-pointer)
+endif ()
+
+include(LibraryInstall)
 
 # Add tests
 if (LL_TESTS)

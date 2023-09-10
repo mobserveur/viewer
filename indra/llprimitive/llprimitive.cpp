@@ -272,7 +272,7 @@ void  LLPrimitive::setAllTETextures(const LLUUID &tex_id)
 //===============================================================
 void LLPrimitive::setTE(const U8 index, const LLTextureEntry& te)
 {
-	if(mTextureList.copyTexture(index, te) != TEM_CHANGE_NONE && te.getBumpmap() > 0)
+	if(mTextureList.copyTexture(index, &te) != TEM_CHANGE_NONE && te.getBumpmap() > 0)
 	{
 		mNumBumpmapTEs++;
 	}
@@ -751,7 +751,7 @@ void LLPrimitive::copyTEs(const LLPrimitive *primitivep)
 	}
 	for (i = 0; i < num_tes; i++)
 	{
-		mTextureList.copyTexture(i, *(primitivep->getTE(i)));
+		mTextureList.copyTexture(i, primitivep->getTE(i));
 	}
 }
 

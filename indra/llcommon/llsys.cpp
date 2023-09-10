@@ -82,7 +82,12 @@ using namespace llsd;
 #	include <sys/sysinfo.h>
 #   include <stdexcept>
 const char MEMINFO_FILE[] = "/proc/meminfo";
+#ifdef __GNU__
 #   include <gnu/libc-version.h>
+#endif
+#elif LL_FREEBSD
+#	include <sys/sysctl.h>
+#	include <sys/utsname.h>
 #endif
 
 LLCPUInfo gSysCPU;
@@ -350,6 +355,7 @@ LLOSInfo::LLOSInfo() :
 	boost::regex os_version_parse(OS_VERSION_MATCH_EXPRESSION);
 	boost::smatch matched;
 
+#ifdef __GNU__
 	std::string glibc_version(gnu_get_libc_version());
 	if ( ll_regex_match(glibc_version, matched, os_version_parse) )
 	{
@@ -408,6 +414,7 @@ LLOSInfo::LLOSInfo() :
 	{
 		LL_WARNS("AppInit") << "glibc version '" << glibc_version << "' cannot be parsed to three numbers; using all zeros" << LL_ENDL;
 	}
+#endif // __GNU__
 
 #else
 	
@@ -432,6 +439,14 @@ LLOSInfo::LLOSInfo() :
 			std::string::size_type idx1 = mOSStringSimple.find_first_of(".", 0);
 			std::string::size_type idx2 = (idx1 != std::string::npos) ? mOSStringSimple.find_first_of(".", idx1+1) : std::string::npos;
 			std::string simple = mOSStringSimple.substr(0, idx2);
+			if (simple.length() > 0)
+				mOSStringSimple = simple;
+		}
+		else if (ostype == "FreeBSD")
+		{
+			// Only care about major and minor FreeBSD versions, truncate at first '-'
+			std::string simple = mOSStringSimple.substr(0,
+					mOSStringSimple.find_first_of("-", 0));
 			if (simple.length() > 0)
 				mOSStringSimple = simple;
 		}
@@ -771,13 +786,17 @@ static U32Kilobytes LLMemoryAdjustKBResult(U32Kilobytes inKB)
 }
 #endif
 
-#if LL_DARWIN
+#if LL_DARWIN || LL_FREEBSD
 // static
 U32Kilobytes LLMemoryInfo::getHardwareMemSize()
 {
     // This might work on Linux as well.  Someone check...
     uint64_t phys = 0;
+#if LL_DARWIN
     int mib[2] = { CTL_HW, HW_MEMSIZE };
+#else
+    int mib[2] = { CTL_HW, HW_PHYSMEM };
+#endif
 
     size_t len = sizeof(phys);
     sysctl(mib, 2, &phys, &len, NULL, 0);
@@ -791,7 +810,7 @@ U32Kilobytes LLMemoryInfo::getPhysicalMemoryKB() const
 #if LL_WINDOWS
 	return LLMemoryAdjustKBResult(U32Kilobytes(mStatsMap["Total Physical KB"].asInteger()));
 
-#elif LL_DARWIN
+#elif LL_DARWIN || LL_FREEBSD
     return getHardwareMemSize();
 
 #elif LL_LINUX

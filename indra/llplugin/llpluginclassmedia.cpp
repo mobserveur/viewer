@@ -33,8 +33,10 @@
 #include "llpluginmessageclasses.h"
 #include "llcontrol.h"
 
+#ifndef LL_USESYSTEMLIBS
 extern LLControlGroup gSavedSettings;
-#if LL_DARWIN
+#endif
+#if LL_DARWIN && !LL_SDL
 extern BOOL gHiDPISupport;
 #endif
 
@@ -368,7 +370,7 @@ void LLPluginClassMedia::setSizeInternal(void)
 		mRequestedMediaHeight = nextPowerOf2(mRequestedMediaHeight);
 	}
 
-#if LL_DARWIN
+#if LL_DARWIN && !LL_SDL
     if (!gHiDPISupport)
 #endif
     {
@@ -934,8 +936,10 @@ void LLPluginClassMedia::setUserDataPath(const std::string &user_data_path_cache
     message.setValue("username", username); // cef shares cache between users but creates user-based contexts
 	message.setValue("cef_log_file", user_data_path_cef_log);
 
+#ifndef LL_USESYSTEMLIBS
 	bool cef_verbose_log = gSavedSettings.getBOOL("CefVerboseLog");
 	message.setValueBoolean("cef_verbose_log", cef_verbose_log);
+#endif
 	sendMessage(message);
 }
 

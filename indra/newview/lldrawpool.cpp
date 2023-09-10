@@ -357,7 +357,9 @@ void LLFacePool::LLOverrideFaceColor::setColor(const LLColor4& color)
 
 void LLFacePool::LLOverrideFaceColor::setColor(const LLColor4U& color)
 {
+#if GL_VERSION_1_1
 	glColor4ubv(color.mV);
+#endif
 }
 
 void LLFacePool::LLOverrideFaceColor::setColor(F32 r, F32 g, F32 b, F32 a)

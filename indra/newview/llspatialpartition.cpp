@@ -1625,7 +1625,9 @@ void renderOctree(LLSpatialGroup* group)
 		
 		{
 			LLGLDepthTest gl_depth(FALSE, FALSE);
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 
 			gGL.diffuseColor4f(1,0,0,group->mBuilt);
 			gGL.flush();
@@ -1727,7 +1729,9 @@ void renderOctree(LLSpatialGroup* group)
 					gGL.popMatrix();
 				}
 			}
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
             gDebugProgram.bind(); // make sure non-rigged variant is bound
 			gGL.diffuseColor4f(1,1,1,1);
 		}
@@ -2392,12 +2396,14 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume, bool wireframe
 			
 			llassert(LLGLSLShader::sCurBoundShader != 0);
 			LLVertexBuffer::unbind();
+#if GL_VERSION_1_1
 			glVertexPointer(3, GL_FLOAT, 16, phys_volume->mHullPoints);
 
             gGL.diffuseColor4fv(color.mV);
 
             gGL.syncMatrices();
 			glDrawElements(GL_TRIANGLES, phys_volume->mNumHullIndices, GL_UNSIGNED_SHORT, phys_volume->mHullIndices);
+#endif
 		}
 		else
 		{
@@ -2589,7 +2595,9 @@ void renderTextureAnim(LLDrawInfo* params)
 
 void renderBatchSize(LLDrawInfo* params)
 {
+#if GL_VERSION_1_1
 	LLGLEnable offset(GL_POLYGON_OFFSET_FILL);
+#endif
 	glPolygonOffset(-1.f, 1.f);
     LLGLSLShader* old_shader = LLGLSLShader::sCurBoundShaderPtr;
     bool bind = false;
@@ -2890,13 +2898,17 @@ void renderRaycast(LLDrawable* drawablep)
 					dir.setSub(end, start);
 
 					gGL.flush();
+#if GL_VERSION_1_1
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);				
+#endif
 
 					{
 						//render face positions
 						LLVertexBuffer::unbind();
 						gGL.diffuseColor4f(0,1,1,0.5f);
+#if GL_VERSION_1_1
 						glVertexPointer(3, GL_FLOAT, sizeof(LLVector4a), face.mPositions);
+#endif
 						gGL.syncMatrices();
 						glDrawElements(GL_TRIANGLES, face.mNumIndices, GL_UNSIGNED_SHORT, face.mIndices);
 					}
@@ -2916,7 +2928,9 @@ void renderRaycast(LLDrawable* drawablep)
 					}
 
 					gGL.popMatrix();		
+#if GL_VERSION_1_1
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 				}
 			}
 		}
@@ -3504,16 +3518,22 @@ void LLSpatialPartition::renderDebug()
 			
 			LLGLEnable blend(GL_BLEND);
 			LLGLDepthTest depth_under(GL_TRUE, GL_FALSE, GL_GREATER);
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 			gGL.diffuseColor4f(0.5f, 0.0f, 0, 0.25f);
 
+#if GL_VERSION_1_1
 			LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
+#endif
 			glPolygonOffset(-1.f, -1.f);
 
 			LLOctreeRenderXRay xray(camera);
 			xray.traverse(mOctree);
 
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 		}
 	}
 	gDebugProgram.unbind();

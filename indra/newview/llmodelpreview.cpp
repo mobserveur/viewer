@@ -3425,9 +3425,13 @@ BOOL LLModelPreview::render()
                     if (edges)
                     {
                         glLineWidth(PREVIEW_EDGE_WIDTH);
+#if GL_VERSION_1_1
                         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
                         buffer->drawRange(LLRender::TRIANGLES, 0, buffer->getNumVerts() - 1, buffer->getNumIndices(), 0);
+#if GL_VERSION_1_1
                         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
                         glLineWidth(1.f);
                     }
                     buffer->unmapBuffer();
@@ -3549,10 +3553,14 @@ BOOL LLModelPreview::render()
 
                                     gGL.diffuseColor4fv(PREVIEW_PSYH_EDGE_COL.mV);
                                     glLineWidth(PREVIEW_PSYH_EDGE_WIDTH);
+#if GL_VERSION_1_1
                                     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
                                     buffer->drawRange(LLRender::TRIANGLES, 0, buffer->getNumVerts() - 1, buffer->getNumIndices(), 0);
 
+#if GL_VERSION_1_1
                                     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
                                     glLineWidth(1.f);
 
                                     buffer->unmapBuffer();
@@ -3566,7 +3574,9 @@ BOOL LLModelPreview::render()
                     if (mHasDegenerate)
                     {
                         glLineWidth(PREVIEW_DEG_EDGE_WIDTH);
+#if GL_VERSION_1_1
                         glPointSize(PREVIEW_DEG_POINT_SIZE);
+#endif
                         gPipeline.enableLightsFullbright();
                         //show degenerate triangles
                         LLGLDepthTest depth(GL_TRUE, GL_TRUE, GL_ALWAYS);
@@ -3635,7 +3645,9 @@ BOOL LLModelPreview::render()
                             gGL.popMatrix();
                         }
                         glLineWidth(1.f);
+#if GL_VERSION_1_1
                         glPointSize(1.f);
+#endif
                         gPipeline.enableLightsPreview();
                         gGL.setSceneBlendType(LLRender::BT_ALPHA);
                     }
@@ -3754,9 +3766,13 @@ BOOL LLModelPreview::render()
                                 gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
                                 gGL.diffuseColor4fv(PREVIEW_EDGE_COL.mV);
                                 glLineWidth(PREVIEW_EDGE_WIDTH);
+#if GL_VERSION_1_1
                                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
                                 buffer->draw(LLRender::TRIANGLES, buffer->getNumIndices(), 0);
+#if GL_VERSION_1_1
                                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
                                 glLineWidth(1.f);
                             }
                         }

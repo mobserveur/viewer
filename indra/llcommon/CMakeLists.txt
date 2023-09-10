@@ -9,7 +9,9 @@ include(Linking)
 include(Boost)
 include(LLSharedLibs)
 include(JsonCpp)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(Copy3rdPartyLibs)
+endif ()
 include(ZLIBNG)
 include(URIPARSER)
 include(Tracy)
@@ -158,6 +160,7 @@ set(llcommon_HEADER_FILES
     lleventdispatcher.h
     lleventfilter.h
     llevents.h
+    lleventtimer.h
     lleventemitter.h
     llexception.h
     llfasttimer.h
@@ -182,12 +185,14 @@ set(llcommon_HEADER_FILES
     llliveappconfig.h
     lllivefile.h
     llmainthreadtask.h
+    llmake.h
     llmd5.h
     llmemory.h
     llmemorystream.h
     llmetrics.h
     llmetricperformancetester.h
     llmortician.h
+    llmutex.h
     llnametable.h
     llpointer.h
     llprofiler.h
@@ -244,7 +249,9 @@ set(llcommon_HEADER_FILES
     llwin32headerslean.h
     llworkerthread.h
     hbxxh.h
+    is_approx_equal_fraction.h
     lockstatic.h
+    mutex.h
     stdtypes.h
     stringize.h
     threadpool.h
@@ -281,7 +288,21 @@ target_link_libraries(
 target_include_directories(llcommon INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(llcommon PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 add_dependencies(llcommon stage_third_party_libs)
+else ()
+	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-deprecated-declarations)
+	if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+		set_source_files_properties(
+			llapp.cpp
+			llsdutil.cpp
+			PROPERTIES COMPILE_FLAGS -Wno-stringop-truncation)
+		set_source_files_properties(llevent.cpp PROPERTIES
+			COMPILE_FLAGS -Wno-nonnull)
+	endif()
+endif ()
+
+include(LibraryInstall)
 
 if (LL_TESTS)
   include(LLAddBuildTest)

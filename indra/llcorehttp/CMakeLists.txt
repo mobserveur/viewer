@@ -3,15 +3,21 @@
 project(llcorehttp)
 
 include(00-Common)
+if (LL_TESTS)
 include(GoogleMock)
+endif ()
 include(CURL)
 include(OpenSSL)
 include(NGHTTP2)
 include(ZLIBNG)
 include(LLCoreHttp)
+if (LL_TESTS)
 include(LLAddBuildTest)
+endif ()
 include(LLCommon)
+if (LL_TESTS)
 include(Tut)
+endif ()
 include(bugsplat)
 
 set(llcorehttp_SOURCE_FILES
@@ -92,6 +98,8 @@ target_include_directories( llcorehttp INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 # Cannot/Should not use target_link_libraries here to add llmessage to the dependencies, as that would
 # lead to circular dependencies (or in case of cmake, the first project declaring it's dependencies wins)
 target_include_directories( llcorehttp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../llmessage)
+
+include(LibraryInstall)
 
 # tests
 set(LLCOREHTTP_TESTS ON CACHE BOOL

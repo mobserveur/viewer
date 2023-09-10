@@ -296,8 +296,10 @@ void LLPostProcess::getShaderUniforms(glslUniforms & uniforms, GLuint & prog)
 void LLPostProcess::doEffects(void)
 {
 	/// Save GL State
+#if GL_VERSION_1_1
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
 	glPushClientAttrib(GL_ALL_ATTRIB_BITS);
+#endif
 
 	/// Copy the screen buffer to the render texture
 	{
@@ -322,15 +324,19 @@ void LLPostProcess::doEffects(void)
 	viewPerspective();	
 
 	/// Reset GL State
+#if GL_VERSION_1_1
 	glPopClientAttrib();
 	glPopAttrib();
+#endif
 	checkError();
 }
 
 void LLPostProcess::copyFrameBuffer(U32 & texture, unsigned int width, unsigned int height)
 {
 	gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, texture);
+#if GL_VERSION_3_1
 	glCopyTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA, 0, 0, width, height, 0);
+#endif
 }
 
 void LLPostProcess::drawOrthoQuad(unsigned int width, unsigned int height, QuadType type)
@@ -371,7 +377,9 @@ void LLPostProcess::createTexture(LLPointer<LLImageGL>& texture, unsigned int wi
 	if(texture->createGLTexture())
 	{
 		gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, texture->getTexName());
+#if GL_VERSION_3_1
 		glTexImage2D(GL_TEXTURE_RECTANGLE, 0, 4, width, height, 0,
+#endif
 			GL_RGBA, GL_UNSIGNED_BYTE, &data[0]);
 		gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_BILINEAR);
 		gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
@@ -406,18 +414,22 @@ bool LLPostProcess::checkError(void)
     while (glErr != GL_NO_ERROR)
     {
 		// shaderErrorLog << (const char *) gluErrorString(glErr) << std::endl;
+#if GLU_VERSION_1_1
 		char const * err_str_raw = (const char *) gluErrorString(glErr);
 
 		if(err_str_raw == NULL)
 		{
+#endif
 			std::ostringstream err_builder;
 			err_builder << "unknown error number " << glErr;
 			mShaderErrorString = err_builder.str();
+#if GLU_VERSION_1_1
 		}
 		else
 		{
 			mShaderErrorString = err_str_raw;
 		}
+#endif
 
         retCode = true;
         glErr = glGetError();

@@ -3,13 +3,19 @@
 project(llmessage)
 
 include(00-Common)
+if (LL_TESTS)
 include(GoogleMock)
 include(LLAddBuildTest)
+endif ()
 include(LLCommon)
 include(LLCoreHttp)
+if (LL_TESTS)
 include(LLAddBuildTest)
+endif ()
 include(Python)
+if (LL_TESTS)
 include(Tut)
+endif ()
 include(Python)
 include(JsonCpp)
 
@@ -130,6 +136,7 @@ set(llmessage_HEADER_FILES
     llmessagebuilder.h
     llmessageconfig.h
     llmessagereader.h
+    llmessagesenderinterface.h
     llmessagetemplate.h
     llmessagetemplateparser.h
     llmessagethrottle.h
@@ -196,6 +203,15 @@ target_link_libraries(
         ll::xmlrpc-epi
 )
 target_include_directories( llmessage  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+		set_source_files_properties(llnamevalue.cpp PROPERTIES
+			COMPILE_FLAGS -Wno-stringop-truncation)
+	endif()
+endif ()
+
+include(LibraryInstall)
 
 # tests
 if (LL_TESTS)

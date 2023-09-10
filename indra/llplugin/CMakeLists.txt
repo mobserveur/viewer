@@ -46,3 +46,4 @@ target_include_directories( llplugin  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries( llplugin llcommon llmath llrender llmessage )
 add_subdirectory(slplugin)
 
+include(LibraryInstall)

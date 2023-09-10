@@ -369,6 +369,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(0)->activate();
 	gGL.getTexUnit(0)->bind(detail_texture0p);
 	
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
@@ -376,6 +377,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	//
 	// Stage 1: Generate alpha ramp for detail0/detail1 transition
@@ -392,12 +394,14 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(2)->enable(LLTexUnit::TT_TEXTURE);
 	gGL.getTexUnit(2)->activate();
 
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	//
 	// Stage 3: Modulate with primary (vertex) color for lighting
@@ -419,12 +423,14 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(0)->activate();
 	gGL.getTexUnit(0)->bind(detail_texture3p);
 
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	//
 	// Stage 1: Generate alpha ramp for detail2/detail3 transition
@@ -445,12 +451,14 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(2)->enable(LLTexUnit::TT_TEXTURE);
 	gGL.getTexUnit(2)->activate();
 
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	//
 	// Stage 3: Generate alpha ramp for detail1/detail2 transition
@@ -485,8 +493,10 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(2)->disable();
 	gGL.getTexUnit(2)->activate();
 	
+#if GL_VERSION_1_1
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
+#endif
 	gGL.matrixMode(LLRender::MM_TEXTURE);
 	gGL.loadIdentity();
 	gGL.matrixMode(LLRender::MM_MODELVIEW);
@@ -509,8 +519,10 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
 	
+#if GL_VERSION_1_1
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
+#endif
 	gGL.matrixMode(LLRender::MM_TEXTURE);
 	gGL.loadIdentity();
 	gGL.matrixMode(LLRender::MM_MODELVIEW);
@@ -544,6 +556,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 	// Stage 0: Render detail 0 into base
 	//
 	gGL.getTexUnit(0)->bind(detail_texture0p);
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
@@ -551,6 +564,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	drawLoop();
 
@@ -562,8 +576,10 @@ void LLDrawPoolTerrain::renderFull2TU()
 	//
 	gGL.getTexUnit(0)->bind(m2DAlphaRampImagep);
 	
+#if GL_VERSION_1_1
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
+#endif
 	
 	//
 	// Stage 1: Write detail1
@@ -572,12 +588,14 @@ void LLDrawPoolTerrain::renderFull2TU()
 	gGL.getTexUnit(1)->enable(LLTexUnit::TT_TEXTURE);
 	gGL.getTexUnit(1)->activate();
 
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	gGL.getTexUnit(0)->activate();
 	{
@@ -605,12 +623,14 @@ void LLDrawPoolTerrain::renderFull2TU()
 	gGL.getTexUnit(1)->enable(LLTexUnit::TT_TEXTURE);
 	gGL.getTexUnit(1)->activate();
 	
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	{
 		LLGLEnable blend(GL_BLEND);
@@ -636,12 +656,14 @@ void LLDrawPoolTerrain::renderFull2TU()
 	gGL.getTexUnit(1)->enable(LLTexUnit::TT_TEXTURE);
 	gGL.getTexUnit(1)->activate();
 
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
+#endif
 
 	gGL.getTexUnit(0)->activate();
 	{
@@ -658,8 +680,10 @@ void LLDrawPoolTerrain::renderFull2TU()
 	gGL.getTexUnit(1)->disable();
 	gGL.getTexUnit(1)->activate();
 
+#if GL_VERSION_1_1
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
+#endif
 	gGL.matrixMode(LLRender::MM_TEXTURE);
 	gGL.loadIdentity();
 	gGL.matrixMode(LLRender::MM_MODELVIEW);
@@ -670,8 +694,10 @@ void LLDrawPoolTerrain::renderFull2TU()
 	gGL.getTexUnit(0)->activate();
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
+#if GL_VERSION_1_1
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
+#endif
 	gGL.matrixMode(LLRender::MM_TEXTURE);
 	gGL.loadIdentity();
 	gGL.matrixMode(LLRender::MM_MODELVIEW);

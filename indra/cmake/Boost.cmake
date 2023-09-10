@@ -8,6 +8,21 @@ if( USE_CONAN )
   target_link_libraries( ll::boost INTERFACE CONAN_PKG::boost )
   target_compile_definitions( ll::boost INTERFACE BOOST_ALLOW_DEPRECATED_HEADERS BOOST_BIND_GLOBAL_PLACEHOLDERS )
   return()
+elseif( NOT USE_AUTOBUILD_3P )
+  find_package( Boost REQUIRED )
+  target_compile_definitions( ll::boost INTERFACE BOOST_BIND_GLOBAL_PLACEHOLDERS )
+  if (DARWIN)
+    set(sfx "-mt")
+  endif()
+  target_link_libraries( ll::boost INTERFACE
+	  boost_context${sfx}
+	  boost_fiber${sfx}
+	  boost_filesystem${sfx}
+	  boost_program_options${sfx}
+	  boost_regex${sfx}
+	  boost_system${sfx}
+	  boost_thread${sfx})
+  return()
 endif()
 
 use_prebuilt_binary(boost)

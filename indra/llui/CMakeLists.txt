@@ -266,6 +266,8 @@ target_link_libraries(llui
         llcommon
     )
 
+include(LibraryInstall)
+
 # Add tests
 if(LL_TESTS)
   include(LLAddBuildTest)

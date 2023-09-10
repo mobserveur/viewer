@@ -27,9 +27,11 @@
 #ifndef LL_LLAPPVIEWERLINUX_H
 #define LL_LLAPPVIEWERLINUX_H
 
+#if LL_GTK
 extern "C" {
 # include <glib.h>
 }
+#endif
 
 #if LL_DBUS_ENABLED
 extern "C" {

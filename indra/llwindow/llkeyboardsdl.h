@@ -28,7 +28,10 @@
 #define LL_LLKEYBOARDSDL_H
 
 #include "llkeyboard.h"
-#include "SDL/SDL.h"
+#if !defined(__i386__) && !defined(__x86_64__)
+#define SDL_DISABLE_IMMINTRIN_H
+#endif
+#include "SDL2/SDL.h"
 
 class LLKeyboardSDL : public LLKeyboard
 {
@@ -36,8 +39,8 @@ public:
 	LLKeyboardSDL();
 	/*virtual*/ ~LLKeyboardSDL() {};
 
-	/*virtual*/ BOOL	handleKeyUp(const U16 key, MASK mask);
-	/*virtual*/ BOOL	handleKeyDown(const U16 key, MASK mask);
+	/*virtual*/ BOOL	handleKeyUp(const U32 key, MASK mask);
+	/*virtual*/ BOOL	handleKeyDown(const U32 key, MASK mask);
 	/*virtual*/ void	resetMaskKeys();
 	/*virtual*/ MASK	currentMask(BOOL for_mouse_event);
 	/*virtual*/ void	scanKeyboard();
@@ -45,11 +48,11 @@ public:
 protected:
 	MASK	updateModifiers(const U32 mask);
 	void	setModifierKeyLevel( KEY key, BOOL new_state );
-	BOOL	translateNumpadKey( const U16 os_key, KEY *translated_key );
-	U16	inverseTranslateNumpadKey(const KEY translated_key);
+	BOOL	translateNumpadKey( const U32 os_key, KEY *translated_key );
+	U32	inverseTranslateNumpadKey(const KEY translated_key);
 private:
-	std::map<U16, KEY> mTranslateNumpadMap;  // special map for translating OS keys to numpad keys
-	std::map<KEY, U16> mInvTranslateNumpadMap; // inverse of the above
+	std::map<U32, KEY> mTranslateNumpadMap;  // special map for translating OS keys to numpad keys
+	std::map<KEY, U32> mInvTranslateNumpadMap; // inverse of the above
 };
 
 #endif

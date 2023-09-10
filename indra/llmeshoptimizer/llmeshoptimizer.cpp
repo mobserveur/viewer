@@ -291,6 +291,9 @@ U64 LLMeshOptimizer::simplifyU32(U32 *destination,
             vertex_positions_stride,
             target_index_count,
             target_error,
+#ifdef LL_USESYSTEMLIBS
+            0,
+#endif
             result_error
             );
     }
@@ -332,6 +335,9 @@ U64 LLMeshOptimizer::simplify(U16 *destination,
             vertex_positions_stride,
             target_index_count,
             target_error,
+#ifdef LL_USESYSTEMLIBS
+            0,
+#endif
             result_error
             );
     }

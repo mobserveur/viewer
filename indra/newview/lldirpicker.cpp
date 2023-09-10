@@ -37,7 +37,7 @@
 #include "llviewercontrol.h"
 #include "llwin32headerslean.h"
 
-#if LL_LINUX || LL_DARWIN
+#if LL_LINUX || LL_DARWIN || LL_FREEBSD
 # include "llfilepicker.h"
 #endif
 
@@ -187,7 +187,7 @@ std::string LLDirPicker::getDirName()
 	return mFilePicker->getFirstFile();
 }
 
-#elif LL_LINUX
+#elif LL_LINUX || LL_FREEBSD
 
 LLDirPicker::LLDirPicker() :
 	mFileName(NULL),

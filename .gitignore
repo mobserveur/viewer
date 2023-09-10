@@ -20,6 +20,7 @@
 CMakeCache.txt
 cmake_install.cmake
 LICENSES
+build/
 build-darwin-*
 build-linux-*
 debian/files

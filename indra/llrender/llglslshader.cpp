@@ -693,10 +693,14 @@ void LLGLSLShader::mapUniform(GLint index, const vector<LLStaticHashedString>* u
         case GL_FLOAT_VEC2: size *= 2; break;
         case GL_FLOAT_VEC3: size *= 3; break;
         case GL_FLOAT_VEC4: size *= 4; break;
+#if GL_VERSION_1_1
         case GL_DOUBLE: size *= 2; break;
+#if GL_VERSION_4_0
         case GL_DOUBLE_VEC2: size *= 2; break;
         case GL_DOUBLE_VEC3: size *= 6; break;
         case GL_DOUBLE_VEC4: size *= 8; break;
+#endif // GL_VERSION_4_0
+#endif // GL_VERSION_1_1
         case GL_INT_VEC2: size *= 2; break;
         case GL_INT_VEC3: size *= 3; break;
         case GL_INT_VEC4: size *= 4; break;
@@ -715,6 +719,7 @@ void LLGLSLShader::mapUniform(GLint index, const vector<LLStaticHashedString>* u
         case GL_FLOAT_MAT3x4: size *= 12; break;
         case GL_FLOAT_MAT4x2: size *= 8; break;
         case GL_FLOAT_MAT4x3: size *= 12; break;
+#if GL_VERSION_4_0
         case GL_DOUBLE_MAT2: size *= 8; break;
         case GL_DOUBLE_MAT3: size *= 18; break;
         case GL_DOUBLE_MAT4: size *= 32; break;
@@ -724,6 +729,7 @@ void LLGLSLShader::mapUniform(GLint index, const vector<LLStaticHashedString>* u
         case GL_DOUBLE_MAT3x4: size *= 24; break;
         case GL_DOUBLE_MAT4x2: size *= 16; break;
         case GL_DOUBLE_MAT4x3: size *= 24; break;
+#endif // GL_VERSION_4_0
         }
         mTotalUniformSize += size;
     }
@@ -798,7 +804,10 @@ GLint LLGLSLShader::mapUniformTextureChannel(GLint location, GLenum type, GLint 
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_SHADER;
 
-    if ((type >= GL_SAMPLER_1D && type <= GL_SAMPLER_2D_RECT_SHADOW) ||
+    if (
+#if GL_VERSION_2_0
+    (type >= GL_SAMPLER_1D && type <= GL_SAMPLER_2D_RECT_SHADOW) ||
+#endif
         type == GL_SAMPLER_2D_MULTISAMPLE ||
         type == GL_SAMPLER_CUBE_MAP_ARRAY)
     {   //this here is a texture

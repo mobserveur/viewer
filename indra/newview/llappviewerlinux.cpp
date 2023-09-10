@@ -120,7 +120,9 @@ bool LLAppViewerLinux::init()
 	// before any mutexes are held, *and* some of our third-party
 	// libraries likes to use glib functions; in short, do this here
 	// really early in app startup!
+#ifndef LL_USESYSTEMLIBS
 	if (!g_thread_supported ()) g_thread_init (NULL);
+#endif
 	
 	bool success = LLAppViewer::init();
 
@@ -328,11 +330,13 @@ void LLAppViewerLinux::initCrashReporting(bool reportFreeze)
 {
 	std::string cmd =gDirUtilp->getExecutableDir();
 	cmd += gDirUtilp->getDirDelimiter();
-#if LL_LINUX
+//#if LL_LINUX
 	cmd += "linux-crash-logger.bin";
+/*
 #else
 # error Unknown platform
 #endif
+*/
 
     std::stringstream pid_str;
     pid_str <<  LLApp::getPid();

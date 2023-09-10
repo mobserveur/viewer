@@ -40,7 +40,7 @@
 #include "llwindowsdl.h" // for some X/GTK utils to help with filepickers
 #endif // LL_SDL
 
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 #include "llhttpconstants.h"    // file picker uses some of thes constants on Linux
 #endif
 
@@ -1093,7 +1093,7 @@ BOOL LLFilePicker::getSaveFileModeless(ESaveFilter filter,
 }
 //END LL_DARWIN
 
-#elif LL_LINUX
+#elif LL_LINUX || LL_FREEBSD
 
 # if LL_GTK
 
@@ -1360,6 +1360,14 @@ static std::string add_save_texture_filter_to_gtkchooser(GtkWindow *picker)
 	return caption;
 }
 
+BOOL LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
+                                                void (*callback)(bool, std::vector<std::string> &, void*),
+                                                void *userdata )
+{
+    LL_ERRS() << "NOT IMPLEMENTED" << LL_ENDL;
+    return FALSE;
+}
+
 BOOL LLFilePicker::getSaveFile( ESaveFilter filter, const std::string& filename, bool blocking )
 {
 	BOOL rtn = FALSE;
@@ -1477,6 +1485,15 @@ BOOL LLFilePicker::getSaveFile( ESaveFilter filter, const std::string& filename,
 	return rtn;
 }
 
+BOOL LLFilePicker::getSaveFileModeless(ESaveFilter filter,
+                                       const std::string& filename,
+                                       void (*callback)(bool, std::string&, void*),
+                                       void *userdata)
+{
+    LL_ERRS() << "NOT IMPLEMENTED" << LL_ENDL;
+    return FALSE;
+}
+
 BOOL LLFilePicker::getOpenFile( ELoadFilter filter, bool blocking )
 {
 	BOOL rtn = FALSE;
@@ -1540,6 +1557,14 @@ BOOL LLFilePicker::getOpenFile( ELoadFilter filter, bool blocking )
 	gViewerWindow->getWindow()->afterDialog();
 
 	return rtn;
+}
+
+BOOL LLFilePicker::getOpenFileModeless(ELoadFilter filter,
+                                       void (*callback)(bool, std::vector<std::string> &, void*),
+                                       void *userdata)
+{
+    LL_ERRS() << "NOT IMPLEMENTED" << LL_ENDL;
+    return FALSE;
 }
 
 BOOL LLFilePicker::getMultipleOpenFiles( ELoadFilter filter, bool blocking)
@@ -1668,13 +1693,13 @@ BOOL LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
 
 #else // not implemented
 
-BOOL LLFilePicker::getSaveFile( ESaveFilter filter, const std::string& filename )
+BOOL LLFilePicker::getSaveFile( ESaveFilter filter, const std::string& filename, bool blocking )
 {
 	reset();	
 	return FALSE;
 }
 
-BOOL LLFilePicker::getOpenFile( ELoadFilter filter )
+BOOL LLFilePicker::getOpenFile( ELoadFilter filter, bool blocking )
 {
 	reset();
 	return FALSE;

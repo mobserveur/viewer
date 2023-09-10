@@ -12,6 +12,9 @@
 	<string name="LinuxLocale">
 		ja_JP.UTF-8
 	</string>
+	<string name="FreeBSDLocale">
+		ja_JP.UTF-8
+	</string>
 	<string name="TimeHour">
 		hour,datetime,slt
 	</string>

@@ -72,7 +72,7 @@ static const std::string HEADLESS_VERSION_STRING("1.0");
 
 llofstream gFailLog;
 
-#if GL_ARB_debug_output
+#if GL_ARB_debug_output || GL_KHR_debug
 
 #ifndef APIENTRY
 #define APIENTRY
@@ -221,6 +221,8 @@ PFNWGLSWAPINTERVALEXTPROC    wglSwapIntervalEXT = nullptr;
 PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = nullptr;
 
 #endif
+
+/*
 
 // GL_VERSION_1_2
 //PFNGLDRAWRANGEELEMENTSPROC  glDrawRangeElements = nullptr;
@@ -966,6 +968,7 @@ PFNGLMULTIDRAWARRAYSINDIRECTCOUNTPROC    glMultiDrawArraysIndirectCount = nullpt
 PFNGLMULTIDRAWELEMENTSINDIRECTCOUNTPROC  glMultiDrawElementsIndirectCount = nullptr;
 PFNGLPOLYGONOFFSETCLAMPPROC              glPolygonOffsetClamp = nullptr;
 
+*/
 #endif
 
 LLGLManager gGLManager;
@@ -1119,6 +1122,7 @@ bool LLGLManager::initGL()
 #endif
 	}
 
+#if GL_VERSION_1_3
 	if (mGLVersion >= 2.1f && LLImageGL::sCompressTextures)
 	{ //use texture compression
 		glHint(GL_TEXTURE_COMPRESSION_HINT, GL_NICEST);
@@ -1127,6 +1131,7 @@ bool LLGLManager::initGL()
 	{ //GL version is < 3.0, always disable texture compression
 		LLImageGL::sCompressTextures = false;
 	}
+#endif
 	
 	// Trailing space necessary to keep "nVidia Corpor_ati_on" cards
 	// from being recognized as ATI.
@@ -1143,7 +1148,7 @@ bool LLGLManager::initGL()
 		mIsNVIDIA = TRUE;
 	}
 	else if (mGLVendor.find("INTEL") != std::string::npos
-#if LL_LINUX
+#if LL_LINUX || LL_FREEBSD
 		 // The Mesa-based drivers put this in the Renderer string,
 		 // not the Vendor string.
 		 || mGLRenderer.find("INTEL") != std::string::npos
@@ -1399,6 +1404,7 @@ void LLGLManager::initExtensions()
 
     mInited = TRUE;
 
+/*
 #if (LL_WINDOWS || LL_LINUX) && !LL_MESA_HEADLESS
 	LL_DEBUGS("RenderInit") << "GL Probe: Getting symbols" << LL_ENDL;
 	
@@ -2239,6 +2245,7 @@ void LLGLManager::initExtensions()
     glPolygonOffsetClamp = (PFNGLPOLYGONOFFSETCLAMPPROC)GLH_EXT_GET_PROC_ADDRESS("glPolygonOffsetClamp");
     
 #endif
+*/
 }
 
 void rotate_quat(LLQuaternion& rotation)
@@ -2265,12 +2272,14 @@ void log_glerror()
 	error = glGetError();
 	while (LL_UNLIKELY(error))
 	{
+#if GLU_VERSION_1_1
 		GLubyte const * gl_error_msg = gluErrorString(error);
 		if (NULL != gl_error_msg)
 		{
 			LL_WARNS() << "GL Error: " << error << " GL Error String: " << gl_error_msg << LL_ENDL ;			
 		}
 		else
+#endif // GLU_VERSION_1_1
 		{
 			// gluErrorString returns NULL for some extensions' error codes.
 			// you'll probably have to grep for the number in glext.h.
@@ -2289,6 +2298,7 @@ void do_assert_glerror()
 	if (LL_UNLIKELY(error))
 	{
 		quit = TRUE;
+#if GLU_VERSION_1_1
 		GLubyte const * gl_error_msg = gluErrorString(error);
 		if (NULL != gl_error_msg)
 		{
@@ -2301,6 +2311,7 @@ void do_assert_glerror()
 			}
 		}
 		else
+#endif // GLU_VERSION_1_1
 		{
 			// gluErrorString returns NULL for some extensions' error codes.
 			// you'll probably have to grep for the number in glext.h.
@@ -2375,8 +2386,13 @@ void LLGLState::initClass()
 	// sStateMap[GL_TEXTURE_2D] = GL_TRUE;
 	
 	//make sure multisample defaults to disabled
+#if GL_EXT_multisample || GL_EXT_multisampled_compatibility
+	sStateMap[GL_MULTISAMPLE_EXT] = GL_FALSE;
+	glDisable(GL_MULTISAMPLE_EXT);
+#else
 	sStateMap[GL_MULTISAMPLE] = GL_FALSE;
 	glDisable(GL_MULTISAMPLE);
+#endif
 }
 
 //static
@@ -2391,6 +2407,7 @@ void LLGLState::restoreGL()
 void LLGLState::resetTextureStates()
 {
 	gGL.flush();
+#if GL_VERSION_1_3
 	GLint maxTextureUnits;
 	
 	glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &maxTextureUnits);
@@ -2400,6 +2417,7 @@ void LLGLState::resetTextureStates()
 		glClientActiveTexture(GL_TEXTURE0+j);
 		j == 0 ? gGL.getTexUnit(j)->enable(LLTexUnit::TT_TEXTURE) : gGL.getTexUnit(j)->disable();
 	}
+#endif
 }
 
 void LLGLState::dumpStates() 

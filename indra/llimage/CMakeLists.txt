@@ -8,9 +8,13 @@ include(LLImage)
 include(JPEG)
 include(LLKDU)
 include(ZLIBNG)
+if (LL_TESTS)
 include(LLAddBuildTest)
+endif ()
 include(bugsplat)
+if (LL_TESTS)
 include(Tut)
+endif ()
 
 set(llimage_SOURCE_FILES
     llimagebmp.cpp
@@ -62,6 +66,14 @@ target_link_libraries(llimage
         ll::libpng
         ll::libjpeg
     )
+
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+		set_source_files_properties(llimageworker.cpp PROPERTIES COMPILE_FLAGS -Wno-int-in-bool-context)
+	endif()
+endif ()
+
+include(LibraryInstall)
 
 # Add tests
 if (LL_TESTS)

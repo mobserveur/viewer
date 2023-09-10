@@ -34,6 +34,7 @@ target_link_libraries( llxml
     )
 target_include_directories( llxml  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
+include(LibraryInstall)
 
 # tests
 

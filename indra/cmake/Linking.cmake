@@ -64,7 +64,7 @@ elseif (WINDOWS)
           dbghelp
           legacy_stdio_definitions
           )
-else()
+elseif (DARWIN)
   include(CMakeFindFrameworks)
   find_library(COREFOUNDATION_LIBRARY CoreFoundation)
   find_library(CARBON_LIBRARY Carbon)

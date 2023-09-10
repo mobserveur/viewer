@@ -7,6 +7,7 @@
 	<string name="MacLocale">fr_FR.UTF-8</string>
 	<string name="DarwinLocale">fr_FR.UTF-8</string>
 	<string name="LinuxLocale">fr_FR.UTF-8</string>
+	<string name="FreeBSDLocale">fr_FR.UTF-8</string>
 	
 	<!-- 
 	datetimeToCodes["wkday"]	= "%a";		// Thu

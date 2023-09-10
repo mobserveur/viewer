@@ -110,7 +110,7 @@ if (WINDOWS)
 endif (WINDOWS)
 
 
-if (LINUX)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   set(CMAKE_SKIP_RPATH TRUE)
 
    # EXTERNAL_TOS
@@ -138,8 +138,11 @@ if (LINUX)
           -pthread
           -Wno-parentheses
           -Wno-deprecated
-          -fvisibility=hidden
   )
+
+  if (NOT BUILD_SHARED_LIBS)
+    add_compile_options(-fvisibility=hidden)
+  endif (NOT BUILD_SHARED_LIBS)
 
   if (ADDRESS_SIZE EQUAL 32)
     add_compile_options(-march=pentium4)
@@ -151,7 +154,7 @@ if (LINUX)
   set(CMAKE_CXX_LINK_FLAGS "-Wl,--no-keep-memory")
 
   set(CMAKE_CXX_FLAGS_DEBUG "-fno-inline ${CMAKE_CXX_FLAGS_DEBUG}")
-endif (LINUX)
+endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 
 
 if (DARWIN)

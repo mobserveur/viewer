@@ -162,15 +162,25 @@ void LLViewerTextureList::doPreloadImages()
 		image->setAddressMode(LLTexUnit::TAM_WRAP);
 		mImagePreloads.insert(image);
 	}
+#if GL_VERSION_1_1
 	image = LLViewerTextureManager::getFetchedTextureFromFile("alpha_gradient.tga", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI, LLViewerTexture::FETCHED_TEXTURE,
 		GL_ALPHA8, GL_ALPHA, IMG_ALPHA_GRAD);
+#else
+	image = LLViewerTextureManager::getFetchedTextureFromFile("alpha_gradient.tga", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI, LLViewerTexture::FETCHED_TEXTURE,
+		GL_ALPHA8_EXT, GL_ALPHA, IMG_ALPHA_GRAD);
+#endif
 	if (image)
 	{
 		image->setAddressMode(LLTexUnit::TAM_CLAMP);
 		mImagePreloads.insert(image);
 	}
+#if GL_VERSION_1_1
 	image = LLViewerTextureManager::getFetchedTextureFromFile("alpha_gradient_2d.j2c", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI, LLViewerTexture::FETCHED_TEXTURE,
 		GL_ALPHA8, GL_ALPHA, IMG_ALPHA_GRAD_2D);
+#else
+	image = LLViewerTextureManager::getFetchedTextureFromFile("alpha_gradient_2d.j2c", FTT_LOCAL_FILE, MIPMAP_YES, LLViewerFetchedTexture::BOOST_UI, LLViewerTexture::FETCHED_TEXTURE,
+		GL_ALPHA8_EXT, GL_ALPHA, IMG_ALPHA_GRAD_2D);
+#endif
 	if (image)
 	{
 		image->setAddressMode(LLTexUnit::TAM_CLAMP);

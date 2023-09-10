@@ -30,5 +30,7 @@ target_link_libraries(llmeshoptimizer
         llmath
         ll::meshoptimizer)
 
+include(LibraryInstall)
+
 # Add tests
 

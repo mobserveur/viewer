@@ -102,3 +102,4 @@ target_link_libraries(llrender
         OpenGL::GLU
         )
 
+include(LibraryInstall)

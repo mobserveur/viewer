@@ -825,8 +825,12 @@ extern PFNGLPOLYGONOFFSETCLAMPPROC              glPolygonOffsetClamp;
 #define GL_GLEXT_PROTOTYPES
 #include "GL/glext.h"
 
+#define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
+#include <OpenGL/gl3.h>
+
 #include "GL/glh_extensions.h"
 
+/*
 // These symbols don't exist on 10.3.9, so they have to be declared weak.  Redeclaring them here fixes the problem.
 // Note that they also must not be called on 10.3.9.  This should be taken care of by a runtime check for the existence of the GL extension.
 #include <AvailabilityMacros.h>
@@ -941,7 +945,7 @@ extern "C" {
 
 
 #ifndef GL_ARB_vertex_buffer_object
-/* GL types for handling large vertex buffer objects */
+// GL types for handling large vertex buffer objects
 typedef intptr_t GLintptr;
 typedef intptr_t GLsizeiptr;
 #endif
@@ -957,7 +961,7 @@ typedef GLboolean (* glIsBufferARBProcPtr) (GLuint buffer);
 typedef void (* glBufferDataARBProcPtr) (GLenum target, GLsizeiptrARB size, const GLvoid *data, GLenum usage);
 typedef void (* glBufferSubDataARBProcPtr) (GLenum target, GLintptrARB offset, GLsizeiptrARB size, const GLvoid *data);
 typedef void (* glGetBufferSubDataARBProcPtr) (GLenum target, GLintptrARB offset, GLsizeiptrARB size, GLvoid *data);
-typedef GLvoid* (* glMapBufferARBProcPtr) (GLenum target, GLenum access);	/* Flawfinder: ignore */
+typedef GLvoid* (* glMapBufferARBProcPtr) (GLenum target, GLenum access);	// Flawfinder: ignore
 typedef GLboolean (* glUnmapBufferARBProcPtr) (GLenum target);
 typedef void (* glGetBufferParameterivARBProcPtr) (GLenum target, GLenum pname, GLint *params);
 typedef void (* glGetBufferPointervARBProcPtr) (GLenum target, GLenum pname, GLvoid* *params);
@@ -973,7 +977,7 @@ extern GLvoid* glMapBufferARB (GLenum, GLenum);
 extern GLboolean glUnmapBufferARB (GLenum);
 extern void glGetBufferParameterivARB (GLenum, GLenum, GLint *);
 extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
-#endif /* GL_GLEXT_FUNCTION_POINTERS */
+#endif // GL_GLEXT_FUNCTION_POINTERS
 #endif
 
 #ifndef GL_ARB_texture_rg
@@ -1020,7 +1024,7 @@ extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
 // extern void glCompressedTexSubImage2D (GLenum, GLint, GLint, GLint, GLsizei, GLsizei, GLenum, GLsizei, const GLvoid*);
 // extern void glCompressedTexSubImage3D (GLenum, GLint, GLint, GLint, GLint, GLsizei, GLsizei, GLsizei, GLenum, GLsizei, const GLvoid*);
 // extern void glGetCompressedTexImage (GLenum, GLint, GLvoid*);
-// #endif /* GL_GLEXT_FUNCTION_POINTERS */
+// #endif // GL_GLEXT_FUNCTION_POINTERS
 // #endif
 
 #ifdef __cplusplus
@@ -1028,6 +1032,7 @@ extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
 #endif
 
 #include <OpenGL/gl.h>
+*/
 
 #endif // LL_MESA / LL_WINDOWS / LL_DARWIN
 

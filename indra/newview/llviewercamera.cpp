@@ -191,6 +191,7 @@ void LLViewerCamera::calcProjection(const F32 far_distance) const
 //static
 void LLViewerCamera::updateFrustumPlanes(LLCamera& camera, BOOL ortho, BOOL zflip, BOOL no_hacks)
 {
+#if GLU_VERSION_1_1
 	GLint* viewport = (GLint*) gGLViewport;
 	F64 model[16];
 	F64 proj[16];
@@ -283,6 +284,7 @@ void LLViewerCamera::updateFrustumPlanes(LLCamera& camera, BOOL ortho, BOOL zfli
 	}
 
 	camera.calcAgentFrustumPlanes(frust);
+#endif // GLU_VERSION_1_1
 }
 
 void LLViewerCamera::setPerspective(BOOL for_selection,
@@ -425,12 +427,14 @@ void LLViewerCamera::projectScreenToPosAgent(const S32 screen_x, const S32 scree
 		proj[i] = (F64) gGLProjection[i];
 	}
 
+#if GLU_VERSION_1_1
 	gluUnProject(
 		GLdouble(screen_x), GLdouble(screen_y), 0.0,
 		mdlv, proj, (GLint*)gGLViewport,
 		&x,
 		&y,
 		&z );
+#endif
 	pos_agent->setVec( (F32)x, (F32)y, (F32)z );
 }
 
@@ -473,6 +477,7 @@ BOOL LLViewerCamera::projectPosAgentToScreen(const LLVector3 &pos_agent, LLCoord
 		proj[i] = (F64) gGLProjection[i];
 	}
 
+#if GLU_VERSION_1_1
 	if (GL_TRUE == gluProject(pos_agent.mV[VX], pos_agent.mV[VY], pos_agent.mV[VZ],
 								mdlv, proj, (GLint*)viewport,
 								&x, &y, &z))
@@ -549,6 +554,7 @@ BOOL LLViewerCamera::projectPosAgentToScreen(const LLVector3 &pos_agent, LLCoord
 		}
 	}
 	else
+#endif // GLU_VERSION_1_1
 	{
 		return FALSE;
 	}
@@ -560,6 +566,7 @@ BOOL LLViewerCamera::projectPosAgentToScreen(const LLVector3 &pos_agent, LLCoord
 BOOL LLViewerCamera::projectPosAgentToScreenEdge(const LLVector3 &pos_agent,
 												LLCoordGL &out_point) const
 {
+#if GLU_VERSION_1_1
 	LLVector3 dir_to_point = pos_agent - getOrigin();
 	dir_to_point /= dir_to_point.magVec();
 
@@ -706,6 +713,7 @@ BOOL LLViewerCamera::projectPosAgentToScreenEdge(const LLVector3 &pos_agent,
 		out_point.mY = int_y + world_rect.mBottom;
 		return TRUE;
 	}
+#endif // GLU_VERSION_1_1
 	return FALSE;
 }
 

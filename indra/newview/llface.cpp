@@ -548,15 +548,21 @@ void LLFace::renderSelected(LLViewerTexture *imagep, const LLColor4& color)
 					gGL.multMatrix((F32*) volume->getRelativeXform().mMatrix);
 					const LLVolumeFace& vol_face = rigged->getVolumeFace(getTEOffset());
 					LLVertexBuffer::unbind();
+#if GL_VERSION_1_1
 					glVertexPointer(3, GL_FLOAT, 16, vol_face.mPositions);
+#endif
 					if (vol_face.mTexCoords)
 					{
+#if GL_VERSION_1_1
 						glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 						glTexCoordPointer(2, GL_FLOAT, 8, vol_face.mTexCoords);
+#endif
 					}
 					gGL.syncMatrices();
 					glDrawElements(GL_TRIANGLES, vol_face.mNumIndices, GL_UNSIGNED_SHORT, vol_face.mIndices);
+#if GL_VERSION_1_1
 					glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#endif
 				}
 			}
 #endif
@@ -636,10 +642,14 @@ void LLFace::renderOneWireframe(const LLColor4 &color, F32 fogCfx, bool wirefram
             glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
         }
 
+#if GL_VERSION_1_1
         LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
+#endif
         glPolygonOffset(3.f, 3.f);
         glLineWidth(5.f);
+#if GL_VERSION_1_1
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
         renderFace(mDrawablep, this);
     }
 }
@@ -839,7 +849,7 @@ BOOL LLFace::genVolumeBBoxes(const LLVolume &volume, S32 f,
 		//VECTORIZE THIS
 		LLMatrix4a mat_vert;
 		mat_vert.loadu(mat_vert_in);
-        LLVector4a new_extents[2];
+        //LLVector4a new_extents[2];
 
 		llassert(less_than_max_mag(face.mExtents[0]));
 		llassert(less_than_max_mag(face.mExtents[1]));

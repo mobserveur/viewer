@@ -29,6 +29,7 @@
 #include <cassert>
 #include <cfloat>
 #include <climits>
+#include <cstddef>
 #include <limits>
 #include <type_traits>
 
@@ -71,7 +72,7 @@ typedef unsigned __int64		U64;
 #else
 typedef long long int			S64;
 typedef long long unsigned int		U64;
-#if LL_DARWIN || LL_LINUX
+#if LL_DARWIN || LL_LINUX || LL_FREEBSD
 #define S64L(a)				(a##LL)
 #define U64L(a)				(a##ULL)
 #endif
@@ -111,6 +112,10 @@ typedef U32				TPACKETID;
 
 #ifndef FALSE
 #define FALSE			(0)
+#endif
+
+#if LL_FREEBSD
+#undef NULL
 #endif
 
 #ifndef NULL

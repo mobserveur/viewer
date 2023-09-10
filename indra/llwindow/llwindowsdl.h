@@ -32,12 +32,15 @@
 #include "llwindow.h"
 #include "lltimer.h"
 
-#include "SDL/SDL.h"
-#include "SDL/SDL_endian.h"
+#if !defined(__i386__) && !defined(__x86_64__)
+#define SDL_DISABLE_IMMINTRIN_H
+#endif
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_endian.h"
 
 #if LL_X11
 // get X11-specific headers for use in low-level stuff like copy-and-paste support
-#include "SDL/SDL_syswm.h"
+#include "SDL2/SDL_syswm.h"
 #endif
 
 // AssertMacros.h does bad things.
@@ -66,6 +69,10 @@ public:
 	/*virtual*/ BOOL setSizeImpl(LLCoordScreen size);
 	/*virtual*/ BOOL setSizeImpl(LLCoordWindow size);
 	/*virtual*/ BOOL switchContext(BOOL fullscreen, const LLCoordScreen &size, BOOL disable_vsync, const LLCoordScreen * const posp = NULL);
+	/*virtual*/ void *createSharedContext();
+	/*virtual*/ void makeContextCurrent(void* context);
+	/*virtual*/ void destroySharedContext(void* context);
+	/*virtual*/ void toggleVSync(bool enable_vsync);
 	/*virtual*/ BOOL setCursorPosition(LLCoordWindow position);
 	/*virtual*/ BOOL getCursorPosition(LLCoordWindow *position);
 	/*virtual*/ void showCursor();
@@ -177,7 +184,7 @@ protected:
 	void destroyContext();
 	void setupFailure(const std::string& text, const std::string& caption, U32 type);
 	void fixWindowSize(void);
-	U32 SDLCheckGrabbyKeys(SDLKey keysym, BOOL gain);
+	U32 SDLCheckGrabbyKeys(SDL_Keycode keysym, BOOL gain);
 	BOOL SDLReallyCaptureInput(BOOL capture);
 
 	//
@@ -185,7 +192,7 @@ protected:
 	//
 	U32             mGrabbyKeyFlags;
 	int			mReallyCapturedCount;
-	SDL_Surface *	mWindow;
+	SDL_Window *	mWindow;
 	std::string mWindowTitle;
 	double		mOriginalAspectRatio;
 	BOOL		mNeedsResize;		// Constructor figured out the window is too big, it needs a resize.
@@ -211,7 +218,7 @@ private:
 	
 	U32 mKeyScanCode;
         U32 mKeyVirtualKey;
-	SDLMod mKeyModifiers;
+	Uint16 mKeyModifiers;
 };
 
 

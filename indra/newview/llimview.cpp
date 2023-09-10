@@ -24,6 +24,8 @@
  * $/LicenseInfo$
  */
 
+#include <array>
+
 #include "llviewerprecompiledheaders.h"
 
 #include "llimview.h"

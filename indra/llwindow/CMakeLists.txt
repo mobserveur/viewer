@@ -51,7 +51,7 @@ set(llwindow_LINK_LIBRARIES
         llcommon
         llimage
         llmath
-        llrender
+        #llrender
         llfilesystem
         llxml
         ll::glh_linear
@@ -59,9 +59,12 @@ set(llwindow_LINK_LIBRARIES
         ll::uilibraries
         ll::SDL
         )
+
+include_directories(${CMAKE_SOURCE_DIR}/llrender)
+
 # Libraries on which this library depends, needed for Linux builds
 # Sort by high-level to low-level
-if (LINUX)
+if (USESYSTEMLIBS)
   list(APPEND viewer_SOURCE_FILES 
        llkeyboardsdl.cpp 
        llwindowsdl.cpp
@@ -84,9 +87,9 @@ if (LINUX)
         )
   endif (BUILD_HEADLESS)
 
-endif (LINUX)
+endif (USESYSTEMLIBS)
 
-if (DARWIN)
+if (DARWIN AND (NOT USESYSTEMLIBS))
   list(APPEND llwindow_SOURCE_FILES
     llkeyboardmacosx.cpp
     llwindowmacosx.cpp
@@ -108,7 +111,7 @@ if (DARWIN)
       PROPERTIES
       COMPILE_FLAGS "-Wno-deprecated-declarations -fpascal-strings"
       )
-endif (DARWIN)
+endif (DARWIN AND (NOT USESYSTEMLIBS))
 
 
 if (WINDOWS)
@@ -180,8 +183,10 @@ endif (SDL_FOUND)
   target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
   target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
   
-if (DARWIN)
+if (DARWIN AND (NOT USESYSTEMLIBS))
   include(CMakeFindFrameworks)
   find_library(CARBON_LIBRARY Carbon)
   target_link_libraries(llwindow ${CARBON_LIBRARY})
-endif (DARWIN)
+endif (DARWIN AND (NOT USESYSTEMLIBS))
+
+include(LibraryInstall)

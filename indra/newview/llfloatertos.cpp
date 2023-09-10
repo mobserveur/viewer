@@ -96,6 +96,8 @@ BOOL LLFloaterTOS::postBuild()
 			external_prompt->setVisible(true);
 
 		web_browser->setVisible(false);
+
+		updateAgreeEnabled(true);
 #else
 		web_browser->addObserver(this);
 

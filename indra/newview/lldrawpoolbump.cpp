@@ -1047,7 +1047,11 @@ void LLBumpImageList::onSourceLoaded( BOOL success, LLViewerTexture *src_vi, LLI
 
 			if (!LLPipeline::sRenderDeferred)
 			{
+#if GL_VERSION_1_1
 				bump->setExplicitFormat(GL_ALPHA8, GL_ALPHA);
+#else
+				bump->setExplicitFormat(GL_ALPHA8_EXT, GL_ALPHA);
+#endif
 
 #if LL_BUMPLIST_MULTITHREADED
                 auto tex_queue = LLImageGLThread::sEnabledTextures ? sTexUpdateQueue.lock() : nullptr;

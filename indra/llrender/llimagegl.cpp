@@ -271,23 +271,31 @@ S32 LLImageGL::dataFormatBits(S32 dataformat)
 {
     switch (dataformat)
     {
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1
     case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:	        return 4;
-    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:    return 4;
     case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:	        return 8;
-    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT:    return 8;
     case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:	        return 8;
+#endif
+#if GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
+    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:    return 4;
+    case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT:    return 8;
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT:    return 8;
+#endif
     case GL_LUMINANCE:						        return 8;
     case GL_ALPHA:							        return 8;
     case GL_RED:                                    return 8;
+#if GL_VERSION_1_1
     case GL_COLOR_INDEX:						    return 8;
+#endif
     case GL_LUMINANCE_ALPHA:					    return 16;
     case GL_RGB:								    return 24;
     case GL_SRGB:								    return 24;
     case GL_RGB8:								    return 24;
     case GL_RGBA:								    return 32;
+#if GL_VERSION_2_1
     case GL_SRGB_ALPHA:						        return 32;
     case GL_BGRA:								    return 32;		// Used for QuickTime media textures on the Mac
+#endif
     case GL_DEPTH_COMPONENT:                        return 24;
     default:
         LL_ERRS() << "LLImageGL::Unknown format: " << dataformat << LL_ENDL;
@@ -300,6 +308,8 @@ S32 LLImageGL::dataFormatBytes(S32 dataformat, S32 width, S32 height)
 {
     switch (dataformat)
     {
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1 \
+	    || GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
     case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
@@ -309,6 +319,7 @@ S32 LLImageGL::dataFormatBytes(S32 dataformat, S32 width, S32 height)
         if (width < 4) width = 4;
         if (height < 4) height = 4;
         break;
+#endif
     default:
         break;
     }
@@ -322,22 +333,30 @@ S32 LLImageGL::dataFormatComponents(S32 dataformat)
 {
 	switch (dataformat)
 	{
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1
 	  case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:	return 3;
-	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: return 3;
 	  case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:	return 4;
-	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: return 4;
 	  case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:	return 4;
+#endif
+#if GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
+	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: return 3;
+	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: return 4;
 	  case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: return 4;
+#endif
 	  case GL_LUMINANCE:						return 1;
 	  case GL_ALPHA:							return 1;
       case GL_RED:                              return 1;
+#if GL_VERSION_1_1
 	  case GL_COLOR_INDEX:						return 1;
+#endif
 	  case GL_LUMINANCE_ALPHA:					return 2;
 	  case GL_RGB:								return 3;
 	  case GL_SRGB:								return 3;
 	  case GL_RGBA:								return 4;
+#if GL_VERSION_2_1
 	  case GL_SRGB_ALPHA:						return 4;
 	  case GL_BGRA:								return 4;		// Used for QuickTime media textures on the Mac
+#endif
 	  default:
 		LL_ERRS() << "LLImageGL::Unknown format: " << dataformat << LL_ENDL;
 		return 0;
@@ -791,11 +810,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 				}
 				else
 				{
+#if GL_VERSION_1_1
 					if(mFormatSwapBytes)
 					{
 						glPixelStorei(GL_UNPACK_SWAP_BYTES, 1);
 						stop_glerror();
 					}
+#endif
 						
 					LLImageGL::setManualImage(mTarget, gl_level, mFormatInternal, w, h, mFormatPrimary, GL_UNSIGNED_BYTE, (GLvoid*)data_in, mAllowCompression);
 					if (gl_level == 0)
@@ -804,11 +825,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 					}
 					updatePickMask(w, h, data_in);
 
+#if GL_VERSION_1_1
 					if(mFormatSwapBytes)
 					{
 						glPixelStorei(GL_UNPACK_SWAP_BYTES, 0);
 						stop_glerror();
 					}
+#endif
 						
 					stop_glerror();
 				}
@@ -821,11 +844,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 			{
 				stop_glerror();
 				{
+#if GL_VERSION_1_1
 					if(mFormatSwapBytes)
 					{
 						glPixelStorei(GL_UNPACK_SWAP_BYTES, 1);
 						stop_glerror();
 					}
+#endif
 
 					S32 w = getWidth(mCurrentDiscardLevel);
 					S32 h = getHeight(mCurrentDiscardLevel);
@@ -835,10 +860,12 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 					//use legacy mipmap generation mode (note: making this condional can cause rendering issues)
 					// -- but making it not conditional triggers deprecation warnings when core profile is enabled
 					//		(some rendering issues while core profile is enabled are acceptable at this point in time)
+#if GL_VERSION_1_4
 					if (!LLRender::sGLCoreProfile)
 					{
 						glTexParameteri(mTarget, GL_GENERATE_MIPMAP, GL_TRUE);
 					}
+#endif
 
                     LLImageGL::setManualImage(mTarget, 0, mFormatInternal,
 								 w, h, 
@@ -849,11 +876,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 
 					updatePickMask(w, h, data_in);
 
+#if GL_VERSION_1_1
 					if(mFormatSwapBytes)
 					{
 						glPixelStorei(GL_UNPACK_SWAP_BYTES, 0);
 						stop_glerror();
 					}
+#endif
 
 					if (LLRender::sGLCoreProfile)
 					{
@@ -938,11 +967,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 					llassert(w > 0 && h > 0 && cur_mip_data);
 					(void)cur_mip_data;
 					{
+#if GL_VERSION_1_1
 						if(mFormatSwapBytes)
 						{
 							glPixelStorei(GL_UNPACK_SWAP_BYTES, 1);
 							stop_glerror();
 						}
+#endif
 
                         LLImageGL::setManualImage(mTarget, m, mFormatInternal, w, h, mFormatPrimary, mFormatType, cur_mip_data, mAllowCompression);
 						if (m == 0)
@@ -955,11 +986,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 							updatePickMask(w, h, cur_mip_data);
 						}
 
+#if GL_VERSION_1_1
 						if(mFormatSwapBytes)
 						{
 							glPixelStorei(GL_UNPACK_SWAP_BYTES, 0);
 							stop_glerror();
 						}
+#endif
 					}
 					if (prev_mip_data && prev_mip_data != data_in)
 					{
@@ -994,11 +1027,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 		}
 		else
 		{
+#if GL_VERSION_1_1
 			if(mFormatSwapBytes)
 			{
 				glPixelStorei(GL_UNPACK_SWAP_BYTES, 1);
 				stop_glerror();
 			}
+#endif
 
 			LLImageGL::setManualImage(mTarget, 0, mFormatInternal, w, h,
 						 mFormatPrimary, mFormatType, (GLvoid *)data_in, mAllowCompression);
@@ -1008,11 +1043,13 @@ BOOL LLImageGL::setImage(const U8* data_in, BOOL data_hasmips /* = FALSE */, S32
 
 			stop_glerror();
 
+#if GL_VERSION_1_1
 			if(mFormatSwapBytes)
 			{
 				glPixelStorei(GL_UNPACK_SWAP_BYTES, 0);
 				stop_glerror();
 			}
+#endif
 
 		}
 	}
@@ -1057,13 +1094,17 @@ BOOL LLImageGL::preAddToAtlas(S32 discard_level, const LLImageRaw* raw_image)
         {
             case 1:
                 // Use luminance alpha (for fonts)
+#if GL_VERSION_1_1
                 mFormatInternal = GL_LUMINANCE8;
+#endif
                 mFormatPrimary  = GL_LUMINANCE;
                 mFormatType     = GL_UNSIGNED_BYTE;
                 break;
             case 2:
                 // Use luminance alpha (for fonts)
+#if GL_VERSION_1_1
                 mFormatInternal = GL_LUMINANCE8_ALPHA8;
+#endif
                 mFormatPrimary  = GL_LUMINANCE_ALPHA;
                 mFormatType     = GL_UNSIGNED_BYTE;
                 break;
@@ -1091,22 +1132,26 @@ BOOL LLImageGL::preAddToAtlas(S32 discard_level, const LLImageRaw* raw_image)
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, raw_image->getWidth());
 	stop_glerror();
 
+#if GL_VERSION_1_1
 	if(mFormatSwapBytes)
 	{
 		glPixelStorei(GL_UNPACK_SWAP_BYTES, 1);
 		stop_glerror();
 	}
+#endif
 
 	return TRUE ;
 }
 
 void LLImageGL::postAddToAtlas()
 {
+#if GL_VERSION_1_1
 	if(mFormatSwapBytes)
 	{
 		glPixelStorei(GL_UNPACK_SWAP_BYTES, 0);
 		stop_glerror();
 	}
+#endif
 
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 	gGL.getTexUnit(0)->setTextureFilteringOption(mFilterOption);	
@@ -1235,11 +1280,13 @@ BOOL LLImageGL::setSubImage(const U8* datap, S32 data_width, S32 data_height, S3
 		glPixelStorei(GL_UNPACK_ROW_LENGTH, data_width);
 		stop_glerror();
 
+#if GL_VERSION_1_1
 		if(mFormatSwapBytes)
 		{
 			glPixelStorei(GL_UNPACK_SWAP_BYTES, 1);
 			stop_glerror();
 		}
+#endif
 
 		const U8* sub_datap = datap + (y_pos * data_width + x_pos) * getComponents();
 		// Update the GL texture
@@ -1263,11 +1310,13 @@ BOOL LLImageGL::setSubImage(const U8* datap, S32 data_width, S32 data_height, S3
 		gGL.getTexUnit(0)->disable();
 		stop_glerror();
 
+#if GL_VERSION_1_1
 		if(mFormatSwapBytes)
 		{
 			glPixelStorei(GL_UNPACK_SWAP_BYTES, 0);
 			stop_glerror();
 		}
+#endif
 
 		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 		stop_glerror();
@@ -1432,35 +1481,57 @@ void LLImageGL::setManualImage(U32 target, S32 miplevel, S32 intformat, S32 widt
         {
         case GL_RGB:
         case GL_RGB8:
+#if GL_VERSION_1_3
             intformat = GL_COMPRESSED_RGB;
+#endif
             break;
         case GL_SRGB:
         case GL_SRGB8:
+#if GL_VERSION_2_1
             intformat = GL_COMPRESSED_SRGB;
+#endif
             break;
         case GL_RGBA:
         case GL_RGBA8:
+#if GL_VERSION_1_3
             intformat = GL_COMPRESSED_RGBA;
+#endif
             break;
-        case GL_SRGB_ALPHA:
         case GL_SRGB8_ALPHA8:
+#if GL_VERSION_2_1
+        case GL_SRGB_ALPHA:
             intformat = GL_COMPRESSED_SRGB_ALPHA;
+#endif
             break;
         case GL_LUMINANCE:
+#if GL_VERSION_1_1
         case GL_LUMINANCE8:
+#endif
+#if GL_VERSION_1_3
             intformat = GL_COMPRESSED_LUMINANCE;
+#endif
             break;
         case GL_LUMINANCE_ALPHA:
+#if GL_VERSION_1_1
         case GL_LUMINANCE8_ALPHA8:
+#endif
+#if GL_VERSION_1_3
             intformat = GL_COMPRESSED_LUMINANCE_ALPHA;
+#endif
             break;
         case GL_ALPHA:
+#if GL_VERSION_1_1
         case GL_ALPHA8:
+#endif
+#if GL_VERSION_1_3
             intformat = GL_COMPRESSED_ALPHA;
+#endif
             break;
         case GL_RED:
         case GL_R8:
+#if GL_VERSION_3_0
             intformat = GL_COMPRESSED_RED;
+#endif
             break;
         default:
             LL_WARNS() << "Could not compress format: " << std::hex << intformat << LL_ENDL;
@@ -1599,13 +1670,21 @@ BOOL LLImageGL::createGLTexture(S32 discard_level, const LLImageRaw* imageraw, S
         {
         case 1:
             // Use luminance alpha (for fonts)
+#if GL_VERSION_1_1
             mFormatInternal = GL_LUMINANCE8;
+#else
+            mFormatInternal = GL_LUMINANCE;
+#endif
             mFormatPrimary = GL_LUMINANCE;
             mFormatType = GL_UNSIGNED_BYTE;
             break;
         case 2:
             // Use luminance alpha (for fonts)
+#if GL_VERSION_1_1
             mFormatInternal = GL_LUMINANCE8_ALPHA8;
+#else
+            mFormatInternal = GL_LUMINANCE_ALPHA;
+#endif
             mFormatPrimary = GL_LUMINANCE_ALPHA;
             mFormatType = GL_UNSIGNED_BYTE;
             break;
@@ -1887,6 +1966,7 @@ BOOL LLImageGL::readBackRaw(S32 discard_level, LLImageRaw* imageraw, bool compre
 	}
 	//-----------------------------------------------------------------------------------------------
 
+#if GL_VERSION_1_3
 	if (is_compressed)
 	{
 		LLGLint glbytes;
@@ -1913,6 +1993,7 @@ BOOL LLImageGL::readBackRaw(S32 discard_level, LLImageRaw* imageraw, bool compre
 		glGetTexImage(GL_TEXTURE_2D, gl_discard, mFormatPrimary, mFormatType, (GLvoid*)(imageraw->getData()));		
 		//stop_glerror();
 	}
+#endif // GL_VERSION_1_3
 		
 	//-----------------------------------------------------------------------------------------------
 	if((error = glGetError()) != GL_NO_ERROR)
@@ -2001,11 +2082,13 @@ BOOL LLImageGL::getIsResident(BOOL test_now)
 {
 	if (test_now)
 	{
+#if GL_VERSION_1_1
 		if (mTexName != 0)
 		{
 			glAreTexturesResident(1, (GLuint*)&mTexName, &mIsResident);
 		}
 		else
+#endif
 		{
 			mIsResident = FALSE;
 		}
@@ -2135,12 +2218,16 @@ void LLImageGL::calcAlphaChannelOffsetAndStride()
         mIsMask = FALSE;
         return; //no alpha channel.
     case GL_RGBA:
+#if GL_VERSION_2_1
     case GL_SRGB_ALPHA:
+#endif
         mAlphaStride = 4;
         break;
+#if GL_EXT_bgra
     case GL_BGRA_EXT:
         mAlphaStride = 4;
         break;
+#endif
     default:
         break;
     }
@@ -2150,6 +2237,7 @@ void LLImageGL::calcAlphaChannelOffsetAndStride()
 	{
 		mAlphaOffset = mAlphaStride - 1 ;
 	}
+#if GL_VERSION_1_2
 	else if(is_little_endian())
 	{
 		if (mFormatType == GL_UNSIGNED_INT_8_8_8_8)
@@ -2172,10 +2260,15 @@ void LLImageGL::calcAlphaChannelOffsetAndStride()
 			mAlphaOffset = 0 ;
 		}
 	}
+#endif // GL_VERSION_1_2
 
 	if( mAlphaStride < 1 || //unsupported format
-		mAlphaOffset < 0 || //unsupported type
-		(mFormatPrimary == GL_BGRA_EXT && mFormatType != GL_UNSIGNED_BYTE)) //unknown situation
+		mAlphaOffset < 0 //unsupported type
+#if GL_EXT_bgra
+		||
+		(mFormatPrimary == GL_BGRA_EXT && mFormatType != GL_UNSIGNED_BYTE) //unknown situation
+#endif
+	  )
 	{
 		LL_WARNS() << "Cannot analyze alpha for image with format type " << std::hex << mFormatType << std::dec << LL_ENDL;
 
@@ -2347,7 +2440,10 @@ void LLImageGL::updatePickMask(S32 width, S32 height, const U8* data_in)
 
     if (mFormatType != GL_UNSIGNED_BYTE ||
         ((mFormatPrimary != GL_RGBA)
-      && (mFormatPrimary != GL_SRGB_ALPHA)))
+#if GL_VERSION_2_1
+      && (mFormatPrimary != GL_SRGB_ALPHA)
+#endif
+      ))
     {
         //cannot generate a pick mask for this texture
         return;

@@ -2,7 +2,9 @@
 include(Prebuilt)
 
 include_guard()
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 use_prebuilt_binary(dictionaries)
+endif ()
 
 add_library( ll::hunspell INTERFACE IMPORTED )
 use_system_binary(hunspell)

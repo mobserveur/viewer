@@ -56,7 +56,11 @@
 #include "mikktspace/mikktspace.h"
 #include "mikktspace/mikktspace.c" // insert mikktspace implementation into llvolume object file
 
+#if LL_USESYSTEMLIBS
+#include <meshoptimizer.h>
+#else
 #include "meshoptimizer/meshoptimizer.h"
+#endif
 
 #define DEBUG_SILHOUETTE_BINORMALS 0
 #define DEBUG_SILHOUETTE_NORMALS 0 // TomY: Use this to display normals using the silhouette

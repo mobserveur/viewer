@@ -86,7 +86,7 @@ private:
 		: mWidth(0)
 		{}
 		
-		LLButton* mButton;
+		LLButton* mButton = nullptr;
 		std::string mURL;
 		U32 mURLExternal;
 		S32 mWidth;

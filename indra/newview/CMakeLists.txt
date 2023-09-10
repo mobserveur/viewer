@@ -9,20 +9,28 @@ include(Linking)
 
 include(Boost)
 include(bugsplat)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(BuildPackagesInfo)
+endif ()
 include(BuildVersion)
 include(CMakeCopyIfDifferent)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(CubemapToEquirectangularJS)
 include(DBusGlib)
+endif ()
 include(DragDrop)
 include(EXPAT)
 include(FMODSTUDIO)
 include(Hunspell)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(JPEGEncoderBasic)
+endif ()
 include(JsonCpp)
 include(LLAppearance)
 include(LLAudio)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(LLCA)
+endif ()
 include(LLCommon)
 include(LLCoreHttp)
 include(LLImage)
@@ -37,18 +45,24 @@ include(OpenGL)
 include(OpenSSL)
 include(PNG)
 include(TemplateCheck)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(ThreeJS)
+endif ()
 include(Tracy)
 include(UI)
 include(ViewerMiscLibs)
+if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(ViewerManager)
+endif ()
 include(VisualLeakDetector)
 include(VulkanGltf)
 include(ZLIBNG)
 include(URIPARSER)
 include(LLPrimitive)
+include(LibVLCPlugin)
+include(UnixInstall)
 
-if (NOT HAVOK_TPV)
+if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
    # When using HAVOK_TPV, the library is precompiled, so no need for this
 
    # Stub and probably havok lib itself is a hack, autobuild loads a 3p that really is a source tarball
@@ -69,7 +83,7 @@ if (NOT HAVOK_TPV)
         target_compile_options( llphysicsextensions  PRIVATE -Wno-unused-local-typedef)
       endif (DARWIN)
    endif()
-endif (NOT HAVOK_TPV)
+endif ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
 
 
 set(viewer_SOURCE_FILES
@@ -1373,12 +1387,15 @@ set_source_files_properties(
    )
 
 if (DARWIN)
+  if (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx.cpp)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.mm)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.h)
+  endif (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llfilepicker_mac.mm)
   LIST(APPEND viewer_HEADER_FILES llfilepicker_mac.h)
 
+  if (NOT USESYSTEMLIBS)
   # This should be compiled with the viewer.
   LIST(APPEND viewer_SOURCE_FILES llappdelegate-objc.mm)
   set_source_files_properties(
@@ -1393,6 +1410,7 @@ if (DARWIN)
     # warnings.
     COMPILE_FLAGS "-fmodules -fcxx-modules -Wno-nullability-completeness"
     )
+  endif (NOT USESYSTEMLIBS)
 
   # Add resource files to the project.
   set(viewer_RESOURCE_FILES
@@ -1412,17 +1430,19 @@ if (DARWIN)
   list(APPEND viewer_SOURCE_FILES ${viewer_RESOURCE_FILES})
 endif (DARWIN)
 
-if (LINUX)
+if (USESYSTEMLIBS)
     LIST(APPEND viewer_SOURCE_FILES llappviewerlinux.cpp)
     set_source_files_properties(
       llappviewerlinux.cpp
       PROPERTIES
       COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}"
       )
-    LIST(APPEND viewer_SOURCE_FILES llappviewerlinux_api_dbus.cpp)
+    #LIST(APPEND viewer_SOURCE_FILES llappviewerlinux_api_dbus.cpp)
+    if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "AppleClang"))
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
+    endif ()
 
-endif (LINUX)
+endif (USESYSTEMLIBS)
 
 if (WINDOWS)
     list(APPEND viewer_SOURCE_FILES
@@ -1623,6 +1643,10 @@ set(viewer_APPSETTINGS_FILES
     featuretable.txt
     featuretable_mac.txt
     )
+
+if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
+	list(REMOVE_ITEM viewer_APPSETTINGS_FILES packages-info.txt)
+endif ()
 
 source_group("App Settings" FILES ${viewer_APPSETTINGS_FILES})
 
@@ -1918,6 +1942,8 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ${LLPHYSICSEXTENSIONS_LIBRARIES}
         ll::bugsplat
         ll::tracy
+        ll::libvlc
+        ll::fontconfig
         )
 
 if( TARGET ll::intel_memops )
@@ -1930,6 +1956,23 @@ endif()
 
 set(ARTWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH
     "Path to artwork files.")
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	set_source_files_properties(llappviewerlinux.cpp PROPERTIES
+		COMPILE_FLAGS -Wno-dangling-gsl
+	)
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+	set_source_files_properties(
+		llface.cpp
+		llhttpretrypolicy.cpp
+		llpanelface.cpp
+		lltexturefetch.cpp
+		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
+	set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
+		-Wno-stringop-truncation)
+endif ()
+
+if (NOT USESYSTEMLIBS)
 
 if (LINUX)
   set(product SecondLife-${ARCH}-${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION})
@@ -2008,6 +2051,8 @@ if (LINUX)
   endif (PACKAGE)
 endif (LINUX)
 
+endif (NOT USESYSTEMLIBS)
+
 if (DARWIN)
   # These all get set with PROPERTIES. It's not that the property names are
   # magically known to CMake -- it's that these names are referenced in the
@@ -2016,12 +2061,12 @@ if (DARWIN)
   set(MACOSX_EXECUTABLE_NAME "${VIEWER_CHANNEL}")
   set(MACOSX_BUNDLE_INFO_STRING "${VIEWER_CHANNEL}")
   set(MACOSX_BUNDLE_ICON_FILE "secondlife.icns")
-  set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.secondlife.indra.viewer")
+  set(MACOSX_BUNDLE_GUI_IDENTIFIER "net.megapahit.viewer")
   set(MACOSX_BUNDLE_LONG_VERSION_STRING "${VIEWER_CHANNEL} ${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
-  set(MACOSX_BUNDLE_BUNDLE_NAME "SecondLife")
+  set(MACOSX_BUNDLE_BUNDLE_NAME "Megapahit")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_VERSION "${VIEWER_SHORT_VERSION}${VIEWER_MACOSX_PHASE}${VIEWER_REVISION}")
-  set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Linden Research, Inc. 2020")
+  set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Megapahit. 2023")
   set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "SecondLife.nib")
   set(MACOSX_BUNDLE_NSPRINCIPAL_CLASS "LLApplication")
 
@@ -2076,7 +2121,11 @@ if (DARWIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
 
+  if (USE_AUTOBUILD_3P OR USE_CONAN)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
+  else ()
+    add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc)
+  endif ()
 
   if (ENABLE_SIGNING)
       set(SIGNING_SETTING "--signature=${SIGNING_IDENTITY}")

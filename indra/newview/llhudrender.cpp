@@ -117,9 +117,11 @@ void hud_render_text(const LLWString &wstr, const LLVector3 &pos_agent,
 		proj[i] = (F64) gGLProjection[i];
 	}
 
+#if GLU_VERSION_1_1
 	gluProject(render_pos.mV[0], render_pos.mV[1], render_pos.mV[2],
 				mdlv, proj, (GLint*) viewport,
 				&winX, &winY, &winZ);
+#endif
 		
 	//fonts all render orthographically, set up projection``
 	gGL.matrixMode(LLRender::MM_PROJECTION);

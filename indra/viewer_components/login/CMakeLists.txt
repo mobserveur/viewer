@@ -1,6 +1,6 @@
 # -*- cmake -*-
 
-project(login)
+project(lllogin)
 
 include(00-Common)
 if(LL_TESTS)
@@ -9,21 +9,21 @@ endif(LL_TESTS)
 include(LLCommon)
 include(LLCoreHttp)
 
-set(login_SOURCE_FILES
+set(lllogin_SOURCE_FILES
     lllogin.cpp
     )
 
-set(login_HEADER_FILES
+set(lllogin_HEADER_FILES
     lllogin.h
     )
 
 list(APPEND 
-    login_SOURCE_FILES 
-    ${login_HEADER_FILES} 
+    lllogin_SOURCE_FILES
+    ${lllogin_HEADER_FILES}
     )
 
 add_library(lllogin 
-            ${login_SOURCE_FILES}
+            ${lllogin_SOURCE_FILES}
             )
 target_include_directories( lllogin  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -34,6 +34,8 @@ target_link_libraries(lllogin
         llmath
         llxml
     )
+
+include(LibraryInstall)
 
 if(LL_TESTS)
   SET(lllogin_TEST_SOURCE_FILES
