@@ -895,11 +895,15 @@ bool LLPipeline::allocateScreenBuffer(U32 resX, U32 resY, U32 samples)
 		if (!mOcclusionDepth.allocate(resX/occlusion_divisor, resY/occlusion_divisor, 0, TRUE, FALSE, LLTexUnit::TT_RECT_TEXTURE, FALSE, samples)) return false;
 		if (!addDeferredAttachments(mDeferredScreen)) return false;
 	
+#if GL_VERSION_1_1
 		GLuint screenFormat = GL_RGBA16;
 		if (gGLManager.mIsAMD)
 		{
 			screenFormat = GL_RGBA12;
 		}
+#else
+		GLuint screenFormat = GL_RGBA16F;
+#endif
 
 		if (gGLManager.mGLVersion < 4.f && gGLManager.mIsNVIDIA)
 		{
