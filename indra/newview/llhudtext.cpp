@@ -117,7 +117,9 @@ void LLHUDText::renderText()
 	gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
 
 	LLGLState gls_blend(GL_BLEND, TRUE);
+#if GL_VERSION_1_1
 	LLGLState gls_alpha(GL_ALPHA_TEST, TRUE);
+#endif
 	
 	LLColor4 shadow_color(0.f, 0.f, 0.f, 1.f);
 	F32 alpha_factor = 1.f;
@@ -572,7 +574,9 @@ void LLHUDText::renderAllHUD()
 	LLGLState::checkTextureChannels();
 
 	{
+#if GL_VERSION_1_1
 		LLGLEnable color_mat(GL_COLOR_MATERIAL);
+#endif
 		LLGLDepthTest depth(GL_FALSE, GL_FALSE);
 		
 		VisibleTextObjectIterator text_it;

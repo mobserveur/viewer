@@ -227,17 +227,21 @@ void LLDrawPoolWater::render(S32 pass)
 	gGL.diffuseColor4fv(water_color.mV);
 
 	// Automatically generate texture coords for detail map
+#if GL_VERSION_1_1
 	glEnable(GL_TEXTURE_GEN_S); //texture unit 1
 	glEnable(GL_TEXTURE_GEN_T); //texture unit 1
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+#endif
 
 	// Slowly move over time.
 	F32 offset = fmod(gFrameTimeSeconds*2.f, 100.f);
 	F32 tp0[4] = {16.f/256.f, 0.0f, 0.0f, offset*0.01f};
 	F32 tp1[4] = {0.0f, 16.f/256.f, 0.0f, offset*0.01f};
+#if GL_VERSION_1_1
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1);
+#endif
 
 	gGL.getTexUnit(0)->activate();
 	
@@ -264,15 +268,19 @@ void LLDrawPoolWater::render(S32 pass)
 	gGL.getTexUnit(1)->unbind(LLTexUnit::TT_TEXTURE);
 	gGL.getTexUnit(1)->disable();
 
+#if GL_VERSION_1_1
     glDisable(GL_TEXTURE_GEN_S); //texture unit 1
 	glDisable(GL_TEXTURE_GEN_T); //texture unit 1
+#endif
 
     gGL.getTexUnit(2)->activate();
 	gGL.getTexUnit(2)->unbind(LLTexUnit::TT_TEXTURE);
 	gGL.getTexUnit(2)->disable();
 
+#if GL_VERSION_1_1
 	glDisable(GL_TEXTURE_GEN_S); //texture unit 1
 	glDisable(GL_TEXTURE_GEN_T); //texture unit 1
+#endif
 
 	// Disable texture coordinate and color arrays
 	gGL.getTexUnit(0)->activate();
@@ -376,10 +384,12 @@ void LLDrawPoolWater::renderOpaqueLegacyWater()
 	// Automatically generate texture coords for water texture
 	if (!shader)
 	{
+#if GL_VERSION_1_1
 		glEnable(GL_TEXTURE_GEN_S); //texture unit 0
 		glEnable(GL_TEXTURE_GEN_T); //texture unit 0
 		glTexGenf(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 		glTexGenf(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+#endif
 	}
 
 	// Use the fact that we know all water faces are the same size
@@ -405,8 +415,10 @@ void LLDrawPoolWater::renderOpaqueLegacyWater()
 
 	if (!shader)
 	{
+#if GL_VERSION_1_1
 		glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0);
 		glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1);
+#endif
 	}
 	else
 	{
@@ -433,8 +445,10 @@ void LLDrawPoolWater::renderOpaqueLegacyWater()
 	if (!shader)
 	{
 		// Reset the settings back to expected values
+#if GL_VERSION_1_1
 		glDisable(GL_TEXTURE_GEN_S); //texture unit 0
 		glDisable(GL_TEXTURE_GEN_T); //texture unit 0
+#endif
 	}
 
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
@@ -462,7 +476,9 @@ void LLDrawPoolWater::renderReflection(LLFace* face)
 		return;
 	}
 
+#if GL_VERSION_1_1
 	LLGLSNoFog noFog;
+#endif
 
 	gGL.getTexUnit(0)->bind((dr == 0) ? voskyp->getSunTex() : voskyp->getMoonTex());
 

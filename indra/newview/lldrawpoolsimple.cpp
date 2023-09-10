@@ -87,7 +87,9 @@ void LLDrawPoolGlow::render(LLGLSLShader* shader)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL; //LL_RECORD_BLOCK_TIME(FTM_RENDER_GLOW);
 	LLGLEnable blend(GL_BLEND);
+#if GL_VERSION_1_1
 	LLGLDisable test(GL_ALPHA_TEST);
+#endif
 	gGL.flush();
 	/// Get rid of z-fighting with non-glow pass.
 	LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
@@ -289,7 +291,9 @@ void LLDrawPoolSimple::renderDeferred(S32 pass)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL; //LL_RECORD_BLOCK_TIME(FTM_RENDER_SIMPLE_DEFERRED);
 	LLGLDisable blend(GL_BLEND);
+#if GL_VERSION_1_1
 	LLGLDisable alpha_test(GL_ALPHA_TEST);
+#endif
 
 	//render static
     setup_simple_shader(&gDeferredDiffuseProgram);
@@ -386,7 +390,9 @@ void LLDrawPoolGrass::render(S32 pass)
 	
 	{
 		//LL_RECORD_BLOCK_TIME(FTM_RENDER_GRASS);
+#if GL_VERSION_1_1
 		LLGLEnable test(GL_ALPHA_TEST);
+#endif
 		gGL.setSceneBlendType(LLRender::BT_ALPHA);
 		//render grass
 		LLRenderPass::pushBatches(LLRenderPass::PASS_GRASS, getVertexDataMask());

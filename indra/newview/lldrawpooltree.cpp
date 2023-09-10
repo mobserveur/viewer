@@ -90,7 +90,9 @@ void LLDrawPoolTree::render(S32 pass)
 		return;
 	}
 
+#if GL_VERSION_1_1
 	LLGLState test(GL_ALPHA_TEST, 0);
+#endif
 
 	gGL.getTexUnit(sDiffTex)->bindFast(mTexturep);
     gPipeline.touchTexture(mTexturep, 1024.f * 1024.f); // <=== keep Linden tree textures at full res

@@ -81,7 +81,9 @@ void LLDrawPoolSky::render(S32 pass)
 
 	LLGLSPipelineDepthTestSkyBox gls_skybox(true, false);
 
+#if GL_VERSION_1_1
 	LLGLEnable fog_enable( (mShaderLevel < 1 && LLViewerCamera::getInstance()->cameraUnderWater()) ? GL_FOG : 0);
+#endif
 	
 	gGL.pushMatrix();
 	LLVector3 origin = LLViewerCamera::getInstance()->getOrigin();

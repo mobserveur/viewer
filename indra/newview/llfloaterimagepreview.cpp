@@ -251,7 +251,9 @@ void LLFloaterImagePreview::draw()
 		if (selected <= 0)
 		{
 			gl_rect_2d_checkerboard(mPreviewRect);
+#if GL_VERSION_1_1
 			LLGLDisable gls_alpha(GL_ALPHA_TEST);
+#endif
 
 			if(mImagep.notNull())
 			{

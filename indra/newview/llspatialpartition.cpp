@@ -1788,7 +1788,9 @@ void renderOctree(LLSpatialGroup* group)
 					gGL.popMatrix();
 				}
 			}
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
             gDebugProgram.bind(); // make sure non-rigged variant is bound
 			gGL.diffuseColor4f(1,1,1,1);
 		}
@@ -2122,7 +2124,9 @@ void renderComplexityDisplay(LLDrawable* drawablep)
 	// don't highlight objects below the threshold
 	if (cost > gSavedSettings.getS32("RenderComplexityThreshold"))
 	{
+#if GL_VERSION_1_1
 		glColor4f(color[0],color[1],color[2],0.5f);
+#endif
 
 
 		S32 num_faces = drawablep->getNumFaces();
@@ -2393,10 +2397,14 @@ void renderMeshBaseHull(LLVOVolume* volume, U32 data_mask, LLColor4& color, LLCo
 			gGL.diffuseColor4fv(color.mV);
 			LLVertexBuffer::drawArrays(LLRender::TRIANGLES, decomp->mBaseHullMesh.mPositions);
 
+#if GL_VERSION_1_1
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
             gGL.diffuseColor4fv(line_color.mV);
             LLVertexBuffer::drawArrays(LLRender::TRIANGLES, decomp->mBaseHullMesh.mPositions);
+#if GL_VERSION_1_1
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 		}
 		else
 		{
@@ -2417,12 +2425,16 @@ void render_hull(LLModel::PhysicsMesh& mesh, const LLColor4& color, const LLColo
 {
 	gGL.diffuseColor4fv(color.mV);
 	LLVertexBuffer::drawArrays(LLRender::TRIANGLES, mesh.mPositions);
+#if GL_VERSION_1_1
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 	glLineWidth(3.f);
 	gGL.diffuseColor4fv(line_color.mV);
 	LLVertexBuffer::drawArrays(LLRender::TRIANGLES, mesh.mPositions);
 	glLineWidth(1.f);
+#if GL_VERSION_1_1
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 }
 
 void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
@@ -2475,7 +2487,9 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
 	gGL.pushMatrix();
 	gGL.multMatrix((F32*) volume->getRelativeXform().mMatrix);
 		
+#if GL_VERSION_1_1
     LLGLEnable(GL_POLYGON_OFFSET_LINE);
+#endif
     glPolygonOffset(3.f, 3.f);
 
 	if (type == LLPhysicsShapeBuilderUtil::PhysicsShapeSpecification::USER_MESH)
@@ -2507,10 +2521,14 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
 				gGL.diffuseColor4fv(color.mV);
 				LLVertexBuffer::drawArrays(LLRender::TRIANGLES, decomp->mPhysicsShapeMesh.mPositions);
 								
+#if GL_VERSION_1_1
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 				gGL.diffuseColor4fv(line_color.mV);
                 LLVertexBuffer::drawArrays(LLRender::TRIANGLES, decomp->mPhysicsShapeMesh.mPositions);
+#if GL_VERSION_1_1
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 			}
 			else
 			{ //no mesh or decomposition, render base hull
@@ -2631,7 +2649,9 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
 			{
 				//render hull
 			
+#if GL_VERSION_1_1
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 				
 				gGL.diffuseColor4fv(line_color.mV);
 				LLVertexBuffer::unbind();
@@ -2641,7 +2661,9 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
                 LLVertexBuffer::drawElements(LLRender::TRIANGLES, phys_volume->mHullPoints, NULL, phys_volume->mNumHullIndices, phys_volume->mHullIndices);
 				
 				gGL.diffuseColor4fv(color.mV);
+#if GL_VERSION_1_1
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 				LLVertexBuffer::drawElements(LLRender::TRIANGLES, phys_volume->mHullPoints, NULL, phys_volume->mNumHullIndices, phys_volume->mHullIndices);
 				
 			}
@@ -2698,13 +2720,17 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
 		S32 detail = get_physics_detail(volume_params, volume->getScale());
 
 		LLVolume* phys_volume = LLPrimitive::sVolumeManager->refVolume(volume_params, detail);
+#if GL_VERSION_1_1
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 		
 		gGL.diffuseColor4fv(line_color.mV);
 		pushVerts(phys_volume);
 		
 		gGL.diffuseColor4fv(color.mV);
+#if GL_VERSION_1_1
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 		pushVerts(phys_volume);
 		LLPrimitive::sVolumeManager->unrefVolume(phys_volume);
 	}
@@ -2717,10 +2743,14 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
 
 		if (phys_volume->mHullPoints && phys_volume->mHullIndices)
 		{
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 			llassert(LLGLSLShader::sCurBoundShader != 0);
 			LLVertexBuffer::unbind();
+#if GL_VERSION_1_1
 			glVertexPointer(3, GL_FLOAT, 16, phys_volume->mHullPoints);
+#endif
 			gGL.diffuseColor4fv(line_color.mV);
 			gGL.syncMatrices();
 			{
@@ -2729,7 +2759,9 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
 			}
 			
 			gGL.diffuseColor4fv(color.mV);
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 			{
 				LL_PROFILER_GPU_ZONEC( "gl.DrawElements", 0x40FF40 )
 				glDrawElements(GL_TRIANGLES, phys_volume->mNumHullIndices, GL_UNSIGNED_SHORT, phys_volume->mHullIndices);
@@ -2811,14 +2843,18 @@ void renderPhysicsShapes(LLSpatialGroup* group)
 							LLVertexBuffer* buff = face->getVertexBuffer();
 							if (buff)
 							{
+#if GL_VERSION_1_1
 								glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 
 								buff->setBuffer(LLVertexBuffer::MAP_VERTEX);
 								gGL.diffuseColor3f(0.2f, 0.5f, 0.3f);
 								buff->draw(LLRender::TRIANGLES, buff->getNumIndices(), 0);
 									
 								gGL.diffuseColor3f(0.2f, 1.f, 0.3f);
+#if GL_VERSION_1_1
 								glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 								buff->draw(LLRender::TRIANGLES, buff->getNumIndices(), 0);
 							}
 						}
@@ -2923,7 +2959,9 @@ void renderTextureAnim(LLDrawInfo* params)
 
 void renderBatchSize(LLDrawInfo* params)
 {
+#if GL_VERSION_1_1
 	LLGLEnable offset(GL_POLYGON_OFFSET_FILL);
+#endif
 	glPolygonOffset(-1.f, 1.f);
     LLGLSLShader* old_shader = LLGLSLShader::sCurBoundShaderPtr;
     U32 mask = LLVertexBuffer::MAP_VERTEX;
@@ -3262,13 +3300,17 @@ void renderRaycast(LLDrawable* drawablep)
 					dir.setSub(end, start);
 
 					gGL.flush();
+#if GL_VERSION_1_1
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);				
+#endif
 
 					{
 						//render face positions
 						LLVertexBuffer::unbind();
 						gGL.diffuseColor4f(0,1,1,0.5f);
+#if GL_VERSION_1_1
 						glVertexPointer(3, GL_FLOAT, sizeof(LLVector4a), face.mPositions);
+#endif
 						gGL.syncMatrices();
 						LL_PROFILER_GPU_ZONEC( "gl.DrawElements", 0x60FF60 );
 						glDrawElements(GL_TRIANGLES, face.mNumIndices, GL_UNSIGNED_SHORT, face.mIndices);
@@ -3289,7 +3331,9 @@ void renderRaycast(LLDrawable* drawablep)
 					}
 
 					gGL.popMatrix();		
+#if GL_VERSION_1_1
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 				}
 			}
 		}
@@ -3860,16 +3904,22 @@ void LLSpatialPartition::renderDebug()
 			
 			LLGLEnable blend(GL_BLEND);
 			LLGLDepthTest depth_under(GL_TRUE, GL_FALSE, GL_GREATER);
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 			gGL.diffuseColor4f(0.5f, 0.0f, 0, 0.25f);
 
+#if GL_VERSION_1_1
 			LLGLEnable offset(GL_POLYGON_OFFSET_LINE);
+#endif
 			glPolygonOffset(-1.f, -1.f);
 
 			LLOctreeRenderXRay xray(camera);
 			xray.traverse(mOctree);
 
+#if GL_VERSION_1_1
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 		}
 	}
 	gDebugProgram.unbind();

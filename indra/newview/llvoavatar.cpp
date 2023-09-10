@@ -5107,7 +5107,9 @@ U32 LLVOAvatar::renderSkinned()
 	//--------------------------------------------------------------------
 
 		bool should_alpha_mask = shouldAlphaMask();
+#if GL_VERSION_1_1
 		LLGLState test(GL_ALPHA_TEST, should_alpha_mask);
+#endif
 		
 		BOOL first_pass = TRUE;
 		if (!LLDrawPoolAvatar::sSkipOpaque)
@@ -5158,7 +5160,9 @@ U32 LLVOAvatar::renderSkinned()
 		if (!LLDrawPoolAvatar::sSkipTransparent || LLPipeline::sImpostorRender)
 		{
 			LLGLState blend(GL_BLEND, !mIsDummy);
+#if GL_VERSION_1_1
 			LLGLState test(GL_ALPHA_TEST, !mIsDummy);
+#endif
 			num_indices += renderTransparent(first_pass);
 		}
 
@@ -5237,7 +5241,9 @@ U32 LLVOAvatar::renderRigid()
 	}
 
 	bool should_alpha_mask = shouldAlphaMask();
+#if GL_VERSION_1_1
 	LLGLState test(GL_ALPHA_TEST, should_alpha_mask);
+#endif
 
 	if (isTextureVisible(TEX_EYES_BAKED) || (getOverallAppearance() == AOA_JELLYDOLL && !isControlAvatar()) || isUIAvatar())
 	{
@@ -5302,7 +5308,9 @@ U32 LLVOAvatar::renderImpostor(LLColor4U color, S32 diffuse_channel)
 		gGL.flush();
 	}
 	{
+#if GL_VERSION_1_1
 	LLGLEnable test(GL_ALPHA_TEST);
+#endif
     gGL.flush();
 
 	gGL.color4ubv(color.mV);

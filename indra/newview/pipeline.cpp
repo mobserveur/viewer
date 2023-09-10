@@ -2382,7 +2382,9 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, LLPlane* pla
 	gGL.loadMatrix(gGLLastModelView);
 
 	LLGLDisable blend(GL_BLEND);
+#if GL_VERSION_1_1
 	LLGLDisable test(GL_ALPHA_TEST);
+#endif
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
 	LLGLDepthTest depth(GL_TRUE, GL_FALSE);
@@ -2633,7 +2635,9 @@ void LLPipeline::doOcclusion(LLCamera& camera)
 			gGL.setColorMask(false, false);
 		}
 		LLGLDisable blend(GL_BLEND);
+#if GL_VERSION_1_1
 		LLGLDisable test(GL_ALPHA_TEST);
+#endif
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 		LLGLDepthTest depth(GL_TRUE, GL_FALSE);
 
@@ -4000,7 +4004,9 @@ void render_hud_elements()
     LL_PROFILE_ZONE_SCOPED_CATEGORY_UI; //LL_RECORD_BLOCK_TIME(FTM_RENDER_UI);
 	gPipeline.disableLights();
 	
+#if GL_VERSION_1_1
 	LLGLDisable fog(GL_FOG);
+#endif
 	LLGLSUIDefault gls_ui;
 
 	LLGLEnable stencil(GL_STENCIL_TEST);
@@ -4054,14 +4060,18 @@ void LLPipeline::renderHighlights()
 	// Render highlighted faces.
 	LLGLSPipelineAlpha gls_pipeline_alpha;
 	LLColor4 color(1.f, 1.f, 1.f, 0.5f);
+#if GL_VERSION_1_1
 	LLGLEnable color_mat(GL_COLOR_MATERIAL);
+#endif
 	disableLights();
 
 	if (!hasRenderType(LLPipeline::RENDER_TYPE_HUD) && !mHighlightSet.empty())
 	{ //draw blurry highlight image over screen
 		LLGLEnable blend(GL_BLEND);
 		LLGLDepthTest depth(GL_TRUE, GL_FALSE, GL_ALWAYS);
+#if GL_VERSION_1_1
 		LLGLDisable test(GL_ALPHA_TEST);
+#endif
 
 		LLGLEnable stencil(GL_STENCIL_TEST);
 		gGL.flush();
@@ -4325,14 +4335,18 @@ void LLPipeline::renderGeom(LLCamera& camera, bool forceVBOUpdate)
 	LLGLSPipeline gls_pipeline;
 	LLGLEnable multisample(RenderFSAASamples > 0 ? GL_MULTISAMPLE_ARB : 0);
 
+#if GL_VERSION_1_1
 	LLGLState gls_color_material(GL_COLOR_MATERIAL, mLightingDetail < 2);
+#endif
 				
 	// Toggle backface culling for debugging
 	LLGLEnable cull_face(mBackfaceCull ? GL_CULL_FACE : 0);
 	// Set fog
 	bool use_fog = hasRenderDebugFeatureMask(LLPipeline::RENDER_DEBUG_FEATURE_FOG);
+#if GL_VERSION_1_1
 	LLGLEnable fog_enable(use_fog &&
 						  !gPipeline.canUseWindLightShadersOnObjects() ? GL_FOG : 0);
+#endif
 	gSky.updateFog(camera.getFar());
 	if (!use_fog)
 	{
@@ -4922,7 +4936,9 @@ void LLPipeline::renderDebug()
 						glClearColor(clearColor.mV[0],clearColor.mV[1],clearColor.mV[2],0);
 						glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);					
 						gGL.setColorMask(true, false);
+#if GL_VERSION_1_1
 						glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 					}
 
 					//NavMesh
@@ -4952,7 +4968,9 @@ void LLPipeline::renderDebug()
 						gPathfindingProgram.bind();
 
 						gGL.flush();
+#if GL_VERSION_1_1
 						glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 						glLineWidth(1.0f);	
 						gGL.flush();
 					}
@@ -5009,7 +5027,9 @@ void LLPipeline::renderDebug()
 							LLGLDisable cull(i >= 2 ? GL_CULL_FACE : 0);
 						
 							gGL.flush();
+#if GL_VERSION_1_1
 							glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 				
 							//get rid of some z-fighting
 							LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
@@ -5034,8 +5054,10 @@ void LLPipeline::renderDebug()
 									gGL.flush();				
 								}
 				
+#if GL_VERSION_1_1
 								LLGLEnable lineOffset(GL_POLYGON_OFFSET_LINE);
 								glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );	
+#endif
 						
 								F32 offset = gSavedSettings.getF32("PathfindingLineOffset");
 
@@ -5055,10 +5077,14 @@ void LLPipeline::renderDebug()
 									}
 									else
 									{
+#if GL_VERSION_1_1
 										glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 										gPathfindingProgram.uniform1f(sAmbiance, ambiance);
 										llPathingLibInstance->renderNavMeshShapesVBO( render_order[i] );				
+#if GL_VERSION_1_1
 										glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 									}
 								}
 
@@ -5075,7 +5101,9 @@ void LLPipeline::renderDebug()
 									glLineWidth(1.f);
 								}
 				
+#if GL_VERSION_1_1
 								glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+#endif
 							}
 						}
 					}
@@ -5086,7 +5114,9 @@ void LLPipeline::renderDebug()
 					{	//render navmesh xray
 						F32 ambiance = gSavedSettings.getF32("PathfindingAmbiance");
 
+#if GL_VERSION_1_1
 						LLGLEnable lineOffset(GL_POLYGON_OFFSET_LINE);
+#endif
 						LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
 											
 						F32 offset = gSavedSettings.getF32("PathfindingLineOffset");
@@ -5103,10 +5133,14 @@ void LLPipeline::renderDebug()
 								
 						if (gSavedSettings.getBOOL("PathfindingXRayWireframe"))
 						{ //draw hidden wireframe as darker and less opaque
+#if GL_VERSION_1_1
 							glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );	
+#endif
 							gPathfindingProgram.uniform1f(sAmbiance, 1.f);
 							llPathingLibInstance->renderNavMesh();
+#if GL_VERSION_1_1
 							glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 						}	
 						else
 						{
@@ -5147,7 +5181,9 @@ void LLPipeline::renderDebug()
 
 		gGL.getTexUnit(0)->bind(LLViewerFetchedTexture::sWhiteImagep, true);
 
+#if GL_VERSION_1_1
 		glPointSize(8.f);
+#endif
 		LLGLDepthTest depth(GL_TRUE, GL_TRUE, GL_ALWAYS);
 
 		gGL.begin(LLRender::POINTS);
@@ -5172,7 +5208,9 @@ void LLPipeline::renderDebug()
 		}
 		gGL.end();
 		gGL.flush();
+#if GL_VERSION_1_1
 		glPointSize(1.f);
+#endif
 	}
 
 
@@ -5335,7 +5373,9 @@ void LLPipeline::renderDebug()
 				{
 					//render visible point cloud
 					gGL.flush();
+#if GL_VERSION_1_1
 					glPointSize(8.f);
+#endif
 					gGL.begin(LLRender::POINTS);
 					
 					F32* c = col+i*4;
@@ -5349,7 +5389,9 @@ void LLPipeline::renderDebug()
 					gGL.end();
 
 					gGL.flush();
+#if GL_VERSION_1_1
 					glPointSize(1.f);
+#endif
 
 					LLVector3* ext = mShadowExtents[i]; 
 					LLVector3 pos = (ext[0]+ext[1])*0.5f;
@@ -7481,7 +7523,9 @@ void LLPipeline::renderFinalize()
 
     if (gUseWireframe)
     {
+#if GL_VERSION_1_1
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
     }
 
     LLVector2 tc1(0, 0);
@@ -7502,7 +7546,9 @@ void LLPipeline::renderFinalize()
     gGL.pushMatrix();
     gGL.loadIdentity();
 
+#if GL_VERSION_1_1
     LLGLDisable test(GL_ALPHA_TEST);
+#endif
 
     gGL.setColorMask(true, true);
     glClearColor(0, 0, 0, 0);
@@ -7529,7 +7575,9 @@ void LLPipeline::renderFinalize()
         
         {
             LLGLEnable blend_on(GL_BLEND);
+#if GL_VERSION_1_1
             LLGLEnable test(GL_ALPHA_TEST);
+#endif
 
             gGL.setSceneBlendType(LLRender::BT_ADD_WITH_ALPHA);
 
@@ -8541,7 +8589,9 @@ void LLPipeline::renderDeferredLighting(LLRenderTarget *screen_target)
             {
                 LLGLDepthTest depth(GL_FALSE);
                 LLGLDisable   blend(GL_BLEND);
+#if GL_VERSION_1_1
                 LLGLDisable   test(GL_ALPHA_TEST);
+#endif
 
                 // full screen blit
                 gGL.pushMatrix();
@@ -9961,7 +10011,9 @@ void LLPipeline::generateHighlight(LLCamera& camera)
 	{
 		F32 transition = gFrameIntervalSeconds.value()/RenderHighlightFadeTime;
 
+#if GL_VERSION_1_1
 		LLGLDisable test(GL_ALPHA_TEST);
+#endif
 		LLGLDepthTest depth(GL_FALSE);
 		mHighlight.bindTarget();
 		disableLights();

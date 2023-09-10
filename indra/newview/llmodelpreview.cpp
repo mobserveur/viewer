@@ -3063,7 +3063,9 @@ BOOL LLModelPreview::render()
     LLGLDisable no_blend(GL_BLEND);
     LLGLEnable cull(GL_CULL_FACE);
     LLGLDepthTest depth(GL_FALSE); // SL-12781 disable z-buffer to render background color
+#if GL_VERSION_1_1
     LLGLDisable fog(GL_FOG);
+#endif
 
     {
         gUIProgram.bind();
@@ -3267,7 +3269,9 @@ BOOL LLModelPreview::render()
 
     const U32 type_mask = LLVertexBuffer::MAP_VERTEX | LLVertexBuffer::MAP_NORMAL | LLVertexBuffer::MAP_TEXCOORD0;
 
+#if GL_VERSION_1_1
     LLGLEnable normalize(GL_NORMALIZE);
+#endif
 
     if (!mBaseModel.empty() && mVertexBuffer[5].empty())
     {
@@ -3361,9 +3365,13 @@ BOOL LLModelPreview::render()
                     if (edges)
                     {
                         glLineWidth(PREVIEW_EDGE_WIDTH);
+#if GL_VERSION_1_1
                         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
                         buffer->drawRange(LLRender::TRIANGLES, 0, buffer->getNumVerts() - 1, buffer->getNumIndices(), 0);
+#if GL_VERSION_1_1
                         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
                         glLineWidth(1.f);
                     }
                     buffer->flush();
@@ -3485,10 +3493,14 @@ BOOL LLModelPreview::render()
 
                                     gGL.diffuseColor4fv(PREVIEW_PSYH_EDGE_COL.mV);
                                     glLineWidth(PREVIEW_PSYH_EDGE_WIDTH);
+#if GL_VERSION_1_1
                                     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
                                     buffer->drawRange(LLRender::TRIANGLES, 0, buffer->getNumVerts() - 1, buffer->getNumIndices(), 0);
 
+#if GL_VERSION_1_1
                                     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
                                     glLineWidth(1.f);
 
                                     buffer->flush();
@@ -3502,7 +3514,9 @@ BOOL LLModelPreview::render()
                     if (mHasDegenerate)
                     {
                         glLineWidth(PREVIEW_DEG_EDGE_WIDTH);
+#if GL_VERSION_1_1
                         glPointSize(PREVIEW_DEG_POINT_SIZE);
+#endif
                         gPipeline.enableLightsFullbright();
                         //show degenerate triangles
                         LLGLDepthTest depth(GL_TRUE, GL_TRUE, GL_ALWAYS);
@@ -3571,7 +3585,9 @@ BOOL LLModelPreview::render()
                             gGL.popMatrix();
                         }
                         glLineWidth(1.f);
+#if GL_VERSION_1_1
                         glPointSize(1.f);
+#endif
                         gPipeline.enableLightsPreview();
                         gGL.setSceneBlendType(LLRender::BT_ALPHA);
                     }
@@ -3712,9 +3728,13 @@ BOOL LLModelPreview::render()
                             {
                                 gGL.diffuseColor4fv(PREVIEW_EDGE_COL.mV);
                                 glLineWidth(PREVIEW_EDGE_WIDTH);
+#if GL_VERSION_1_1
                                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
                                 buffer->draw(LLRender::TRIANGLES, buffer->getNumIndices(), 0);
+#if GL_VERSION_1_1
                                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
                                 glLineWidth(1.f);
                             }
                         }

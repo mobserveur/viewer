@@ -6140,7 +6140,9 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 			}
 		}
 
+#if GL_VERSION_1_1
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 
 		S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
 		for (S32 te = 0; te < num_tes; ++te)
@@ -6155,7 +6157,9 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		gGL.popMatrix();
 
 		glLineWidth(1.f);
+#if GL_VERSION_1_1
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 
 		if (shader)
 		{
@@ -6731,13 +6735,17 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 		{
 			gGL.flush();
 			gGL.blendFunc(LLRender::BF_SOURCE_COLOR, LLRender::BF_ONE);
+#if GL_VERSION_1_1
 			LLGLEnable fog(GL_FOG);
 			glFogi(GL_FOG_MODE, GL_LINEAR);
+#endif
 			float d = (LLViewerCamera::getInstance()->getPointOfInterest()-LLViewerCamera::getInstance()->getOrigin()).magVec();
 			LLColor4 fogCol = color * (F32)llclamp((LLSelectMgr::getInstance()->getSelectionCenterGlobal()-gAgentCamera.getCameraPositionGlobal()).magVec()/(LLSelectMgr::getInstance()->getBBoxOfSelection().getExtentLocal().magVec()*4), 0.0, 1.0);
+#if GL_VERSION_1_1
 			glFogf(GL_FOG_START, d);
 			glFogf(GL_FOG_END, d*(1 + (LLViewerCamera::getInstance()->getView() / LLViewerCamera::getInstance()->getDefaultFOV())));
 			glFogfv(GL_FOG_COLOR, fogCol.mV);
+#endif
 
 			LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE, GL_GEQUAL);
             gGL.flush();

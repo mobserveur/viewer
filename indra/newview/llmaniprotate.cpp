@@ -118,7 +118,9 @@ void LLManipRotate::render()
 	gGL.getTexUnit(0)->bind(LLViewerFetchedTexture::sWhiteImagep);
 	LLGLDepthTest gls_depth(GL_TRUE);
 	LLGLEnable gl_blend(GL_BLEND);
+#if GL_VERSION_1_1
 	LLGLEnable gls_alpha_test(GL_ALPHA_TEST);
+#endif
 	
 	// You can rotate if you can move
 	LLViewerObject* first_object = mObjectSelection->getFirstMoveableObject(TRUE);
@@ -275,7 +277,9 @@ void LLManipRotate::render()
 			}
 
 			LLGLEnable cull_face(GL_CULL_FACE);
+#if GL_VERSION_1_1
 			LLGLEnable clip_plane0(GL_CLIP_PLANE0);
+#endif
 			LLGLDepthTest gls_depth(GL_FALSE);
 			LLGLDisable gls_stencil(GL_STENCIL_TEST);
 
