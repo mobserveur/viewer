@@ -34,6 +34,7 @@
 
 //#include "linden_common.h"
 
+#include <array>
 #include "v2math.h"
 #include "v3math.h"
 #include "v4coloru.h"

@@ -35,6 +35,7 @@
 #include "hbxxh.h"
 
 #include <string>
+#include <array>
 
 namespace tinygltf
 {
