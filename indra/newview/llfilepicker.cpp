@@ -1650,13 +1650,13 @@ BOOL LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
 
 #else // not implemented
 
-BOOL LLFilePicker::getSaveFile( ESaveFilter filter, const std::string& filename )
+BOOL LLFilePicker::getSaveFile( ESaveFilter filter, const std::string& filename, bool blocking )
 {
 	reset();	
 	return FALSE;
 }
 
-BOOL LLFilePicker::getOpenFile( ELoadFilter filter )
+BOOL LLFilePicker::getOpenFile( ELoadFilter filter, bool blocking )
 {
 	reset();
 	return FALSE;
