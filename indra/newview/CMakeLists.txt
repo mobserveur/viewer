@@ -2034,6 +2034,8 @@ if (LINUX)
   endif (PACKAGE)
 endif (LINUX)
 
+endif (NOT USESYSTEMLIBS)
+
 if (DARWIN)
   # These all get set with PROPERTIES. It's not that the property names are
   # magically known to CMake -- it's that these names are referenced in the
@@ -2142,8 +2144,6 @@ if (DARWIN)
       )
   endif (PACKAGE)
 endif (DARWIN)
-
-endif (NOT USESYSTEMLIBS)
 
 if (INSTALL)
   include(${CMAKE_CURRENT_SOURCE_DIR}/ViewerInstall.cmake)
