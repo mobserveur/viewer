@@ -2391,9 +2391,6 @@ void LLGLState::initClass()
 #if GL_EXT_multisample || GL_EXT_multisampled_compatibility
 	sStateMap[GL_MULTISAMPLE_EXT] = GL_FALSE;
 	glDisable(GL_MULTISAMPLE_EXT);
-#else
-	sStateMap[GL_MULTISAMPLE] = GL_FALSE;
-	glDisable(GL_MULTISAMPLE);
 #endif
 }
 
