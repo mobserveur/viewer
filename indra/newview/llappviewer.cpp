@@ -139,7 +139,7 @@
 //#endif // LL_LINUX
 
 #if LL_DARWIN
-#include "llwindowmacosx.h"
+#include "llwindowsdl.h"
 #endif
 
 // Third party library includes
@@ -288,7 +288,7 @@ extern BOOL gRandomizeFramerate;
 extern BOOL gPeriodicSlowFrame;
 extern BOOL gDebugGL;
 
-#if LL_DARWIN && !LL_SDL
+#if LL_DARWIN
 extern BOOL gHiDPISupport;
 #endif
 
@@ -568,8 +568,8 @@ static void settings_to_globals()
 	gShowObjectUpdates = gSavedSettings.getBOOL("ShowObjectUpdates");
     LLWorldMapView::setScaleSetting(gSavedSettings.getF32("MapScale"));
 	
-#if LL_DARWIN && !LL_SDL
-    LLWindowMacOSX::sUseMultGL = gSavedSettings.getBOOL("RenderAppleUseMultGL");
+#if LL_DARWIN
+    LLWindowSDL::sUseMultGL = gSavedSettings.getBOOL("RenderAppleUseMultGL");
 	gHiDPISupport = gSavedSettings.getBOOL("RenderHiDPI");
 #endif
 }
@@ -3315,7 +3315,7 @@ LLSD LLAppViewer::getViewerInfo() const
     info["GPU_SHADERS"] = gSavedSettings.getBOOL("RenderDeferred") ? "Enabled" : "Disabled";
     info["TEXTURE_MEMORY"] = gSavedSettings.getS32("TextureMemory");
 
-#if LL_DARWIN && !LL_SDL
+#if LL_DARWIN
     info["HIDPI"] = gHiDPISupport;
 #endif
 
