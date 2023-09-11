@@ -430,7 +430,8 @@ void LLRenderTarget::bindTarget()
             
     if (mTex.empty())
     { //no color buffer to draw to
-        glDrawBuffer(GL_NONE);
+        GLenum drawbuffers[] = {GL_NONE};
+        glDrawBuffers(0, drawbuffers);
         glReadBuffer(GL_NONE);
     }
 
