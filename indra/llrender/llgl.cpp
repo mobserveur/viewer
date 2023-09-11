@@ -146,7 +146,11 @@ void APIENTRY gl_debug_callback(GLenum source,
     if (ubo != 0)
     {
         glGetBufferParameteriv(GL_UNIFORM_BUFFER, GL_BUFFER_SIZE, &ubo_size);
+#if GL_EXT_buffer_storage
+        glGetBufferParameteriv(GL_UNIFORM_BUFFER, GL_BUFFER_IMMUTABLE_STORAGE_EXT, &ubo_immutable);
+#else
         glGetBufferParameteriv(GL_UNIFORM_BUFFER, GL_BUFFER_IMMUTABLE_STORAGE, &ubo_immutable);
+#endif
     }
     
     if (severity == GL_DEBUG_SEVERITY_HIGH)
