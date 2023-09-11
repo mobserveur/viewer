@@ -1165,7 +1165,9 @@ U32 type_width_from_pixtype(U32 pixtype)
     {
     case GL_UNSIGNED_BYTE:
     case GL_BYTE:
+#if GL_VERSION_1_2
     case GL_UNSIGNED_INT_8_8_8_8_REV:
+#endif
         type_width = 1;
         break;
     case GL_UNSIGNED_SHORT:
