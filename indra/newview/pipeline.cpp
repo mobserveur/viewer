@@ -925,7 +925,7 @@ bool LLPipeline::allocateShadowBuffer(U32 resX, U32 resY)
                 gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
                 gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
 
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
             }
         }
@@ -942,7 +942,7 @@ bool LLPipeline::allocateShadowBuffer(U32 resX, U32 resY)
                 gGL.getTexUnit(0)->setTextureFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
                 gGL.getTexUnit(0)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
 
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
             }
         }
