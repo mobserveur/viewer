@@ -68,6 +68,8 @@ static bool ATIbug = false;
 
 #if LL_DARWIN
 
+BOOL gHiDPISupport = TRUE;
+
 namespace
 {
 	struct NativeKeyEventData {
@@ -90,6 +92,8 @@ namespace
 //
 // LLWindowMacOSX
 //
+
+BOOL LLWindowSDL::sUseMultGL = FALSE;
 
 #endif
 

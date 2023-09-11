@@ -154,6 +154,10 @@ public:
 	static Display* get_SDL_Display(void);
 #endif // LL_X11	
 
+#if LL_DARWIN
+	static BOOL sUseMultGL;
+#endif
+
 protected:
 	LLWindowSDL(LLWindowCallbacks* callbacks,
 		const std::string& title, int x, int y, int width, int height, U32 flags,
