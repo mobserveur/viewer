@@ -1236,7 +1236,7 @@ bool LLGLManager::initGL()
 
     if (mGLVersion >= 4.59f)
     {
-        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &mMaxAnisotropy);
+        glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &mMaxAnisotropy);
     }
 
 	initGLStates();
