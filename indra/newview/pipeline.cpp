@@ -6727,7 +6727,7 @@ void apply_cube_face_rotation(U32 face)
 void validate_framebuffer_object()
 {                                                           
 	GLenum status;                                            
-	status = glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT); 
+	status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	switch(status) 
 	{                                          
 		case GL_FRAMEBUFFER_COMPLETE:                       
