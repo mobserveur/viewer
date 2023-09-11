@@ -85,7 +85,9 @@ static const GLenum sGLTextureType[] =
 	GL_TEXTURE_RECTANGLE,
 #endif
 	GL_TEXTURE_CUBE_MAP,
+#if GL_VERSION_4_0
     GL_TEXTURE_CUBE_MAP_ARRAY,
+#endif
 #if GL_VERSION_3_2
 	GL_TEXTURE_2D_MULTISAMPLE,
 #endif

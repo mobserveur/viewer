@@ -128,8 +128,10 @@ void LLCubeMapArray::allocate(U32 resolution, U32 components, U32 count, BOOL us
 
     while (resolution >= 1)
     {
+#if GL_VERSION_4_0
         glTexImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, mip, format, resolution, resolution, count * 6, 0,
             GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+#endif
 
         if (!use_mips)
         {
