@@ -239,7 +239,7 @@ void LLGLSLShader::placeProfileQuery(bool for_runtime)
 
         if (!for_runtime)
         {
-            glBeginQuery(GL_SAMPLES_PASSED, mSamplesQuery);
+            glBeginQuery(GL_ANY_SAMPLES_PASSED, mSamplesQuery);
 #if GL_VERSION_3_0
             glBeginQuery(GL_PRIMITIVES_GENERATED, mPrimitivesQuery);
 #endif
@@ -258,7 +258,7 @@ bool LLGLSLShader::readProfileQuery(bool for_runtime, bool force_read)
 #endif
             if (!for_runtime)
             {
-                glEndQuery(GL_SAMPLES_PASSED);
+                glEndQuery(GL_ANY_SAMPLES_PASSED);
 #if GL_VERSION_3_0
                 glEndQuery(GL_PRIMITIVES_GENERATED);
 #endif
