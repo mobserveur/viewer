@@ -2416,6 +2416,8 @@ bool LLImageGL::isCompressed()
     bool is_compressed = false;
     switch (mFormatPrimary)
     {
+#if GL_EXT_texture_compression_s3tc || GL_EXT_texture_compression_dxt1 \
+	    || GL_EXT_texture_sRGB || GL_EXT_texture_compression_s3tc_srgb
     case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:
     case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
@@ -2424,6 +2426,7 @@ bool LLImageGL::isCompressed()
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT:
         is_compressed = true;
         break;
+#endif
     default:
         break;
     }
