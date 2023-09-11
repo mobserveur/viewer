@@ -11491,13 +11491,23 @@ void LLVOAvatar::readProfileQuery(S32 retries)
         mGPUProfilePending = true;
     }
 
+#if GL_ARB_timer_query
     GLuint64 result = 0;
     glGetQueryObjectui64v(mGPUTimerQuery, GL_QUERY_RESULT_AVAILABLE, &result);
+#else
+    GLuint result = 0;
+    glGetQueryObjectuiv(mGPUTimerQuery, GL_QUERY_RESULT_AVAILABLE, &result);
+#endif
 
     if (result == GL_TRUE || --retries <= 0)
     { // query available, readback result
+#if GL_ARB_timer_query
         GLuint64 time_elapsed = 0;
         glGetQueryObjectui64v(mGPUTimerQuery, GL_QUERY_RESULT, &time_elapsed);
+#else
+        GLuint time_elapsed = 0;
+        glGetQueryObjectuiv(mGPUTimerQuery, GL_QUERY_RESULT, &time_elapsed);
+#endif
         mGPURenderTime = time_elapsed / 1000000.f;
         mGPUProfilePending = false;
 

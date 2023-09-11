@@ -264,8 +264,13 @@ bool LLGLSLShader::readProfileQuery(bool for_runtime, bool force_read)
 
         if (mProfilePending && for_runtime && !force_read)
         {
+#if GL_ARB_timer_query
             GLuint64 result = 0;
             glGetQueryObjectui64v(mTimerQuery, GL_QUERY_RESULT_AVAILABLE, &result);
+#else
+            GLuint result = 0;
+            glGetQueryObjectuiv(mTimerQuery, GL_QUERY_RESULT_AVAILABLE, &result);
+#endif
 
             if (result != GL_TRUE)
             {
@@ -273,18 +278,31 @@ bool LLGLSLShader::readProfileQuery(bool for_runtime, bool force_read)
             }
         }
 
+#if GL_ARB_timer_query
         GLuint64 time_elapsed = 0;
         glGetQueryObjectui64v(mTimerQuery, GL_QUERY_RESULT, &time_elapsed);
+#else
+        GLuint time_elapsed = 0;
+        glGetQueryObjectuiv(mTimerQuery, GL_QUERY_RESULT, &time_elapsed);
+#endif
         mTimeElapsed += time_elapsed;
         mProfilePending = false;
 
         if (!for_runtime)
         {
+#if GL_ARB_timer_query
             GLuint64 samples_passed = 0;
             glGetQueryObjectui64v(mSamplesQuery, GL_QUERY_RESULT, &samples_passed);
 
             GLuint64 primitives_generated = 0;
             glGetQueryObjectui64v(mPrimitivesQuery, GL_QUERY_RESULT, &primitives_generated);
+#else
+            GLuint samples_passed = 0;
+            glGetQueryObjectuiv(mSamplesQuery, GL_QUERY_RESULT, &samples_passed);
+
+            GLuint primitives_generated = 0;
+            glGetQueryObjectuiv(mPrimitivesQuery, GL_QUERY_RESULT, &primitives_generated);
+#endif
             sTotalTimeElapsed += time_elapsed;
 
             sTotalSamplesDrawn += samples_passed;
