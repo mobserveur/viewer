@@ -1443,7 +1443,9 @@ void LLTexLayer::renderMorphMasks(S32 x, S32 y, S32 width, S32 height, const LLC
                         gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, 0);
                     }
 
+#if GL_VERSION_1_1
                     glGetTexImage(LLTexUnit::getInternalType(LLTexUnit::TT_TEXTURE), 0, GL_RGBA, GL_UNSIGNED_BYTE, temp);
+#endif
 
                     U8* alpha_cursor = alpha_data;
                     U8* pixel        = temp;

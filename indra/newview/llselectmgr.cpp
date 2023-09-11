@@ -6356,7 +6356,9 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 			}
 		}
 
+#if GL_VERSION_1_1
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 
 		S32 num_tes = llmin((S32)objectp->getNumTEs(), (S32)objectp->getNumFaces()); // avatars have TEs but no faces
 		for (S32 te = 0; te < num_tes; ++te)
@@ -6371,7 +6373,9 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		gGL.popMatrix();
 
 		glLineWidth(1.f);
+#if GL_VERSION_1_1
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 
 		if (shader)
 		{

@@ -3768,10 +3768,12 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
 
     llassert(!sRenderingHUDs);
 
+#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
+#endif
 
     if (&camera == LLViewerCamera::getInstance())
     {   // a bit hacky, this is the start of the main render frame, figure out delta between last modelview matrix and 
@@ -3896,10 +3898,12 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
 
 	} // Tracy ZoneScoped
 
+#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+#endif
 }
 
 void LLPipeline::renderGeomPostDeferred(LLCamera& camera)
@@ -3907,10 +3911,12 @@ void LLPipeline::renderGeomPostDeferred(LLCamera& camera)
 	LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL;
     LL_PROFILE_GPU_ZONE("renderGeomPostDeferred");
 
+#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
+#endif
 
 	U32 cur_type = 0;
 
@@ -3995,10 +4001,12 @@ void LLPipeline::renderGeomPostDeferred(LLCamera& camera)
         renderDebug();
     }
 
+#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+#endif
 }
 
 void LLPipeline::renderGeomShadow(LLCamera& camera)
@@ -4091,7 +4099,9 @@ void LLPipeline::renderPhysicsDisplay()
     gGL.flush();
     gDebugProgram.bind();
 
+#if GL_VERSION_1_1
     LLGLEnable(GL_POLYGON_OFFSET_LINE);
+#endif
     glPolygonOffset(3.f, 3.f);
     glLineWidth(3.f);
     LLGLEnable blend(GL_BLEND);
@@ -4107,10 +4117,12 @@ void LLPipeline::renderPhysicsDisplay()
 
         bool wireframe = (pass == 2);
 
+#if GL_VERSION_1_1
         if (wireframe)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
+#endif
 
         for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin();
             iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
@@ -4130,10 +4142,12 @@ void LLPipeline::renderPhysicsDisplay()
         }
         gGL.flush();
 
+#if GL_VERSION_1_1
         if (wireframe)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
+#endif
     }
     glLineWidth(1.f);
 	gDebugProgram.unbind();
@@ -4213,7 +4227,9 @@ void LLPipeline::renderDebug()
 						glClearColor(clearColor.mV[0],clearColor.mV[1],clearColor.mV[2],0);
                         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // no stencil -- deprecated | GL_STENCIL_BUFFER_BIT);
 						gGL.setColorMask(true, false);
+#if GL_VERSION_1_1
 						glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 					}
 
 					//NavMesh
@@ -4243,7 +4259,9 @@ void LLPipeline::renderDebug()
 						gPathfindingProgram.bind();
 
 						gGL.flush();
+#if GL_VERSION_1_1
 						glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 						glLineWidth(1.0f);	
 						gGL.flush();
 					}
@@ -4300,7 +4318,9 @@ void LLPipeline::renderDebug()
 							LLGLDisable cull(i >= 2 ? GL_CULL_FACE : 0);
 						
 							gGL.flush();
+#if GL_VERSION_1_1
 							glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 				
 							//get rid of some z-fighting
 							LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
@@ -4325,9 +4345,11 @@ void LLPipeline::renderDebug()
 									gGL.flush();				
 								}
 				
+#if GL_VERSION_1_1
 								LLGLEnable lineOffset(GL_POLYGON_OFFSET_LINE);
 								glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );	
 						
+#endif
 								F32 offset = gSavedSettings.getF32("PathfindingLineOffset");
 
 								if (pathfindingConsole->isRenderXRay())
@@ -4346,10 +4368,14 @@ void LLPipeline::renderDebug()
 									}
 									else
 									{
+#if GL_VERSION_1_1
 										glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 										gPathfindingProgram.uniform1f(sAmbiance, ambiance);
 										llPathingLibInstance->renderNavMeshShapesVBO( render_order[i] );				
+#if GL_VERSION_1_1
 										glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
 									}
 								}
 
@@ -4366,7 +4392,9 @@ void LLPipeline::renderDebug()
 									glLineWidth(1.f);
 								}
 				
+#if GL_VERSION_1_1
 								glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+#endif
 							}
 						}
 					}
@@ -4377,7 +4405,9 @@ void LLPipeline::renderDebug()
 					{	//render navmesh xray
 						F32 ambiance = gSavedSettings.getF32("PathfindingAmbiance");
 
+#if GL_VERSION_1_1
 						LLGLEnable lineOffset(GL_POLYGON_OFFSET_LINE);
+#endif
 						LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
 											
 						F32 offset = gSavedSettings.getF32("PathfindingLineOffset");
@@ -4394,10 +4424,14 @@ void LLPipeline::renderDebug()
 								
 						if (gSavedSettings.getBOOL("PathfindingXRayWireframe"))
 						{ //draw hidden wireframe as darker and less opaque
+#if GL_VERSION_1_1
 							glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );	
+#endif
 							gPathfindingProgram.uniform1f(sAmbiance, 1.f);
 							llPathingLibInstance->renderNavMesh();
+#if GL_VERSION_1_1
 							glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );	
+#endif
 						}	
 						else
 						{
@@ -4437,7 +4471,9 @@ void LLPipeline::renderDebug()
 
 		gGL.getTexUnit(0)->bind(LLViewerFetchedTexture::sWhiteImagep, true);
 
+#if GL_VERSION_1_1
 		glPointSize(8.f);
+#endif
 		LLGLDepthTest depth(GL_TRUE, GL_TRUE, GL_ALWAYS);
 
 		gGL.begin(LLRender::POINTS);
@@ -4462,7 +4498,9 @@ void LLPipeline::renderDebug()
 		}
 		gGL.end();
 		gGL.flush();
+#if GL_VERSION_1_1
 		glPointSize(1.f);
+#endif
 	}
 
 	// Debug stuff.
@@ -4645,7 +4683,9 @@ void LLPipeline::renderDebug()
 				{
 					//render visible point cloud
 					gGL.flush();
+#if GL_VERSION_1_1
 					glPointSize(8.f);
+#endif
 					gGL.begin(LLRender::POINTS);
 					
 					F32* c = col+i*4;
@@ -4659,7 +4699,9 @@ void LLPipeline::renderDebug()
 					gGL.end();
 
 					gGL.flush();
+#if GL_VERSION_1_1
 					glPointSize(1.f);
+#endif
 
 					LLVector3* ext = mShadowExtents[i]; 
 					LLVector3 pos = (ext[0]+ext[1])*0.5f;
