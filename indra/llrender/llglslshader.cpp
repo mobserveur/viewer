@@ -233,7 +233,9 @@ void LLGLSLShader::placeProfileQuery(bool for_runtime)
             glGenQueries(1, &mPrimitivesQuery);
         }
 
-        glBeginQuery(GL_TIME_ELAPSED, mTimerQuery);
+#if GL_EXT_timer_query || GL_EXT_disjoint_timer_query
+        glBeginQuery(GL_TIME_ELAPSED_EXT, mTimerQuery);
+#endif
 
         if (!for_runtime)
         {
@@ -251,7 +253,9 @@ bool LLGLSLShader::readProfileQuery(bool for_runtime, bool force_read)
     {
         if (!mProfilePending)
         {
-            glEndQuery(GL_TIME_ELAPSED);
+#if GL_EXT_timer_query || GL_EXT_disjoint_timer_query
+            glEndQuery(GL_TIME_ELAPSED_EXT);
+#endif
             if (!for_runtime)
             {
                 glEndQuery(GL_SAMPLES_PASSED);

@@ -11480,14 +11480,18 @@ void LLVOAvatar::placeProfileQuery()
         glGenQueries(1, &mGPUTimerQuery);
     }
 
-    glBeginQuery(GL_TIME_ELAPSED, mGPUTimerQuery);
+#if GL_EXT_timer_query || GL_EXT_disjoint_timer_query
+    glBeginQuery(GL_TIME_ELAPSED_EXT, mGPUTimerQuery);
+#endif
 }
 
 void LLVOAvatar::readProfileQuery(S32 retries)
 {
     if (!mGPUProfilePending)
     {
-        glEndQuery(GL_TIME_ELAPSED);
+#if GL_EXT_timer_query || GL_EXT_disjoint_timer_query
+        glEndQuery(GL_TIME_ELAPSED_EXT);
+#endif
         mGPUProfilePending = true;
     }
 
