@@ -891,7 +891,9 @@ void LLRender::init(bool needs_vertex_buffer)
     glCullFace(GL_BACK);
 
     // necessary for reflection maps
+#if GL_VERSION_3_2
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+#endif
 
     { //bind a dummy vertex array object so we're core profile compliant
         U32 ret;

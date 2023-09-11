@@ -1226,10 +1226,12 @@ bool LLGLManager::initGL()
 	}
 
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &mNumTextureImageUnits);
+#if GL_VERSION_3_2
 	glGetIntegerv(GL_MAX_COLOR_TEXTURE_SAMPLES, &mMaxColorTextureSamples);
 	glGetIntegerv(GL_MAX_DEPTH_TEXTURE_SAMPLES, &mMaxDepthTextureSamples);
 	glGetIntegerv(GL_MAX_INTEGER_SAMPLES, &mMaxIntegerSamples);
 	glGetIntegerv(GL_MAX_SAMPLE_MASK_WORDS, &mMaxSampleMaskWords);
+#endif
     glGetIntegerv(GL_MAX_SAMPLES, &mMaxSamples);
 
     if (mGLVersion >= 4.59f)
