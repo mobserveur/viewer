@@ -295,6 +295,9 @@ else ()
 			PROPERTIES COMPILE_FLAGS -Wno-stringop-truncation)
 		set_source_files_properties(llevent.cpp PROPERTIES
 			COMPILE_FLAGS -Wno-nonnull)
+	elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+		set_source_files_properties(llsys.cpp PROPERTIES
+			COMPILE_FLAGS -Wno-unused-but-set-variable)
 	endif()
 endif ()
 
