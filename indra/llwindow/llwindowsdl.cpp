@@ -2590,6 +2590,28 @@ LLSD LLWindowSDL::getNativeKeyData()
 	return result;
 }
 
+#else
+
+LLSD LLWindowSDL::getNativeKeyData()
+{
+        LLSD result = LLSD::emptyMap();
+
+	U32 modifiers = 0;
+	modifiers |= (mKeyModifiers & KMOD_LSHIFT) ? 0x0001 : 0;
+	modifiers |= (mKeyModifiers & KMOD_RSHIFT) ? 0x0001 : 0;
+	modifiers |= (mKeyModifiers & KMOD_CAPS)   ? 0x0002 : 0;
+	modifiers |= (mKeyModifiers & KMOD_LCTRL)  ? 0x0004 : 0;
+	modifiers |= (mKeyModifiers & KMOD_RCTRL)  ? 0x0004 : 0;
+	modifiers |= (mKeyModifiers & KMOD_LALT)   ? 0x0008 : 0;
+	modifiers |= (mKeyModifiers & KMOD_RALT)   ? 0x0008 : 0;
+
+        result["scan_code"] = (S32)mKeyScanCode;
+        result["virtual_key"] = (S32)mKeyVirtualKey;
+	result["modifiers"] = (S32)modifiers;
+
+        return result;
+}
+
 #endif // LL_DARWIN
 
 #endif // LL_GTK
