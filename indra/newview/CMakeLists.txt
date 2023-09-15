@@ -1965,6 +1965,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 	set_source_files_properties(
 		llface.cpp
 		llhttpretrypolicy.cpp
+		llmodelpreview.cpp
 		llpanelface.cpp
 		lltexturefetch.cpp
 		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
