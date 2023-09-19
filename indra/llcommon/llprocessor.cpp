@@ -742,12 +742,14 @@ private:
 				 : "0" (level))
 	#endif
 
+#if __i386__ || __x86_64__
 		unsigned int eax, ebx, ecx, edx;
 		__cpuid(0x1, eax, ebx, ecx, edx);
 		if(feature_infos[0] != (S32)edx)
 		{
 			LL_ERRS() << "machdep.cpu.feature_bits doesn't match expected cpuid result!" << LL_ENDL;
 		} 
+#endif // __i386__ || __x86_64__
 #endif // LL_RELEASE_FOR_DOWNLOAD 	
 
 
