@@ -618,8 +618,8 @@ bool LLInventoryFilter::checkAgainstSearchVisibility(const LLFolderViewModelItem
 	if (is_link && ((mFilterOps.mSearchVisibility & VISIBILITY_LINKS) == 0))
 		return FALSE;
 
-    if (listener->isItemInOutfits() && ((mFilterOps.mSearchVisibility & VISIBILITY_OUTFITS) == 0))
-        return FALSE;
+	if (listener->isItemInOutfits() && ((mFilterOps.mSearchVisibility & VISIBILITY_OUTFITS) == 0))
+		return FALSE;
 
 	if (listener->isItemInTrash() && ((mFilterOps.mSearchVisibility & VISIBILITY_TRASH) == 0))
 		return FALSE;
