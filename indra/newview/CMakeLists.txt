@@ -1981,6 +1981,8 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
 	set_source_files_properties(llinventorygallerymenu.cpp PROPERTIES
 		COMPILE_FLAGS -Wno-uninitialized)
+	set_source_files_properties(llviewerstats.cpp PROPERTIES
+		COMPILE_FLAGS -Wno-unused-value)
 	set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
 		-Wno-stringop-truncation)
 endif ()
