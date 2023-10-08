@@ -517,7 +517,7 @@ void LLProgressView::initStartTexture(S32 location_id, bool is_in_production)
 void LLProgressView::initTextures(S32 location_id, bool is_in_production)
 {
     initStartTexture(location_id, is_in_production);
-    initLogos();
+    //initLogos();
 
     childSetVisible("panel_icons", mLogosList.empty() ? FALSE : TRUE);
     childSetVisible("panel_top_spacer", mLogosList.empty() ? TRUE : FALSE);
