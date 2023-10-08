@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include <map>
+#include <SDL_rwops.h>
 
 #include "llxmlnode.h"
 

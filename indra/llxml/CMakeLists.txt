@@ -4,6 +4,7 @@ project(llxml)
 
 include(00-Common)
 include(LLCommon)
+include(LLWindow)
 
 set(llxml_SOURCE_FILES
     llcontrol.cpp
@@ -31,6 +32,7 @@ target_link_libraries( llxml
         llmath
         llcommon
         ll::expat
+        ll::SDL
     )
 target_include_directories( llxml  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
 
