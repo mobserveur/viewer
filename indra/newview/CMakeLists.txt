@@ -2120,8 +2120,10 @@ if (DARWIN)
 
   if (USE_AUTOBUILD_3P OR USE_CONAN)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
-  else ()
+  elseif (NOT DARWIN)
     add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc)
+  else ()
+    add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
   endif ()
 
   if (ENABLE_SIGNING)
