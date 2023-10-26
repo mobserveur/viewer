@@ -42,7 +42,6 @@ class LLAudioEngine_OpenAL : public LLAudioEngine
 
         virtual bool init(void *user_data, const std::string &app_title);
         virtual std::string getDriverName(bool verbose);
-        virtual LLStreamingAudioInterface* createDefaultStreamingAudioImpl() const;
 		virtual void allocateListener();
 
 		virtual void shutdown();
