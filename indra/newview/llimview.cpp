@@ -74,6 +74,8 @@
 #include "llcorehttputil.h"
 #include "lluiusage.h"
 
+#include <array>
+
 const static std::string ADHOC_NAME_SUFFIX(" Conference");
 
 const static std::string NEARBY_P2P_BY_OTHER("nearby_P2P_by_other");

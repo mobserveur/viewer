@@ -44,6 +44,8 @@
 
 #include <boost/signals2.hpp>
 
+#include <array>
+
 //-------------------------------------------------------------------------
 class LLViewerCamera;
 class LLParcel;
