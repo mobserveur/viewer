@@ -34,6 +34,7 @@
 #include "lluuid.h"
 #include "hbxxh.h"
 
+#include <array>
 #include <string>
 #include <array>
 #include <map>
