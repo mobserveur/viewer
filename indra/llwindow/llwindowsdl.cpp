@@ -1407,17 +1407,24 @@ BOOL LLWindowSDL::copyTextToPrimary(const LLWString &text)
 
 BOOL LLWindowSDL::isClipboardTextAvailable()
 {
-	return FALSE; // unsupported
+	return SDL_HasClipboardText();
 }
 
 BOOL LLWindowSDL::pasteTextFromClipboard(LLWString &dst)
 {
-	return FALSE; // unsupported
+	auto data = SDL_GetClipboardText();
+	if (data)
+	{
+		dst = LLWString(utf8str_to_wstring(data));
+		SDL_free(data);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 BOOL LLWindowSDL::copyTextToClipboard(const LLWString &s)
 {
-	return FALSE;  // unsupported
+	return !SDL_SetClipboardText(wstring_to_utf8str(s).c_str());
 }
 
 BOOL LLWindowSDL::isPrimaryTextAvailable()
