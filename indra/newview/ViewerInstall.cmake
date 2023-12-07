@@ -29,6 +29,7 @@ endif (IS_ARTWORK_PRESENT)
 
 install(FILES featuretable_linux.txt
         #featuretable_solaris.txt
+        licenses.txt
         ${AUTOBUILD_INSTALL_DIR}/ca-bundle.crt
         DESTINATION share/${VIEWER_BINARY_NAME}
         )
