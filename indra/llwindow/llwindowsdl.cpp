@@ -1130,7 +1130,10 @@ BOOL LLWindowSDL::setCursorPosition(const LLCoordWindow position)
 	//LL_INFOS() << "setCursorPosition(" << screen_pos.mX << ", " << screen_pos.mY << ")" << LL_ENDL;
 
 	// do the actual forced cursor move.
-	SDL_WarpMouseGlobal(screen_pos.mX, screen_pos.mY);
+	if (mFullscreen)
+		SDL_WarpMouseGlobal(screen_pos.mX, screen_pos.mY);
+	else
+		SDL_WarpMouseInWindow(mWindow, screen_pos.mX, screen_pos.mY);
 	
 	//LL_INFOS() << llformat("llcw %d,%d -> scr %d,%d", position.mX, position.mY, screen_pos.mX, screen_pos.mY) << LL_ENDL;
 
