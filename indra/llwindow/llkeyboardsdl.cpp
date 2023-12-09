@@ -165,7 +165,11 @@ void LLKeyboardSDL::resetMaskKeys()
 		mKeyLevel[KEY_SHIFT] = TRUE;
 	}
 
-	if(mask & KMOD_CTRL)
+	if(mask & (KMOD_CTRL
+#ifdef LL_DARWIN
+				| KMOD_GUI
+#endif
+		  ))
 	{
 		mKeyLevel[KEY_CONTROL] = TRUE;
 	}
@@ -187,7 +191,11 @@ MASK LLKeyboardSDL::updateModifiers(const U32 mask)
 		out_mask |= MASK_SHIFT;
 	}
 
-	if(mask & KMOD_CTRL)
+	if(mask & (KMOD_CTRL
+#ifdef LL_DARWIN
+				| KMOD_GUI
+#endif
+		  ))
 	{
 		out_mask |= MASK_CONTROL;
 	}
