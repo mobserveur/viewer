@@ -6,7 +6,7 @@ include_guard()
 add_library( ll::cef INTERFACE IMPORTED )
 
 use_prebuilt_binary(dullahan)
-target_include_directories( ll::cef SYSTEM INTERFACE  ${LIBS_PREBUILT_DIR}/include/cef)
+target_include_directories( ll::cef SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include ${LIBS_PREBUILT_DIR}/include/cef)
 
 if (WINDOWS)
     target_link_libraries( ll::cef INTERFACE

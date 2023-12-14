@@ -60,6 +60,9 @@ include(ZLIBNG)
 include(URIPARSER)
 include(LLPrimitive)
 include(LibVLCPlugin)
+if (DARWIN)
+  include(CEFPlugin)
+endif ()
 include(UnixInstall)
 
 if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
@@ -1955,6 +1958,10 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ll::fontconfig
         )
 
+if( DARWIN )
+   target_link_libraries(${VIEWER_BINARY_NAME} ll::cef )
+endif()
+
 if( TARGET ll::intel_memops )
    target_link_libraries(${VIEWER_BINARY_NAME} ll::intel_memops )
 endif()
@@ -2137,7 +2144,7 @@ if (DARWIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
 
-  if (USE_AUTOBUILD_3P OR USE_CONAN)
+  if (DARWIN)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
   else ()
     add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc)
