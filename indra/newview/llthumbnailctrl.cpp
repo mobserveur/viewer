@@ -57,8 +57,6 @@ LLThumbnailCtrl::LLThumbnailCtrl(const LLThumbnailCtrl::Params& p)
 ,   mFallbackImagep(p.fallback_image)
 ,   mInteractable(p.interactable())
 ,   mShowLoadingPlaceholder(p.show_loading())
-,   mInited(false)
-,   mInitImmediately(true)
 {
     mLoadingPlaceholderString = LLTrans::getString("texture_loading");
     
@@ -85,10 +83,6 @@ LLThumbnailCtrl::~LLThumbnailCtrl()
 
 void LLThumbnailCtrl::draw()
 {
-    if (!mInited)
-    {
-        initImage();
-    }
     LLRect draw_rect = getLocalRect();
     
     if (mBorderVisible)
@@ -176,19 +170,11 @@ void LLThumbnailCtrl::draw()
     LLUICtrl::draw();
 }
 
-void LLThumbnailCtrl::setVisible(BOOL visible)
-{
-    if (!visible && mInited)
-    {
-        unloadImage();
-    }
-    LLUICtrl::setVisible(visible);
-}
-
 void LLThumbnailCtrl::clearTexture()
 {
-    setValue(LLSD());
-    mInited = true; // nothing to do
+    mImageAssetID = LLUUID::null;
+    mTexturep = nullptr;
+    mImagep = nullptr;
 }
 
 // virtual
@@ -204,11 +190,37 @@ void LLThumbnailCtrl::setValue(const LLSD& value)
     
 	LLUICtrl::setValue(tvalue);
     
-    unloadImage();
-
-    if (mInitImmediately)
+    mImageAssetID = LLUUID::null;
+    mTexturep = nullptr;
+    mImagep = nullptr;
+    
+	if (tvalue.isUUID())
+	{
+        mImageAssetID = tvalue.asUUID();
+        if (mImageAssetID.notNull())
+        {
+            // Should it support baked textures?
+            mTexturep = LLViewerTextureManager::getFetchedTexture(mImageAssetID, FTT_DEFAULT, MIPMAP_YES, LLGLTexture::BOOST_THUMBNAIL);
+            
+            mTexturep->forceToSaveRawImage(0);
+            
+            S32 desired_draw_width = mTexturep->getWidth();
+            S32 desired_draw_height = mTexturep->getHeight();
+            
+            mTexturep->setKnownDrawSize(desired_draw_width, desired_draw_height);
+        }
+	}
+    else if (tvalue.isString())
     {
-        initImage();
+        mImagep = LLUI::getUIImage(tvalue.asString(), LLGLTexture::BOOST_UI);
+        if (mImagep)
+        {
+            LLViewerFetchedTexture* texture = dynamic_cast<LLViewerFetchedTexture*>(mImagep->getImage().get());
+            if(texture)
+            {
+                mImageAssetID = texture->getID();
+            }
+        }
     }
 }
 
@@ -220,53 +232,6 @@ BOOL LLThumbnailCtrl::handleHover(S32 x, S32 y, MASK mask)
         return TRUE;
     }
     return LLUICtrl::handleHover(x, y, mask);
-}
-
-void LLThumbnailCtrl::initImage()
-{
-    if (mInited)
-    {
-        return;
-    }
-    mInited = true;
-    LLSD tvalue = getValue();
-
-    if (tvalue.isUUID())
-    {
-        mImageAssetID = tvalue.asUUID();
-        if (mImageAssetID.notNull())
-        {
-            // Should it support baked textures?
-            mTexturep = LLViewerTextureManager::getFetchedTexture(mImageAssetID, FTT_DEFAULT, MIPMAP_YES, LLGLTexture::BOOST_THUMBNAIL);
-
-            mTexturep->forceToSaveRawImage(0);
-
-            S32 desired_draw_width = mTexturep->getWidth();
-            S32 desired_draw_height = mTexturep->getHeight();
-
-            mTexturep->setKnownDrawSize(desired_draw_width, desired_draw_height);
-        }
-    }
-    else if (tvalue.isString())
-    {
-        mImagep = LLUI::getUIImage(tvalue.asString(), LLGLTexture::BOOST_UI);
-        if (mImagep)
-        {
-            LLViewerFetchedTexture* texture = dynamic_cast<LLViewerFetchedTexture*>(mImagep->getImage().get());
-            if (texture)
-            {
-                mImageAssetID = texture->getID();
-            }
-        }
-    }
-}
-
-void LLThumbnailCtrl::unloadImage()
-{
-    mImageAssetID = LLUUID::null;
-    mTexturep = nullptr;
-    mImagep = nullptr;
-    mInited = false;
 }
 
 
