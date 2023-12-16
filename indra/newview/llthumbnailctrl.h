@@ -71,6 +71,7 @@ public:
     virtual BOOL handleHover(S32 x, S32 y, MASK mask) override;
 	
 private:
+	S32 mPriority;
     bool mBorderVisible;
     bool mInteractable;
     bool mShowLoadingPlaceholder;
