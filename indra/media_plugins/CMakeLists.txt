@@ -2,10 +2,10 @@
 
 add_subdirectory(base)
 
-if (LINUX)
-    #add_subdirectory(gstreamer010)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+    add_subdirectory(libvlc)
     add_subdirectory(example)
-endif (LINUX)
+endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 
 if (DARWIN)
     add_subdirectory(cef)
