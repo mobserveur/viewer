@@ -137,7 +137,11 @@ LLDir_Linux::LLDir_Linux()
 		}
 	}
 
+#ifdef APP_PLUGIN_DIR
+	mLLPluginDir = APP_PLUGIN_DIR;
+#else
 	mLLPluginDir = mExecutableDir + mDirDelimiter + "llplugin";
+#endif
 
 	// *TODO: don't use /tmp, use $HOME/.secondlife/tmp or something.
 	mTempDir = "/tmp";

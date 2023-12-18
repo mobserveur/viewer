@@ -9,11 +9,13 @@ if (INSTALL)
   set(INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE PATH
       "Top-level installation directory.")
 
-  if (EXISTS /lib64)
+  if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+    set(_LIB lib/${ARCH}-linux-gnu)
+  elseif (EXISTS /lib64)
     set(_LIB lib64)
-  else (EXISTS /lib64)
+  else ()
     set(_LIB lib)
-  endif (EXISTS /lib64)
+  endif ()
 
   set(INSTALL_LIBRARY_DIR ${INSTALL_PREFIX}/${_LIB} CACHE PATH
       "Installation directory for read-only shared files.")

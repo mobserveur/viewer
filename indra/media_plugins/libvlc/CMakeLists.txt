@@ -56,7 +56,4 @@ if (DARWIN)
 
 endif (DARWIN)
 
-if (INSTALL)
-	install(TARGETS ${PROJECT_NAME} DESTINATION
-		libexec/${VIEWER_BINARY_NAME}/llplugin)
-endif ()
+include(LibraryInstall)
