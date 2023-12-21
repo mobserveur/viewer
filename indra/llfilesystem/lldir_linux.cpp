@@ -127,7 +127,7 @@ LLDir_Linux::LLDir_Linux()
 		if ((path_end = strrchr(tmp_str,'/')))
 		{
 			*path_end = '\0';
-			mExecutableDir = tmp_str;
+			//mExecutableDir = tmp_str;
 			mWorkingDir = tmp_str;
 			mExecutableFilename = path_end+1;
 		}
