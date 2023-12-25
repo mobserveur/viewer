@@ -59,10 +59,12 @@ include(VulkanGltf)
 include(ZLIBNG)
 include(URIPARSER)
 include(LLPrimitive)
-include(LibVLCPlugin)
-if (DARWIN)
-  include(CEFPlugin)
-endif ()
+if (ENABLE_MEDIA_PLUGINS)
+	include(LibVLCPlugin)
+	if (DARWIN)
+		include(CEFPlugin)
+	endif (DARWIN)
+endif (ENABLE_MEDIA_PLUGINS)
 include(UnixInstall)
 
 if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
@@ -1954,13 +1956,15 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ${LLPHYSICSEXTENSIONS_LIBRARIES}
         ll::bugsplat
         ll::tracy
-        ll::libvlc
         ll::fontconfig
         )
 
-if( DARWIN )
-   target_link_libraries(${VIEWER_BINARY_NAME} ll::cef )
-endif()
+if (ENABLE_MEDIA_PLUGINS)
+   target_link_libraries(${VIEWER_BINARY_NAME} ll::libvlc )
+   if (DARWIN)
+      target_link_libraries(${VIEWER_BINARY_NAME} ll::cef )
+   endif (DARWIN)
+endif (ENABLE_MEDIA_PLUGINS)
 
 if( TARGET ll::intel_memops )
    target_link_libraries(${VIEWER_BINARY_NAME} ll::intel_memops )
@@ -2144,11 +2148,15 @@ if (DARWIN)
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
 
-  if (DARWIN)
+  if (ENABLE_MEDIA_PLUGINS)
+      if (DARWIN)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
-  else ()
-    add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc)
-  endif ()
+      else (DARWIN)
+          add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc)
+      endif (DARWIN)
+  else (ENABLE_MEDIA_PLUGINS)
+      add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
+  endif (ENABLE_MEDIA_PLUGINS)
 
   if (ENABLE_SIGNING)
       set(SIGNING_SETTING "--signature=${SIGNING_IDENTITY}")
