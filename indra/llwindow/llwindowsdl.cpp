@@ -681,6 +681,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 		CGLDestroyRendererInfo(info);
 	} else
 		vram_megabytes = 256;
+	gGLManager.mVRAM = vram_megabytes;
 #else
 	PFNGLXQUERYCURRENTRENDERERINTEGERMESAPROC queryInteger;
 	queryInteger = (PFNGLXQUERYCURRENTRENDERERINTEGERMESAPROC)
@@ -688,8 +689,8 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 				"glXQueryCurrentRendererIntegerMESA");
 	unsigned int vram_megabytes = 0;
 	queryInteger(GLX_RENDERER_VIDEO_MEMORY_MESA, &vram_megabytes);
-# endif // LL_DARWIN
 	gGLManager.mVRAM = vram_megabytes;
+# endif // LL_DARWIN
 	if (gGLManager.mVRAM)
 		LL_INFOS() << "Detected " << gGLManager.mVRAM << "MB VRAM." << LL_ENDL;
 	// If VRAM is not detected, that is handled later
