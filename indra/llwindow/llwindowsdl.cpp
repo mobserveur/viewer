@@ -68,6 +68,9 @@ static bool ATIbug = false;
 
 #if LL_DARWIN
 
+#include <OpenGL/OpenGL.h>
+#include <CoreGraphics/CGDirectDisplay.h>
+
 BOOL gHiDPISupport = TRUE;
 
 namespace
@@ -671,6 +674,19 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 	{
 		LL_INFOS() << "X11 log-parser detected " << gGLManager.mVRAM << "MB VRAM." << LL_ENDL;
 	} else
+#elif LL_DARWIN
+	CGLRendererInfoObj info = 0;
+	GLint vram_megabytes = 0;
+	int num_renderers = 0;
+	auto err = CGLQueryRendererInfo(CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay),
+			&info, &num_renderers);
+	if (!err) {
+		CGLDescribeRenderer(info, 0, kCGLRPVideoMemoryMegabytes, &vram_megabytes);
+		CGLDestroyRendererInfo(info);
+	} else
+		vram_megabytes = 256;
+	gGLManager.mVRAM = vram_megabytes;
+	LL_INFOS() << "Detected " << gGLManager.mVRAM << "MB VRAM." << LL_ENDL;
 # endif // LL_X11
 	{
 		/*
