@@ -267,7 +267,7 @@ nächsten Eigentümer angehängt werden.</string>
 	<string name="NoneFound">Nicht gefunden.</string>
 	<string name="RetrievingData">Laden...</string>
 	<string name="ReleaseNotes">Versionshinweise</string>
-	<string name="RELEASE_NOTES_BASE_URL">https://releasenotes.secondlife.com/viewer/</string>
+	<string name="RELEASE_NOTES_BASE_URL">https://megapahit.net/</string>
 	<string name="LoadingData">Wird geladen...</string>
 	<string name="AvatarNameNobody">(niemand)</string>
 	<string name="AvatarNameWaiting">(wartet)</string>

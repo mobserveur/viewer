@@ -266,7 +266,7 @@ possono essere allegati ai biglietti.</string>
 	<string name="NoneFound">Nessun risultato.</string>
 	<string name="RetrievingData">Recupero dati in corso...</string>
 	<string name="ReleaseNotes">Note sulla versione</string>
-	<string name="RELEASE_NOTES_BASE_URL">https://releasenotes.secondlife.com/viewer/</string>
+	<string name="RELEASE_NOTES_BASE_URL">https://megapahit.net/</string>
 	<string name="LoadingData">In caricamento...</string>
 	<string name="AvatarNameNobody">(nessuno)</string>
 	<string name="AvatarNameWaiting">(in attesa)</string>

@@ -268,7 +268,7 @@ peuvent être joints aux notes.</string>
 	<string name="NoneFound">Aucun résultat.</string>
 	<string name="RetrievingData">En cours d'extraction...</string>
 	<string name="ReleaseNotes">Notes de version</string>
-	<string name="RELEASE_NOTES_BASE_URL">https://releasenotes.secondlife.com/viewer/</string>
+	<string name="RELEASE_NOTES_BASE_URL">https://megapahit.net/</string>
 	<string name="LoadingData">Chargement...</string>
 	<string name="AvatarNameNobody">(personne)</string>
 	<string name="AvatarNameWaiting">(en attente)</string>

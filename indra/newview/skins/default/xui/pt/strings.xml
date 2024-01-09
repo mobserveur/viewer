@@ -230,7 +230,7 @@ ser anexado às anotações.</string>
 	<string name="NoneFound">Não encontrado.</string>
 	<string name="RetrievingData">Buscando...</string>
 	<string name="ReleaseNotes">Notas de versão</string>
-	<string name="RELEASE_NOTES_BASE_URL">https://releasenotes.secondlife.com/viewer/</string>
+	<string name="RELEASE_NOTES_BASE_URL">https://megapahit.net/</string>
 	<string name="LoadingData">Carregando...</string>
 	<string name="AvatarNameNobody">(ninguém)</string>
 	<string name="AvatarNameWaiting">(aguardando)</string>
