@@ -72,6 +72,7 @@ static bool ATIbug = false;
 
 #include <OpenGL/OpenGL.h>
 #include <CoreGraphics/CGDirectDisplay.h>
+#include <CoreServices/CoreServices.h>
 
 BOOL gHiDPISupport = TRUE;
 
@@ -2730,6 +2731,42 @@ void LLWindowSDL::spawnWebBrowser(const std::string& escaped_url, bool async)
 	cmd += "launch_url.sh";
 	arg = escaped_url;
 	exec_cmd(cmd, arg);
+
+#elif LL_DARWIN
+
+	S32 result = 0;
+	CFURLRef urlRef = NULL;
+
+	LL_INFOS() << "Opening URL " << escaped_url << LL_ENDL;
+
+	CFStringRef	stringRef = CFStringCreateWithCString(NULL, escaped_url.c_str(), kCFStringEncodingUTF8);
+	if (stringRef)
+	{
+		// This will succeed if the string is a full URL, including the http://
+		// Note that URLs specified this way need to be properly percent-escaped.
+		urlRef = CFURLCreateWithString(NULL, stringRef, NULL);
+
+		// Don't use CRURLCreateWithFileSystemPath -- only want valid URLs
+
+		CFRelease(stringRef);
+	}
+
+	if (urlRef)
+	{
+		result = LSOpenCFURLRef(urlRef, NULL);
+
+		if (result != noErr)
+		{
+			LL_INFOS() << "Error " << result << " on open." << LL_ENDL;
+		}
+
+		CFRelease(urlRef);
+	}
+	else
+	{
+		LL_INFOS() << "Error: couldn't create URL." << LL_ENDL;
+	}
+
 #endif // LL_LINUX
 
 	LL_INFOS() << "spawn_web_browser returning." << LL_ENDL;
