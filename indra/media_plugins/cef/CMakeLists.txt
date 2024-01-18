@@ -32,8 +32,9 @@ set(media_plugin_cef_HEADER_FILES
 
 # Select which VolumeCatcher implementation to use
 if (LINUX)
-  message(FATAL_ERROR "CEF plugin has been enabled for a Linux compile.\n"
-    "  Please create a volume_catcher implementation for this platform.")
+#  message(FATAL_ERROR "CEF plugin has been enabled for a Linux compile.\n"
+#    "  Please create a volume_catcher implementation for this platform.")
+  list(APPEND media_plugin_cef_SOURCE_FILES mac_volume_catcher_null.cpp)
 elseif (DARWIN)
   list(APPEND media_plugin_cef_SOURCE_FILES mac_volume_catcher_null.cpp)
   find_library(CORESERVICES_LIBRARY CoreServices)
@@ -90,3 +91,14 @@ if (DARWIN)
   )
 
 endif (DARWIN)
+
+if (INSTALL)
+	if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+		set(_LIB lib/${ARCH}-linux-gnu)
+	elseif (EXISTS /lib64)
+		set(_LIB lib64)
+	else ()
+		set(_LIB lib)
+	endif ()
+	install(TARGETS ${PROJECT_NAME} DESTINATION ${_LIB})
+endif ()
