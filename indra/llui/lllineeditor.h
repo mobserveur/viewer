@@ -130,6 +130,7 @@ public:
 	/*virtual*/ BOOL	handleRightMouseDown(S32 x, S32 y, MASK mask);
 	/*virtual*/ BOOL	handleKeyHere(KEY key, MASK mask );
 	/*virtual*/ BOOL	handleUnicodeCharHere(llwchar uni_char);
+	/*virtual*/ BOOL	handleUnicodeStringHere(char *uni_str);
 	/*virtual*/ void	onMouseCaptureLost();
 
 	// LLEditMenuHandler overrides
@@ -296,6 +297,7 @@ public:
 
 	void			removeChar();
 	void			addChar(const llwchar c);
+	void			addString(char *s);
 	void			setCursorAtLocalPos(S32 local_mouse_x);
 	S32				findPixelNearestPos(S32 cursor_offset = 0) const;
 	S32				calcCursorPos(S32 mouse_x);

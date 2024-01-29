@@ -166,6 +166,50 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////
+class LLTextEditor::TextCmdAddString : public LLTextBase::TextCmd
+{
+public:
+	TextCmdAddString(S32 pos, BOOL group_with_next, char *str,
+			LLTextSegmentPtr segment) :
+		TextCmd(pos, group_with_next, segment),
+		mWString(utf8str_to_wstring(str)),
+		mBlockExtensions(FALSE)
+	{
+	}
+	virtual void blockExtensions()
+	{
+		mBlockExtensions = TRUE;
+	}
+	virtual BOOL canExtend(S32 pos) const
+	{
+		if (!mSegments.empty()) return FALSE;
+
+		return !mBlockExtensions
+			&& (pos == getPosition() + (S32)mWString.length());
+	}
+	virtual BOOL execute(LLTextBase* editor, S32* delta)
+	{
+		*delta = insert(editor, getPosition(), mWString);
+		LLWStringUtil::truncate(mWString, *delta);
+		return (*delta != 0);
+	}
+	virtual S32 undo(LLTextBase* editor)
+	{
+		remove(editor, getPosition(), mWString.length());
+		return getPosition();
+	}
+	virtual S32 redo(LLTextBase* editor)
+	{
+		insert(editor, getPosition(), mWString);
+		return getPosition() + mWString.length();
+	}
+
+private:
+	LLWString	mWString;
+	BOOL		mBlockExtensions;
+};
+
+///////////////////////////////////////////////////////////////////
 
 class LLTextEditor::TextCmdOverwriteChar : public LLTextBase::TextCmd
 {
@@ -1111,6 +1155,18 @@ S32 LLTextEditor::addChar(S32 pos, llwchar wc)
 	}
 }
 
+S32 LLTextEditor::addString(S32 pos, char *str)
+{
+	if ((wstring_utf8_length(getWText()) + strlen(str))
+			> mMaxTextByteLength) {
+		make_ui_sound("UISndBadKeystroke");
+		return 0;
+	}
+
+	return execute(new TextCmdAddString(pos, FALSE, str,
+				LLTextSegmentPtr()));
+}
+
 void LLTextEditor::addChar(llwchar wc)
 {
 	if( !getEnabled() )
@@ -1141,6 +1197,34 @@ void LLTextEditor::addChar(llwchar wc)
 		{
 			remove(replacement_start, replacement_length, true);
 			insert(replacement_start, replacement_string, false, LLTextSegmentPtr());
+			setCursorPos(new_cursor_pos);
+		}
+	}
+}
+
+void LLTextEditor::addString(char *str)
+{
+	if (!getEnabled())
+		return;
+	if (hasSelection())
+		deleteSelection(TRUE);
+	else if (LL_KIM_OVERWRITE == gKeyboard->getInsertMode())
+		removeChar(mCursorPos);
+
+	setCursorPos(mCursorPos + addString(mCursorPos, str));
+
+	if (!mReadOnly && mAutoreplaceCallback != NULL) {
+		S32 replacement_start;
+		S32 replacement_length;
+		LLWString replacement_string;
+		S32 new_cursor_pos = mCursorPos;
+		mAutoreplaceCallback(replacement_start, replacement_length,
+				replacement_string, new_cursor_pos, getWText());
+
+		if (replacement_length > 0 || !replacement_string.empty()) {
+			remove(replacement_start, replacement_length, true);
+			insert(replacement_start, replacement_string, false,
+					LLTextSegmentPtr());
 			setCursorPos(new_cursor_pos);
 		}
 	}
@@ -1864,6 +1948,24 @@ BOOL LLTextEditor::handleUnicodeCharHere(llwchar uni_char)
 	return handled;
 }
 
+BOOL LLTextEditor::handleUnicodeStringHere(char *uni_str)
+{
+	auto handled = FALSE;
+
+	if (!mReadOnly) {
+		addString(uni_str);
+		getWindow()->hideCursorUntilMouseMove();
+		handled = TRUE;
+	}
+
+	if (handled) {
+		resetCursorBlink();
+		deselect();
+		onKeyStroke();
+	}
+
+	return handled;
+}
 
 // virtual
 BOOL LLTextEditor::canDoDelete() const

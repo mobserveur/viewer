@@ -58,6 +58,12 @@ BOOL LLFocusableElement::handleUnicodeChar(llwchar uni_char, BOOL called_from_pa
 	return FALSE;
 }
 
+// virtual
+BOOL LLFocusableElement::handleUnicodeString(char *uni_str, BOOL called_from_parent)
+{
+	return FALSE;
+}
+
 // virtual 
 bool LLFocusableElement::wantsKeyUpKeyDown() const
 {

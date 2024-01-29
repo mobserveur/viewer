@@ -1893,9 +1893,11 @@ void LLWindowSDL::gatherInput()
                 break;
 
             case SDL_TEXTINPUT:
-		    mKeyVirtualKey = *event.text.text;
-		    handleUnicodeUTF16(mKeyVirtualKey,
-				    gKeyboard->currentMask(FALSE));
+		    mCallbacks->handleUnicodeString(event.text.text);
+                break;
+
+            case SDL_TEXTEDITING:
+		    mCallbacks->handleUnicodeString(event.edit.text);
                 break;
 
             case SDL_KEYUP:

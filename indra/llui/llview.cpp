@@ -1043,12 +1043,31 @@ BOOL LLView::handleUnicodeChar(llwchar uni_char, BOOL called_from_parent)
 	return handled;
 }
 
+BOOL LLView::handleUnicodeString(char *uni_str, BOOL called_from_parent)
+{
+	auto handled = FALSE;
+
+	if (getVisible() && getEnabled() && !handled) {
+		handled = handleUnicodeStringHere(uni_str);
+		if (handled && LLView::sDebugKeys)
+			LL_INFOS() << "Unicode key handled by " << getName() << LL_ENDL;
+	}
+
+	if (!handled && !called_from_parent && mParentView)
+		handled = mParentView->handleUnicodeString(uni_str, FALSE);
+
+	return handled;
+}
 
 BOOL LLView::handleUnicodeCharHere(llwchar uni_char )
 {
 	return FALSE;
 }
 
+BOOL LLView::handleUnicodeStringHere(char *uni_str)
+{
+	return FALSE;
+}
 
 BOOL LLView::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 							   EDragAndDropType cargo_type, void* cargo_data,

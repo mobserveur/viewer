@@ -52,6 +52,10 @@ BOOL LLWindowCallbacks::handleUnicodeChar(llwchar uni_char, MASK mask)
 	return FALSE;
 }
 
+BOOL LLWindowCallbacks::handleUnicodeString(char *uni_str)
+{
+	return FALSE;
+}
 
 BOOL LLWindowCallbacks::handleMouseDown(LLWindow *window, const LLCoordGL pos, MASK mask)
 {
