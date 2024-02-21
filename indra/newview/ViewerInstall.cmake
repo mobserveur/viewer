@@ -16,7 +16,6 @@ if (LINUX)
 	endif ()
 	install(FILES
 		${AUTOBUILD_INSTALL_DIR}/lib/release/libcef.so
-		${AUTOBUILD_INSTALL_DIR}/lib/release/libminigbm.so
 		DESTINATION ${_LIB})
 	install(PROGRAMS
 		${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
