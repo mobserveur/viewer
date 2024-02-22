@@ -1893,12 +1893,12 @@ void LLWindowSDL::gatherInput()
                 break;
 
             case SDL_TEXTINPUT:
-		    mCallbacks->handleUnicodeString(event.text.text);
+		    mCallbacks->handleUnicodeString(event.text.text, false);
                 break;
 
             case SDL_TEXTEDITING:
-		    mCallbacks->handleUnicodeString(event.edit.text);
-                break;
+		    mCallbacks->handleUnicodeString(event.edit.text, true);
+         break;
 
             case SDL_KEYUP:
 		    mKeyScanCode = event.key.keysym.scancode;

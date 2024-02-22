@@ -3129,11 +3129,11 @@ BOOL LLViewerWindow::handleUnicodeChar(llwchar uni_char, MASK mask)
 	return FALSE;
 }
 
-BOOL LLViewerWindow::handleUnicodeString(char *uni_str)
+BOOL LLViewerWindow::handleUnicodeString(char *uni_str, bool editing)
 {
 	auto keyboard_focus = gFocusMgr.getKeyboardFocus();
 	if (keyboard_focus)
-		keyboard_focus->handleUnicodeString(uni_str, FALSE);
+		keyboard_focus->handleUnicodeString(uni_str, editing, FALSE);
 
 	return TRUE;
 }

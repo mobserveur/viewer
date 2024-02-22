@@ -101,7 +101,7 @@ public:
 
 	virtual BOOL	handleKeyHere(KEY key, MASK mask );
 	virtual BOOL	handleUnicodeCharHere(llwchar uni_char);
-	virtual BOOL	handleUnicodeStringHere(char *uni_str);
+	virtual BOOL	handleUnicodeStringHere(char *uni_str, bool editing);
 
 	virtual void	onMouseCaptureLost();
 
@@ -242,7 +242,7 @@ protected:
 	// Undoable operations
 	void			addChar(llwchar c); // at mCursorPos
 	S32				addChar(S32 pos, llwchar wc);
-	void			addString(char *s);
+	void			addString(char *s, bool editing);
 	S32				addString(S32 pos, char *str);
 	void			addLineBreakChar(BOOL group_together = FALSE);
 	S32				overwriteChar(S32 pos, llwchar wc);

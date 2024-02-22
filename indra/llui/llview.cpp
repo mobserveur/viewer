@@ -1043,18 +1043,18 @@ BOOL LLView::handleUnicodeChar(llwchar uni_char, BOOL called_from_parent)
 	return handled;
 }
 
-BOOL LLView::handleUnicodeString(char *uni_str, BOOL called_from_parent)
+BOOL LLView::handleUnicodeString(char *uni_str, bool editing, BOOL called_from_parent)
 {
 	auto handled = FALSE;
 
 	if (getVisible() && getEnabled() && !handled) {
-		handled = handleUnicodeStringHere(uni_str);
+		handled = handleUnicodeStringHere(uni_str, editing);
 		if (handled && LLView::sDebugKeys)
 			LL_INFOS() << "Unicode key handled by " << getName() << LL_ENDL;
 	}
 
 	if (!handled && !called_from_parent && mParentView)
-		handled = mParentView->handleUnicodeString(uni_str, FALSE);
+		handled = mParentView->handleUnicodeString(uni_str, editing, FALSE);
 
 	return handled;
 }
@@ -1064,7 +1064,7 @@ BOOL LLView::handleUnicodeCharHere(llwchar uni_char )
 	return FALSE;
 }
 
-BOOL LLView::handleUnicodeStringHere(char *uni_str)
+BOOL LLView::handleUnicodeStringHere(char *uni_str, bool editing)
 {
 	return FALSE;
 }
