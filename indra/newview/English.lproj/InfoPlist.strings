@@ -3,5 +3,5 @@
 CFBundleName = "Megapahit";
 
 CFBundleShortVersionString = "Megapahit version %%VERSION%%";
-CFBundleGetInfoString = "Megapahit version %%VERSION%%, Copyright 2023 Megapahit.";
+CFBundleGetInfoString = "Megapahit version %%VERSION%%, Copyright 2024 Megapahit.";
 
