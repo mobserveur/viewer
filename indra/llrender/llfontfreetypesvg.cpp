@@ -34,9 +34,17 @@
 #endif
 
 #define NANOSVG_IMPLEMENTATION
+#if LL_FREEBSD
 #include <nanosvg.h>
+#else
+#include <nanosvg/nanosvg.h>
+#endif
 #define NANOSVGRAST_IMPLEMENTATION
+#if LL_FREEBSD
 #include <nanosvgrast.h>
+#else
+#include <nanosvg/nanosvgrast.h>
+#endif
 
 #if LL_WINDOWS
 #pragma warning (pop)
