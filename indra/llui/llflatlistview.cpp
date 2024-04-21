@@ -1376,7 +1376,7 @@ bool LLFlatListViewEx::updateItemVisibility(LLPanel* item, const LLSD &action)
     if (!item)
         return false;
 
-	BOOL visible = TRUE;
+    BOOL visible = TRUE;
 
 	// 0 signifies that filter is matched,
 	// i.e. we don't hide items that don't support 'match_filter' action, separators etc.

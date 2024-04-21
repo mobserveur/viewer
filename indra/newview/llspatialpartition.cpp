@@ -1324,7 +1324,7 @@ void drawBoxOutline(const LLVector3& pos, const LLVector3& size)
     if (!pos.isFinite() || !size.isFinite())
         return;
 
-	LLVector3 v1 = size.scaledVec(LLVector3( 1, 1,1));
+    LLVector3 v1 = size.scaledVec(LLVector3( 1, 1,1));
 	LLVector3 v2 = size.scaledVec(LLVector3(-1, 1,1));
 	LLVector3 v3 = size.scaledVec(LLVector3(-1,-1,1));
 	LLVector3 v4 = size.scaledVec(LLVector3( 1,-1,1));

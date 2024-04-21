@@ -139,7 +139,7 @@ bool LLURLDispatcherImpl::dispatch(const LLSLURL& slurl,
     if (slurl.getType() == LLSLURL::EMPTY)
         return true;
 
-	const bool right_click = false;
+    const bool right_click = false;
 	return dispatchCore(slurl, nav_type, right_click, web, trusted_browser);
 }
 
