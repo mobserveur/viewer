@@ -95,9 +95,9 @@ void APIENTRY gl_debug_callback(GLenum source,
     }*/
 
     if (gGLManager.mIsDisabled &&
-        severity == GL_DEBUG_SEVERITY_HIGH_ARB &&
-        source == GL_DEBUG_SOURCE_API_ARB &&
-        type == GL_DEBUG_TYPE_ERROR_ARB &&
+        severity == GL_DEBUG_SEVERITY_HIGH &&
+        source == GL_DEBUG_SOURCE_API &&
+        type == GL_DEBUG_TYPE_ERROR &&
         id == GL_INVALID_VALUE)
     {
         // Suppress messages about deleting already deleted objects called from LLViewerWindow::stopGL()
