@@ -690,7 +690,7 @@ void LLDir::walkSearchSkinDirs(const std::string& subdir,
 							   const std::string& filename,
 							   const FUNCTION& function) const
 {
-	for (const std::string& skindir : mSearchSkinDirs)
+	for (std::string skindir : mSearchSkinDirs)
 	{
 		std::string subdir_path(add(skindir, subdir));
 		for (const std::string& subsubdir : subsubdirs)
