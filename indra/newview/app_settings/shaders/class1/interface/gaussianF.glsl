@@ -43,9 +43,9 @@ void main()
 
     float w[9] = float[9]( 0.0002, 0.0060, 0.0606, 0.2417, 0.3829, 0.2417, 0.0606, 0.0060, 0.0002 );
     
-    for (int i = 0; i < 9; ++i)
+    for (float i = 0.0; i < 9.0; i += 1.0)
     {
-        vec2 tc = vary_texcoord0 + (i-4)*direction*resScale;
+        vec2 tc = vary_texcoord0 + (i-4.0)*direction*resScale;
         col += texture(diffuseRect, tc).rgb * w[i];
     }
 
