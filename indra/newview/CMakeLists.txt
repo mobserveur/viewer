@@ -22,7 +22,6 @@ include(DragDrop)
 include(EXPAT)
 include(FMODSTUDIO)
 include(Hunspell)
-include(ICU4C)
 if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(JPEGEncoderBasic)
 endif ()
@@ -1626,6 +1625,8 @@ set(viewer_APPSETTINGS_FILES
     app_settings/autoreplace.xml
     app_settings/cmd_line.xml
     app_settings/commands.xml
+    app_settings/emoji_groups.xml
+    app_settings/foldertypes.xml
     app_settings/grass.xml
     app_settings/ignorable_dialogs.xml
     app_settings/key_bindings.xml
@@ -1946,7 +1947,6 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ll::bugsplat
         ll::tracy
         ll::fontconfig
-        ll::icu4c
         )
 
 if (ENABLE_MEDIA_PLUGINS)

@@ -830,7 +830,7 @@ extern PFNGLPOLYGONOFFSETCLAMPPROC              glPolygonOffsetClamp;
 
 #include "GL/glh_extensions.h"
 
-/*
+#if 0
 // These symbols don't exist on 10.3.9, so they have to be declared weak.  Redeclaring them here fixes the problem.
 // Note that they also must not be called on 10.3.9.  This should be taken care of by a runtime check for the existence of the GL extension.
 #include <AvailabilityMacros.h>
@@ -859,7 +859,7 @@ extern void glGenerateMipmapEXT(GLenum target) AVAILABLE_MAC_OS_X_VERSION_10_4_A
 
 #ifndef GL_ARB_framebuffer_object
 #define glGenerateMipmap glGenerateMipmapEXT
-#define GL_MAX_SAMPLES	0x8D57
+#define GL_MAX_SAMPLES  0x8D57
 #endif
 
 #ifdef __cplusplus
@@ -941,11 +941,11 @@ extern "C" {
 #define GL_DYNAMIC_READ_ARB               0x88E9
 #define GL_DYNAMIC_COPY_ARB               0x88EA
 #endif
-	
+
 
 
 #ifndef GL_ARB_vertex_buffer_object
-// GL types for handling large vertex buffer objects
+/* GL types for handling large vertex buffer objects */
 typedef intptr_t GLintptr;
 typedef intptr_t GLsizeiptr;
 #endif
@@ -961,7 +961,7 @@ typedef GLboolean (* glIsBufferARBProcPtr) (GLuint buffer);
 typedef void (* glBufferDataARBProcPtr) (GLenum target, GLsizeiptrARB size, const GLvoid *data, GLenum usage);
 typedef void (* glBufferSubDataARBProcPtr) (GLenum target, GLintptrARB offset, GLsizeiptrARB size, const GLvoid *data);
 typedef void (* glGetBufferSubDataARBProcPtr) (GLenum target, GLintptrARB offset, GLsizeiptrARB size, GLvoid *data);
-typedef GLvoid* (* glMapBufferARBProcPtr) (GLenum target, GLenum access);	// Flawfinder: ignore
+typedef GLvoid* (* glMapBufferARBProcPtr) (GLenum target, GLenum access);   /* Flawfinder: ignore */
 typedef GLboolean (* glUnmapBufferARBProcPtr) (GLenum target);
 typedef void (* glGetBufferParameterivARBProcPtr) (GLenum target, GLenum pname, GLint *params);
 typedef void (* glGetBufferPointervARBProcPtr) (GLenum target, GLenum pname, GLvoid* *params);
@@ -977,7 +977,7 @@ extern GLvoid* glMapBufferARB (GLenum, GLenum);
 extern GLboolean glUnmapBufferARB (GLenum);
 extern void glGetBufferParameterivARB (GLenum, GLenum, GLint *);
 extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
-#endif // GL_GLEXT_FUNCTION_POINTERS
+#endif /* GL_GLEXT_FUNCTION_POINTERS */
 #endif
 
 #ifndef GL_ARB_texture_rg
@@ -1024,7 +1024,7 @@ extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
 // extern void glCompressedTexSubImage2D (GLenum, GLint, GLint, GLint, GLsizei, GLsizei, GLenum, GLsizei, const GLvoid*);
 // extern void glCompressedTexSubImage3D (GLenum, GLint, GLint, GLint, GLint, GLsizei, GLsizei, GLsizei, GLenum, GLsizei, const GLvoid*);
 // extern void glGetCompressedTexImage (GLenum, GLint, GLvoid*);
-// #endif // GL_GLEXT_FUNCTION_POINTERS
+// #endif /* GL_GLEXT_FUNCTION_POINTERS */
 // #endif
 
 #ifdef __cplusplus
@@ -1032,7 +1032,7 @@ extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
 #endif
 
 #include <OpenGL/gl.h>
-*/
+#endif // 0
 
 #endif // LL_MESA / LL_WINDOWS / LL_DARWIN
 
@@ -1050,11 +1050,11 @@ extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
 //GL_NVX_gpu_memory_info constants
 #ifndef GL_NVX_gpu_memory_info
 #define GL_NVX_gpu_memory_info
-#define	GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX          0x9047
-#define	GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX    0x9048
-#define	GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX  0x9049
-#define	GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX            0x904A
-#define	GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX            0x904B
+#define GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX          0x9047
+#define GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX    0x9048
+#define GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX  0x9049
+#define GL_GPU_MEMORY_INFO_EVICTION_COUNT_NVX            0x904A
+#define GL_GPU_MEMORY_INFO_EVICTED_MEMORY_NVX            0x904B
 #endif
 
 //GL_ATI_meminfo constants
@@ -1068,6 +1068,6 @@ extern void glGetBufferPointervARB (GLenum, GLenum, GLvoid* *);
 #if defined(TRACY_ENABLE) && LL_PROFILER_ENABLE_TRACY_OPENGL
     #include <tracy/TracyOpenGL.hpp>
 #endif
-    
+
 
 #endif // LL_LLGLHEADERS_H
