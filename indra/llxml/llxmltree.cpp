@@ -111,7 +111,7 @@ LLXmlTreeNode::~LLXmlTreeNode()
     attribute_map_t::iterator iter;
     for (iter=mAttributes.begin(); iter != mAttributes.end(); iter++)
         delete iter->second;
-        for(LLXmlTreeNode* node : mChildren)
+    for(LLXmlTreeNode* node : mChildren)
         {
             delete node;
         }

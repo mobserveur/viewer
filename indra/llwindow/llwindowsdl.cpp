@@ -501,7 +501,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
     // We need stencil support for a few (minor) things.
     if (!getenv("LL_GL_NO_STENCIL"))
         SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-        SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, (bits <= 16) ? 1 : 8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, (bits <= 16) ? 1 : 8);
 
         // *FIX: try to toggle vsync here?
 
