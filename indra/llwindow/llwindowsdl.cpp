@@ -771,7 +771,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
         if ( info.subsystem == SDL_SYSWM_X11 )
         {
             mSDL_Display = info.info.x11.display;
-            mSDL_XWindowID = info.info.x11.wmwindow;
+            mSDL_XWindowID = info.info.x11.window;
             /*
             Lock_Display = info.info.x11.lock_func;
             Unlock_Display = info.info.x11.unlock_func;
