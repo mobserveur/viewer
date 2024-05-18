@@ -527,7 +527,7 @@
      value="0.5 0 0 1" />
     <color
      name="MenuBarBgColor"
-     reference="DkGray" />
+     reference="MouseGray" />
     <color
      name="MenuBarGodBgColor"
      reference="FrogGreen" />
