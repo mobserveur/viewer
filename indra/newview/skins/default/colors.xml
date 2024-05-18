@@ -4,13 +4,13 @@
 	<!-- Named Colors -->
 	<color
 	 name="EmphasisColor"
-	 value="0.4 0.6 0.7 1" />
+	 value="0.4 0.6 0.8 1" />
 	<color
 	 name="EmphasisColor_13"
-	 value="0.4 0.6 0.7 0.25" />
+	 value="0.4 0.6 0.8 0.25" />
 	<color
 	 name="EmphasisColor_35"
-	 value="0.4 0.6 0.7 0.42" />
+	 value="0.4 0.6 0.8 0.42" />
 	<color
 	 name="BeaconColor"
     value="0.749 0.298 0 1" />	 
