@@ -1983,12 +1983,24 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 		llpanelface.cpp
 		lltexturefetch.cpp
 		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
+	set_source_files_properties(llfasttimerview.cpp PROPERTIES
+		COMPILE_FLAGS -Wno-nonnull)
 	set_source_files_properties(llinventorygallerymenu.cpp PROPERTIES
 		COMPILE_FLAGS -Wno-uninitialized)
 	set_source_files_properties(llviewerstats.cpp PROPERTIES
 		COMPILE_FLAGS -Wno-unused-value)
 	set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
 		-Wno-stringop-truncation)
+	set_source_files_properties(
+		llfloaterimsessiontab.cpp
+		llfloatersimplesnapshot.cpp
+		llfloatersidepanelcontainer.cpp
+		llinventorypanel.cpp
+		llpanelmaininventory.cpp
+		llpathfindingnavmesh.cpp
+		llsidepanelinventory.cpp
+		PROPERTIES COMPILE_FLAGS -Wno-dangling-reference
+	)
 endif ()
 
 message("Copying fonts")
