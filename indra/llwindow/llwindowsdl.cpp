@@ -730,7 +730,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
     // relaxed about if we have to.
     if (colorBits < 32)
     {
-#if LL_LINUX
+#if 0
         close();
         setupFailure(
             "Second Life requires True Color (32-bit) to run in a window.\n"
@@ -741,7 +741,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
             "Error",
             OSMB_OK);
         return FALSE;
-#endif // LL_LINUX
+#endif
     }
 
 #if 0  // *FIX: we're going to brave it for now...
