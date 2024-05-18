@@ -2,7 +2,7 @@
 <floater
  positioning="centered"
  legacy_header_height="18"
- height="460"
+ height="500"
  layout="topleft"
  name="floater_about"
  help_topic="floater_about"
@@ -14,7 +14,7 @@
     follows="all" 
     top="25"
     left="10"
-    height="425"
+    height="465"
     width="480" 
     name="about_tab"
     tab_position="top">
@@ -51,14 +51,14 @@
       name="credits_panel">
       <text
           follows="top|left|right"
-          height="40"
+          height="80"
           layout="topleft"
           left="5"
           name="linden_intro"
           top="10"
           width="465"
           wrap="true">
-Megapahit uses Kokua's Dullahan fork, and is brought to you by Erik Kundiman, with special thanks to milo (observeur Resident) for all the testing, and to the Lindens whose viewer this software is based on, which therefore has open source contributions from:
+Megapahit uses Kokua's Dullahan fork, and is brought to you by Erik Kundiman, with special thanks to (in order of appearance) Vir Linden for making it possible for the project to have a place (in every sense of the word) in SL, nutsobvious for the initial testing, Soft Linden for the security testing, observeur for the ongoing testing, Fritigern Gothly for the administrative support, Secret Foxtail for making things look much nicer (viewer icons and skin, and parcel billboard) and to the Lindens whose viewer this software is based on, which therefore has open source contributions from:
       </text>
       <text_editor
        enabled="false" 
