@@ -138,6 +138,7 @@ if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
           -pthread
           -Wno-parentheses
           -Wno-deprecated
+          -Wno-c++20-compat
   )
 
   if (NOT BUILD_SHARED_LIBS)
