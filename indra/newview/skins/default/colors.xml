@@ -70,7 +70,8 @@
 	 value="0 0 0 0.5" />
 	<color
 	name="FrogGreen"
-	value="0.26 0.345 0.263 1" />
+	value="0.26 0.33 0.42 1" />
+  <!-- ^(Not actually green) -->
 	<color
 	 name="Red"
 	 value="1 0 0 1" />
