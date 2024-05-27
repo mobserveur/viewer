@@ -109,6 +109,7 @@ static void onClickVolume(void*);
 LLStatusBar::LLStatusBar(const LLRect& rect)
 :   LLPanel(),
     mTextTime(NULL),
+    mTextFps(NULL),
     mSGBandwidth(NULL),
     mSGPacketLoss(NULL),
     mBtnVolume(NULL),
@@ -127,6 +128,7 @@ LLStatusBar::LLStatusBar(const LLRect& rect)
 
     mBalanceTimer = new LLFrameTimer();
     mHealthTimer = new LLFrameTimer();
+    mFpsUpdateTimer = new LLFrameTimer();
 
     buildFromFile("panel_status_bar.xml");
 }
@@ -164,6 +166,7 @@ BOOL LLStatusBar::postBuild()
     gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
     mTextTime = getChild<LLTextBox>("TimeText" );
+    mTextFps = getChild<LLTextBox>("FpsText");
 
     getChild<LLUICtrl>("buyL")->setCommitCallback(
         boost::bind(&LLStatusBar::onClickBuyCurrency, this));
@@ -295,6 +298,15 @@ void LLStatusBar::refresh()
         //mSGBandwidth->setThreshold(0, bwtotal*0.75f);
         //mSGBandwidth->setThreshold(1, bwtotal);
         //mSGBandwidth->setThreshold(2, bwtotal);
+    }
+
+    if(mFpsUpdateTimer->getElapsedTimeF32() >= 1.0f)
+    {
+        mFpsUpdateTimer->reset();
+
+        S32 fps = (S32) llround(LLTrace::get_frame_recording().getPeriodMedianPerSec(LLStatViewer::FPS, 50));
+        std::string fpsStr = std::to_string(fps);
+        mTextFps->setText(fpsStr);
     }
 
     // update clock every 10 seconds

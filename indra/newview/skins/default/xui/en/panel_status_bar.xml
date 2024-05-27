@@ -185,4 +185,20 @@
      top="2"
      name="volume_btn"
      width="16" />
+      <text
+     type="string"
+     font="SansSerif"
+     text_color="FpsTextColor"
+     follows="right|top"
+     halign="center"
+     valign="center"
+     height="18"
+     top="1"
+     v_pad="0"
+     left_pad="0"
+     name="FpsText"
+     tool_tip="fps"
+     width="40">
+     60
+     </text>
 </panel>
