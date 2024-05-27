@@ -14,20 +14,20 @@
     follows="all" 
     top="25"
     left="10"
-    height="485"
+    height="490"
     width="480" 
     name="about_tab"
     tab_position="top">
-    <panel
+   <panel
       border="true" 
       label="Info"
       help_topic="about_support_tab"
       name="support_panel">
-      <text_editor
+       <text_editor
         parse_urls="true" 
        follows="top|left"
        font="SansSerif"
-       height="343"
+       height="432"
        bg_readonly_color="Transparent"
        left="5"
        max_length="65536"
@@ -35,7 +35,7 @@
        top="5"
        width="465"
        word_wrap="true" />
-      <button
+       <button
         follows="left|top" 
         label="Copy to Clipboard"
         name="copy_btn"
@@ -44,36 +44,134 @@
         height="25"
         width="180" />
     </panel>
-    <panel
-      border="true" 
+<panel
+      border="true"
+      has_border="true"
       label="Credits" 
       help_topic="about_credits_tab"
       name="credits_panel">
+  <accordion
+  fit_parent="false"
+  follows="all"
+  layout="topleft"
+  left="2"
+  name="credits_accordion"
+  single_expansion="true"
+  top="0"
+  right="-1">
+  <accordion_tab
+  expanded="true"
+  fit_panel="false"
+  layout="topleft"
+  name="mp_credits_tab"
+  title="Megapahit">
+    <panel
+     border="false" 
+     follows="all"
+     left="10"
+     name="megapahit_credits_panel"
+     height="295"
+     top="10">
       <text
           follows="top|left|right"
-          height="100"
+          font.style="BOLD"
+          height="10"
           layout="topleft"
           left="5"
-          name="linden_intro"
-          top="10"
-          width="465"
+          top="0"
+          width="435"
           wrap="true">
-Megapahit uses Kokua's Dullahan fork, and is brought to you by Erik Kundiman, with special thanks to (in order of appearance) Vir Linden for making it possible for the project to have a place (in every sense of the word) in SL, nutsobvious for the initial testing, Soft Linden for the security testing, observeur for the bug fixes and performance improvements, Fritigern Gothly for the administrative support, Secret Foxtail for making things look much nicer (viewer icons and skin, and parcel decorations) and for the Ubuntu build, and to the Lindens whose viewer this software is based on, which therefore has open source contributions from:
+Megapahit is brought to you by:
       </text>
       <text_editor
        enabled="false" 
        follows="top|left"
-       height="340"
+       height="100"
+       bg_readonly_color="Transparent"
+       left="5"
+       text_color="LtGray"
+       max_length="65536"
+       top_pad="5"
+       width="545"
+       word_wrap="true">
+Erik Kundiman
+    </text_editor>
+    <text
+          follows="top|left"
+          font.style="BOLD"
+          height="10"
+          layout="topleft"
+          left="5"
+          top_pad="5"
+          width="465"
+          wrap="true">
+with special thanks to:
+      </text>
+<text_editor
+       enabled="false" 
+       follows="top|left"
+       height="100"
+       bg_readonly_color="Transparent"
+       left="5"
+       text_color="LtGray"
+       max_length="65536"
+       name="megapahit_contributors"
+       top_pad="5"
+       width="465"
+       word_wrap="true">
+Kokua project - Dullahan fork
+Vir Linden - Sim parcel
+Nutsobvious - Initial testing
+Soft Linden - Security testing
+Observeur - Bug fixes, performance improvements, and FPS counter
+Fritigern Gothly - Administrative support
+Secret Foxtail - Viewer icons, viewer skin, and Ubuntu build
+    </text_editor>
+    </panel>
+  </accordion_tab>
+  <accordion_tab
+   expanded="true"
+   fit_panel="false"
+   layout="topleft"
+   name="sl_credits_tab"
+   title="Second Life">
+    <panel
+     border="false" 
+     follows="all"
+     left="10"
+     name="sl_credits_panel"
+     height="500"
+     top="10">
+      <text
+          follows="top|left|right"
+          font.style="BOLD"
+          height="20"
+          layout="topleft"
+          left="5"
+          name="linden_intro"
+          top="0"
+          width="365"
+          wrap="true">
+Second Life is brought to you by Linden Lab, 
+with open source contributions from:
+      </text>
+      <text_editor
+       enabled="false" 
+       follows="top|left"
+       height="375"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
        max_length="65536"
        name="contrib_names"
        top_pad="10"
-       width="465"
+       width="415"
        word_wrap="true">
 Dummy Name replaced at run time
       </text_editor>
+    </panel>
+  </accordion_tab>
+</accordion>
     </panel>
     <panel
       border="true"
