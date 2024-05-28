@@ -18,12 +18,12 @@
     width="480" 
     name="about_tab"
     tab_position="top">
-   <panel
+    <panel
       border="true" 
       label="Info"
       help_topic="about_support_tab"
       name="support_panel">
-       <text_editor
+      <text_editor
         parse_urls="true" 
        follows="top|left"
        font="SansSerif"
@@ -35,7 +35,7 @@
        top="5"
        width="465"
        word_wrap="true" />
-       <button
+      <button
         follows="left|top" 
         label="Copy to Clipboard"
         name="copy_btn"
@@ -44,8 +44,8 @@
         height="25"
         width="180" />
     </panel>
-<panel
-      border="true"
+    <panel
+      border="true" 
       has_border="true"
       label="Credits" 
       help_topic="about_credits_tab"
@@ -66,7 +66,7 @@
   name="mp_credits_tab"
   title="Megapahit">
     <panel
-     border="false" 
+     border="false"
      follows="all"
      left="10"
      name="megapahit_credits_panel"
@@ -84,7 +84,7 @@
 Megapahit is brought to you by:
       </text>
       <text_editor
-       enabled="false" 
+       enabled="false"
        follows="top|left"
        height="100"
        bg_readonly_color="Transparent"
@@ -108,7 +108,7 @@ Erik Kundiman
 with special thanks to:
       </text>
 <text_editor
-       enabled="false" 
+       enabled="false"
        follows="top|left"
        height="100"
        bg_readonly_color="Transparent"
@@ -136,7 +136,7 @@ Secret Foxtail - Viewer icons, viewer skin, and Ubuntu build
    name="sl_credits_tab"
    title="Second Life">
     <panel
-     border="false" 
+     border="false"
      follows="all"
      left="10"
      name="sl_credits_panel"
@@ -152,7 +152,7 @@ Secret Foxtail - Viewer icons, viewer skin, and Ubuntu build
           top="0"
           width="365"
           wrap="true">
-Second Life is brought to you by Linden Lab, 
+Second Life is brought to you by the Lindens, 
 with open source contributions from:
       </text>
       <text_editor
