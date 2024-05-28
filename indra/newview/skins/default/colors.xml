@@ -384,7 +384,7 @@
      value="0.3344 0.545 0.645 1" />
     <color
      name="FpsTextColor"
-     reference="EmphasisColor_13" />
+     value="0.34 0.51 0.64 0.8" />
     <color
      name="GridFocusPointColor"
      reference="White_50" />
