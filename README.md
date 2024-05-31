@@ -31,21 +31,28 @@ Third party maintained forks, which include Linux compatible builds, are indexed
 ### macOS
 
 ```
-# port install git cmake pkgconfig apr-util boost collada-dom freealut hunspell jsoncpp libsdl2 uriparser
+# port install git cmake pkgconfig apr-util boost collada-dom freealut hunspell jsoncpp libsdl2 openjpeg uriparser
 $ export LL_BUILD="-DLL_DARWIN=1 -DPIC -fPIC -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -std=c++17"
 ```
 
-### GNU/Linux
+### Debian/Ubuntu
 
 ```
-# apt install git cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libglu1-mesa-dev libgtk2.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnghttp2-dev libsdl2-dev libssl-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
+# apt install git cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libglu1-mesa-dev libgtk2.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnanosvg-dev libnghttp2-dev libsdl2-dev libssl-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
+$ export LL_BUILD="-DLL_LINUX=1 -fPIC"
+```
+
+### Fedora
+
+```
+# dnf install git cmake gcc-c++ SDL2-devel apr-util-devel boost-devel collada-dom-devel expat-devel freealut-devel gtk2-devel hunspell-devel jsoncpp-devel libcurl-devel libnghttp2-devel libvorbis-devel mesa-libGLU-devel nanosvg-devel openjpeg2-devel openssl-devel uriparser-devel vlc-devel xmlrpc-epi-devel xxhash-devel zstd
 $ export LL_BUILD="-DLL_LINUX=1 -fPIC"
 ```
 
 ### FreeBSD
 
 ```
-# portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/gtk20
+# portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis graphics/nanosvg graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/gtk20
 $ setenv LL_BUILD "-DLL_FREEBSD=1 -fPIC -std=c++17"
 ```
 
