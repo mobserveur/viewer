@@ -117,7 +117,7 @@ with special thanks to (in order of appearance):
        max_length="65536"
        name="megapahit_contributors"
        top_pad="5"
-       width="465"
+       width="450"
        word_wrap="true">
 LinneNoir Resident for the moral support and initial testing;
 Vir Linden for making it possible for the project to have a place (in every sense of the word) in SL;
