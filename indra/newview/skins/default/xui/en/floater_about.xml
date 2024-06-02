@@ -86,7 +86,7 @@ Megapahit is brought to you by:
       <text_editor
        enabled="false"
        follows="top|left"
-       height="30"
+       height="50"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -110,7 +110,7 @@ with special thanks to (in order of appearance):
 <text_editor
        enabled="false"
        follows="top|left"
-       height="170"
+       height="150"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -119,15 +119,15 @@ with special thanks to (in order of appearance):
        top_pad="5"
        width="450"
        word_wrap="true">
-LinneNoir Resident for the moral support and initial testing;
+LinneNoir for the moral support and initial testing;
 Vir Linden for making it possible for the project to have a place (in every sense of the word) in SL;
-nutsobvious Resident for the early testing and video proof;
+nutsobvious for the early testing and video proof;
 Kokua for the Dullahan fork;
 Soft Linden for the security testing;
-observeur Resident for the bug fixes, performance improvements, and feature developments;
+observeur for the bug fixes, performance tuning, and feature developments;
 Kyle Linden for selling TPV parcel 2 to Erik Kundiman at L$0 price;
 Fritigern Gothly for the administrative support; and
-Secret Foxtail for the viewer icons, viewer skin, parcel decorations, and Ubuntu build.
+Secret Foxtail for the viewer icons and skin, parcel decorations, and Ubuntu build.
     </text_editor>
     </panel>
   </accordion_tab>
