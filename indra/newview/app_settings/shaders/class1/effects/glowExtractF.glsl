@@ -55,7 +55,7 @@ void main()
     // Dithering. Reduces banding effects in the reduced precision glow buffer.
     float NOISE_DEPTH = 64.0;
     col.rgb += glow_noise / NOISE_DEPTH;
-    col.rgb = max(col.rgb, vec3(0.0));
+    col.rgb = max(col.rgb, vec3(0));
 #endif
     frag_color.rgb = col.rgb;
     frag_color.a = max(col.a, mix(lum, warmth, warmthAmount) * maxExtractAlpha);
