@@ -142,7 +142,7 @@ void main()
 
     //get wave normals
     vec2 bigwave = vec2(refCoord.w, view.w);
-    vec3 wave1_a = texture(bumpMap, bigwave, -2      ).xyz*2.0-1.0;
+    vec3 wave1_a = texture(bumpMap, bigwave, -2.0    ).xyz*2.0-1.0;
     vec3 wave2_a = texture(bumpMap, littleWave.xy).xyz*2.0-1.0;
     vec3 wave3_a = texture(bumpMap, littleWave.zw).xyz*2.0-1.0;
 
@@ -164,10 +164,10 @@ void main()
 
     vec3 wavef = (wave1 + wave2 * 0.4 + wave3 * 0.6) * 0.5;
 
-    vec3 waver = wavef*3;
+    vec3 waver = wavef*3.0;
 
     vec3 up = transform_normal(vec3(0,0,1));
-    float vdu = -dot(viewVec, up)*2;
+    float vdu = -dot(viewVec, up)*2.0;
 
     vec3 wave_ibl = wavef;
     wave_ibl.z *= 2.0;
@@ -175,7 +175,7 @@ void main()
 
     vec3 norm = transform_normal(normalize(wavef));
 
-    vdu = clamp(vdu, 0, 1);
+    vdu = clamp(vdu, 0.0, 1.0);
     wavef.z *= max(vdu*vdu*vdu, 0.1);
 
     wavef = normalize(wavef);
@@ -263,7 +263,7 @@ void main()
     color += ibl;
 
     float nv = clamp(abs(dot(norm.xyz, v)), 0.001, 1.0);
-    vec2 brdf = BRDF(clamp(nv, 0, 1), 1.0);
+    vec2 brdf = BRDF(clamp(nv, 0.0, 1.0), 1.0);
     float f = 1.0-brdf.y; //1.0 - (brdf.x+brdf.y);
     f *= 0.9;
     f *= f;
@@ -276,7 +276,7 @@ void main()
     // shift from -1 to 1
     f += (fresnelOffset - 0.5) * 2.0;
 
-    f = clamp(f, 0, 1);
+    f = clamp(f, 0.0, 1.0);
 
     color = ((1.0 - f) * color) + fb.rgb;
 
