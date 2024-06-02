@@ -79,10 +79,10 @@ float calcAmbientOcclusion(vec4 pos, vec3 norm, vec2 pos_screen)
 {
     float ret = 1.0;
     vec3 pos_world = pos.xyz;
-    vec2 noise_reflect = texture(noiseMap, pos_screen.xy * (screen_res / 128)).xy;
+    vec2 noise_reflect = texture(noiseMap, pos_screen.xy * (screen_res / 128.0)).xy;
 
     float angle_hidden = 0.0;
-    float points = 0;
+    float points = 0.0;
 
     float scale = min(ssao_radius / -pos_world.z, ssao_max_radius);
 

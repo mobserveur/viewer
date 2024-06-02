@@ -145,24 +145,24 @@ vec2 getScreenCoordinate(vec2 screenpos)
 vec3 getNorm(vec2 screenpos)
 {
    vec2 enc = texture(normalMap, screenpos.xy).xy;
-   vec2 fenc = enc*4-2;
+   vec2 fenc = enc*4.0-2.0;
    float f = dot(fenc,fenc);
-   float g = sqrt(1-f/4);
+   float g = sqrt(1.0-f/4.0);
    vec3 n;
    n.xy = fenc*g;
-   n.z = 1-f/2;
+   n.z = 1.0-f/2.0;
    return n;
 }
 
 vec3 getNormalFromPacked(vec4 packedNormalEnvIntensityFlags)
 {
    vec2 enc = packedNormalEnvIntensityFlags.xy;
-   vec2 fenc = enc*4-2;
+   vec2 fenc = enc*4.0-2.0;
    float f = dot(fenc,fenc);
-   float g = sqrt(1-f/4);
+   float g = sqrt(1.0-f/4.0);
    vec3 n;
    n.xy = fenc*g;
-   n.z = 1-f/2;
+   n.z = 1.0-f/2.0;
    return normalize(n); // TODO: Is this normalize redundant?
 }
 
@@ -269,7 +269,7 @@ vec4 texture2DLodSpecular(vec2 tc, float lod)
     vec2 dist = vec2(0.5) - abs(tc-vec2(0.5));
     float det = min(lod/(proj_lod*0.5), 1.0);
     float d = min(dist.x, dist.y);
-    d *= min(1, d * (proj_lod - lod)); // BUG? extra factor compared to diffuse causes N repeats
+    d *= min(1.0, d * (proj_lod - lod)); // BUG? extra factor compared to diffuse causes N repeats
     float edge = 0.25*det;
     ret *= clamp(d/edge, 0.0, 1.0);
 
@@ -385,7 +385,7 @@ vec3 pbrIbl(vec3 diffuseColor,
             float perceptualRough)
 {
     // retrieve a scale and bias to F0. See [1], Figure 3
-    vec2 brdf = BRDF(clamp(nv, 0, 1), 1.0-perceptualRough);
+    vec2 brdf = BRDF(clamp(nv, 0.0, 1.0), 1.0-perceptualRough);
     vec3 diffuseLight = irradiance;
     vec3 specularLight = radiance;
 
@@ -545,7 +545,7 @@ uniform float waterSign;
 void waterClip(vec3 pos)
 {
     // TODO: make this less branchy
-    if (waterSign > 0)
+    if (waterSign > 0.0)
     {
         if ((dot(pos.xyz, waterPlane.xyz) + waterPlane.w) < 0.0)
         {

@@ -28,7 +28,7 @@
 // Also see: A_bit_more_deferred_-_CryEngine3.ppt
 vec2 encode_normal(vec3 n)
 {
-    float f = sqrt(8 * n.z + 8);
+    float f = sqrt(8.0 * n.z + 8.0);
     return n.xy / f + 0.5;
 }
 

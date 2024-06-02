@@ -47,7 +47,7 @@ void calcAtmospherics(vec3 inPositionEye) {
     vec3 tmpaddlit = vec3(1);
     vec3 tmpattenlit = vec3(1);
     vec3 light_dir = (sun_up_factor == 1) ? sun_dir : moon_dir;
-    calcAtmosphericVars(inPositionEye, light_dir, 1, tmpsunlit, tmpamblit, tmpaddlit, tmpattenlit);
+    calcAtmosphericVars(inPositionEye, light_dir, 1.0, tmpsunlit, tmpamblit, tmpaddlit, tmpattenlit);
     setSunlitColor(tmpsunlit);
     setAmblitColor(tmpamblit);
     setAdditiveColor(tmpaddlit);
