@@ -51,7 +51,7 @@ extern "C" {
 # include "fontconfig/fontconfig.h"
 }
 
-#if LL_LINUX || LL_FREEBSD
+#if LL_LINUX || __FreeBSD__
 // not necessarily available on random SDL platforms, so #if LL_LINUX
 // for execv(), waitpid(), fork()
 # include <unistd.h>
@@ -2660,7 +2660,7 @@ LLSD LLWindowSDL::getNativeKeyData()
 
 #endif // LL_GTK
 
-#if LL_LINUX || LL_FREEBSD
+#if LL_LINUX || __FreeBSD__
 // extracted from spawnWebBrowser for clarity and to eliminate
 //  compiler confusion regarding close(int fd) vs. LLWindow::close()
 void exec_cmd(const std::string& cmd, const std::string& arg)
@@ -2716,7 +2716,7 @@ void LLWindowSDL::spawnWebBrowser(const std::string& escaped_url, bool async)
 
     LL_INFOS() << "spawn_web_browser: " << escaped_url << LL_ENDL;
 
-#if LL_LINUX || LL_FREEBSD
+#if LL_LINUX || __FreeBSD__
 # if LL_X11
     if (mSDL_Display)
     {

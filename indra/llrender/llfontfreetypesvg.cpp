@@ -34,13 +34,13 @@
 #endif
 
 #define NANOSVG_IMPLEMENTATION
-#if LL_FREEBSD
+#if __FreeBSD__
 #include <nanosvg.h>
 #else
 #include <nanosvg/nanosvg.h>
 #endif
 #define NANOSVGRAST_IMPLEMENTATION
-#if LL_FREEBSD
+#if __FreeBSD__
 #include <nanosvgrast.h>
 #else
 #include <nanosvg/nanosvgrast.h>

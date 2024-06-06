@@ -40,7 +40,7 @@
 
 #if LL_WINDOWS
 #include "llwin32headerslean.h" // for HANDLE
-#elif LL_LINUX || LL_FREEBSD
+#elif LL_LINUX || __FreeBSD__
 #if defined(Status)
 #undef Status
 #endif

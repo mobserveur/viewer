@@ -84,7 +84,7 @@ const char MEMINFO_FILE[] = "/proc/meminfo";
 #ifdef __GNU__
 #   include <gnu/libc-version.h>
 #endif
-#elif LL_FREEBSD
+#elif __FreeBSD__
 #	include <sys/sysctl.h>
 #	include <sys/utsname.h>
 #endif
@@ -786,7 +786,7 @@ static U32Kilobytes LLMemoryAdjustKBResult(U32Kilobytes inKB)
 }
 #endif
 
-#if LL_DARWIN || LL_FREEBSD
+#if LL_DARWIN || __FreeBSD__
 // static
 U32Kilobytes LLMemoryInfo::getHardwareMemSize()
 {
@@ -810,7 +810,7 @@ U32Kilobytes LLMemoryInfo::getPhysicalMemoryKB() const
 #if LL_WINDOWS
     return LLMemoryAdjustKBResult(U32Kilobytes(mStatsMap["Total Physical KB"].asInteger()));
 
-#elif LL_DARWIN || LL_FREEBSD
+#elif LL_DARWIN || __FreeBSD__
     return getHardwareMemSize();
 
 #elif LL_LINUX

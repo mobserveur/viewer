@@ -49,7 +49,7 @@
     #define USE_APR_SHARED_MEMORY 1
 #elif LL_LINUX
     #define USE_SHM_OPEN_SHARED_MEMORY 1
-#elif LL_FREEBSD
+#elif __FreeBSD__
     #define USE_SHM_OPEN_SHARED_MEMORY 1
 #endif
 

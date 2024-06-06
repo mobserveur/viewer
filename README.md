@@ -53,7 +53,7 @@ $ export LL_BUILD="-DLL_LINUX=1 -fPIC"
 
 ```
 # portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis graphics/nanosvg graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/gtk20
-$ setenv LL_BUILD "-DLL_FREEBSD=1 -fPIC -std=c++17"
+$ setenv LL_BUILD "-fPIC -std=c++17"
 ```
 
 ### Common

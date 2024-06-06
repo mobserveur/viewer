@@ -801,7 +801,7 @@ private:
     }
 };
 
-#elif LL_FREEBSD
+#elif __FreeBSD__
 
 #include <sys/sysctl.h>
 class LLProcessorInfoFreeBSDImpl : public LLProcessorInfoImpl
@@ -1075,7 +1075,7 @@ LLProcessorInfo::LLProcessorInfo() : mImpl(NULL)
 #elif LL_DARWIN
         static LLProcessorInfoDarwinImpl the_impl;
         mImpl = &the_impl;
-#elif LL_FREEBSD
+#elif __FreeBSD__
         static LLProcessorInfoFreeBSDImpl the_impl;
         mImpl = &the_impl;
 #else

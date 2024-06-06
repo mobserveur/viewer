@@ -1164,7 +1164,7 @@ bool LLGLManager::initGL()
         mIsNVIDIA = TRUE;
     }
     else if (mGLVendor.find("INTEL") != std::string::npos
-#if LL_LINUX || LL_FREEBSD
+#if LL_LINUX || __FreeBSD__
          // The Mesa-based drivers put this in the Renderer string,
          // not the Vendor string.
          || mGLRenderer.find("INTEL") != std::string::npos

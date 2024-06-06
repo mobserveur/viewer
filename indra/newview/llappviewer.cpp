@@ -263,7 +263,7 @@ using namespace LL;
 // define a self-registering event API object
 #include "llappviewerlistener.h"
 
-#if (LL_LINUX || LL_FREEBSD) && LL_GTK
+#if (LL_LINUX || __FreeBSD__) && LL_GTK
 #include "glib.h"
 #endif // (LL_LINUX) && LL_GTK
 
@@ -309,7 +309,7 @@ S32 gLastExecDuration = -1; // (<0 indicates unknown)
 #   define LL_PLATFORM_KEY "mac"
 #elif LL_LINUX
 #   define LL_PLATFORM_KEY "lnx"
-#elif LL_FREEBSD
+#elif __FreeBSD__
 #   define LL_PLATFORM_KEY "bsd"
 #else
 #   error "Unknown Platform"
@@ -887,7 +887,7 @@ bool LLAppViewer::init()
     std::string mime_types_name;
 #if LL_DARWIN
     mime_types_name = "mime_types_mac.xml";
-#elif LL_LINUX || LL_FREEBSD
+#elif LL_LINUX || __FreeBSD__
     mime_types_name = "mime_types_linux.xml";
 #else
     mime_types_name = "mime_types.xml";
@@ -1729,7 +1729,7 @@ bool LLAppViewer::cleanup()
     // one because it happens just after mFastTimerLogThread is deleted. This
     // comment is in case we guessed wrong, so we can move it here instead.
 
-#if LL_LINUX || LL_FREEBSD
+#if LL_LINUX || __FreeBSD__
     // remove any old breakpad minidump files from the log directory
     if (! isError())
     {
