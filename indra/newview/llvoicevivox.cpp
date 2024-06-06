@@ -935,7 +935,7 @@ bool LLVivoxVoiceClient::startAndLaunchDaemon()
         gDirUtilp->append(exe_path, "SLVoice");
 #else
         std::string exe_path = gDirUtilp->getExecutableDir();
-        gDirUtilp->append(exe_path, "SLVoice");
+        gDirUtilp->append(exe_path, "SLVoice.exe");
 #endif
         // See if the vivox executable exists
         llstat s;
@@ -943,7 +943,12 @@ bool LLVivoxVoiceClient::startAndLaunchDaemon()
         {
             // vivox executable exists.  Build the command line and launch the daemon.
             LLProcess::Params params;
+#if LL_LINUX || __FreeBSD__
+            params.executable = "wine";
+            params.args.add(exe_path);
+#else
             params.executable = exe_path;
+#endif
 
             // VOICE-88: Cycle through [portbase..portbase+portrange) on
             // successive tries because attempting to relaunch (after manually
