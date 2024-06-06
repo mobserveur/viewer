@@ -127,8 +127,22 @@ public:
 
 #endif
 
+#if (LL_DARWIN && defined(__arm64__))
 
-#if (LL_LINUX || LL_DARWIN) && !(defined(__i386__) || defined(__amd64__))
+    static U32 getCPUClockCount64()
+    {
+        U64 t = clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
+        return t/1000;
+    }
+
+    static U64 getCPUClockCount32()
+    {
+        return (U32) (getCPUClockCount64() >> 8);
+    }
+
+#endif
+
+#if (LL_LINUX && !(defined(__i386__) || defined(__amd64__)))
     //
     // Linux implementation of CPU clock - non-x86.
     // This is accurate but SLOW!  Only use out of desperation.
