@@ -69,6 +69,7 @@ install(FILES featuretable_linux.txt
         )
 
 install(FILES ${SCRIPTS_DIR}/messages/message_template.msg
+        ${SCRIPTS_DIR}/../etc/message.xml
         DESTINATION share/${VIEWER_BINARY_NAME}/app_settings
         )
 
