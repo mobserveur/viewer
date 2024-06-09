@@ -50,6 +50,7 @@
 	Mini-map
     </floater.string>
     <net_map
+     bg_color="Transparent"
      follows="top|left|bottom|right"
      layout="topleft"
      left="0"
