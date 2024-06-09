@@ -86,7 +86,7 @@
       width="238"
       follows="right|top"
       top="6"     
-      background_visible="true"
+      background_visible="false"
       bg_alpha_color="DkGray2">
     <text
      text_color="White"
@@ -429,7 +429,7 @@
   height="22"
   top_pad="0"
   width="238"
-  background_visible="true"
+  background_visible="false"
   bg_alpha_color="DkGray2"
   name="layout_panel_3">
     <text
@@ -697,7 +697,7 @@
   height="22"
   top_pad="0"
   width="238"
-  background_visible="true"
+  background_visible="false"
   bg_alpha_color="DkGray2"
   name="layout_panel_5">
     <text
