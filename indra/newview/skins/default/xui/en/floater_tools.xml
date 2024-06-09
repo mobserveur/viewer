@@ -1194,7 +1194,7 @@ even though the user gets a free copy.
          follows="left|top"
          layout="topleft"
          mouse_opaque="false"
-         background_visible="true"
+         background_visible="false"
          bg_alpha_color="DkGray"
          name="perms_build"
          left="0"
