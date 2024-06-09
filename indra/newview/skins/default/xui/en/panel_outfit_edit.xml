@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!-- Side tray Outfit Edit panel -->
 <panel
-        background_visible="true"
+        background_visible="false"
         border="false"
         height="600"
         follows="all"
@@ -87,8 +87,8 @@
 
     <!-- "HEADER WITH ICON, STATUS TEXT AND OUTFIT NAME" -->
     <panel
-            background_visible="true"
-            bg_alpha_color="DkGray2"
+            background_visible="false"
+            bg_alpha_color="MouseGray"
             bevel_style="none"
             follows="top|left|right"
             height="40"
@@ -360,7 +360,7 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 
     <!-- BUTTON BAR -->
     <panel
-            background_visible="true"
+            background_visible="false"
             bevel_style="none"
             follows="bottom|left|right"
             height="27"
@@ -407,7 +407,7 @@ It is calculated as border_size + 2*UIResizeBarOverlap
 
     <!-- BUTTON BAR - WEARABLES ADDING MODE -->
     <panel
-            background_visible="true"
+            background_visible="false"
             bevel_style="none"
             follows="left|right|bottom"
             height="27"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
-   background_visible="true"
+   background_visible="false"
    bg_alpha_color="DkGray"
    border="false"
    follows="all"
@@ -46,7 +46,7 @@
    top_pad="0">
   </scroll_container> 
   <panel
-     background_visible="true"
+     background_visible="false"
 	 follows="bottom|left|right"
 	 height="28"
 	 layout="topleft"
