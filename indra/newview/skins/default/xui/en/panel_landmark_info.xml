@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
- background_visible="true"
+ background_visible="false"
  follows="all"
  height="570"
  layout="topleft"
@@ -83,7 +83,7 @@
      value="Place Profile"
      width="280" />
     <scroll_container
-     color="DkGray2"
+     color="Transparent"
      follows="all"
      height="534"
      layout="topleft"
@@ -93,7 +93,7 @@
      top_pad="9"
      width="324">
         <panel
-         bg_alpha_color="DkGray2"
+         bg_alpha_color="Transparent"
          follows="left|top|right"
          height="654"
          layout="topleft"
@@ -280,8 +280,8 @@
                 <line_editor
                  text_readonly_color="white"
                  enabled="false"
-                 use_bg_color="true"
-                 bg_color="DkGray0"
+                 use_bg_color="false"
+                 bg_color="Transparent"
                  follows="left|top|right"
                  height="22"
                  layout="topleft"
@@ -322,7 +322,7 @@
                  value="My notes:"
                  width="290" />
                 <text_editor
-                 bg_readonly_color="DkGray0"
+                 bg_readonly_color="Transparent"
                  follows="all"
                  height="75"
                  layout="topleft"

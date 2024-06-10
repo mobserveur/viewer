@@ -54,7 +54,7 @@
        layout="topleft"
        left_pad="-29"
        name="expand_btn_panel"
-       background_visible="true"
+       background_visible="false"
        bg_opaque_color="FloaterFocusBackgroundColor"
        bg_alpha_color="FloaterDefaultBackgroundColor"
        background_opaque="true"
@@ -570,7 +570,7 @@
     </button>
     <scroll_list
      draw_stripes="false"
-     bg_writeable_color="MouseGray"
+     bg_writeable_color="Transparent"
      follows="all"
      height="145"
      layout="topleft"

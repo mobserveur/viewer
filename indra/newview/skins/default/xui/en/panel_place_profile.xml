@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel
- background_visible="true"
+ background_visible="false"
  follows="all"
  height="610"
  layout="topleft"
@@ -188,17 +188,18 @@
      value="Place Profile"
      width="280" />
     <scroll_container
-     color="DkGray2"
+     color="Transparent"
      follows="all"
      height="575"
      layout="topleft"
      left="9"
      name="place_scroll"
-     opaque="true"
+     opaque="false"
      top_pad="9"
      width="324">
         <panel
-         bg_alpha_color="DkGray2"
+         bg_alpha_color="Transparent"
+         background_visible="false"
          follows="left|top|right|bottom"
          height="597"
          layout="topleft"
