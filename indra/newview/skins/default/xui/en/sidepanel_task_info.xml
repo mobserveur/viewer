@@ -93,7 +93,7 @@
          name="properties_panel"
          top="45"
          width="313"
-   background_visible="true"
+   background_visible="false"
    bg_alpha_color="DkGray2">
 	    	    <text
 		     type="string"
@@ -299,7 +299,7 @@
          follows="left|top"
          layout="topleft"
          mouse_opaque="false"
-         background_visible="true"
+         background_visible="false"
          bg_alpha_color="DkGray"
          name="perms_inv"
          left="0"
