@@ -54,7 +54,7 @@
        layout="topleft"
        left_pad="-29"
        name="expand_btn_panel"
-       background_visible="false"
+       background_visible="true"
        bg_opaque_color="FloaterFocusBackgroundColor"
        bg_alpha_color="FloaterDefaultBackgroundColor"
        background_opaque="true"
