@@ -569,14 +569,19 @@ void LLRenderPass::pushRiggedMaskBatches(U32 type, bool texture, bool batch_text
 
 void LLRenderPass::applyModelMatrix(const LLDrawInfo& params)
 {
-    if (params.mModelMatrix != gGLLastMatrix)
+    applyModelMatrix(params.mModelMatrix);
+}
+
+void LLRenderPass::applyModelMatrix(const LLMatrix4* model_matrix)
+{
+    if (model_matrix != gGLLastMatrix)
     {
-        gGLLastMatrix = params.mModelMatrix;
+        gGLLastMatrix = model_matrix;
         gGL.matrixMode(LLRender::MM_MODELVIEW);
         gGL.loadMatrix(gGLModelView);
-        if (params.mModelMatrix)
+        if (model_matrix)
         {
-            gGL.multMatrix((GLfloat*) params.mModelMatrix->mMatrix);
+            gGL.multMatrix((GLfloat*) model_matrix->mMatrix);
         }
         gPipeline.mMatrixOpCount++;
     }
@@ -748,6 +753,7 @@ void LLRenderPass::pushUntexturedGLTFBatches(U32 type)
     }
 }
 
+// static
 void LLRenderPass::pushGLTFBatch(LLDrawInfo& params)
 {
     auto& mat = params.mGLTFMaterial;
@@ -766,6 +772,7 @@ void LLRenderPass::pushGLTFBatch(LLDrawInfo& params)
     teardown_texture_matrix(params);
 }
 
+// static
 void LLRenderPass::pushUntexturedGLTFBatch(LLDrawInfo& params)
 {
     auto& mat = params.mGLTFMaterial;
@@ -827,6 +834,7 @@ void LLRenderPass::pushUntexturedRiggedGLTFBatches(U32 type)
 }
 
 
+// static
 void LLRenderPass::pushRiggedGLTFBatch(LLDrawInfo& params, LLVOAvatar*& lastAvatar, U64& lastMeshId)
 {
     if (params.mAvatar.notNull() && (lastAvatar != params.mAvatar || lastMeshId != params.mSkinInfo->mHash))
@@ -839,6 +847,7 @@ void LLRenderPass::pushRiggedGLTFBatch(LLDrawInfo& params, LLVOAvatar*& lastAvat
     pushGLTFBatch(params);
 }
 
+// static
 void LLRenderPass::pushUntexturedRiggedGLTFBatch(LLDrawInfo& params, LLVOAvatar*& lastAvatar, U64& lastMeshId)
 {
     if (params.mAvatar.notNull() && (lastAvatar != params.mAvatar || lastMeshId != params.mSkinInfo->mHash))
