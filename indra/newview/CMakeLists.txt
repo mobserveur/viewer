@@ -2016,6 +2016,10 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 		llsidepanelinventory.cpp
 		PROPERTIES COMPILE_FLAGS -Wno-dangling-reference
 	)
+	set_source_files_properties(
+		gltf/animation.cpp
+		gltf/primitive.cpp
+		PROPERTIES COMPILE_FLAGS -Wno-unused-function)
 endif ()
 
 message("Copying fonts")
