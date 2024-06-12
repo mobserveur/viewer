@@ -98,7 +98,7 @@ void calcAtmosphericVars(vec3 inPositionEye, vec3 light_dir, float ambFactor, ou
     haze_glow = max(haze_glow, .001);  // set a minimum "angle" (smaller glow.y allows tighter, brighter hotspot)
     haze_glow *= glow.x;
     // higher glow.x gives dimmer glow (because next step is 1 / "angle")
-    haze_glow = clamp(pow(haze_glow, glow.z), -100000, 100000);
+    haze_glow = clamp(pow(haze_glow, glow.z), -100000.0, 100000.0);
     // glow.z should be negative, so we're doing a sort of (1 / "angle") function
 
     // add "minimum anti-solar illumination"
