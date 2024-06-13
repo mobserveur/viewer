@@ -256,7 +256,7 @@ vec3 _t_normal_post_1(vec3 vNt0, float sign_or_zero)
     sign = (2.0*sign) + 1.0;
     sign /= abs(sign);
     // If the sign is negative, rotate normal by 180 degrees
-    vNt1.xy = (min(0, sign) * vNt1.xy) + (min(0, -sign) * -vNt1.xy);
+    vNt1.xy = (min(0.0, sign) * vNt1.xy) + (min(0.0, -sign) * -vNt1.xy);
     return vNt1;
 }
 
