@@ -7,7 +7,8 @@
  top="0"
  left="0"
  height="768"
- width="247">
+ width="247"
+ background_visible="false">
   <check_box
     follows="left|top"
     layout="topleft"
