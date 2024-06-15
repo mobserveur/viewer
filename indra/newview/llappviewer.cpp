@@ -389,6 +389,8 @@ static std::string gLaunchFileOnQuit;
 // Used on Win32 for other apps to identify our window (eg, win_setup)
 const char* const VIEWER_WINDOW_CLASSNAME = "Second Life";
 
+U64 fpsLimitSleepUntil = 0; // fps limiter : time until to render the frame again
+
 //----------------------------------------------------------------------------
 
 // List of entries from strings.xml to always replace
@@ -1363,6 +1365,22 @@ bool LLAppViewer::frame()
 
 bool LLAppViewer::doFrame()
 {
+
+    // FPS Limit
+
+    U64 fpsLimitNow = LLTrace::BlockTimer::getCPUClockCount64();
+    U64 fpsLimitFrameStartTime = fpsLimitNow;
+    if(fpsLimitSleepUntil > 0)
+    {
+        if(fpsLimitSleepUntil > fpsLimitNow) return 0;
+    }
+    else
+    {
+        fpsLimitSleepUntil = 0;
+    }
+
+
+
     LL_RECORD_BLOCK_TIME(FTM_FRAME);
     {
     // and now adjust the visuals from previous frame.
@@ -1532,6 +1550,24 @@ bool LLAppViewer::doFrame()
                 }
             }
         }
+
+        // fps limiter
+
+        fpsLimitNow = LLTrace::BlockTimer::getCPUClockCount64();
+        U64 fpsLimitFrameTime = fpsLimitNow - fpsLimitFrameStartTime;
+        static LLCachedControl<U32> fpsLimitMaxFps(gSavedSettings, "MaxFPS", 0);
+
+        if(fpsLimitMaxFps > 0)
+        {
+            U64 desired_time_ns = (U32)(1000000.f / fpsLimitMaxFps);
+
+            if(fpsLimitFrameTime < desired_time_ns)
+            {
+                U64 fpsLimitSleepUntil_for = desired_time_ns - fpsLimitFrameTime;
+                fpsLimitSleepUntil = LLTrace::BlockTimer::getCPUClockCount64() + fpsLimitSleepUntil_for;
+            }
+        }
+
 
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_APP( "df pauseMainloopTimeout" )
