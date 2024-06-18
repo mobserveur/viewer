@@ -36,6 +36,7 @@
 #define SDL_DISABLE_IMMINTRIN_H
 #endif
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_video.h"
 #include "SDL2/SDL_endian.h"
 
 #if LL_X11
@@ -120,6 +121,8 @@ public:
     F32 getNativeAspectRatio() override;
     F32 getPixelAspectRatio() override;
     void setNativeAspectRatio(F32 ratio) override { mOverrideAspectRatio = ratio; }
+
+    F32 getSystemUISize() override;
 
     U32 getAvailableVRAMMegabytes() override;
 
@@ -212,6 +215,7 @@ protected:
     SDL_Cursor* mSDLCursors[UI_CURSOR_COUNT];
     int             mHaveInputFocus; /* 0=no, 1=yes, else unknown */
     int             mIsMinimized; /* 0=no, 1=yes, else unknown */
+    int             mIsActive; /* 0=no, 1=yes, else unknown */
 
     friend class LLWindowManager;
 
@@ -223,7 +227,7 @@ private:
 #endif //LL_X11
 
     U32 mKeyScanCode;
-        U32 mKeyVirtualKey;
+    U32 mKeyVirtualKey;
     Uint16 mKeyModifiers;
 };
 

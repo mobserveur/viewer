@@ -223,6 +223,11 @@ void LLUI::getMousePositionScreen(S32 *x, S32 *y)
     LLCoordGL cursor_pos_gl(cursor_pos_window.convert());
     *x = ll_round((F32)cursor_pos_gl.mX / getScaleFactor().mV[VX]);
     *y = ll_round((F32)cursor_pos_gl.mY / getScaleFactor().mV[VY]);
+#if defined(LL_DARWIN)
+    *x = *x * LLView::getWindow()->getSystemUISize();
+    *y = *y * LLView::getWindow()->getSystemUISize();
+#endif
+
 }
 
 void LLUI::setMousePositionLocal(const LLView* viewp, S32 x, S32 y)

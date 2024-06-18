@@ -103,6 +103,8 @@ BOOL LLWindowSDL::sUseMultGL = FALSE;
 
 #endif
 
+BOOL hasHIDPI = 0;
+
 //
 // LLWindowSDL
 //
@@ -235,6 +237,10 @@ LLWindowSDL::LLWindowSDL(LLWindowCallbacks* callbacks,
     gKeyboard = new LLKeyboardSDL();
     gKeyboard->setCallbacks(callbacks);
     // Note that we can't set up key-repeat until after SDL has init'd video
+
+#if LL_DARWIN
+    hasHIDPI = gHiDPISupport;
+#endif
 
     // Ignore use_gl for now, only used for drones on PC
     mWindow = NULL;
@@ -509,6 +515,8 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
 
     int sdlflags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;// | SDL_ANYFORMAT;
 
+    if(hasHIDPI) sdlflags = sdlflags | SDL_WINDOW_ALLOW_HIGHDPI;
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 #if LL_DARWIN
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -582,6 +590,7 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
         mWindow = SDL_CreateWindow(mWindowTitle.c_str(),
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
             width, height, sdlflags | SDL_WINDOW_FULLSCREEN);
+
         if (!mWindow && bits > 16)
         {
             SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
@@ -804,6 +813,8 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
     */
 
     // Don't need to get the current gamma, since there's a call that restores it to the system defaults.
+
+
     return TRUE;
 }
 
@@ -871,24 +882,47 @@ LLWindowSDL::~LLWindowSDL()
 
 void LLWindowSDL::show()
 {
-    // *FIX: What to do with SDL?
+    if (mWindow)
+    {
+        SDL_ShowWindow(mWindow);
+    }
 }
 
 void LLWindowSDL::hide()
 {
-    // *FIX: What to do with SDL?
+    if (mWindow)
+    {
+        SDL_HideWindow(mWindow);
+    }
 }
 
-//virtual
 void LLWindowSDL::minimize()
 {
-    // *FIX: What to do with SDL?
+    if (mWindow)
+    {
+        SDL_MinimizeWindow(mWindow);
+    }
 }
 
-//virtual
+BOOL LLWindowSDL::maximize()
+{
+    BOOL result = FALSE;
+
+    if (mWindow)
+    {
+        SDL_MaximizeWindow(mWindow);
+        result = TRUE;
+    }
+
+    return result;
+}
+
 void LLWindowSDL::restore()
 {
-    // *FIX: What to do with SDL?
+    if (mWindow)
+    {
+        SDL_RestoreWindow(mWindow);
+    }
 }
 
 
@@ -918,11 +952,9 @@ BOOL LLWindowSDL::getVisible()
 {
     BOOL result = FALSE;
 
-    // *FIX: This isn't really right...
-    // Then what is?
     if (mWindow)
     {
-        result = TRUE;
+        if( SDL_GetWindowFlags(mWindow) & SDL_WINDOW_SHOWN ) result = TRUE;
     }
 
     return(result);
@@ -932,10 +964,12 @@ BOOL LLWindowSDL::getMinimized()
 {
     BOOL result = FALSE;
 
-    if (mWindow && (1 == mIsMinimized))
+    if (mWindow)
     {
-        result = TRUE;
+        if( SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MINIMIZED ) result = TRUE;
     }
+
+    mIsMinimized = result;
     return(result);
 }
 
@@ -945,16 +979,11 @@ BOOL LLWindowSDL::getMaximized()
 
     if (mWindow)
     {
-        // TODO
+        if( SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MAXIMIZED ) result = TRUE;
+        else result = FALSE;
     }
 
     return(result);
-}
-
-BOOL LLWindowSDL::maximize()
-{
-    // TODO
-    return FALSE;
 }
 
 BOOL LLWindowSDL::getFullscreen()
@@ -974,8 +1003,20 @@ BOOL LLWindowSDL::getSize(LLCoordScreen *size)
 {
     if (mWindow)
     {
+        /*
+        if(hasHIDPI)
+        {
+            SDL_GL_GetDrawableSize(mWindow, &size->mX, &size->mY);
+        }
+        else
+        {
+            SDL_GetWindowSize(mWindow, &size->mX, &size->mY);
+        }
+        */
+
         SDL_GetWindowSize(mWindow, &size->mX, &size->mY);
-    return (TRUE);
+
+        return (TRUE);
     }
 
     return (FALSE);
@@ -985,8 +1026,16 @@ BOOL LLWindowSDL::getSize(LLCoordWindow *size)
 {
     if (mWindow)
     {
-        SDL_GetWindowSize(mWindow, &size->mX, &size->mY);
-    return (TRUE);
+        if(hasHIDPI)
+        {
+            SDL_GL_GetDrawableSize(mWindow, &size->mX, &size->mY);
+        }
+        else
+        {
+            SDL_GetWindowSize(mWindow, &size->mX, &size->mY);
+        }
+
+        return (TRUE);
     }
 
     return (FALSE);
@@ -994,13 +1043,15 @@ BOOL LLWindowSDL::getSize(LLCoordWindow *size)
 
 BOOL LLWindowSDL::setPosition(const LLCoordScreen position)
 {
+    BOOL result = FALSE;
+
     if(mWindow)
     {
-        // *FIX: (?)
-        //MacMoveWindow(mWindow, position.mX, position.mY, false);
+        SDL_SetWindowPosition(mWindow, position.mX, position.mY);
+        result = TRUE;
     }
 
-    return TRUE;
+    return result;
 }
 
 BOOL LLWindowSDL::setSizeImpl(const LLCoordScreen size)
@@ -1135,7 +1186,16 @@ void LLWindowSDL::destroySharedContext(void* context)
 
 void LLWindowSDL::toggleVSync(bool enable_vsync)
 {
-    // *FIX: What to do with SDL?
+    if( !enable_vsync)
+    {
+        SDL_GL_SetSwapInterval(0);
+        SDL_SetHintWithPriority(SDL_HINT_RENDER_VSYNC,"0",SDL_HINT_OVERRIDE);
+    }
+    else
+    {
+        SDL_GL_SetSwapInterval(1);
+        SDL_SetHintWithPriority(SDL_HINT_RENDER_VSYNC,"1",SDL_HINT_OVERRIDE);
+    }
 }
 
 BOOL LLWindowSDL::setCursorPosition(const LLCoordWindow position)
@@ -1148,15 +1208,13 @@ BOOL LLWindowSDL::setCursorPosition(const LLCoordWindow position)
         return FALSE;
     }
 
-    //LL_INFOS() << "setCursorPosition(" << screen_pos.mX << ", " << screen_pos.mY << ")" << LL_ENDL;
-
     // do the actual forced cursor move.
+
     if (mFullscreen)
         SDL_WarpMouseGlobal(screen_pos.mX, screen_pos.mY);
     else
         SDL_WarpMouseInWindow(mWindow, screen_pos.mX, screen_pos.mY);
 
-    //LL_INFOS() << llformat("llcw %d,%d -> scr %d,%d", position.mX, position.mY, screen_pos.mX, screen_pos.mY) << LL_ENDL;
 
     return result;
 }
@@ -1176,6 +1234,11 @@ BOOL LLWindowSDL::getCursorPosition(LLCoordWindow *position)
     return convertCoords(screen_pos, position);
 }
 
+F32 LLWindowSDL::getSystemUISize()
+{
+    if(hasHIDPI) return 2.0f;
+    else return 1.f;
+}
 
 F32 LLWindowSDL::getNativeAspectRatio()
 {
@@ -1873,49 +1936,55 @@ void LLWindowSDL::gatherInput()
     {
         switch (event.type)
         {
+            case SDL_KEYDOWN:
+                mKeyScanCode = event.key.keysym.scancode;
+                mKeyModifiers = event.key.keysym.mod;
+
+                gKeyboard->handleKeyDown(event.key.keysym.sym, event.key.keysym.mod);
+                // part of the fix for SL-13243
+                if (SDLCheckGrabbyKeys(event.key.keysym.sym, TRUE) != 0)
+                    SDLReallyCaptureInput(TRUE);
+
+                if (event.key.keysym.sym < SDLK_SPACE)
+                {
+                    handleUnicodeUTF16(event.key.keysym.sym,
+                            gKeyboard->currentMask(FALSE));
+                }
+            break;
+
+            case SDL_TEXTINPUT:
+		        mCallbacks->handleUnicodeString(event.text.text, false);
+                break;
+
+            case SDL_TEXTEDITING:
+		        mCallbacks->handleUnicodeString(event.edit.text, true);
+            break;
+
+            case SDL_KEYUP:
+                mKeyScanCode = event.key.keysym.scancode;
+                mKeyModifiers = event.key.keysym.mod;
+
+                if (SDLCheckGrabbyKeys(event.key.keysym.sym, FALSE) == 0)
+                    SDLReallyCaptureInput(FALSE); // part of the fix for SL-13243
+
+                gKeyboard->handleKeyUp(event.key.keysym.sym, event.key.keysym.mod);
+            break;
+
             case SDL_MOUSEMOTION:
             {
                 LLCoordWindow winCoord(event.button.x, event.button.y);
                 LLCoordGL openGlCoord;
                 convertCoords(winCoord, &openGlCoord);
+
+                openGlCoord.mX = openGlCoord.mX * getSystemUISize();
+                openGlCoord.mY = openGlCoord.mY * getSystemUISize();
+
+                //LL_INFOS() << "SDL_MOUSEMOTION " << event.button.x << " " << event.button.y << " gl " << openGlCoord.mX << " " << openGlCoord.mY << LL_ENDL;
+
                 MASK mask = gKeyboard->currentMask(TRUE);
                 mCallbacks->handleMouseMove(this, openGlCoord, mask);
                 break;
             }
-
-            case SDL_KEYDOWN:
-            mKeyScanCode = event.key.keysym.scancode;
-            mKeyModifiers = event.key.keysym.mod;
-
-            gKeyboard->handleKeyDown(event.key.keysym.sym, event.key.keysym.mod);
-            // part of the fix for SL-13243
-            if (SDLCheckGrabbyKeys(event.key.keysym.sym, TRUE) != 0)
-                SDLReallyCaptureInput(TRUE);
-
-            if (event.key.keysym.sym < SDLK_SPACE)
-            {
-                handleUnicodeUTF16(event.key.keysym.sym,
-                           gKeyboard->currentMask(FALSE));
-            }
-                break;
-
-            case SDL_TEXTINPUT:
-		    mCallbacks->handleUnicodeString(event.text.text, false);
-                break;
-
-            case SDL_TEXTEDITING:
-		    mCallbacks->handleUnicodeString(event.edit.text, true);
-         break;
-
-            case SDL_KEYUP:
-            mKeyScanCode = event.key.keysym.scancode;
-            mKeyModifiers = event.key.keysym.mod;
-
-            if (SDLCheckGrabbyKeys(event.key.keysym.sym, FALSE) == 0)
-                SDLReallyCaptureInput(FALSE); // part of the fix for SL-13243
-
-            gKeyboard->handleKeyUp(event.key.keysym.sym, event.key.keysym.mod);
-            break;
 
             case SDL_MOUSEBUTTONDOWN:
             {
@@ -1923,7 +1992,11 @@ void LLWindowSDL::gatherInput()
                 LLCoordWindow winCoord(event.button.x, event.button.y);
                 LLCoordGL openGlCoord;
                 convertCoords(winCoord, &openGlCoord);
-        MASK mask = gKeyboard->currentMask(TRUE);
+
+                openGlCoord.mX *= getSystemUISize();
+                openGlCoord.mY *= getSystemUISize();
+
+                MASK mask = gKeyboard->currentMask(TRUE);
 
                 if (event.button.button == SDL_BUTTON_LEFT)   // SDL doesn't manage double clicking...
                 {
@@ -1935,7 +2008,7 @@ void LLWindowSDL::gatherInput()
                         if (++leftClick >= 2)
                         {
                             leftClick = 0;
-                isDoubleClick = true;
+                            isDoubleClick = true;
                         }
                     }
                     lastLeftDown = now;
@@ -1963,12 +2036,10 @@ void LLWindowSDL::gatherInput()
                     else
                         mCallbacks->handleMouseDown(this, openGlCoord, mask);
                 }
-
                 else if (event.button.button == SDL_BUTTON_RIGHT)  // right
                 {
-            mCallbacks->handleRightMouseDown(this, openGlCoord, mask);
+                    mCallbacks->handleRightMouseDown(this, openGlCoord, mask);
                 }
-
                 else if (event.button.button == SDL_BUTTON_MIDDLE)  // middle
                 {
                     mCallbacks->handleMiddleMouseDown(this, openGlCoord, mask);
@@ -1989,14 +2060,18 @@ void LLWindowSDL::gatherInput()
                 LLCoordWindow winCoord(event.button.x, event.button.y);
                 LLCoordGL openGlCoord;
                 convertCoords(winCoord, &openGlCoord);
-        MASK mask = gKeyboard->currentMask(TRUE);
+
+                openGlCoord.mX *= getSystemUISize();
+                openGlCoord.mY *= getSystemUISize();
+
+                MASK mask = gKeyboard->currentMask(TRUE);
 
                 if (event.button.button == SDL_BUTTON_LEFT)  // left
-            mCallbacks->handleMouseUp(this, openGlCoord, mask);
+                    mCallbacks->handleMouseUp(this, openGlCoord, mask);
                 else if (event.button.button == SDL_BUTTON_RIGHT)  // right
-            mCallbacks->handleRightMouseUp(this, openGlCoord, mask);
+                    mCallbacks->handleRightMouseUp(this, openGlCoord, mask);
                 else if (event.button.button == SDL_BUTTON_MIDDLE)  // middle
-            mCallbacks->handleMiddleMouseUp(this, openGlCoord, mask);
+                    mCallbacks->handleMiddleMouseUp(this, openGlCoord, mask);
                 // don't handle mousewheel here...
 
                 break;
@@ -2004,76 +2079,84 @@ void LLWindowSDL::gatherInput()
 
             case SDL_WINDOWEVENT:
             {
-                if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { // VIDEOEXPOSE doesn't specify the damage, but hey, it's OpenGL...repaint the whole thing!
+                if (event.window.event == SDL_WINDOWEVENT_EXPOSED)
+                {   // VIDEOEXPOSE doesn't specify the damage, but hey, it's OpenGL...repaint the whole thing!
                     int w, h;
-                    SDL_GetWindowSize(mWindow, &w, &h);
+                    //SDL_GetWindowSize(mWindow, &w, &h);
+                    SDL_GL_GetDrawableSize(mWindow, &w, &h);
+
                     mCallbacks->handlePaint(this, 0, 0, w, h);
-		} else if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
-        LL_INFOS() << "Handling a resize event: " << event.window.data1 <<
-            "x" << event.window.data2 << LL_ENDL;
-
-        S32 width = llmax(event.window.data1, (S32)mMinWindowWidth);
-        S32 height = llmax(event.window.data2, (S32)mMinWindowHeight);
-
-        // *FIX: I'm not sure this is necessary!
-        /*
-        mWindow = SDL_SetVideoMode(width, height, 32, mSDLFlags);
-        if (!mWindow)
-        {
-            // *FIX: More informative dialog?
-            LL_INFOS() << "Could not recreate context after resize! Quitting..." << LL_ENDL;
-            if(mCallbacks->handleCloseRequest(this))
+                }
+                else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
                 {
-                    // Get the app to initiate cleanup.
-                    mCallbacks->handleQuit(this);
-                    // The app is responsible for calling destroyWindow when done with GL
-                }
-                break;
-        }
-        */
+                    LL_INFOS() << "Handling a resize event: " << event.window.data1 <<
+                        "x" << event.window.data2 << LL_ENDL;
 
-        mCallbacks->handleResize(this, width, height);
+                    S32 width = llmax(event.window.data1, (S32)mMinWindowWidth);
+                    S32 height = llmax(event.window.data2, (S32)mMinWindowHeight);
+
+                    // *FIX: I'm not sure this is necessary!
+                    /*
+                    mWindow = SDL_SetVideoMode(width, height, 32, mSDLFlags);
+                    if (!mWindow)
+                    {
+                        // *FIX: More informative dialog?
+                        LL_INFOS() << "Could not recreate context after resize! Quitting..." << LL_ENDL;
+                        if(mCallbacks->handleCloseRequest(this))
+                            {
+                                // Get the app to initiate cleanup.
+                                mCallbacks->handleQuit(this);
+                                // The app is responsible for calling destroyWindow when done with GL
+                            }
+                            break;
+                    }
+                    */
+
+                    mCallbacks->handleResize(this, width * getSystemUISize(), height * getSystemUISize());
                 }
-                break;
-            }
-	    /*
-            case SDL_ACTIVEEVENT:
-                if (event.active.state & SDL_APPINPUTFOCUS)
+                else if(event.window.event == SDL_WINDOWEVENT_ENTER)
                 {
-            // Note that for SDL (particularly on X11), keyboard
-            // and mouse focus are independent things.  Here we are
-            // tracking keyboard focus state changes.
-
-            // We have to do our own state massaging because SDL
-            // can send us two unfocus events in a row for example,
-            // which confuses the focus code [SL-24071].
-            if (event.active.gain != mHaveInputFocus)
-            {
-                mHaveInputFocus = !!event.active.gain;
-
-                if (mHaveInputFocus)
-                    mCallbacks->handleFocus(this);
-                else
-                    mCallbacks->handleFocusLost(this);
-            }
+                    LL_INFOS() << "SDL_WINDOWEVENT_ENTER" << LL_ENDL;
+                    if(!mHaveInputFocus) mCallbacks->handleFocus(this);
+                    mHaveInputFocus = TRUE;
                 }
-                if (event.active.state & SDL_APPACTIVE)
+                else if(event.window.event == SDL_WINDOWEVENT_LEAVE)
                 {
-            // Change in iconification/minimization state.
-            if ((!event.active.gain) != mIsMinimized)
-            {
-                mIsMinimized = (!event.active.gain);
-
-                mCallbacks->handleActivate(this, !mIsMinimized);
-                LL_INFOS() << "SDL deiconification state switched to " << BOOL(event.active.gain) << LL_ENDL;
-            }
-            else
-            {
-                LL_INFOS() << "Ignored bogus redundant SDL deiconification state switch to " << BOOL(event.active.gain) << LL_ENDL;
-            }
+                    LL_INFOS() << "SDL_WINDOWEVENT_LEAVE" << LL_ENDL;
+                    if(mHaveInputFocus) mCallbacks->handleFocusLost(this);
+                    mHaveInputFocus = FALSE;
                 }
-                break;
-		*/
+                else if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+                {
+                    LL_INFOS() << "SDL_WINDOWEVENT_FOCUS_GAINED" << LL_ENDL;
+                    if(!mHaveInputFocus) mCallbacks->handleFocus(this);
+                    mHaveInputFocus = TRUE;
+                }
+                else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+                {
+                    LL_INFOS() << "SDL_WINDOWEVENT_FOCUS_LOST" << LL_ENDL;
+                    if(mHaveInputFocus) mCallbacks->handleFocusLost(this);
+                    mHaveInputFocus = FALSE;
+                }
+                /*
+
+                Bug : the app remains inactive when maximized ..
+
+                else if(event.window.event == SDL_WINDOWEVENT_MINIMIZED)
+                {
+                    LL_INFOS() << "SDL_WINDOWEVENT_MINIMIZED" << LL_ENDL;
+                    if(!mIsMinimized) mCallbacks->handleActivate(this,FALSE);
+                    mIsMinimized = TRUE;
+                }
+                else if(event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
+                {
+                    LL_INFOS() << "SDL_WINDOWEVENT_MAXIMIZED" << LL_ENDL;
+                    if(mIsMinimized) mCallbacks->handleActivate(this,TRUE);
+                    mIsMinimized = FALSE;
+                }
+                */
+            }
+            break;
 
             case SDL_QUIT:
                 if(mCallbacks->handleCloseRequest(this))
@@ -2083,9 +2166,10 @@ void LLWindowSDL::gatherInput()
                     // The app is responsible for calling destroyWindow when done with GL
                 }
                 break;
-    default:
-        //LL_INFOS() << "Unhandled SDL event type " << event.type << LL_ENDL;
-        break;
+
+            default:
+                //LL_INFOS() << "Unhandled SDL event type " << event.type << LL_ENDL;
+                break;
         }
     }
 
@@ -2638,7 +2722,7 @@ LLSD LLWindowSDL::getNativeKeyData()
 
 LLSD LLWindowSDL::getNativeKeyData()
 {
-        LLSD result = LLSD::emptyMap();
+    LLSD result = LLSD::emptyMap();
 
 	U32 modifiers = 0;
 	modifiers |= (mKeyModifiers & KMOD_LSHIFT) ? 0x0001 : 0;
@@ -2649,11 +2733,11 @@ LLSD LLWindowSDL::getNativeKeyData()
 	modifiers |= (mKeyModifiers & KMOD_LALT)   ? 0x0008 : 0;
 	modifiers |= (mKeyModifiers & KMOD_RALT)   ? 0x0008 : 0;
 
-        result["scan_code"] = (S32)mKeyScanCode;
-        result["virtual_key"] = (S32)mKeyVirtualKey;
+    result["scan_code"] = (S32)mKeyScanCode;
+    result["virtual_key"] = (S32)mKeyVirtualKey;
 	result["modifiers"] = (S32)modifiers;
 
-        return result;
+    return result;
 }
 
 #endif // LL_DARWIN

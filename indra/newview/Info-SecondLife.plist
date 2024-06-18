@@ -34,6 +34,10 @@
 	<string>${MACOSX_BUNDLE_COPYRIGHT}</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>For voice chat, you must grant permission for Second Life to use the microphone.</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.games</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
