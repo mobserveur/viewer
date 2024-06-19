@@ -6454,6 +6454,26 @@ void handle_zoom_to_object(LLUUID object_id)
     }
 }
 
+void handle_teleport_to_object(LLUUID object_id)
+{
+    LLViewerObject* object = gObjectList.findObject(object_id);
+
+    if (object)
+    {
+        gAgentCamera.setFocusOnAvatar(FALSE, ANIMATE);
+
+        LLBBox bbox = object->getBoundingBoxAgent() ;
+
+        LLVector3 obj_to_cam = LLViewerCamera::getInstance()->getOrigin() - bbox.getCenterAgent();
+        obj_to_cam.normVec();
+
+
+            LLVector3d object_center_global = gAgent.getPosGlobalFromAgent(bbox.getCenterAgent());
+
+            gAgent.teleportViaLocation(object_center_global);
+    }
+}
+
 class LLAvatarInviteToGroup : public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)

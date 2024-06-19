@@ -74,6 +74,7 @@ LLContextMenu* PeopleContextMenu::createMenu()
         registrar.add("Avatar.Call",            boost::bind(&LLAvatarActions::startCall,                id));
         registrar.add("Avatar.OfferTeleport",   boost::bind(&PeopleContextMenu::offerTeleport,          this));
         registrar.add("Avatar.ZoomIn",          boost::bind(&handle_zoom_to_object,                     id));
+        registrar.add("Avatar.TeleportTo",      boost::bind(&handle_teleport_to_object,                     id));
         registrar.add("Avatar.ShowOnMap",       boost::bind(&LLAvatarActions::showOnMap,                id));
         registrar.add("Avatar.Share",           boost::bind(&LLAvatarActions::share,                    id));
         registrar.add("Avatar.Pay",             boost::bind(&LLAvatarActions::pay,                      id));
@@ -401,6 +402,7 @@ void NearbyPeopleContextMenu::buildContextMenu(class LLMenuGL& menu, U32 flags)
         items.push_back(std::string("invite_to_group"));
         items.push_back(std::string("separator_invite_to_group"));
         items.push_back(std::string("zoom_in"));
+        items.push_back(std::string("teleport_to"));
         items.push_back(std::string("map"));
         items.push_back(std::string("share"));
         items.push_back(std::string("pay"));
