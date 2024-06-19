@@ -16,6 +16,9 @@ if (LINUX)
 	endif ()
 	install(FILES
 		${AUTOBUILD_INSTALL_DIR}/lib/release/libcef.so
+		${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so
+		${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13
+		${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13.22
 		DESTINATION ${_LIB})
 	install(PROGRAMS
 		${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
