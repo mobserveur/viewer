@@ -438,8 +438,8 @@ void LLProgressView::initLogos()
         LLRect(texture_start_x, texture_start_y + icon_height, texture_start_x + icon_width, texture_start_y),
         default_clip,
         default_clip);
-}
 */
+}
 
 void LLProgressView::initStartTexture(S32 location_id, bool is_in_production)
 {
