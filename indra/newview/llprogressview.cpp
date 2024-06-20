@@ -429,6 +429,7 @@ void LLProgressView::initLogos()
     texture_start_x += icon_width + default_pad;
 #endif //LL_HAVOK
 
+/*
     // 108x41
     icon_width = 74;
     icon_height = default_height;
@@ -438,6 +439,7 @@ void LLProgressView::initLogos()
         default_clip,
         default_clip);
 }
+*/
 
 void LLProgressView::initStartTexture(S32 location_id, bool is_in_production)
 {
@@ -517,7 +519,7 @@ void LLProgressView::initStartTexture(S32 location_id, bool is_in_production)
 void LLProgressView::initTextures(S32 location_id, bool is_in_production)
 {
     initStartTexture(location_id, is_in_production);
-    //initLogos();
+    initLogos();
 
     childSetVisible("panel_icons", mLogosList.empty() ? FALSE : TRUE);
     childSetVisible("panel_top_spacer", mLogosList.empty() ? TRUE : FALSE);
