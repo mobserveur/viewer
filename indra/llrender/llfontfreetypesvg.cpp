@@ -88,6 +88,7 @@ void LLFontFreeTypeSvgRenderer::OnDataFinalizer(void* objectp)
 //static
 FT_Error LLFontFreeTypeSvgRenderer::OnPresetGlypthSlot(FT_GlyphSlot glyph_slot, FT_Bool cache, FT_Pointer*)
 {
+#ifndef LL_NO_OTSVG
     FT_SVG_Document document = static_cast<FT_SVG_Document>(glyph_slot->other);
 
     llassert(!glyph_slot->generic.data || !cache || glyph_slot->glyph_index == ((LLSvgRenderData*)glyph_slot->generic.data)->GlyphIndex);
@@ -174,6 +175,9 @@ FT_Error LLFontFreeTypeSvgRenderer::OnPresetGlypthSlot(FT_GlyphSlot glyph_slot, 
     }
 
     return FT_Err_Ok;
+#else
+    return FT_Err_Unimplemented_Feature;
+#endif
 }
 
 // static

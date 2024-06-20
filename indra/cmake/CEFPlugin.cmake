@@ -34,8 +34,8 @@ elseif (DARWIN)
 
 elseif (LINUX)
     target_link_libraries( ll::cef INTERFACE
-        dullahan
-        cef_dll_wrapper
-        cef
+            libdullahan.a
+            cef
+            cef_dll_wrapper.a
     )
 endif (WINDOWS)
