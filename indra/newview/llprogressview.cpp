@@ -381,7 +381,7 @@ void LLProgressView::initLogos()
 
     const U8 image_codec = IMG_CODEC_PNG;
     const LLRectf default_clip(0.f, 1.f, 1.f, 0.f);
-    const S32 default_height = 28;
+    //const S32 default_height = 28;
     const S32 default_pad = 15;
 
     S32 icon_width, icon_height;
