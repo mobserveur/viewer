@@ -138,7 +138,11 @@
 #include "vlc/libvlc_version.h"
 
 #if LL_DARWIN
+#if LL_SDL
 #include "llwindowsdl.h"
+#else
+#include "llwindowmacosx.h"
+#endif // LL_SDL
 #endif
 
 // Third party library includes
@@ -567,7 +571,11 @@ static void settings_to_globals()
     LLWorldMapView::setScaleSetting(gSavedSettings.getF32("MapScale"));
 
 #if LL_DARWIN
+#if LL_SDL
     LLWindowSDL::sUseMultGL = gSavedSettings.getBOOL("RenderAppleUseMultGL");
+#else
+    LLWindowMacOSX::sUseMultGL = gSavedSettings.getBOOL("RenderAppleUseMultGL");
+#endif // LL_SDL
     gHiDPISupport = gSavedSettings.getBOOL("RenderHiDPI");
 #endif
 }

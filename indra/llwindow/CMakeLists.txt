@@ -64,7 +64,7 @@ include_directories(${CMAKE_SOURCE_DIR}/llrender)
 
 # Libraries on which this library depends, needed for Linux builds
 # Sort by high-level to low-level
-if (USESYSTEMLIBS)
+if (USESYSTEMLIBS AND NOT DARWIN)
   list(APPEND viewer_SOURCE_FILES 
        llkeyboardsdl.cpp 
        llwindowsdl.cpp
@@ -87,9 +87,9 @@ if (USESYSTEMLIBS)
         )
   endif (BUILD_HEADLESS)
 
-endif (USESYSTEMLIBS)
+endif (USESYSTEMLIBS AND NOT DARWIN)
 
-if (DARWIN AND (NOT USESYSTEMLIBS))
+if (DARWIN)
   list(APPEND llwindow_SOURCE_FILES
     llkeyboardmacosx.cpp
     llwindowmacosx.cpp
@@ -111,7 +111,7 @@ if (DARWIN AND (NOT USESYSTEMLIBS))
       PROPERTIES
       COMPILE_FLAGS "-Wno-deprecated-declarations -fpascal-strings"
       )
-endif (DARWIN AND (NOT USESYSTEMLIBS))
+endif (DARWIN)
 
 
 if (WINDOWS)
@@ -183,10 +183,10 @@ endif (SDL_FOUND)
   target_link_libraries (llwindow ${llwindow_LINK_LIBRARIES})
   target_include_directories(llwindow INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
   
-if (DARWIN AND (NOT USESYSTEMLIBS))
+if (DARWIN)
   include(CMakeFindFrameworks)
   find_library(CARBON_LIBRARY Carbon)
   target_link_libraries(llwindow ${CARBON_LIBRARY})
-endif (DARWIN AND (NOT USESYSTEMLIBS))
+endif (DARWIN)
 
 include(LibraryInstall)

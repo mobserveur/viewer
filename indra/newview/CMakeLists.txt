@@ -1421,15 +1421,15 @@ set_source_files_properties(
    )
 
 if (DARWIN)
-  if (NOT USESYSTEMLIBS)
+#  if (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx.cpp)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.mm)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.h)
-  endif (NOT USESYSTEMLIBS)
+#  endif (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llfilepicker_mac.mm)
   LIST(APPEND viewer_HEADER_FILES llfilepicker_mac.h)
 
-  if (NOT USESYSTEMLIBS)
+#  if (NOT USESYSTEMLIBS)
   # This should be compiled with the viewer.
   LIST(APPEND viewer_SOURCE_FILES llappdelegate-objc.mm)
   set_source_files_properties(
@@ -1444,7 +1444,7 @@ if (DARWIN)
     # warnings.
     COMPILE_FLAGS "-fmodules -fcxx-modules -Wno-nullability-completeness"
     )
-  endif (NOT USESYSTEMLIBS)
+#  endif (NOT USESYSTEMLIBS)
 
   # Add resource files to the project.
   set(viewer_RESOURCE_FILES
@@ -1464,7 +1464,7 @@ if (DARWIN)
   list(APPEND viewer_SOURCE_FILES ${viewer_RESOURCE_FILES})
 endif (DARWIN)
 
-if (USESYSTEMLIBS)
+if (USESYSTEMLIBS AND NOT DARWIN)
     LIST(APPEND viewer_SOURCE_FILES llappviewerlinux.cpp)
     set_source_files_properties(
       llappviewerlinux.cpp
@@ -1476,7 +1476,7 @@ if (USESYSTEMLIBS)
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
     endif ()
 
-endif (USESYSTEMLIBS)
+endif (USESYSTEMLIBS AND NOT DARWIN)
 
 if (WINDOWS)
     list(APPEND viewer_SOURCE_FILES
