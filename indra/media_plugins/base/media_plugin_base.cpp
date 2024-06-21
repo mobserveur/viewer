@@ -167,7 +167,7 @@ void MediaPluginBase::sendStatus()
     sendMessage(message);
 }
 
-#if LL_LINUX
+#if LL_LINUX || __FreeBSD__
 
 size_t SymbolGrabber::registerSymbol( SymbolToGrab aSymbol )
 {

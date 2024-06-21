@@ -32,7 +32,7 @@
 #include "llpluginmessage.h"
 #include "llpluginmessageclasses.h"
 
-#if LL_LINUX
+#if LL_LINUX || __FreeBSD__
 
 struct SymbolToGrab
 {

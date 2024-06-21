@@ -7,7 +7,7 @@ include(GLIB)
 
 add_library( ll::gstreamer10 INTERFACE IMPORTED )
 
-if (LINUX)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   include(FindPkgConfig)
 
   pkg_check_modules(GSTREAMER10 REQUIRED gstreamer-1.0)
