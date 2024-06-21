@@ -1,6 +1,6 @@
 # -*- cmake -*-
 
-project(media_plugin_gstreamer10)
+project(media_plugin_gstreamer)
 
 include(00-Common)
 include(LLCommon)
@@ -16,7 +16,7 @@ include(GStreamer10Plugin)
 
 ### media_plugin_gstreamer10
 
-set(media_plugin_gstreamer10_SOURCE_FILES
+set(${PROJECT_NAME}_SOURCE_FILES
     media_plugin_gstreamer10.cpp
     )
 
@@ -25,12 +25,12 @@ set(media_plugin_gstreamer10_HEADER_FILES
     llmediaimplgstreamertriviallogging.h
     )
 
-add_library(media_plugin_gstreamer10
+add_library(${PROJECT_NAME}
     SHARED
-    ${media_plugin_gstreamer10_SOURCE_FILES}
+    ${${PROJECT_NAME}_SOURCE_FILES}
 )
 
-target_link_libraries(media_plugin_gstreamer10 media_plugin_base ll::gstreamer10 )
+target_link_libraries(${PROJECT_NAME} media_plugin_base ll::gstreamer10 )
 
 if (WINDOWS)
   set_target_properties(
@@ -39,3 +39,14 @@ if (WINDOWS)
     LINK_FLAGS "/MANIFEST:NO /SAFESEH:NO /NODEFAULTLIB:LIBCMT"
     )
 endif (WINDOWS)
+
+if (INSTALL)
+	if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+		set(_LIB lib/${ARCH}-linux-gnu)
+	elseif (EXISTS /lib64)
+		set(_LIB lib64)
+	else ()
+		set(_LIB lib)
+	endif ()
+	install(TARGETS ${PROJECT_NAME} DESTINATION ${_LIB})
+endif ()
