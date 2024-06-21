@@ -381,7 +381,7 @@ void LLProgressView::initLogos()
 
     const U8 image_codec = IMG_CODEC_PNG;
     const LLRectf default_clip(0.f, 1.f, 1.f, 0.f);
-    const S32 default_height = 28;
+    //const S32 default_height = 28;
     const S32 default_pad = 15;
 
     S32 icon_width, icon_height;
@@ -429,6 +429,7 @@ void LLProgressView::initLogos()
     texture_start_x += icon_width + default_pad;
 #endif //LL_HAVOK
 
+/*
     // 108x41
     icon_width = 74;
     icon_height = default_height;
@@ -437,6 +438,7 @@ void LLProgressView::initLogos()
         LLRect(texture_start_x, texture_start_y + icon_height, texture_start_x + icon_width, texture_start_y),
         default_clip,
         default_clip);
+*/
 }
 
 void LLProgressView::initStartTexture(S32 location_id, bool is_in_production)
@@ -517,7 +519,7 @@ void LLProgressView::initStartTexture(S32 location_id, bool is_in_production)
 void LLProgressView::initTextures(S32 location_id, bool is_in_production)
 {
     initStartTexture(location_id, is_in_production);
-    //initLogos();
+    initLogos();
 
     childSetVisible("panel_icons", mLogosList.empty() ? FALSE : TRUE);
     childSetVisible("panel_top_spacer", mLogosList.empty() ? TRUE : FALSE);
