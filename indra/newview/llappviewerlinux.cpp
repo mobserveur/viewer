@@ -43,6 +43,7 @@
 #if LL_GLIB
 #include <gio/gio.h>
 #endif
+#include <netinet/in.h>
 #include <resolv.h>
 
 #if (__GLIBC__*1000 + __GLIBC_MINOR__) >= 2034
