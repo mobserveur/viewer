@@ -1137,39 +1137,14 @@ BOOL LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
 
 
 
-BOOL LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
-                                                void (*callback)(bool, std::vector<std::string> &, void*),
-                                                void *userdata )
-{
-    LL_ERRS() << "NOT IMPLEMENTED" << LL_ENDL;
-    return FALSE;
-}
-
 BOOL LLFilePicker::getSaveFile( ESaveFilter filter, const std::string& filename, bool blocking )
 {
     return openFileDialog( filter, blocking, eSaveFile );
 }
 
-BOOL LLFilePicker::getSaveFileModeless(ESaveFilter filter,
-                                       const std::string& filename,
-                                       void (*callback)(bool, std::string&, void*),
-                                       void *userdata)
-{
-    LL_ERRS() << "NOT IMPLEMENTED" << LL_ENDL;
-    return FALSE;
-}
-
 BOOL LLFilePicker::getOpenFile( ELoadFilter filter, bool blocking )
 {
     return openFileDialog( filter, blocking, eOpenFile );
-}
-
-BOOL LLFilePicker::getOpenFileModeless(ELoadFilter filter,
-                                       void (*callback)(bool, std::vector<std::string> &, void*),
-                                       void *userdata)
-{
-    LL_ERRS() << "NOT IMPLEMENTED" << LL_ENDL;
-    return FALSE;
 }
 
 BOOL LLFilePicker::getMultipleOpenFiles( ELoadFilter filter, bool blocking)
