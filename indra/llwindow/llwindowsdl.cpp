@@ -797,18 +797,20 @@ BOOL LLWindowSDL::createContext(int x, int y, int width, int height, int bits, B
             return FALSE;
         }
         // SDL_GL_SetSwapInterval(1);
-        mSurface = SDL_GetWindowSurface( mWindow );
     }
 
 
     if( mFullscreen )
     {
-        if (mSurface)
+        if (mWindow)
         {
             mFullscreen = TRUE;
+            /*
             mFullscreenWidth = mSurface->w;
             mFullscreenHeight = mSurface->h;
             mFullscreenBits    = mSurface->format->BitsPerPixel;
+            */
+            SDL_GetWindowSize(mWindow, &mFullscreenWidth, &mFullscreenHeight);
             mFullscreenRefresh = -1;
 
             LL_INFOS() << "Running at " << mFullscreenWidth
@@ -1171,18 +1173,14 @@ BOOL LLWindowSDL::getPosition(LLCoordScreen *position)
 
 BOOL LLWindowSDL::getSize(LLCoordScreen *size)
 {
-    if (mSurface)
+    if (mWindow)
     {
         /*
         if(hasHIDPI)
-        {
             SDL_GL_GetDrawableSize(mWindow, &size->mX, &size->mY);
-            return (TRUE);
-        }
+        else
         */
-
-        size->mX = mSurface->w;
-        size->mY = mSurface->h;
+        SDL_GetWindowSize(mWindow, &size->mX, &size->mY);
         return (TRUE);
     }
 
@@ -1191,16 +1189,12 @@ BOOL LLWindowSDL::getSize(LLCoordScreen *size)
 
 BOOL LLWindowSDL::getSize(LLCoordWindow *size)
 {
-    if (mSurface)
+    if (mWindow)
     {
         if(hasHIDPI)
-        {
             SDL_GL_GetDrawableSize(mWindow, &size->mX, &size->mY);
-            return (TRUE);
-        }
-
-        size->mX = mSurface->w;
-        size->mY = mSurface->h;
+        else
+            SDL_GetWindowSize(mWindow, &size->mX, &size->mY);
         return (TRUE);
     }
 
@@ -1643,7 +1637,9 @@ BOOL LLWindowSDL::convertCoords(LLCoordGL from, LLCoordWindow *to)
         return FALSE;
 
     to->mX = from.mX;
-    to->mY = mSurface->h - from.mY - 1;
+    int h;
+    SDL_GetWindowSize(mWindow, nullptr, &h);
+    to->mY = h - from.mY - 1;
 
     return TRUE;
 }
@@ -1654,7 +1650,9 @@ BOOL LLWindowSDL::convertCoords(LLCoordWindow from, LLCoordGL* to)
         return FALSE;
 
     to->mX = from.mX;
-    to->mY = mSurface->h - from.mY - 1;
+    int h;
+    SDL_GetWindowSize(mWindow, nullptr, &h);
+    to->mY = h - from.mY - 1;
 
     return TRUE;
 }
@@ -2133,7 +2131,6 @@ void LLWindowSDL::gatherInput()
 
                     S32 width = llmax(event.window.data1, (S32)mMinWindowWidth);
                     S32 height = llmax(event.window.data2, (S32)mMinWindowHeight);
-                    mSurface = SDL_GetWindowSurface( mWindow );
 
                     // *FIX: I'm not sure this is necessary!
                     // <FS:ND> I think is is not
