@@ -38,21 +38,21 @@ $ export LL_BUILD="-DLL_DARWIN=1 -DPIC -fPIC -gdwarf-2 -stdlib=libc++ -iwithsysr
 ### Debian/Ubuntu
 
 ```
-# apt install git cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libglu1-mesa-dev libgtk2.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnanosvg-dev libnghttp2-dev libsdl2-dev libssl-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
+# apt install git cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libfltk1.3-dev libglu1-mesa-dev libgstreamer-plugins-base1.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnanosvg-dev libnghttp2-dev libpipewire-0.3-dev libsdl2-dev libssl-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
 $ export LL_BUILD="-DLL_LINUX=1 -fPIC"
 ```
 
 ### Fedora
 
 ```
-# dnf install git cmake gcc-c++ SDL2-devel apr-util-devel boost-devel collada-dom-devel expat-devel freealut-devel gtk2-devel hunspell-devel jsoncpp-devel libcurl-devel libnghttp2-devel libvorbis-devel mesa-libGLU-devel nanosvg-devel openjpeg2-devel openssl-devel uriparser-devel vlc-devel xmlrpc-epi-devel xxhash-devel zstd
+# dnf install git cmake gcc-c++ SDL2-devel apr-util-devel boost-devel collada-dom-devel expat-devel fltk-devel freealut-devel hunspell-devel jsoncpp-devel libcurl-devel libnghttp2-devel libvorbis-devel mesa-libGLU-devel nanosvg-devel openjpeg2-devel openssl-devel pipewire-devel pulseaudio-libs-devel uriparser-devel vlc-devel xmlrpc-epi-devel xxhash-devel zstd
 $ export LL_BUILD="-DLL_LINUX=1 -fPIC"
 ```
 
 ### FreeBSD
 
 ```
-# portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis graphics/nanosvg graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/gtk20
+# portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis graphics/nanosvg graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/fltk
 $ setenv LL_BUILD "-fPIC -std=c++17"
 ```
 
