@@ -7,40 +7,40 @@ install(PROGRAMS linux_tools/launch_url.sh
         )
 
 if (LINUX)
-	if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
-		set(_LIB lib/${ARCH}-linux-gnu)
-	elseif (EXISTS /lib64)
-		set(_LIB lib64)
-	else ()
-		set(_LIB lib)
-	endif ()
-	install(FILES
-		${AUTOBUILD_INSTALL_DIR}/lib/release/libcef.so
-		${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so
-		${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13
-		${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13.22
-		DESTINATION ${_LIB})
-	install(PROGRAMS
-		${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
-		DESTINATION libexec/${VIEWER_BINARY_NAME}
-		PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE
-		GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-	install(PROGRAMS
-		${AUTOBUILD_INSTALL_DIR}/bin/release/dullahan_host
-		DESTINATION libexec/${VIEWER_BINARY_NAME})
-	install(FILES
-		${AUTOBUILD_INSTALL_DIR}/bin/release/snapshot_blob.bin
-		${AUTOBUILD_INSTALL_DIR}/bin/release/v8_context_snapshot.bin
-		DESTINATION ${_LIB})
-	install(FILES
-		${AUTOBUILD_INSTALL_DIR}/resources/chrome_100_percent.pak
-		${AUTOBUILD_INSTALL_DIR}/resources/chrome_200_percent.pak
-		${AUTOBUILD_INSTALL_DIR}/resources/icudtl.dat
-		${AUTOBUILD_INSTALL_DIR}/resources/resources.pak
-		DESTINATION ${_LIB})
-	install(DIRECTORY
-		${AUTOBUILD_INSTALL_DIR}/resources/locales
-		DESTINATION ${_LIB})
+        if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+                set(_LIB lib/${ARCH}-linux-gnu)
+        elseif (EXISTS /lib64)
+                set(_LIB lib64)
+        else ()
+                set(_LIB lib)
+        endif ()
+        install(FILES
+                ${AUTOBUILD_INSTALL_DIR}/lib/release/libcef.so
+                ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so
+                ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13
+                ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13.22
+                DESTINATION ${_LIB})
+        install(PROGRAMS
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
+                DESTINATION libexec/${VIEWER_BINARY_NAME}
+                PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE
+                GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+        install(PROGRAMS
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/dullahan_host
+                DESTINATION libexec/${VIEWER_BINARY_NAME})
+        install(FILES
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/snapshot_blob.bin
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/v8_context_snapshot.bin
+                DESTINATION ${_LIB})
+        install(FILES
+                ${AUTOBUILD_INSTALL_DIR}/resources/chrome_100_percent.pak
+                ${AUTOBUILD_INSTALL_DIR}/resources/chrome_200_percent.pak
+                ${AUTOBUILD_INSTALL_DIR}/resources/icudtl.dat
+                ${AUTOBUILD_INSTALL_DIR}/resources/resources.pak
+                DESTINATION ${_LIB})
+        install(DIRECTORY
+                ${AUTOBUILD_INSTALL_DIR}/resources/locales
+                DESTINATION ${_LIB})
 endif (LINUX)
 
 install(DIRECTORY skins app_settings fonts
