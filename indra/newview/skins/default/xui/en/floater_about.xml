@@ -86,7 +86,7 @@ Megapahit is brought to you by (in order of appearance):
       <text_editor
        enabled="false"
        follows="top|left"
-       height="70"
+       height="90"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -115,7 +115,7 @@ with special thanks to (in order of appearance):
 <text_editor
        enabled="false"
        follows="top|left"
-       height="130"
+       height="110"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
