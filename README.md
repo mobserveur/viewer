@@ -38,21 +38,24 @@ $ export LL_BUILD="-DLL_DARWIN=1 -DPIC -fPIC -gdwarf-2 -stdlib=libc++ -iwithsysr
 ### Debian/Ubuntu
 
 ```
-# apt install git cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libfltk1.3-dev libglu1-mesa-dev libgstreamer-plugins-base1.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnanosvg-dev libnghttp2-dev libpipewire-0.3-dev libsdl2-dev libssl-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
+# apt install git cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libexpat1-dev libfltk1.3-dev libfontconfig-dev libfreetype-dev libglu1-mesa-dev libhunspell-dev libjpeg-dev libjsoncpp-dev libmeshoptimizer-dev libnghttp2-dev libpng-dev libpipewire-0.3-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxft-dev libxmlrpc-epi-dev libxxhash-dev
+# apt install libnanosvg-dev
 $ export LL_BUILD="-DLL_LINUX=1 -fPIC"
 ```
+libnanosvg-dev is not available yet on Debian 12.5.
+libfontconfig-dev, libfreetype-dev, libjpegdev, libpng-dev, and libxft-dev may not be pulled in automatically by another package already on a minimal debootstrapped system.
 
 ### Fedora
 
 ```
-# dnf install git cmake gcc-c++ SDL2-devel apr-util-devel boost-devel collada-dom-devel expat-devel fltk-devel freealut-devel hunspell-devel jsoncpp-devel libcurl-devel libnghttp2-devel libvorbis-devel mesa-libGLU-devel nanosvg-devel openjpeg2-devel openssl-devel pipewire-devel pulseaudio-libs-devel uriparser-devel vlc-devel xmlrpc-epi-devel xxhash-devel zstd
+# dnf install git gcc-c++ cmake zstd freealut-devel apr-util-devel boost-devel collada-dom-devel expat-devel fltk-devel hunspell-devel jsoncpp-devel libcurl-devel libnghttp2-devel libvorbis-devel mesa-libGLU-devel nanosvg-devel openjpeg2-devel openssl-devel pipewire-devel pulseaudio-libs-devel SDL2-devel uriparser-devel vlc-devel xmlrpc-epi-devel xxhash-devel
 $ export LL_BUILD="-DLL_LINUX=1 -fPIC"
 ```
 
 ### FreeBSD
 
 ```
-# portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis graphics/nanosvg graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/fltk
+# portmaster devel/git devel/cmake-core devel/pkgconf audio/freealut devel/apr1 devel/collada-dom x11-toolkits/fltk textproc/hunspell misc/meshoptimizer graphics/nanosvg graphics/openjpeg devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
 $ setenv LL_BUILD "-fPIC -std=c++17"
 ```
 
