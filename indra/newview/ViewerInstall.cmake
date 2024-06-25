@@ -23,8 +23,9 @@ if (LINUX)
         install(PROGRAMS
                 ${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
                 DESTINATION libexec/${VIEWER_BINARY_NAME}
-                PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE
-                GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+		#PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE
+		#GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+        )
         install(PROGRAMS
                 ${AUTOBUILD_INSTALL_DIR}/bin/release/dullahan_host
                 DESTINATION libexec/${VIEWER_BINARY_NAME})
