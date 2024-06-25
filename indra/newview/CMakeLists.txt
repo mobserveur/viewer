@@ -1960,7 +1960,6 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ${LLPHYSICSEXTENSIONS_LIBRARIES}
         ll::bugsplat
         ll::tracy
-        ll::fontconfig
         )
 
 if (ENABLE_MEDIA_PLUGINS)
