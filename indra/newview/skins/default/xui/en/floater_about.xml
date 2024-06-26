@@ -115,7 +115,7 @@ with special thanks to (in order of appearance):
 <text_editor
        enabled="false"
        follows="top|left"
-       height="110"
+       height="130"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -124,6 +124,7 @@ with special thanks to (in order of appearance):
        top_pad="5"
        width="450"
        word_wrap="true">
+Chorazin Allen and Nicky Perian for involving Erik Kundiman in viewer developments;
 LinneNoir for the moral support and initial testing;
 Vir Linden for making it possible for the project to have a place (in every sense of the word) in SL;
 nutsobvious for the early testing and video proof;
