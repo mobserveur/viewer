@@ -1568,7 +1568,7 @@ void LLPanelProfileSecondLife::onShowInSearchCallback()
     if (value == mAllowPublish)
         return;
 
-        mAllowPublish = value;
+    mAllowPublish = value;
     saveAgentUserInfoCoro("allow_publish", value);
     }
 
@@ -1722,7 +1722,7 @@ void LLPanelProfileSecondLife::onCommitProfileImage(const LLUUID& id)
     if (mSecondLifePic->getImageAssetId() == id)
         return;
 
-        std::function<void(bool)> callback = [id](bool result)
+    std::function<void(bool)> callback = [id](bool result)
         {
             if (result)
             {
