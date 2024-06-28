@@ -24,7 +24,9 @@
  * $/LicenseInfo$
  */
 #include <algorithm>
+#if !LL_LINUX
 #include <format>
+#endif
 #include "llvoicewebrtc.h"
 
 #include "llsdutil.h"
