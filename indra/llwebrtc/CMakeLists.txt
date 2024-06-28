@@ -59,3 +59,14 @@ ADD_CUSTOM_COMMAND(TARGET llwebrtc POST_BUILD
 # Add tests
 if (LL_TESTS)
 endif (LL_TESTS)
+
+if (INSTALL)
+	if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+		set(_LIB lib/${ARCH}-linux-gnu)
+	elseif (EXISTS /lib64)
+		set(_LIB lib64)
+	else ()
+		set(_LIB lib)
+	endif ()
+	install(TARGETS ${PROJECT_NAME} DESTINATION ${_LIB})
+endif ()
