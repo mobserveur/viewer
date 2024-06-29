@@ -359,7 +359,8 @@ public:
             mMisses++;
             name = gen_buffer();
             glBindBuffer(type, name);
-            glBufferData(type, size, nullptr, GL_DYNAMIC_DRAW);
+            //glBufferData(type, size, nullptr, GL_DYNAMIC_DRAW);
+            glBufferData(type, size, nullptr, GL_STREAM_DRAW);
             if (type == GL_ELEMENT_ARRAY_BUFFER)
             {
                 LLVertexBuffer::sGLRenderIndices = name;
@@ -1147,20 +1148,63 @@ static void flush_vbo(GLenum target, U32 start, U32 end, void* data)
 {
     if (end != 0)
     {
+        //Note (observeur): I maintained the profile "glBufferSubData" names because i'm not sure if it would impact any statistics part somewhere in the code.
         LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData");
         LL_PROFILE_ZONE_NUM(start);
         LL_PROFILE_ZONE_NUM(end);
         LL_PROFILE_ZONE_NUM(end-start);
 
-        constexpr U32 block_size = 8192;
+        U32 size = end-start+1;
+
+        //Note (observeur): glBufferSubData() was causing synchronization stalls, specialy on Apple GPUs, possibly to the fact Apple GPU is a tiled gpu, resulting to heavy stutters, and spacialy when called several times per frame on the same buffer.
+
+        //Note (observeur): I maintained the notion of block_size for testing purpose, but i think it's a bad idea. We don't know the overhead of glMapBufferRange() depending on the driver, so it's better avoiding calling it more than necessary.(0 -> loop is disabled, 8192 -> original value, 524288 -> a resonable value).
+        constexpr U32 block_size = 0;
+
+        if(block_size == 0)
+        {
+            U8 * mptr = NULL;
+            LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
+            LL_PROFILE_GPU_ZONE("glBufferSubData");
+
+            mptr = (U8*) glMapBufferRange( target, start, size, GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT);
+            if(mptr)
+            {
+                std::memcpy(mptr, (U8*) data, size);
+                glUnmapBuffer(target);
+            }
+            else
+            {
+                LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
+            }
+            return;
+        }
+
+        //Note (observeur): This is for analysis purpose only
+        if(size > block_size)
+        {
+            LL_INFOS() << "Large data range : " << size << LL_ENDL;
+        }
+
+        U8 * mptr = NULL;
 
         for (U32 i = start; i <= end; i += block_size)
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
-            //LL_PROFILE_GPU_ZONE("glBufferSubData");
+            LL_PROFILE_GPU_ZONE("glBufferSubData");
             U32 tend = llmin(i + block_size, end);
-            U32 size = tend - i + 1;
-            glBufferSubData(target, i, size, (U8*) data + (i-start));
+            size = tend - i + 1;
+
+            mptr = (U8*) glMapBufferRange( target, i, size, GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT);
+            if(mptr)
+            {
+                std::memcpy(mptr, (U8*) data + (i-start), size);
+                glUnmapBuffer(target);
+            }
+            else
+            {
+                LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
+            }
         }
     }
 }
