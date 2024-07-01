@@ -31,38 +31,39 @@ Third party maintained forks, which include Linux compatible builds, are indexed
 ### macOS
 
 ```
-# port install git cmake pkgconfig apr-util boost collada-dom freealut hunspell jsoncpp libsdl2 openjpeg uriparser
-$ export LL_BUILD="-DLL_DARWIN=1 -DPIC -fPIC -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -std=c++17"
+# port install git cmake pkgconfig freealut +universal apr-util +universal boost +universal collada-dom +universal hunspell +universal jsoncpp +universal openjpeg +universal libsdl2 +universal uriparser +universal
+$ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1 -arch arm64"
 ```
 
 ### Debian/Ubuntu
 
 ```
 # apt install git cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libcurl4-openssl-dev libexpat1-dev libglu1-mesa-dev libgtk2.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnanosvg-dev libnghttp2-dev libsdl2-dev libssl-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
-$ export LL_BUILD="-DLL_LINUX=1 -fPIC"
+$ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 ```
 
 ### Fedora
 
 ```
 # dnf install git cmake gcc-c++ SDL2-devel apr-util-devel boost-devel collada-dom-devel expat-devel freealut-devel gtk2-devel hunspell-devel jsoncpp-devel libcurl-devel libnghttp2-devel libvorbis-devel mesa-libGLU-devel nanosvg-devel openjpeg2-devel openssl-devel uriparser-devel vlc-devel xmlrpc-epi-devel xxhash-devel zstd
-$ export LL_BUILD="-DLL_LINUX=1 -fPIC"
+$ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 ```
 
 ### FreeBSD
 
 ```
 # portmaster devel/git devel/cmake devel/pkgconf devel/apr1 devel/collada-dom devel/sdl20 devel/xxhash audio/freealut audio/libvorbis graphics/nanosvg graphics/openjpeg misc/meshoptimizer multimedia/vlc net/uriparser net/xmlrpc-epi textproc/hunspell x11-toolkits/gtk20
-$ setenv LL_BUILD "-fPIC -std=c++17"
+$ setenv LL_BUILD "-O3 -std=c++17 -fPIC"
 ```
 
 ### Common
 
 ```
 $ cd viewer
-$ git remote add megapahit https://megapahit.org/viewer.git
+$ git remote add megapahit git://megapahit.org/viewer.git
 $ git fetch megapahit
 $ git checkout megapahit/main
+$ git switch -c megapahit
 $ mkdir -p build
 $ cd build
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DPACKAGE:BOOL=OFF -DINSTALL:BOOL=ON ../indra
