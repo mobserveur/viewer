@@ -359,7 +359,8 @@ public:
             mMisses++;
             name = gen_buffer();
             glBindBuffer(type, name);
-            glBufferData(type, size, nullptr, GL_DYNAMIC_DRAW);
+            //glBufferData(type, size, nullptr, GL_DYNAMIC_DRAW);
+            glBufferData(type, size, nullptr, GL_STREAM_DRAW);
             if (type == GL_ELEMENT_ARRAY_BUFFER)
             {
                 LLVertexBuffer::sGLRenderIndices = name;
@@ -1147,20 +1148,87 @@ static void flush_vbo(GLenum target, U32 start, U32 end, void* data)
 {
     if (end != 0)
     {
+        //Note (observeur): I maintained the profile "glBufferSubData" names because i'm not sure if it would impact any statistics part somewhere in the code.
         LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData");
         LL_PROFILE_ZONE_NUM(start);
         LL_PROFILE_ZONE_NUM(end);
         LL_PROFILE_ZONE_NUM(end-start);
 
-        constexpr U32 block_size = 8192;
+        U32 size = end-start+1;
+        U32 block_size = 65536;
+
+        //Note (observeur): The following code is executed on non Apple gpus. Using glMapBufferRange() didn't show obvious benefit on the other tested platforms (intel igpu, amd igpu and nVidia dgpus).
+        if(!gGLManager.mIsApple)
+        {
+            for (U32 i = start; i <= end; i += block_size)
+            {
+                LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
+                LL_PROFILE_GPU_ZONE("glBufferSubData");
+                U32 tend = llmin(i + block_size, end);
+                U32 size = tend - i + 1;
+                glBufferSubData(target, i, size, (U8*) data + (i-start));
+            }
+
+            return;
+        }
+
+        //Note (observeur): glBufferSubData() was causing synchronization stalls on Apple GPUs resulting to heavy stutters and lower performance in the world and UI rendering. Using glMapBufferRange() benefits Macs with Apple gpus enormously.
+
+        //Note (observeur): Other bits such as GL_MAP_INVALIDATE_RANGE_BIT or GL_MAP_UNSYNCHRONIZED_BIT didn't seem to make much of a difference on Apple gpus, so we stick to the simple way.
+        U32 MapBits = GL_MAP_WRITE_BIT;
+
+        //Note (observeur): Using a block size of 0 will call the following block and map the buffer all in once. It doesn't bother Apple machines, it might actually benefit them a little bit. A larger value is also fine. The largest buffers I observed where around 2mb or 3mb while most of buffers are smaller than 50000 bytes.
+        block_size = 524288;
+
+        //Note (observeur): This is called in case block_size is set to 0 (All in one mapping).
+        if(block_size == 0)
+        {
+            U8 * mptr = NULL;
+            LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
+            LL_PROFILE_GPU_ZONE("glBufferSubData");
+
+            mptr = (U8*) glMapBufferRange( target, start, size, MapBits);
+
+            if(mptr)
+            {
+                std::memcpy(mptr, (U8*) data, size);
+                glUnmapBuffer(target);
+            }
+            else
+            {
+                LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
+            }
+            return;
+        }
+
+        //Note (observeur): The following code is executed in case of block_size is superior to 0
+
+        //Note (observeur): This is for analysis purpose only
+        //if(size > block_size)
+        //{
+        //    LL_INFOS() << "Large data range (MB MODE) : " << size << LL_ENDL;
+        //}
+
+        U8 * mptr = NULL;
 
         for (U32 i = start; i <= end; i += block_size)
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
-            //LL_PROFILE_GPU_ZONE("glBufferSubData");
+            LL_PROFILE_GPU_ZONE("glBufferSubData");
             U32 tend = llmin(i + block_size, end);
-            U32 size = tend - i + 1;
-            glBufferSubData(target, i, size, (U8*) data + (i-start));
+            size = tend - i + 1;
+
+            mptr = (U8*) glMapBufferRange( target, i, size, MapBits );
+
+            if(mptr)
+            {
+                std::memcpy(mptr, (U8*) data + (i-start), size);
+                glUnmapBuffer(target);
+            }
+            else
+            {
+                LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
+            }
         }
     }
 }

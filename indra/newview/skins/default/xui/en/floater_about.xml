@@ -86,7 +86,7 @@ Megapahit is brought to you by (in order of appearance):
       <text_editor
        enabled="false"
        follows="top|left"
-       height="70"
+       height="90"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -96,7 +96,10 @@ Megapahit is brought to you by (in order of appearance):
        word_wrap="true">
 Erik Kundiman
 observeur
+Fritigern Gothly
+Hadet Sonnenkern
 Secret Foxtail
+Eris Ravenwood
     </text_editor>
     <text
           follows="top|left"
@@ -121,12 +124,12 @@ with special thanks to (in order of appearance):
        top_pad="5"
        width="450"
        word_wrap="true">
+Chorazin Allen and Nicky Perian for involving Erik Kundiman in viewer developments;
 LinneNoir for the moral support and initial testing;
 Vir Linden for making it possible for the project to have a place (in every sense of the word) in SL;
 nutsobvious for the early testing and video proof;
-Soft Linden for the security testing;
-Kyle Linden for selling TPV parcel 2 to Erik Kundiman at L$0 price; and
-Fritigern Gothly for the administrative support.
+Soft Linden for the security testing; and
+Kyle Linden for selling TPV parcel 2 to Erik Kundiman at L$0 price.
     </text_editor>
     </panel>
   </accordion_tab>

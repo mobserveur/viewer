@@ -50,6 +50,8 @@ extern void APIENTRY gl_debug_callback(GLenum source,
 
 thread_local LLRender gGL;
 
+const U32 BATCH_SIZE = 16334;
+
 // Handy copies of last good GL matrices
 F32 gGLModelView[16];
 F32 gGLLastModelView[16];
@@ -66,7 +68,7 @@ S32 gGLViewport[4];
 U32 LLRender::sUICalls = 0;
 U32 LLRender::sUIVerts = 0;
 U32 LLTexUnit::sWhiteTexture = 0;
-bool LLRender::sGLCoreProfile = false;
+bool LLRender::sGLCoreProfile = true;
 bool LLRender::sNsightDebugSupport = false;
 LLVector2 LLRender::sUIGLScaleFactor = LLVector2(1.f, 1.f);
 
@@ -920,7 +922,7 @@ void LLRender::initVertexBuffer()
     llassert_always(mBuffer.isNull());
     stop_glerror();
     mBuffer = new LLVertexBuffer(immediate_mask);
-    mBuffer->allocateBuffer(4096, 0);
+    mBuffer->allocateBuffer(BATCH_SIZE, 0);
     mBuffer->getVertexStrider(mVerticesp);
     mBuffer->getTexCoord0Strider(mTexcoordsp);
     mBuffer->getColorStrider(mColorsp);
@@ -1333,9 +1335,8 @@ void LLRender::translateUI(F32 x, F32 y, F32 z)
         LL_ERRS() << "Need to push a UI translation frame before offsetting" << LL_ENDL;
     }
 
-    mUIOffset.back().mV[0] += x;
-    mUIOffset.back().mV[1] += y;
-    mUIOffset.back().mV[2] += z;
+    LLVector4a add(x,y,z);
+    mUIOffset.back().add(add);
 }
 
 void LLRender::scaleUI(F32 x, F32 y, F32 z)
@@ -1345,14 +1346,15 @@ void LLRender::scaleUI(F32 x, F32 y, F32 z)
         LL_ERRS() << "Need to push a UI transformation frame before scaling." << LL_ENDL;
     }
 
-    mUIScale.back().scaleVec(LLVector3(x,y,z));
+    LLVector4a scale(x,y,z);
+    mUIScale.back().mul(scale);
 }
 
 void LLRender::pushUIMatrix()
 {
     if (mUIOffset.empty())
     {
-        mUIOffset.push_back(LLVector3(0,0,0));
+        mUIOffset.emplace_back(LLVector4a::getZero());
     }
     else
     {
@@ -1361,7 +1363,7 @@ void LLRender::pushUIMatrix()
 
     if (mUIScale.empty())
     {
-        mUIScale.push_back(LLVector3(1,1,1));
+        mUIScale.emplace_back(LLVector4a(1.f));
     }
     else
     {
@@ -1385,7 +1387,7 @@ LLVector3 LLRender::getUITranslation()
     {
         return LLVector3(0,0,0);
     }
-    return mUIOffset.back();
+    return LLVector3(mUIOffset.back().getF32ptr());
 }
 
 LLVector3 LLRender::getUIScale()
@@ -1394,9 +1396,8 @@ LLVector3 LLRender::getUIScale()
     {
         return LLVector3(1,1,1);
     }
-    return mUIScale.back();
+    return LLVector3(mUIScale.back().getF32ptr());
 }
-
 
 void LLRender::loadUIIdentity()
 {
@@ -1404,8 +1405,8 @@ void LLRender::loadUIIdentity()
     {
         LL_ERRS() << "Need to push UI translation frame before clearing offset." << LL_ENDL;
     }
-    mUIOffset.back().setVec(0,0,0);
-    mUIScale.back().setVec(1,1,1);
+    mUIOffset.back().splat(0.f);
+    mUIScale.back().splat(1.f);
 }
 
 void LLRender::setColorMask(bool writeColor, bool writeAlpha)
@@ -1594,7 +1595,7 @@ void LLRender::end()
         mMode != LLRender::LINES &&
         mMode != LLRender::TRIANGLES &&
         mMode != LLRender::POINTS) ||
-        mCount > 2048)
+        mCount > (BATCH_SIZE / 2))
     {
         flush();
     }
@@ -1614,28 +1615,28 @@ void LLRender::flush()
         //store mCount in a local variable to avoid re-entrance (drawArrays may call flush)
         U32 count = mCount;
 
-            if (mMode == LLRender::QUADS && !sGLCoreProfile)
+        if (mMode == LLRender::QUADS && !sGLCoreProfile)
+        {
+            if (mCount%4 != 0)
             {
-                if (mCount%4 != 0)
-                {
                 count -= (mCount % 4);
                 LL_WARNS() << "Incomplete quad requested." << LL_ENDL;
-                }
             }
+        }
 
-            if (mMode == LLRender::TRIANGLES)
+        if (mMode == LLRender::TRIANGLES)
+        {
+            if (mCount%3 != 0)
             {
-                if (mCount%3 != 0)
-                {
                 count -= (mCount % 3);
                 LL_WARNS() << "Incomplete triangle requested." << LL_ENDL;
-                }
             }
+        }
 
-            if (mMode == LLRender::LINES)
+        if (mMode == LLRender::LINES)
+        {
+            if (mCount%2 != 0)
             {
-                if (mCount%2 != 0)
-                {
                 count -= (mCount % 2);
                 LL_WARNS() << "Incomplete line requested." << LL_ENDL;
             }
@@ -1697,7 +1698,7 @@ void LLRender::flush()
 
                 vb->setBuffer();
 
-                vb->setPositionData((LLVector4a*) mVerticesp.get());
+                vb->setPositionData(mVerticesp.get());
 
                 if (attribute_mask & LLVertexBuffer::MAP_TEXCOORD0)
                 {
@@ -1764,10 +1765,10 @@ void LLRender::flush()
     }
 }
 
-void LLRender::vertex3f(const GLfloat& x, const GLfloat& y, const GLfloat& z)
+void LLRender::vertex4a(const LLVector4a& vertex)
 {
     //the range of mVerticesp, mColorsp and mTexcoordsp is [0, 4095]
-    if (mCount > 2048)
+    if (mCount > BATCH_SIZE / 2)
     { //break when buffer gets reasonably full to keep GL command buffers happy and avoid overflow below
         switch (mMode)
         {
@@ -1778,20 +1779,20 @@ void LLRender::vertex3f(const GLfloat& x, const GLfloat& y, const GLfloat& z)
         }
     }
 
-    if (mCount > 4094)
+    if (mCount > BATCH_SIZE - 2)
     {
-    //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
+        LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;
     }
 
     if (mUIOffset.empty())
     {
-        mVerticesp[mCount] = LLVector3(x,y,z);
+        mVerticesp[mCount] = vertex;
     }
     else
     {
-        LLVector3 vert = (LLVector3(x,y,z)+mUIOffset.back()).scaledVec(mUIScale.back());
-        mVerticesp[mCount] = vert;
+        mVerticesp[mCount].setAdd(vertex, mUIOffset.back());
+        mVerticesp[mCount].mul(mUIScale.back());
     }
 
     if (mMode == LLRender::QUADS && LLRender::sGLCoreProfile)
@@ -1819,9 +1820,9 @@ void LLRender::vertex3f(const GLfloat& x, const GLfloat& y, const GLfloat& z)
     mTexcoordsp[mCount] = mTexcoordsp[mCount-1];
 }
 
-void LLRender::vertexBatchPreTransformed(LLVector3* verts, S32 vert_count)
+void LLRender::vertexBatchPreTransformed(LLVector4a* verts, S32 vert_count)
 {
-    if (mCount + vert_count > 4094)
+    if (mCount + vert_count > BATCH_SIZE - 2)
     {
         //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;
@@ -1877,9 +1878,9 @@ void LLRender::vertexBatchPreTransformed(LLVector3* verts, S32 vert_count)
         mVerticesp[mCount] = mVerticesp[mCount-1];
 }
 
-void LLRender::vertexBatchPreTransformed(LLVector3* verts, LLVector2* uvs, S32 vert_count)
+void LLRender::vertexBatchPreTransformed(LLVector4a* verts, LLVector2* uvs, S32 vert_count)
 {
-    if (mCount + vert_count > 4094)
+    if (mCount + vert_count > BATCH_SIZE - 2)
     {
         //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;
@@ -1938,9 +1939,9 @@ void LLRender::vertexBatchPreTransformed(LLVector3* verts, LLVector2* uvs, S32 v
     }
 }
 
-void LLRender::vertexBatchPreTransformed(LLVector3* verts, LLVector2* uvs, LLColor4U* colors, S32 vert_count)
+void LLRender::vertexBatchPreTransformed(LLVector4a* verts, LLVector2* uvs, LLColor4U* colors, S32 vert_count)
 {
-    if (mCount + vert_count > 4094)
+    if (mCount + vert_count > BATCH_SIZE - 2)
     {
         //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;
@@ -2001,25 +2002,6 @@ void LLRender::vertexBatchPreTransformed(LLVector3* verts, LLVector2* uvs, LLCol
     }
 }
 
-void LLRender::vertex2i(const GLint& x, const GLint& y)
-{
-    vertex3f((GLfloat) x, (GLfloat) y, 0);
-}
-
-void LLRender::vertex2f(const GLfloat& x, const GLfloat& y)
-{
-    vertex3f(x,y,0);
-}
-
-void LLRender::vertex2fv(const GLfloat* v)
-{
-    vertex3f(v[0], v[1], 0);
-}
-
-void LLRender::vertex3fv(const GLfloat* v)
-{
-    vertex3f(v[0], v[1], v[2]);
-}
 
 void LLRender::texCoord2f(const GLfloat& x, const GLfloat& y)
 {

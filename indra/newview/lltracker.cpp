@@ -493,7 +493,7 @@ void draw_shockwave(F32 center_z, F32 t, S32 steps, LLColor4 color)
 void LLTracker::drawBeacon(LLVector3 pos_agent, std::string direction, LLColor4 fogged_color, F32 dist)
 {
     const F32 MAX_HEIGHT = 5020.f;
-    const U32 BEACON_ROWS = 256;
+    const U32 BEACON_ROWS = 128;
 
     U32 nRows;
     F32 height;
@@ -517,10 +517,9 @@ void LLTracker::drawBeacon(LLVector3 pos_agent, std::string direction, LLColor4 
     }
 
     nRows = ceil((BEACON_ROWS * height) / MAX_HEIGHT);
+
     if(nRows<2) nRows=2;
     rowHeight = height / nRows;
-
-    gGL.color4fv(fogged_color.mV);
 
     LLVector3 x_axis = LLViewerCamera::getInstance()->getLeftAxis();
     F32 t = gRenderStartTime.getElapsedTimeF32();
@@ -535,6 +534,8 @@ void LLTracker::drawBeacon(LLVector3 pos_agent, std::string direction, LLColor4 
     F32 ya,yan;
 
     bool tracking_avatar = getTrackingStatus() == TRACKING_AVATAR;
+
+    gGL.color4fv(fogged_color.mV);
 
     gGL.begin(LLRender::TRIANGLES);
 

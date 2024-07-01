@@ -33,10 +33,8 @@
 #include "llwindowsdl.h"
 #elif LL_WINDOWS
 #include "llwindowwin32.h"
-/*
 #elif LL_DARWIN
 #include "llwindowmacosx.h"
-*/
 #endif
 
 #include "llerror.h"
@@ -76,12 +74,12 @@ S32 OSMessageBox(const std::string& text, const std::string& caption, U32 type)
 #if LL_MESA_HEADLESS // !!! *FIX: (?)
     LL_WARNS() << "OSMessageBox: " << text << LL_ENDL;
     return OSBTN_OK;
-#elif LL_SDL
-    result = OSMessageBoxSDL(text, caption, type);
 #elif LL_WINDOWS
     result = OSMessageBoxWin32(text, caption, type);
-#elif LL_DARWIN
+#elif LL_DARWIN && !LL_SDL
     result = OSMessageBoxMacOSX(text, caption, type);
+#elif LL_SDL
+    result = OSMessageBoxSDL(text, caption, type);
 #else
 #error("OSMessageBox not implemented for this platform!")
 #endif
@@ -261,12 +259,12 @@ BOOL LLWindow::copyTextToPrimary(const LLWString &src)
 // static
 std::vector<std::string> LLWindow::getDynamicFallbackFontList()
 {
-#if LL_SDL
-    return LLWindowSDL::getDynamicFallbackFontList();
-#elif LL_WINDOWS
+#if LL_WINDOWS
     return LLWindowWin32::getDynamicFallbackFontList();
-#elif LL_DARWIN
+#elif LL_DARWIN && !LL_SDL
     return LLWindowMacOSX::getDynamicFallbackFontList();
+#elif LL_SDL
+    return LLWindowSDL::getDynamicFallbackFontList();
 #else
     return std::vector<std::string>();
 #endif
@@ -275,12 +273,12 @@ std::vector<std::string> LLWindow::getDynamicFallbackFontList()
 // static
 std::vector<std::string> LLWindow::getDisplaysResolutionList()
 {
-#ifdef LL_SDL
-    return std::vector<std::string>();
-#elif LL_WINDOWS
+#if LL_WINDOWS
     return LLWindowWin32::getDisplaysResolutionList();
-#elif LL_DARWIN
+#elif LL_DARWIN && !LL_SDL
     return LLWindowMacOSX::getDisplaysResolutionList();
+#else
+    return std::vector<std::string>();
 #endif
 }
 
@@ -348,7 +346,7 @@ LLSplashScreen *LLSplashScreen::create()
     return 0;
 #elif LL_WINDOWS
     return new LLSplashScreenWin32;
-#elif LL_DARWIN
+#elif LL_DARWIN && !LL_SDL
     return new LLSplashScreenMacOSX;
 #else
 #error("LLSplashScreen not implemented on this platform!")
@@ -361,13 +359,11 @@ void LLSplashScreen::show()
 {
     if (!gSplashScreenp)
     {
-#if !LL_SDL
 #if LL_WINDOWS && !LL_MESA_HEADLESS
         gSplashScreenp = new LLSplashScreenWin32;
-#elif LL_DARWIN
+#elif LL_DARWIN && !LL_SDL
         gSplashScreenp = new LLSplashScreenMacOSX;
 #endif
-#endif // !LL_SDL
         if (gSplashScreenp)
         {
             gSplashScreenp->showImpl();
