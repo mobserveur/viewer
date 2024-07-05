@@ -1,3 +1,53 @@
+if (DARWIN)
+
+    install(DIRECTORY
+        English.lproj
+        German.lproj
+        Japanese.lproj
+        Korean.lproj
+        app_settings
+        character
+        cursors_mac
+        da.lproj
+        es.lproj
+        fonts
+        fr.lproj
+        uk.lproj
+        hu.lproj
+        it.lproj
+        nl.lproj
+        pl.lproj
+        pt.lproj
+        ru.lproj
+        skins
+        tr.lproj
+        zh-Hans.lproj
+        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        )
+
+    install(FILES
+        SecondLife.nib
+        ${AUTOBUILD_INSTALL_DIR}/ca-bundle.crt
+        cube.dae
+        featuretable_mac.txt
+        secondlife.icns
+        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        )
+
+    install(FILES
+        licenses-mac.txt
+        RENAME licenses.txt
+        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        )
+
+    install(FILES
+        ${SCRIPTS_DIR}/messages/message_template.msg
+        ${SCRIPTS_DIR}/../etc/message.xml
+        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/app_settings
+        )
+
+else (DARWIN)
+
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}
         DESTINATION bin
         )
@@ -80,3 +130,5 @@ install(FILES ${SCRIPTS_DIR}/messages/message_template.msg
 install(FILES linux_tools/${VIEWER_BINARY_NAME}.desktop
         DESTINATION share/applications
         )
+
+endif (DARWIN)

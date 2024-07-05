@@ -65,7 +65,7 @@ if (BUILD_SHARED_LIBS)
     "${LINK_FLAGS_RELEASE} -Wl,--allow-shlib-undefined")
 endif ()
 
-if (INSTALL)
+if (INSTALL AND NOT DARWIN)
   install(TARGETS ${PROJECT_NAME} DESTINATION libexec/${VIEWER_BINARY_NAME})
 endif ()
 
