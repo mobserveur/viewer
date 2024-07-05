@@ -115,10 +115,16 @@ else (IS_ARTWORK_PRESENT)
   message(STATUS "WARNING: Artwork is not present, and will not be installed")
 endif (IS_ARTWORK_PRESENT)
 
-install(FILES featuretable_linux.txt
-        #featuretable_solaris.txt
-        licenses.txt
+    install(FILES
         ${AUTOBUILD_INSTALL_DIR}/ca-bundle.crt
+        featuretable_linux.txt
+        #featuretable_solaris.txt
+        DESTINATION share/${VIEWER_BINARY_NAME}
+        )
+
+    install(FILES
+        licenses-linux.txt
+        RENAME licenses.txt
         DESTINATION share/${VIEWER_BINARY_NAME}
         )
 
