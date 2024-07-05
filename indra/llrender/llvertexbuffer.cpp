@@ -37,6 +37,10 @@
 #include "llglslshader.h"
 #include "llmemory.h"
 
+#include "llcontrol.h"
+
+extern LLControlGroup gSavedSettings;
+
 //Next Highest Power Of Two
 //helper function, returns first number > v that is a power of 2, or v if v is already a power of 2
 U32 nhpo2(U32 v)
@@ -530,6 +534,7 @@ U32 LLVertexBuffer::sGLRenderIndices = 0;
 U32 LLVertexBuffer::sLastMask = 0;
 U32 LLVertexBuffer::sVertexCount = 0;
 
+U32 LLVertexBuffer::sMappingMode = gSavedSettings.getU32("MPVBufferOptiMode");
 
 //NOTE: each component must be AT LEAST 4 bytes in size to avoid a performance penalty on AMD hardware
 const U32 LLVertexBuffer::sTypeSize[LLVertexBuffer::TYPE_MAX] =
@@ -1144,93 +1149,58 @@ U8* LLVertexBuffer::mapIndexBuffer(U32 index, S32 count)
 //  start -- first byte to copy
 //  end -- last byte to copy (NOT last byte + 1)
 //  data -- mMappedData or mMappedIndexData
-static void flush_vbo(GLenum target, U32 start, U32 end, void* data)
+static void flush_vbo(GLenum target, U32 start, U32 end, void* data, S16 mode)
 {
-    if (end != 0)
+    if (end == 0) return;
+
+    if (mode == 0)
     {
-        //Note (observeur): I maintained the profile "glBufferSubData" names because i'm not sure if it would impact any statistics part somewhere in the code.
+        if(gGLManager.mIsApple) mode = 2;
+        else mode = 1;
+    }
+
+    if (mode == 1)
+    {
         LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData");
         LL_PROFILE_ZONE_NUM(start);
         LL_PROFILE_ZONE_NUM(end);
         LL_PROFILE_ZONE_NUM(end-start);
 
-        U32 size = end-start+1;
-        U32 block_size = 65536;
-
-        //Note (observeur): The following code is executed on non Apple gpus. Using glMapBufferRange() didn't show obvious benefit on the other tested platforms (intel igpu, amd igpu and nVidia dgpus).
-        if(!gGLManager.mIsApple)
-        {
-            for (U32 i = start; i <= end; i += block_size)
-            {
-                LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
-                LL_PROFILE_GPU_ZONE("glBufferSubData");
-                U32 tend = llmin(i + block_size, end);
-                U32 size = tend - i + 1;
-                glBufferSubData(target, i, size, (U8*) data + (i-start));
-            }
-
-            return;
-        }
-
-        //Note (observeur): glBufferSubData() was causing synchronization stalls on Apple GPUs resulting to heavy stutters and lower performance in the world and UI rendering. Using glMapBufferRange() benefits Macs with Apple gpus enormously.
-
-        //Note (observeur): Other bits such as GL_MAP_INVALIDATE_RANGE_BIT or GL_MAP_UNSYNCHRONIZED_BIT didn't seem to make much of a difference on Apple gpus, so we stick to the simple way.
-        U32 MapBits = GL_MAP_WRITE_BIT;
-
-        //Note (observeur): Using a block size of 0 will call the following block and map the buffer all in once. It doesn't bother Apple machines, it might actually benefit them a little bit. A larger value is also fine. The largest buffers I observed where around 2mb or 3mb while most of buffers are smaller than 50000 bytes.
-        block_size = 524288;
-
-        //Note (observeur): This is called in case block_size is set to 0 (All in one mapping).
-        if(block_size == 0)
-        {
-            U8 * mptr = NULL;
-            LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
-            LL_PROFILE_GPU_ZONE("glBufferSubData");
-
-            mptr = (U8*) glMapBufferRange( target, start, size, MapBits);
-
-            if(mptr)
-            {
-                std::memcpy(mptr, (U8*) data, size);
-                glUnmapBuffer(target);
-            }
-            else
-            {
-                LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
-            }
-            return;
-        }
-
-        //Note (observeur): The following code is executed in case of block_size is superior to 0
-
-        //Note (observeur): This is for analysis purpose only
-        //if(size > block_size)
-        //{
-        //    LL_INFOS() << "Large data range (MB MODE) : " << size << LL_ENDL;
-        //}
-
-        U8 * mptr = NULL;
+        const U32 block_size = 65536;
 
         for (U32 i = start; i <= end; i += block_size)
         {
             LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
             LL_PROFILE_GPU_ZONE("glBufferSubData");
             U32 tend = llmin(i + block_size, end);
-            size = tend - i + 1;
+            //U32 size = tend - i + 1;
+            glBufferSubData(target, i, tend - i +1, (U8*) data + (i-start));
+        }
 
-            mptr = (U8*) glMapBufferRange( target, i, size, MapBits );
+        return;
+    }
 
-            if(mptr)
-            {
-                std::memcpy(mptr, (U8*) data + (i-start), size);
-                glUnmapBuffer(target);
-            }
-            else
-            {
-                LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
-            }
+    U32 MapBits = GL_MAP_WRITE_BIT;
+    if (mode>2) MapBits = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
+
+    U32 buffer_size = end-start+1;
+
+    U8 * mptr = NULL;
+    mptr = (U8*) glMapBufferRange( target, start, end-start+1, MapBits);
+
+    if (mptr)
+    {
+        std::memcpy(mptr, (U8*) data, buffer_size);
+        if(!glUnmapBuffer(target))
+        {
+            LL_WARNS() << "glUnmapBuffer() failed" << LL_ENDL;
         }
     }
+    else
+    {
+        LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
+    }
+
 }
 
 void LLVertexBuffer::unmapBuffer()
@@ -1266,13 +1236,13 @@ void LLVertexBuffer::unmapBuffer()
             }
             else
             {
-                flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start);
+                flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start, sMappingMode);
                 start = region.mStart;
                 end = region.mEnd;
             }
         }
 
-        flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start);
+        flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start, sMappingMode);
 
         mMappedVertexRegions.clear();
     }
@@ -1300,13 +1270,14 @@ void LLVertexBuffer::unmapBuffer()
             }
             else
             {
-                flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start);
+                flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start, sMappingMode);
+
                 start = region.mStart;
                 end = region.mEnd;
             }
         }
 
-        flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start);
+        flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start, sMappingMode);
 
         mMappedIndexRegions.clear();
     }
@@ -1562,43 +1533,43 @@ void LLVertexBuffer::setupVertexBuffer()
 void LLVertexBuffer::setPositionData(const LLVector4a* data)
 {
     llassert(sGLRenderBuffer == mGLBuffer);
-    flush_vbo(GL_ARRAY_BUFFER, 0, sizeof(LLVector4a) * getNumVerts()-1, (U8*) data);
+    flush_vbo(GL_ARRAY_BUFFER, 0, sizeof(LLVector4a) * getNumVerts()-1, (U8*) data, sMappingMode);
 }
 
 void LLVertexBuffer::setTexCoordData(const LLVector2* data)
 {
     llassert(sGLRenderBuffer == mGLBuffer);
-    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_TEXCOORD0], mOffsets[TYPE_TEXCOORD0] + sTypeSize[TYPE_TEXCOORD0] * getNumVerts() - 1, (U8*)data);
+    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_TEXCOORD0], mOffsets[TYPE_TEXCOORD0] + sTypeSize[TYPE_TEXCOORD0] * getNumVerts() - 1, (U8*) data, sMappingMode);
 }
 
 void LLVertexBuffer::setColorData(const LLColor4U* data)
 {
     llassert(sGLRenderBuffer == mGLBuffer);
-    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_COLOR], mOffsets[TYPE_COLOR] + sTypeSize[TYPE_COLOR] * getNumVerts() - 1, (U8*) data);
+    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_COLOR], mOffsets[TYPE_COLOR] + sTypeSize[TYPE_COLOR] * getNumVerts() - 1, (U8*) data, sMappingMode);
 }
 
 void LLVertexBuffer::setNormalData(const LLVector4a* data)
 {
     llassert(sGLRenderBuffer == mGLBuffer);
-    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_NORMAL], mOffsets[TYPE_NORMAL] + sTypeSize[TYPE_NORMAL] * getNumVerts() - 1, (U8*) data);
+    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_NORMAL], mOffsets[TYPE_NORMAL] + sTypeSize[TYPE_NORMAL] * getNumVerts() - 1, (U8*) data, sMappingMode);
 }
 
 void LLVertexBuffer::setTangentData(const LLVector4a* data)
 {
     llassert(sGLRenderBuffer == mGLBuffer);
-    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_TANGENT], mOffsets[TYPE_TANGENT] + sTypeSize[TYPE_TANGENT] * getNumVerts() - 1, (U8*) data);
+    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_TANGENT], mOffsets[TYPE_TANGENT] + sTypeSize[TYPE_TANGENT] * getNumVerts() - 1, (U8*) data, sMappingMode);
 }
 
 void LLVertexBuffer::setWeight4Data(const LLVector4a* data)
 {
     llassert(sGLRenderBuffer == mGLBuffer);
-    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_WEIGHT4], mOffsets[TYPE_WEIGHT4] + sTypeSize[TYPE_WEIGHT4] * getNumVerts() - 1, (U8*) data);
+    flush_vbo(GL_ARRAY_BUFFER, mOffsets[TYPE_WEIGHT4], mOffsets[TYPE_WEIGHT4] + sTypeSize[TYPE_WEIGHT4] * getNumVerts() - 1, (U8*) data, sMappingMode);
 }
 
 void LLVertexBuffer::setIndexData(const U16* data)
 {
     llassert(sGLRenderIndices == mGLIndices);
-    flush_vbo(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(U16) * getNumIndices() - 1, (U8*) data);
+    flush_vbo(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(U16) * getNumIndices() - 1, (U8*) data, sMappingMode);
 }
 
 void LLVertexBuffer::setIndexData(const U32* data)
@@ -1610,6 +1581,7 @@ void LLVertexBuffer::setIndexData(const U32* data)
         mIndicesStride = 4;
         mNumIndices /= 2;
     }
-    flush_vbo(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(U32) * getNumIndices() - 1, (U8*)data);
+
+    flush_vbo(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(U32) * getNumIndices() - 1, (U8*) data, sMappingMode);
 }
 

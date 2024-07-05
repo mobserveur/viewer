@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater
+ positioning="cascading"
+ legacy_header_height="40"
+ top="12"
+ right="2"
+ height="120"
+ min_height="120"
+ width="320"
+ min_width="320"
+ can_minimize="true"
+ can_close="true"
+ can_resize="false"
+ layout="topright"
+ name="mpv_performance"
+ single_instance="true"
+ save_rect="true"
+ save_visibility="true"
+ title="Megapahit Tuning">
+
+ <panel
+     name="panel_fps"
+     border="false"
+     width="300"
+     height="36"
+     left="10"
+     top="40"
+     follows="top|left"
+     layout="topleft"
+     >
+
+     <slider
+     name="fpsSlider"
+     width="300"
+     height="15"
+     layout="topleft"
+     enabled="true"
+     control_name="fpsSlider"
+     decimal_digits="0"
+     increment="5"
+     initial_value="0"
+     label="Max FPS"
+     label_width="50"
+     text_width="30"
+     can_edit_text="false"
+     show_text="true"
+     >
+     </slider>
+
+    </panel>
+
+    <panel
+     name="panel_mapping"
+     border="false"
+     width="300"
+     height="36"
+     left="10"
+     top="78"
+     follows="top|left"
+     layout="topleft"
+     >
+
+    <text
+     name="MPVBuffModeLabel"
+     width="100"
+     height="15"
+     left="2"
+     top="8">
+     Buffer mapping:
+    </text>
+
+    <combo_box
+     control_name="MPVBuffModeControl"
+     name="MPVBuffModeComboBox"
+     width="150"
+     height="23"
+     left="120"
+     top="4"
+     >
+        <combo_box.item
+         enabled="true"
+         label="Auto"
+         name="Auto"
+         value="0" />
+        <combo_box.item
+         enabled="true"
+         label="Normal"
+         name="Normal"
+         value="1" />
+        <combo_box.item
+         enabled="true"
+         label="Optimized (Apple GPU)"
+         name="Optimized"
+         value="2" />
+        <combo_box.item
+         enabled="true"
+         label="Optimized+ (AMD GPU)"
+         name="Optimized+"
+         value="3" />
+    </combo_box>
+
+    </panel>
+
+</floater>
