@@ -2167,6 +2167,7 @@ if (DARWIN)
      "${VIEWER_APP_BUNDLE}/Contents/Info.plist"
     )
 
+  if (NOT INSTALL)
   add_custom_command(
     TARGET ${VIEWER_BINARY_NAME} POST_BUILD
     COMMAND ${PYTHON_EXECUTABLE}
@@ -2191,6 +2192,7 @@ if (DARWIN)
       ${VIEWER_BINARY_NAME}
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
+  endif (NOT INSTALL)
 
   if (ENABLE_MEDIA_PLUGINS)
       if (DARWIN OR LINUX)
