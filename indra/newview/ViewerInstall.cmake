@@ -46,6 +46,12 @@ if (DARWIN)
         DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/app_settings
         )
 
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
+        )
+    install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake)
+
 else (DARWIN)
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}
