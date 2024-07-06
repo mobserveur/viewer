@@ -38,6 +38,8 @@
 #include "lldir.h"
 #include "llfindlocale.h"
 
+#include "../newview/llviewercontrol.h"
+
 #ifdef LL_GLIB
 #include <glib.h>
 #endif
