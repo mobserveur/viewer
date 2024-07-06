@@ -40,6 +40,8 @@
 
 #include "../newview/llviewercontrol.h"
 
+extern LLControlGroup gSavedSettings;
+
 #ifdef LL_GLIB
 #include <glib.h>
 #endif
@@ -1257,7 +1259,7 @@ void LLWindowSDL::swapBuffers()
     if (mWindow)
     {
         SDL_GL_SwapWindow( mWindow );
-        U32 mode = gSavedSettings.getU32("MPVBuffMapMode");
+        U32 mode = gSavedSettings.getU32("MPVBufferOptiMode");
         if (mode == 0)
         {
             if(gGLManager.mIsApple) mode = 2;
