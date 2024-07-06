@@ -40,6 +40,8 @@
 #include "lldir.h"
 #include "llfindlocale.h"
 
+#include "../newview/llviewercontrol.h"
+
 #if LL_GTK
 extern "C" {
 # include "gtk/gtk.h"
