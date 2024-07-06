@@ -66,8 +66,13 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 if (INSTALL)
-  install(TARGETS ${PROJECT_NAME} DESTINATION libexec/${VIEWER_BINARY_NAME})
-endif ()
+  if (DARWIN)
+    install(TARGETS ${PROJECT_NAME}
+      DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources)
+  else (DARWIN)
+    install(TARGETS ${PROJECT_NAME} DESTINATION libexec/${VIEWER_BINARY_NAME})
+  endif (DARWIN)
+endif (INSTALL)
 
 if (LL_TESTS)
   ll_deploy_sharedlibs_command(SLPlugin)

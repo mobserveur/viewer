@@ -166,7 +166,9 @@ BOOL LLStatusBar::postBuild()
     gMenuBarView->setRightMouseDownCallback(boost::bind(&show_navbar_context_menu, _1, _2, _3));
 
     mTextTime = getChild<LLTextBox>("TimeText" );
-    mTextFps = getChild<LLTextBox>("FpsText");
+
+    mTextFps = getChild<LLButton>("FpsText");
+    mTextFps->setClickedCallback( &LLStatusBar::onClickFps, this );
 
     getChild<LLUICtrl>("buyL")->setCommitCallback(
         boost::bind(&LLStatusBar::onClickBuyCurrency, this));
@@ -306,7 +308,8 @@ void LLStatusBar::refresh()
 
         S32 fps = (S32) llround(LLTrace::get_frame_recording().getPeriodMedianPerSec(LLStatViewer::FPS, 50));
         std::string fpsStr = std::to_string(fps);
-        mTextFps->setText(fpsStr);
+        //mTextFps->setText(fpsStr);
+        mTextFps->setLabel(fpsStr);
     }
 
     // update clock every 10 seconds
@@ -647,6 +650,12 @@ void LLStatusBar::onClickMediaToggle(void* data)
     // "Selected" means it was showing the "play" icon (so media was playing), and now it shows "pause", so turn off media
     bool pause = status_bar->mMediaToggle->getValue();
     LLViewerMedia::getInstance()->setAllMediaPaused(pause);
+}
+
+//static
+void LLStatusBar::onClickFps(void* data)
+{
+    LLFloaterReg::toggleInstance("mpv_performance");
 }
 
 BOOL can_afford_transaction(S32 cost)

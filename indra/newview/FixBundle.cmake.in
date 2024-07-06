@@ -1,0 +1,7 @@
+include(BundleUtilities)
+
+set(dirs
+    /opt/local/lib
+   )
+
+fixup_bundle(${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app "" "${dirs}")

@@ -256,6 +256,8 @@ using namespace LL;
 #include "llcoproceduremanager.h"
 #include "llviewereventrecorder.h"
 
+#include <chrono>
+
 // *FIX: These extern globals should be cleaned up.
 // The globals either represent state/config/resource-storage of either
 // this app, or another 'component' of the viewer. App globals should be
@@ -1370,9 +1372,10 @@ bool LLAppViewer::doFrame()
 {
     static LLCachedControl<U32> fpsLimitMaxFps(gSavedSettings, "MaxFPS", 0);
 
+    using TimePoint = std::chrono::steady_clock::time_point;
+
     U64 fpsLimitSleepFor = 0;
-    U64 fpsLimitFrameStartTime = 0;
-    if(fpsLimitMaxFps > 0) fpsLimitFrameStartTime = LLTrace::BlockTimer::getCPUClockCount64();
+    TimePoint fpsLimitFrameStartTime = std::chrono::steady_clock::now();
 
     LL_RECORD_BLOCK_TIME(FTM_FRAME);
     {
@@ -1546,12 +1549,13 @@ bool LLAppViewer::doFrame()
 
         if(fpsLimitMaxFps > 0)
         {
-            U64 fpsLimitFrameTime = LLTrace::BlockTimer::getCPUClockCount64() - fpsLimitFrameStartTime;
-            U64 desired_time_ns = (U32)(1000000.f / fpsLimitMaxFps);
+            auto elapsed = std::chrono::steady_clock::now() - fpsLimitFrameStartTime;
 
-            if((fpsLimitFrameTime+1000) < desired_time_ns)
+            long long fpsLimitFrameTime = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+            U64 desired_time_us = (U32)(1000000.f / fpsLimitMaxFps);
+            if((fpsLimitFrameTime+1000) < desired_time_us)
             {
-                fpsLimitSleepFor = (desired_time_ns - fpsLimitFrameTime - 1000) * 1.0;
+                fpsLimitSleepFor = (desired_time_us - fpsLimitFrameTime - 1000) * 1.0;
             }
         }
 
