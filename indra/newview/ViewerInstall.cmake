@@ -22,7 +22,7 @@ if (DARWIN)
         skins
         tr.lproj
         zh-Hans.lproj
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        DESTINATION Resources
         )
 
     install(FILES
@@ -31,19 +31,19 @@ if (DARWIN)
         cube.dae
         featuretable_mac.txt
         secondlife.icns
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        DESTINATION Resources
         )
 
     install(FILES
         licenses-mac.txt
         RENAME licenses.txt
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        DESTINATION Resources
         )
 
     install(FILES
         ${SCRIPTS_DIR}/messages/message_template.msg
         ${SCRIPTS_DIR}/../etc/message.xml
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/app_settings
+        DESTINATION Resources/app_settings
         )
 
     configure_file(
@@ -54,7 +54,7 @@ if (DARWIN)
 
     install(DIRECTORY
         "${AUTOBUILD_INSTALL_DIR}/lib/release/Chromium Embedded Framework.framework"
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Frameworks
+        DESTINATION Frameworks
         )
 
     file(CREATE_LINK "../../../../Frameworks/Chromium Embedded Framework.framework" "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework" SYMBOLIC)
@@ -63,7 +63,7 @@ if (DARWIN)
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (GPU).app"
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Plugin).app"
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Renderer).app"
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks
+        DESTINATION Resources/SLPlugin.app/Contents/Frameworks
         )
     install(PROGRAMS
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper.app/Contents/MacOS/DullahanHelper"
