@@ -5,3 +5,15 @@ set(dirs
    )
 
 fixup_bundle(${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app "" "${dirs}")
+
+file(CREATE_LINK
+    "../../../../Frameworks/Chromium Embedded Framework.framework"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework" SYMBOLIC)
+
+file(CHMOD
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper.app/Contents/MacOS/DullahanHelper"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (GPU).app/Contents/MacOS/DullahanHelper (GPU)"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Plugin).app/Contents/MacOS/DullahanHelper (Plugin)"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Renderer).app/Contents/MacOS/DullahanHelper (Renderer)"
+    PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE
+    )

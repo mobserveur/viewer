@@ -46,18 +46,11 @@ if (DARWIN)
         DESTINATION Resources/app_settings
         )
 
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
-        )
-    install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake)
-
     install(DIRECTORY
         "${AUTOBUILD_INSTALL_DIR}/lib/release/Chromium Embedded Framework.framework"
         DESTINATION Frameworks
         )
 
-    file(CREATE_LINK "../../../../Frameworks/Chromium Embedded Framework.framework" "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework" SYMBOLIC)
     install(DIRECTORY
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper.app"
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (GPU).app"
@@ -65,22 +58,13 @@ if (DARWIN)
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Renderer).app"
         DESTINATION Resources/SLPlugin.app/Contents/Frameworks
         )
-    install(PROGRAMS
-        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper.app/Contents/MacOS/DullahanHelper"
-        DESTINATION "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper.app/Contents/MacOS"
+
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
         )
-    install(PROGRAMS
-        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (GPU).app/Contents/MacOS/DullahanHelper (GPU)"
-        DESTINATION "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (GPU).app/Contents/MacOS"
-        )
-    install(PROGRAMS
-        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Plugin).app/Contents/MacOS/DullahanHelper (Plugin)"
-        DESTINATION "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Plugin).app/Contents/MacOS"
-        )
-    install(PROGRAMS
-        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Renderer).app/Contents/MacOS/DullahanHelper (Renderer)"
-        DESTINATION "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Renderer).app/Contents/MacOS"
-        )
+    install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake)
+
 else (DARWIN)
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${VIEWER_BINARY_NAME}
