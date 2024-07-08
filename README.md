@@ -16,13 +16,13 @@ Lab's open source history and projects.
 
 ## Download
 
-Most people use a pre-built viewer release to access Second Life. Windows and macOS builds are
+Most people use a pre-built viewer release to access Second Life. macOS, GNU/Linux, and FreeBSD builds are
 [published on the official website][download]. More experimental viewers, such as release candidates and
-project viewers, are detailed on the [Alternate Viewers page](https://releasenotes.secondlife.com/viewer.html).
+project viewers, are detailed on the same page.
 
-### Third Party Viewers
+### Third Party Viewer
 
-Third party maintained forks, which include Linux compatible builds, are indexed in the [Third Party Viewer Directory][tpv].
+As a third party maintained fork, which include Apple Silicon native builds, Megapahit viewer is indexed in the [Third Party Viewer Directory][tpv].
 
 ## Build Instructions
 
@@ -110,11 +110,11 @@ $ megapahit
 
 ## Contribute
 
-Help make Second Life better! You can get involved with improvements by filing bugs, suggesting enhancements, submitting
+Help make Megapahit better! You can get involved with improvements by filing bugs, suggesting enhancements, submitting
 pull requests and more. See the [CONTRIBUTING][] and the [open source portal][] for details.
 
 [Second Life]: https://secondlife.com/
-[download]: https://secondlife.com/support/downloads/
+[download]: https://megapahit.net
 [tpv]: http://wiki.secondlife.com/wiki/Third_Party_Viewer_Directory
 [open source portal]: http://wiki.secondlife.com/wiki/Open_Source_Portal
 [contributing]: https://github.com/secondlife/viewer/blob/main/CONTRIBUTING.md
