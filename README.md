@@ -22,7 +22,7 @@ project viewers, are detailed on the same page.
 
 ### Third Party Viewer
 
-As a third party maintained fork, which include Apple Silicon native builds, Megapahit viewer is indexed in the [Third Party Viewer Directory][tpv].
+As a third party maintained fork, which includes Apple Silicon native builds, Megapahit viewer is indexed in the [Third Party Viewer Directory][tpv].
 
 ## Build Instructions
 
@@ -115,6 +115,6 @@ pull requests and more. See the [CONTRIBUTING][] and the [open source portal][] 
 
 [Second Life]: https://secondlife.com/
 [download]: https://megapahit.net
-[tpv]: http://wiki.secondlife.com/wiki/Third_Party_Viewer_Directory
+[tpv]: http://wiki.secondlife.com/wiki/Third_Party_Viewer_Directory/Megapahit
 [open source portal]: http://wiki.secondlife.com/wiki/Open_Source_Portal
 [contributing]: https://megapahit.org/viewer.git/tree/CONTRIBUTING.md
