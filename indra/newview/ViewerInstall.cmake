@@ -59,6 +59,13 @@ if (DARWIN)
         DESTINATION Resources/SLPlugin.app/Contents/Frameworks
         )
 
+    if (NDOF)
+        install(FILES
+            "${AUTOBUILD_INSTALL_DIR}/lib/release/libndofdev.dylib"
+            DESTINATION Resources
+            )
+    endif ()
+
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
