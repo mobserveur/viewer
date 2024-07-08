@@ -135,7 +135,7 @@ $ tar xf ~/Downloads/meshoptimizer-0.21.tar.gz
 $ cd meshoptimizer-0.21
 $ mkdir -p build/`uname -m`-linux-gnu
 $ cd build/`uname -m`-linux-gnu
-$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DMESHOPT_BUILD_SHARED_LIBS:BOOL=ON ../..
+$ cmake -DCMAKE_BUILD_TYPE:STRING=Release ../..
 $ make -j`nproc`
 $ sudo make install
 $ cd ../../../viewer/build/`uname -m`-linux-gnu
