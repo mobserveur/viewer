@@ -43,12 +43,32 @@ $ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-51314
 $ cd -
 $ cd ..
 $ tar xf ~/Downloads/meshoptimizer-0.21.tar.gz
+$ tar xf ~/Downloads/xmlrpc-epi-0.54.2.tar.bz2
 $ cd meshoptimizer-0.21
 $ mkdir -p build/universal-apple-darwin`uname -r`
 $ cd build/universal-apple-darwin`uname -r`
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=12.0 -DMESHOPT_BUILD_SHARED_LIBS:BOOL=ON ../..
 $ make -j`gnproc`
 $ sudo make install
+$ cd ../../../xmlrpc-epi-0.54.2
+$ rm -f config.sub missing
+$ autoreconf -is
+$ mkdir -p build/x86_64-apple-darwin`uname -r`
+$ cd build/x86_64-apple-darwin`uname -r`
+$ export CFLAGS="-arch x86_64"
+$ ../../configure --host=x86_64-apple-darwin`uname -r`
+$ make -j`gnproc`
+$ sudo make install
+$ cd -
+$ sed -i '' -e 's/XMLRPC_VALUE find_named_value/__attribute__((always_inline)) XMLRPC_VALUE find_named_value/g' src/xmlrpc_introspection.c
+$ sed -i '' -e 's/void describe_method/__attribute__((always_inline)) void describe_method/g' src/xmlrpc_introspection.c
+$ mkdir -p build/aarch64-apple-darwin`uname -r`
+$ cd build/aarch64-apple-darwin`uname -r`
+$ export CFLAGS="-arch arm64"
+$ ../../configure --host=aarch64-apple-darwin`uname -r`
+$ make -j`gnproc`
+$ sudo lipo src/.libs/libxmlrpc-epi.a /usr/local/lib/libxmlrpc-epi.a -create -output /usr/local/lib/libxmlrpc-epi.a
+$ sudo lipo src/.libs/libxmlrpc-epi.0.dylib /usr/local/lib/libxmlrpc-epi.0.dylib -create -output /usr/local/lib/libxmlrpc-epi.0.dylib
 $ cd ../../../viewer/indra/newview
 $ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
 $ cd ../../build/universal-apple-darwin`uname -r`/packages
