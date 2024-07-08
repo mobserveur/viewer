@@ -39,7 +39,7 @@ $ git switch -c megapahit
 ```
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
 $ cd -
 $ cd indra/newview
 $ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
@@ -50,6 +50,7 @@ $ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst
 $ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
 $ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
 $ tar xf ~/Downloads/mikktspace-1-darwin64-8756084692.tar.zst
+$ tar xf ~/Downloads/nanosvg-2022.09.27-darwin64-580364.tar.bz2
 $ tar xf ~/Downloads/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
 $ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
@@ -88,6 +89,12 @@ $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 #### Debian 12.5
 
 ```
+$ cd ~/Downloads
+$ curl -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115397/993664/nanosvg-2022.09.27-linux-580337.tar.bz2
+$ cd -
+$ cd ../../build/`uname -m`-linux-gnu/packages
+$ tar xf ~/Downloads/nanosvg-2022.09.27-linux-580337.tar.bz2
+$ cd ..
 # apt install cmake pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libexpat1-dev libglu1-mesa-dev libgtk2.0-dev libhunspell-dev libjsoncpp-dev libmeshoptimizer-dev libnghttp2-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON -DCPACK_PACKAGE_NAME:STRING=megapahit -DCPACK_BINARY_STGZ:BOOL=OFF -DCPACK_BINARY_TGZ:BOOL=OFF -DCPACK_BINARY_TZ:BOOL=OFF -DCPACK_BINARY_DEB:BOOL=ON -DCPACK_DEBIAN_PACKAGE_ARCHITECTURE:STRING=amd64 -DCPACK_DEBIAN_PACKAGE_DESCRIPTION:STRING="A fork of the Second Life viewer" -DCPACK_DEBIAN_PACKAGE_MAINTAINER:STRING=$USER@$HOST -DCPACK_DEBIAN_PACKAGE_SECTION:STRING=net -DCPACK_DEBIAN_PACKAGE_DEPENDES:STRING="libalut0, libaprutil1, libboost-fiber1.74.0 | libboost-fiber1.81.0, libboost-program-options1.74.0 | libboost-program-options1.81.0, libboost-regex1.74.0 | libboost-regex1.81.0, libboost-thread1.74.0 | libboost-thread1.81.0, libcollada-dom2.5-dp0, libexpat1, libgtk2.0-0, libglu1-mesa, libhunspell-1.7-0, libjsoncpp25, libmeshoptimizer2d (>= 0.18), libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0, vlc-plugin-base" ../../indra
 $ cmake ../../indra
