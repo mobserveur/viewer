@@ -39,9 +39,17 @@ $ git switch -c megapahit
 ```
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -L https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz -o meshoptimizer-0.21.tar.gz -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
 $ cd -
-$ cd indra/newview
+$ cd ..
+$ tar xf ~/Downloads/meshoptimizer-0.21.tar.gz
+$ cd meshoptimizer-0.21
+$ mkdir -p build/universal-apple-darwin`uname -r`
+$ cd build/universal-apple-darwin`uname -r`
+$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=12.0 -DMESHOPT_BUILD_SHARED_LIBS:BOOL=ON ../..
+$ make -j`gnproc`
+$ sudo make install
+$ cd ../../../viewer/indra/newview
 $ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
 $ cd ../../build/universal-apple-darwin`uname -r`/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
@@ -119,6 +127,18 @@ $ megapahit
 #### Fedora
 
 ```
+$ cd ~/Downloads
+$ curl -L https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz -o meshoptimizer-0.21.tar.gz
+$ cd -
+$ cd ..
+$ tar xf ~/Downloads/meshoptimizer-0.21.tar.gz
+$ cd meshoptimizer-0.21
+$ mkdir -p build/`uname -m`-linux-gnu
+$ cd build/`uname -m`-linux-gnu
+$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DMESHOPT_BUILD_SHARED_LIBS:BOOL=ON ../..
+$ make -j`nproc`
+$ sudo make install
+$ cd ../../../viewer/build/`uname -m`-linux-gnu
 $ sudo dnf install cmake gcc-c++ freealut-devel apr-util-devel boost-devel collada-dom-devel expat-devel mesa-libGLU-devel gtk2-devel hunspell-devel jsoncpp-devel libnghttp2-devel nanosvg-devel openjpeg2-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xmlrpc-epi-devel xxhash-devel zstd
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON -DCPACK_PACKAGE_NAME:STRING=megapahit -DCPACK_BINARY_STGZ:BOOL=OFF -DCPACK_BINARY_TGZ:BOOL=OFF -DCPACK_BINARY_TZ:BOOL=OFF -DCPACK_BINARY_RPM:BOOL=ON -DCPACK_RPM_PACKAGE_SUMMARY:STRING="A fork of the Second Life viewer" -DCPACK_RPM_PACKAGE_ARCHITECTURE:STRING=`uname -m` -DCPACK_RPM_PACKAGE_LICENSE:STRING=LGPL-2.1-only -DCPACK_RPM_PACKAGE_VENDOR:STRING=Megapahit -DCPACK_RPM_PACKAGE_URL:STRING=https://megapahit.net -DCPACK_RPM_PACKAGE_DESCRIPTION:STRING="An entrance to virtual empires in only megabytes. A shelter for the metaverse refugess, especially those from less supported operating systems." -DCPACK_RPM_PACKAGE_REQUIRES:STRING="freealut, apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, collada-dom, expat, mesa-libGLU, gtk2, hunspell, jsoncpp, libnghttp2, openjpeg2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi" ../../indra
 $ cmake ../../indra
