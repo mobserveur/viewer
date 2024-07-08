@@ -16,7 +16,7 @@ Lab's open source history and projects.
 
 ## Download
 
-Most people use a pre-built viewer release to access Second Life. macOS, GNU/Linux, and FreeBSD builds are
+Most people use a pre-built viewer release to access Second Life. macOS, GNU/Linux and FreeBSD builds are
 [published on the official website][download]. More experimental viewers, such as release candidates and
 project viewers, are detailed on the same page.
 
@@ -25,8 +25,6 @@ project viewers, are detailed on the same page.
 As a third party maintained fork, which includes Apple Silicon native builds, Megapahit viewer is indexed in the [Third Party Viewer Directory][tpv].
 
 ## Build Instructions
-
-### Common
 
 ```
 $ cd viewer
@@ -39,8 +37,23 @@ $ git switch -c megapahit
 ### macOS
 
 ```
-$ mkdir -p build/universal-apple-darwin`uname -r`
-$ cd build/universal-apple-darwin`uname -r`
+$ mkdir -p build/universal-apple-darwin`uname -r`/packages
+$ cd ~/Downloads
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ cd -
+$ cd indra/newview
+$ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ cd ../../build/universal-apple-darwin`uname -r`/packages
+$ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
+$ tar xf ~/Downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2
+$ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst
+$ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
+$ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
+$ tar xf ~/Downloads/mikktspace-1-darwin64-8756084692.tar.zst
+$ tar xf ~/Downloads/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
+$ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
+$ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
+$ cd ..
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 # port install cmake pkgconfig freealut +universal apr-util +universal boost +universal collada-dom +universal hunspell +universal jsoncpp +universal openjpeg +universal libsdl2 +universal uriparser +universal
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=newview/Megapahit.app/Contents -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF ../../indra
@@ -52,8 +65,23 @@ $ open newview/Megapahit.app
 ### GNU/Linux
 
 ```
-$ mkdir -p build/`uname -m`-linux-gnu
-$ cd build/`uname -m`-linux-gnu
+$ mkdir -p build/`uname -m`-linux-gnu/packages
+$ cd ~/Downloads
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202401180326_118.7.1_g99817d2_chromium-118.0.5993.119-linux64-240180325.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ cd -
+$ cd indra/newview
+$ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ cd ../../build/`uname -m`-linux-gnu/packages
+$ tar xf ~/Downloads/curl-7.54.1-513145c-linux64-513145c.tar.zst
+$ tar xf ~/Downloads/dullahan-1.14.0.202401180326_118.7.1_g99817d2_chromium-118.0.5993.119-linux64-240180325.tar.bz2
+$ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst
+$ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
+$ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
+$ tar xf ~/Downloads/mikktspace-1-linux64-8756084692.tar.zst
+$ tar xf ~/Downloads/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
+$ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
+$ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
+$ cd ..
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 ```
 
@@ -96,8 +124,20 @@ $ megapahit
 ### FreeBSD
 
 ```
-$ mkdir -p build/`uname -m`-unknown-freebsd14.1
-$ cd build/`uname -m`-unknown-freebsd14.1
+$ mkdir -p build/`uname -m`-unknown-freebsd14.1/packages
+$ cd ~/Downloads
+$ curl -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ cd -
+$ cd indra/newview
+$ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ cd ../../build/`uname -m`-unknown-freebsd14.1/packages
+$ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst
+$ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
+$ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
+$ tar xf ~/Downloads/mikktspace-1-linux64-8756084692.tar.zst
+$ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
+$ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
+$ cd ..
 $ setenv LL_BUILD "-O3 -std=c++17 -fPIC"
 # portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 devel/collada-dom textproc/hunspell x11-toolkits/gtk20 misc/meshoptimizer graphics/nanosvg graphics/openjpeg devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON -DCPACK_PACKAGE_NAME:STRING=megapahit -DCPACK_BINARY_STGZ:BOOL=OFF -DCPACK_BINARY_TGZ:BOOL=OFF -DCPACK_BINARY_TZ:BOOL=OFF -DCPACK_BINARY_FREEBSD:BOOL=ON -DCPACK_FREEBSD_PACKAGE_COMMENT:STRING="A fork of the Second Life viewer" -DCPACK_FREEBSD_PACKAGE_DESCRIPTION:STRING="An entrance to virtual empires in only megabytes. A shelter for the metaverse refugess, especially those from less supported operating systems." -DCPACK_FREEBSD_PACKAGE_WWW:STRING=https://megapahit.net -DCPACK_FREEBSD_PACKAGE_LICENSE:STRING=LGPL21 -DCPACK_FREEBSD_PACKAGE_MAINTAINER:STRING=$USER@$HOST -DCPACK_FREEBSD_PACKAGE_ORIGIN:STRING=net/megapahit -DCPACK_FREEBSD_PACKAGE_DEPS:STRING="audio/freealut;devel/collada-dom;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;www/libnghttp2;graphics/openjpeg;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi" ../../indra
