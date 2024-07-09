@@ -56,7 +56,7 @@ if (DARWIN)
     COMMAND mkdir
     ARGS
       -p
-      ${CMAKE_CURRENT_BINARY_DIR}/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,>/SLPlugin.app/Contents/Resources
+      ${CMAKE_CURRENT_BINARY_DIR}/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,>/SLPlugin.app/Contents/Frameworks
   )
 endif (DARWIN)
 
@@ -67,8 +67,7 @@ endif ()
 
 if (INSTALL)
   if (DARWIN)
-    install(TARGETS ${PROJECT_NAME}
-      DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources)
+    install(TARGETS ${PROJECT_NAME} DESTINATION Resources)
   else (DARWIN)
     install(TARGETS ${PROJECT_NAME} DESTINATION libexec/${VIEWER_BINARY_NAME})
   endif (DARWIN)
