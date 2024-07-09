@@ -44,6 +44,8 @@ $ cd -
 $ cd ..
 $ tar xf ~/Downloads/meshoptimizer-0.21.tar.gz
 $ tar xf ~/Downloads/xmlrpc-epi-0.54.2.tar.bz2
+$ git clone https://github.com/secondlife/3p-openssl
+$ git clone https://github.com/secondlife/3p-curl
 $ cd meshoptimizer-0.21
 $ mkdir -p build/universal-apple-darwin`uname -r`
 $ cd build/universal-apple-darwin`uname -r`
@@ -69,7 +71,22 @@ $ ../../configure --host=aarch64-apple-darwin`uname -r`
 $ make -j`gnproc`
 $ sudo lipo src/.libs/libxmlrpc-epi.a /usr/local/lib/libxmlrpc-epi.a -create -output /usr/local/lib/libxmlrpc-epi.a
 $ sudo lipo src/.libs/libxmlrpc-epi.0.dylib /usr/local/lib/libxmlrpc-epi.0.dylib -create -output /usr/local/lib/libxmlrpc-epi.0.dylib
-$ cd ../../../viewer/indra/newview
+$ unset CFLAGS
+$ cd ../../../../3p-openssl/openssl
+$ mkdir -p build/aarch64-apple-darwin`uname -r`
+$ cd build/aarch64-apple-darwin`uname -r`
+$ ../../Configure no-shared darwin64-arm64-cc
+$ make -j`gnproc`
+$ cd ../../../../3p-curl/curl
+$ mkdir -p build/aarch64-apple-darwin`uname -r`
+$ cd build/aarch64-apple-darwin`uname -r`
+$ export CFLAGS="-arch arm64 -mmacosx-version-min=12.0"
+$ sudo port deactivate openssl3
+$ ../../configure --host=aarch64-apple-darwin`uname -r` --disable-alt-svc --disable-dict --disable-doh --disable-file --disable-gopher --disable-headers-api --disable-hsts --disable-imap --disable-ldap --disable-ldaps --disable-libcurl-option --disable-manual --disable-mqtt --disable-ntlm --disable-ntlm-wb --disable-pop3 --disable-rtsp --disable-shared --disable-smb --disable-smtp --disable-sspi --disable-telnet --disable-tftp --disable-tls-srp --disable-unix-sockets --disable-verbose --disable-versioned-symbols --enable-threaded-resolver --with-ssl=/opt/local/libexec/openssl11 --with-nghttp2=/opt/local --without-libidn2 --without-libpsl
+$ make -j`gnproc`
+$ sudo port activate openssl3
+$ unset CFLAGS
+$ cd ../../../../viewer/indra/newview
 $ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
 $ cd ../../build/universal-apple-darwin`uname -r`/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
@@ -82,7 +99,11 @@ $ tar xf ~/Downloads/nanosvg-2022.09.27-darwin64-580364.tar.bz2
 $ tar xf ~/Downloads/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
 $ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
-$ cd ..
+$ cd lib/release
+$ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libcrypto.a libcrypto.a -create -output libcrypto.a
+$ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libssl.a libssl.a -create -output libssl.a
+$ lipo ../../../../../../3p-curl/curl/build/aarch64-apple-darwin`uname -r`/lib/.libs/libcurl.a libcurl.a -create -output libcurl.a
+$ cd ../../..
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 $ sudo port install cmake pkgconfig freealut +universal apr-util +universal boost +universal collada-dom +universal hunspell +universal jsoncpp +universal openjpeg +universal libsdl2 +universal uriparser +universal
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=newview/Megapahit.app/Contents -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF ../../indra
