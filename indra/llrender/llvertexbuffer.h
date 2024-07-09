@@ -161,7 +161,7 @@ public:
 
     // set for rendering
     // assumes (and will assert on) the following:
-    //      - this buffer has no pending unampBuffer call
+    //      - this buffer has no pending unmapBuffer call
     //      - a shader is currently bound
     //      - This buffer has sufficient attributes within it to satisfy the needs of the currently bound shader
     void    setBuffer();
@@ -267,6 +267,8 @@ public:
     static U32 sGLRenderIndices;
     static U32 sLastMask;
     static U32 sVertexCount;
+
+    static U32 sMappingMode;
 };
 
 #ifdef LL_PROFILER_ENABLE_RENDER_DOC

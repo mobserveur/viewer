@@ -250,6 +250,7 @@ set(viewer_SOURCE_FILES
     llfloaterhandler.cpp
     llfloaterhelpbrowser.cpp
     llfloaterhoverheight.cpp
+    mpvfloatertuning.cpp
     llfloaterhowto.cpp
     llfloaterhud.cpp
     llfloaterimagepreview.cpp
@@ -913,6 +914,7 @@ set(viewer_HEADER_FILES
     llfloaterhandler.h
     llfloaterhelpbrowser.h
     llfloaterhoverheight.h
+    mpvfloatertuning.h
     llfloaterhowto.h
     llfloaterhud.h
     llfloaterimagepreview.h
@@ -2201,11 +2203,7 @@ if (DARWIN)
   endif (NOT INSTALL)
 
   if (ENABLE_MEDIA_PLUGINS)
-      if (DARWIN OR LINUX)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
-      else (DARWIN)
-          add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc)
-      endif (DARWIN OR LINUX)
   else (ENABLE_MEDIA_PLUGINS)
       add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
   endif (ENABLE_MEDIA_PLUGINS)

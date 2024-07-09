@@ -13518,6 +13518,17 @@
       <key>Value</key>
       <real>0</real>
     </map>
+    <key>MaxFPS</key>
+    <map>
+      <key>Comment</key>
+      <string>FPS Limiter.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <real>0</real>
+    </map>
     <key>ZoomDirect</key>
     <map>
       <key>Comment</key>
@@ -13776,6 +13787,23 @@
         <key>Value</key>
             <real>12</real>
         </map>
+
+
+    <!-- megapahit settings -->
+    <key>MPVBufferOptiMode</key>
+    <map>
+      <key>Comment</key>
+      <string>
+      OpenGL buffer mapping mode:
+      0:auto, 1:normal, 2:optimised, 3:unsynchronized.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>U32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+
 
     <!-- Settings below are for back compatibility only.
     They are not used in current viewer anymore. But they can't be removed to avoid

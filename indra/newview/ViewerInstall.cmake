@@ -22,7 +22,7 @@ if (DARWIN)
         skins
         tr.lproj
         zh-Hans.lproj
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        DESTINATION Resources
         )
 
     install(FILES
@@ -31,20 +31,40 @@ if (DARWIN)
         cube.dae
         featuretable_mac.txt
         secondlife.icns
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        DESTINATION Resources
         )
 
     install(FILES
         licenses-mac.txt
         RENAME licenses.txt
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources
+        DESTINATION Resources
         )
 
     install(FILES
         ${SCRIPTS_DIR}/messages/message_template.msg
         ${SCRIPTS_DIR}/../etc/message.xml
-        DESTINATION ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/app_settings
+        DESTINATION Resources/app_settings
         )
+
+    install(DIRECTORY
+        "${AUTOBUILD_INSTALL_DIR}/lib/release/Chromium Embedded Framework.framework"
+        DESTINATION Frameworks
+        )
+
+    install(DIRECTORY
+        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper.app"
+        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (GPU).app"
+        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Plugin).app"
+        "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Renderer).app"
+        DESTINATION Resources/SLPlugin.app/Contents/Frameworks
+        )
+
+    if (NDOF)
+        install(FILES
+            "${AUTOBUILD_INSTALL_DIR}/lib/release/libndofdev.dylib"
+            DESTINATION Resources
+            )
+    endif ()
 
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in

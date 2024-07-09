@@ -7,11 +7,13 @@ include_guard()
 add_library( ll::ndof INTERFACE IMPORTED )
 
 if (NDOF)
+  if (NOT USESYSTEMLIBS)
   if (WINDOWS OR DARWIN)
     use_prebuilt_binary(libndofdev)
   elseif (LINUX)
     use_prebuilt_binary(open-libndofdev)
   endif (WINDOWS OR DARWIN)
+  endif (NOT USESYSTEMLIBS)
 
   if (WINDOWS)
     target_link_libraries( ll::ndof INTERFACE libndofdev)

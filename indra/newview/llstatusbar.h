@@ -109,6 +109,8 @@ private:
     static void onClickMediaToggle(void* data);
     static void onClickBalance(void* data);
 
+    static void onClickFps(void* data);
+
     LLSearchEditor *mFilterEdit;
     LLPanel *mSearchPanel;
     void onUpdateFilterTerm();
@@ -121,7 +123,7 @@ private:
 
 private:
     LLTextBox   *mTextTime;
-    LLTextBox   *mTextFps;
+    LLButton    *mTextFps;
 
     LLStatGraph *mSGBandwidth;
     LLStatGraph *mSGPacketLoss;

@@ -98,6 +98,8 @@ set(llmath_HEADER_FILES
 
 list(APPEND llmath_SOURCE_FILES ${llmath_HEADER_FILES})
 
+include_directories(${LIBS_PREBUILT_DIR}/include)
+
 add_library (llmath ${llmath_SOURCE_FILES})
 
 target_link_libraries(llmath llcommon llmeshoptimizer)
