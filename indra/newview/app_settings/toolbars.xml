@@ -4,27 +4,24 @@
     button_display_mode="icons_with_text">
     <command name="chat"/>
     <command name="speak"/>
-    <command name="destinations"/>
     <command name="people"/>
     <command name="profile"/>
-    <command name="map"/>
-    <command name="move"/>
     <command name="view"/>
-    <command name="howto"/>
+    <command name="appearance"/>
+    <command name="inventory"/>
   </bottom_toolbar>
   <left_toolbar
     button_display_mode="icons_only">
-    <command name="avatar"/>
-    <command name="appearance"/>
-    <command name="inventory"/>
     <command name="search"/>
+    <command name="map"/>
     <command name="places"/>
-    <command name="voice"/>
     <command name="minimap"/>
     <command name="snapshot"/>
-    <command name="performance"/>
+    <command name="aboutland"/>
   </left_toolbar>
   <right_toolbar
     button_display_mode="icons_only">
+    <command name="performance"/>
+    <command name="howto"/>
   </right_toolbar>
 </toolbars>
