@@ -2132,7 +2132,7 @@ if (DARWIN)
   set(product "${VIEWER_CHANNEL}")
   set(MACOSX_EXECUTABLE_NAME "${VIEWER_CHANNEL}")
   set(MACOSX_BUNDLE_INFO_STRING "${VIEWER_CHANNEL}")
-  set(MACOSX_BUNDLE_ICON_FILE "secondlife.icns")
+  set(MACOSX_BUNDLE_ICON_FILE "${VIEWER_CHANNEL}.icns")
   set(MACOSX_BUNDLE_GUI_IDENTIFIER "net.megapahit.viewer")
   set(MACOSX_BUNDLE_LONG_VERSION_STRING "${VIEWER_CHANNEL} ${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_NAME "Megapahit")
@@ -2168,7 +2168,9 @@ if (DARWIN)
      "${VIEWER_APP_BUNDLE}/Contents/Info.plist"
     )
 
-  if (NOT INSTALL)
+  if (INSTALL)
+    install(PROGRAMS ${VIEWER_APP_EXE} DESTINATION ../MacOS)
+  else (INSTALL)
   add_custom_command(
     TARGET ${VIEWER_BINARY_NAME} POST_BUILD
     COMMAND ${PYTHON_EXECUTABLE}
@@ -2193,7 +2195,7 @@ if (DARWIN)
       ${VIEWER_BINARY_NAME}
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
-  endif (NOT INSTALL)
+  endif (INSTALL)
 
   if (ENABLE_MEDIA_PLUGINS)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
@@ -2208,6 +2210,26 @@ if (DARWIN)
   endif (ENABLE_SIGNING)
 
   if (PACKAGE)
+    if (USESYSTEMLIBS)
+      set(CPACK_DMG_VOLUME_NAME "${product} Installer"
+        CACHE STRING "Disk image volume name.")
+      set(CPACK_DMG_FORMAT UDRW CACHE STRING "Disk image format.")
+      set(CPACK_DMG_DS_STORE
+        ${CMAKE_CURRENT_SOURCE_DIR}/installers/darwin/release-dmg/_DS_Store
+        CACHE STRING "Disk image .DS_Store file.")
+      set(CPACK_DMG_DS_STORE_SETUP_SCRIPT
+        ${CMAKE_CURRENT_SOURCE_DIR}/installers/darwin/dmg-cleanup.applescript
+        CACHE STRING "Disk image AppleScript file.")
+      set(CPACK_DMG_BACKGROUND_IMAGE
+        ${CMAKE_CURRENT_SOURCE_DIR}/installers/darwin/release-dmg/background.jpg
+        CACHE STRING "Disk image background image.")
+      set(CPACK_BUNDLE_NAME ${product} CACHE STRING "Bundle name.")
+      set(CPACK_BUNDLE_PLIST ${VIEWER_APP_BUNDLE}/Contents/Info.plist
+        CACHE STRING "Bundle Property List file.")
+      set(CPACK_BUNDLE_ICON ${CMAKE_CURRENT_SOURCE_DIR}/secondlife.icns
+        CACHE STRING "Bundle icon file.")
+
+    else (USESYSTEMLIBS)
       add_custom_target(llpackage ALL DEPENDS ${VIEWER_BINARY_NAME})
 
       add_custom_command(
@@ -2233,6 +2255,7 @@ if (DARWIN)
         DEPENDS
           ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
       )
+    endif (USESYSTEMLIBS)
   endif (PACKAGE)
 endif (DARWIN)
 
