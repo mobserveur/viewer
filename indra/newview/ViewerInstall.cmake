@@ -22,7 +22,7 @@ if (DARWIN)
         skins
         tr.lproj
         zh-Hans.lproj
-        DESTINATION Resources
+        DESTINATION .
         )
 
     install(FILES
@@ -30,25 +30,24 @@ if (DARWIN)
         ${AUTOBUILD_INSTALL_DIR}/ca-bundle.crt
         cube.dae
         featuretable_mac.txt
-        secondlife.icns
-        DESTINATION Resources
+        DESTINATION .
         )
 
     install(FILES
         licenses-mac.txt
         RENAME licenses.txt
-        DESTINATION Resources
+        DESTINATION .
         )
 
     install(FILES
         ${SCRIPTS_DIR}/messages/message_template.msg
         ${SCRIPTS_DIR}/../etc/message.xml
-        DESTINATION Resources/app_settings
+        DESTINATION app_settings
         )
 
     install(DIRECTORY
         "${AUTOBUILD_INSTALL_DIR}/lib/release/Chromium Embedded Framework.framework"
-        DESTINATION Frameworks
+        DESTINATION ../Frameworks
         )
 
     install(DIRECTORY
@@ -56,13 +55,13 @@ if (DARWIN)
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (GPU).app"
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Plugin).app"
         "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Renderer).app"
-        DESTINATION Resources/SLPlugin.app/Contents/Frameworks
+        DESTINATION SLPlugin.app/Contents/Frameworks
         )
 
     if (NDOF)
         install(FILES
             "${AUTOBUILD_INSTALL_DIR}/lib/release/libndofdev.dylib"
-            DESTINATION Resources
+            DESTINATION .
             )
     endif ()
 

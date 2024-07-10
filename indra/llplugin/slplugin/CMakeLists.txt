@@ -67,7 +67,7 @@ endif ()
 
 if (INSTALL)
   if (DARWIN)
-    install(TARGETS ${PROJECT_NAME} DESTINATION Resources)
+    install(TARGETS ${PROJECT_NAME} DESTINATION .)
   else (DARWIN)
     install(TARGETS ${PROJECT_NAME} DESTINATION libexec/${VIEWER_BINARY_NAME})
   endif (DARWIN)

@@ -115,7 +115,7 @@ endif (DARWIN)
 
 if (INSTALL)
     if (DARWIN)
-        set(_LIB Resources/llplugin)
+        set(_LIB llplugin)
     elseif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
         set(_LIB lib/${ARCH}-linux-gnu)
     elseif (EXISTS /lib64)
