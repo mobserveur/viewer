@@ -40,11 +40,12 @@ $ git switch -c megapahit
 $ sudo port install cmake pkgconfig freealut +universal apr-util +universal boost +universal collada-dom +universal hunspell +universal jsoncpp +universal openjpeg +universal libsdl2 +universal uriparser +universal
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -L https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz -o meshoptimizer-0.21.tar.gz -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -L https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz -o openjpeg-2.5.2.tar.gz -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -L https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz -o meshoptimizer-0.21.tar.gz -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -L https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz -o openjpeg-2.5.2.tar.gz -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst -OL https://github.com/secondlife/3p-webrtc-build/releases/download/m114.5735.08.61/webrtc-m114.5735.08.61.9571920264-darwin64-9571920264.tar.zst -OL https://github.com/crow-misia/libwebrtc-bin/releases/download/114.5735.6.1/libwebrtc-macos-arm64.tar.xz -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
 $ cd -
 $ cd ..
 $ tar xf ~/Downloads/meshoptimizer-0.21.tar.gz
 $ tar xf ~/Downloads/openjpeg-2.5.2.tar.gz
+$ tar xf ~/Downloads/libwebrtc-macos-arm64.tar.xz
 $ tar xf ~/Downloads/xmlrpc-epi-0.54.2.tar.bz2
 $ git clone https://github.com/secondlife/3p-openssl
 $ git clone https://github.com/secondlife/3p-curl
@@ -107,11 +108,15 @@ $ tar xf ~/Downloads/nanosvg-2022.09.27-darwin64-580364.tar.bz2
 $ tar xf ~/Downloads/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
 $ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
+$ tar xf ~/Downloads/webrtc-m114.5735.08.61.9571920264-darwin64-9571920264.tar.zst
 $ cd lib/release
 $ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libcrypto.a libcrypto.a -create -output libcrypto.a
 $ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libssl.a libssl.a -create -output libssl.a
 $ lipo ../../../../../../3p-curl/curl/build/aarch64-apple-darwin`uname -r`/lib/.libs/libcurl.a libcurl.a -create -output libcurl.a
-$ cd ../../..
+$ lipo ../../../../../../libwebrtc-macos-arm64/lib/libwebrtc.a libwebrtc.a -create -output libwebrtc.a
+$ cd WebRTC.framework/Versions/A
+$ lipo ../../../../../../../../../libwebrtc-macos-arm64/Frameworks/WebRTC.xcframework/macos-arm64/WebRTC.framework/Versions/A/WebRTC WebRTC -create -output WebRTC
+$ cd ../../../../../..
 $ cd /opt/local/include
 $ sudo curl -OL https://raw.githubusercontent.com/DLTcollab/sse2neon/master/sse2neon.h
 $ cd -
