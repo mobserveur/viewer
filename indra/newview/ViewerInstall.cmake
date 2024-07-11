@@ -33,6 +33,14 @@ if (DARWIN)
         DESTINATION .
         )
 
+    if (NOT PACKAGE)
+        install(FILES
+            secondlife.icns
+            RENAME ${VIEWER_CHANNEL}.icns
+            DESTINATION .
+            )
+    endif (NOT PACKAGE)
+
     install(FILES
         licenses-mac.txt
         RENAME licenses.txt
