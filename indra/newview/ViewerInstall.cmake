@@ -73,10 +73,17 @@ if (DARWIN)
             )
     endif ()
 
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
-        )
+    if (PACKAGE)
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/FixPackage.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
+            )
+    else (PACKAGE)
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
+            )
+    endif (PACKAGE)
     install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake)
 
 else (DARWIN)
