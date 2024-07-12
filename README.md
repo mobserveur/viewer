@@ -52,7 +52,7 @@ $ cd meshoptimizer-0.21
 $ mkdir -p build/universal-apple-darwin`uname -r`
 $ cd build/universal-apple-darwin`uname -r`
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=12.0 -DMESHOPT_BUILD_SHARED_LIBS:BOOL=ON ../..
-$ make -j`gnproc`
+$ make -j`sysctl -n hw.ncpu`
 $ sudo make install
 $ cd ../../../openjpeg-2.5.2
 $ sudo cp src/lib/openjp2/cio.h src/lib/openjp2/event.h /opt/local/include/openjpeg-2.5/
@@ -67,7 +67,7 @@ $ mkdir -p build/x86_64-apple-darwin`uname -r`
 $ cd build/x86_64-apple-darwin`uname -r`
 $ export CFLAGS="-arch x86_64"
 $ ../../configure --host=x86_64-apple-darwin`uname -r`
-$ make -j`gnproc`
+$ make -j`sysctl -n hw.ncpu`
 $ sudo make install
 $ cd -
 $ sed -i '' -e 's/XMLRPC_VALUE find_named_value/__attribute__((always_inline)) XMLRPC_VALUE find_named_value/g' src/xmlrpc_introspection.c
@@ -76,7 +76,7 @@ $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
 $ export CFLAGS="-arch arm64"
 $ ../../configure --host=aarch64-apple-darwin`uname -r`
-$ make -j`gnproc`
+$ make -j`sysctl -n hw.ncpu`
 $ sudo lipo src/.libs/libxmlrpc-epi.a /usr/local/lib/libxmlrpc-epi.a -create -output /usr/local/lib/libxmlrpc-epi.a
 $ sudo lipo src/.libs/libxmlrpc-epi.0.dylib /usr/local/lib/libxmlrpc-epi.0.dylib -create -output /usr/local/lib/libxmlrpc-epi.0.dylib
 $ unset CFLAGS
@@ -84,14 +84,14 @@ $ cd ../../../../3p-openssl/openssl
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
 $ ../../Configure no-shared darwin64-arm64-cc
-$ make -j`gnproc`
+$ make -j`sysctl -n hw.ncpu`
 $ cd ../../../../3p-curl/curl
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
 $ export CFLAGS="-arch arm64 -mmacosx-version-min=12.0"
 $ sudo port deactivate openssl3
 $ ../../configure --host=aarch64-apple-darwin`uname -r` --disable-alt-svc --disable-dict --disable-doh --disable-file --disable-gopher --disable-headers-api --disable-hsts --disable-imap --disable-ldap --disable-ldaps --disable-libcurl-option --disable-manual --disable-mqtt --disable-ntlm --disable-ntlm-wb --disable-pop3 --disable-rtsp --disable-shared --disable-smb --disable-smtp --disable-sspi --disable-telnet --disable-tftp --disable-tls-srp --disable-unix-sockets --disable-verbose --disable-versioned-symbols --enable-threaded-resolver --with-ssl=/opt/local/libexec/openssl11 --with-nghttp2=/opt/local --without-libidn2 --without-libpsl
-$ make -j`gnproc`
+$ make -j`sysctl -n hw.ncpu`
 $ sudo port activate openssl3
 $ unset CFLAGS
 $ cd ../../../../viewer/indra/newview
@@ -118,7 +118,7 @@ $ cd -
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=newview/$project.app/Contents/Resources -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF ../../indra
 $ cmake ../../indra
-$ make -j`gnproc`
+$ make -j`sysctl -n hw.ncpu`
 $ make install
 $ open newview/Megapahit.app
 ```
