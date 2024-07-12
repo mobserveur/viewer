@@ -36,6 +36,7 @@ tell application "Finder"
 		set arrangement of theViewOptions to not arranged
 		set icon size of theViewOptions to 128
 		set background picture of theViewOptions to file ".background:background.jpg"
+		make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
 		set position of item "Megapahit" of container window to {125, 160}
 		set position of item "Applications" of container window to {375, 160}
 		update without registering applications

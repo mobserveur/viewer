@@ -1,7 +1,16 @@
 if (DARWIN)
 
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/InfoPlist.strings
+        ${VIEWER_APP_BUNDLE}/Contents/Resources/English.lproj/InfoPlist.strings
+        )
+
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/language.txt
+        DESTINATION English.lproj
+        )
+
     install(DIRECTORY
-        English.lproj
         German.lproj
         Japanese.lproj
         Korean.lproj
@@ -25,6 +34,32 @@ if (DARWIN)
         DESTINATION .
         )
 
+    add_custom_command(
+        OUTPUT contributors.txt
+        COMMAND sed
+        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sort
+        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND paste
+        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        COMMAND sed
+        ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        )
+
+    add_custom_target(contributors ALL
+        DEPENDS contributors.txt
+        )
+
     install(FILES
         SecondLife.nib
         ${AUTOBUILD_INSTALL_DIR}/ca-bundle.crt
@@ -32,6 +67,14 @@ if (DARWIN)
         featuretable_mac.txt
         DESTINATION .
         )
+
+    if (NOT PACKAGE)
+        install(FILES
+            secondlife.icns
+            RENAME ${VIEWER_CHANNEL}.icns
+            DESTINATION .
+            )
+    endif (NOT PACKAGE)
 
     install(FILES
         licenses-mac.txt
@@ -42,6 +85,7 @@ if (DARWIN)
     install(FILES
         ${SCRIPTS_DIR}/messages/message_template.msg
         ${SCRIPTS_DIR}/../etc/message.xml
+        ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
         DESTINATION app_settings
         )
 
@@ -65,10 +109,17 @@ if (DARWIN)
             )
     endif ()
 
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
-        )
+    if (PACKAGE)
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/FixPackage.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
+            )
+    else (PACKAGE)
+        configure_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/FixBundle.cmake.in
+            ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake
+            )
+    endif (PACKAGE)
     install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/FixBundle.cmake)
 
 else (DARWIN)
@@ -97,7 +148,7 @@ if (LINUX)
                 ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so
                 ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13
                 ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13.22
-             DESTINATION ${_LIB})
+            DESTINATION ${_LIB})
         endif (USE_FMODSTUDIO)
         install(PROGRAMS
                 ${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
