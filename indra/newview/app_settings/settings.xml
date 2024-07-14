@@ -13773,7 +13773,10 @@
       <key>Comment</key>
       <string>
       OpenGL buffer mapping mode:
-      0:auto, 1:normal, 2:optimised, 3:unsynchronized.</string>
+      0:auto
+      1:normal
+      2:optimised
+      3:experimental.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -13781,7 +13784,18 @@
       <key>Value</key>
       <integer>0</integer>
     </map>
-
+    <key>MPVCameraCollapsed</key>
+    <map>
+      <key>Comment</key>
+      <string>
+      Camera floater collapsed</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
 
     <!-- Settings below are for back compatibility only.
     They are not used in current viewer anymore. But they can't be removed to avoid

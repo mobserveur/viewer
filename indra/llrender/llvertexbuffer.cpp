@@ -534,7 +534,7 @@ U32 LLVertexBuffer::sGLRenderIndices = 0;
 U32 LLVertexBuffer::sLastMask = 0;
 U32 LLVertexBuffer::sVertexCount = 0;
 
-U32 LLVertexBuffer::sMappingMode = gSavedSettings.getU32("MPVBufferOptiMode");
+U32 LLVertexBuffer::sMappingMode = 0;
 
 //NOTE: each component must be AT LEAST 4 bytes in size to avoid a performance penalty on AMD hardware
 const U32 LLVertexBuffer::sTypeSize[LLVertexBuffer::TYPE_MAX] =
@@ -1149,17 +1149,12 @@ U8* LLVertexBuffer::mapIndexBuffer(U32 index, S32 count)
 //  start -- first byte to copy
 //  end -- last byte to copy (NOT last byte + 1)
 //  data -- mMappedData or mMappedIndexData
-static void flush_vbo(GLenum target, U32 start, U32 end, void* data, S16 mode)
+//  note (observeur) : the mode parameter adds an altenative method to map the buffer
+//  mode = 0 or 1: glBufferSubData(), mode = 2 : glMapBufferRange() works much better on Apple gpus
+//  mode = 3 or 4: experimental bits parameters for  glMapBufferRange()
+static void flush_vbo(GLenum target, U32 start, U32 end, void* data, U32 mode)
 {
-    if (end == 0) return;
-
-    if (mode == 0)
-    {
-        if(gGLManager.mIsApple) mode = 2;
-        else mode = 1;
-    }
-
-    if (mode == 1)
+    if (mode < 2)
     {
         LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData");
         LL_PROFILE_ZONE_NUM(start);
@@ -1173,7 +1168,6 @@ static void flush_vbo(GLenum target, U32 start, U32 end, void* data, S16 mode)
             LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("glBufferSubData block");
             LL_PROFILE_GPU_ZONE("glBufferSubData");
             U32 tend = llmin(i + block_size, end);
-            //U32 size = tend - i + 1;
             glBufferSubData(target, i, tend - i +1, (U8*) data + (i-start));
         }
 
@@ -1181,7 +1175,8 @@ static void flush_vbo(GLenum target, U32 start, U32 end, void* data, S16 mode)
     }
 
     U32 MapBits = GL_MAP_WRITE_BIT;
-    if (mode>2) MapBits = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
+    if (mode==3) MapBits = MapBits | GL_MAP_INVALIDATE_RANGE_BIT;
+    if (mode==4) MapBits = MapBits | GL_MAP_UNSYNCHRONIZED_BIT;
 
     U32 buffer_size = end-start+1;
 
@@ -1191,16 +1186,9 @@ static void flush_vbo(GLenum target, U32 start, U32 end, void* data, S16 mode)
     if (mptr)
     {
         std::memcpy(mptr, (U8*) data, buffer_size);
-        if(!glUnmapBuffer(target))
-        {
-            LL_WARNS() << "glUnmapBuffer() failed" << LL_ENDL;
-        }
+        if(!glUnmapBuffer(target)) LL_WARNS() << "glUnmapBuffer() failed" << LL_ENDL;
     }
-    else
-    {
-        LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
-    }
-
+    else LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
 }
 
 void LLVertexBuffer::unmapBuffer()
@@ -1236,13 +1224,13 @@ void LLVertexBuffer::unmapBuffer()
             }
             else
             {
-                flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start, sMappingMode);
+                if(end > start) flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start,sMappingMode);
                 start = region.mStart;
                 end = region.mEnd;
             }
         }
 
-        flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start, sMappingMode);
+        if(end > start) flush_vbo(GL_ARRAY_BUFFER, start, end, (U8*)mMappedData + start,sMappingMode);
 
         mMappedVertexRegions.clear();
     }
@@ -1270,14 +1258,13 @@ void LLVertexBuffer::unmapBuffer()
             }
             else
             {
-                flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start, sMappingMode);
-
+                if(end > start) flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start, sMappingMode);
                 start = region.mStart;
                 end = region.mEnd;
             }
         }
 
-        flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start, sMappingMode);
+        if(end > start) flush_vbo(GL_ELEMENT_ARRAY_BUFFER, start, end, (U8*)mMappedIndexData + start, sMappingMode);
 
         mMappedIndexRegions.clear();
     }

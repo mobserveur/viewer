@@ -122,6 +122,9 @@ private:
 
     void showDebugInfo(bool show);
 
+    void toggleCollapsedView();
+    void updateCollapsedView();
+
     // set to true when free camera mode is selected in modes list
     // remains true until preset camera mode is chosen, or pan button is clicked, or escape pressed
     static bool sFreeCamera;
@@ -135,7 +138,8 @@ private:
     LLPanel* mViewerCameraInfo { nullptr };
     LLPanel* mAgentCameraInfo { nullptr };
     LLComboBox* mPresetCombo { nullptr };
-    LLTextBox* mPreciseCtrls { nullptr };
+    LLButton* mPreciseCtrls { nullptr };
+    LLButton* mCollapseCtrl { nullptr };
 };
 
 /**

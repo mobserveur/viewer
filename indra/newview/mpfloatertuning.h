@@ -1,5 +1,5 @@
 /**
-* @file mpvfloatertuning.h
+* @file mpfloatertuning.h
 * @brief Controller for viewer tuning
 * @author observeur@megapahit.net
 *
@@ -24,15 +24,15 @@
 * Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
 * $/LicenseInfo$
 */
-#ifndef LL_MPVFLOATERTUNING_H
-#define LL_MPVFLOATERTUNING_H
+#ifndef LL_MPFLOATERTUNING_H
+#define LL_MPFLOATERTUNING_H
 
 #include "llfloater.h"
 
-class MPVFloaterTuning: public LLFloater
+class MPFloaterTuning: public LLFloater
 {
 public:
-    MPVFloaterTuning(const LLSD& key);
+    MPFloaterTuning(const LLSD& key);
 
     BOOL postBuild();
 

@@ -478,10 +478,8 @@ BOOL LLFloaterCamera::postBuild()
     mZoom = getChild<LLPanelCameraZoom>(ZOOM);
     mTrack = getChild<LLJoystickCameraTrack>(PAN);
     mPresetCombo = getChild<LLComboBox>("preset_combo");
-    mPreciseCtrls = getChild<LLTextBox>("precise_ctrs_label");
+    mPreciseCtrls = getChild<LLButton>("precise_btn");
 
-    mPreciseCtrls->setShowCursorHand(false);
-    mPreciseCtrls->setSoundFlags(LLView::MOUSE_UP);
     mPreciseCtrls->setClickedCallback(boost::bind(&LLFloaterReg::showInstance, "prefs_view_advanced", LLSD(), FALSE));
 
     mPresetCombo->setCommitCallback(boost::bind(&LLFloaterCamera::onCustomPresetSelected, this));
@@ -491,6 +489,11 @@ BOOL LLFloaterCamera::postBuild()
 
     // ensure that appearance mode is handled while building. See EXT-7796.
     handleAvatarEditingAppearance(sAppearanceEditing);
+
+    mCollapseCtrl = getChild<LLButton>("collapse_btn");
+    mCollapseCtrl->setCommitCallback(boost::bind(&LLFloaterCamera::toggleCollapsedView, this));
+
+    updateCollapsedView();
 
     return LLFloater::postBuild();
 }
@@ -735,4 +738,20 @@ void LLFloaterCamera::onCustomPresetSelected()
     {
         switchToPreset(selected_preset);
     }
+}
+
+void LLFloaterCamera::toggleCollapsedView()
+{
+    BOOL isCollapsed = gSavedSettings.getBOOL("MPVCameraCollapsed");
+    gSavedSettings.setBOOL("MPVCameraCollapsed", !isCollapsed);
+    updateCollapsedView();
+}
+
+void LLFloaterCamera::updateCollapsedView()
+{
+    BOOL isCollapsed = gSavedSettings.getBOOL("MPVCameraCollapsed");
+    mCollapseCtrl->setImageOverlay(!isCollapsed ? "Conv_toolbar_collapse" : "Conv_toolbar_expand");
+    getChild<LLPanel>("buttons_panel")->setVisible(!isCollapsed);
+    //mPreciseCtrls->setVisible(!collapse);
+    reshape(!isCollapsed ? 410 : 220, getRect().getHeight(), FALSE);
 }
