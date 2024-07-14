@@ -38,7 +38,6 @@
 #include "lldir.h"
 #include "indra_constants.h"
 
-#include "../newview/llviewercontrol.h"
 
 #include <OpenGL/OpenGL.h>
 #include <Carbon/Carbon.h>
@@ -1013,19 +1012,6 @@ BOOL LLWindowMacOSX::setSizeImpl(const LLCoordWindow size)
 void LLWindowMacOSX::swapBuffers()
 {
     CGLFlushDrawable(mContext);
-
-    U32 mode = gSavedSettings.getU32("MPVBufferOptiMode");
-    if (mode == 0)
-    {
-        if(gGLManager.mIsApple) mode = 2;
-        else mode = 1;
-    }
-    if (mode > 2)
-    {
-        glClientWaitSync(swapFense, GL_SYNC_FLUSH_COMMANDS_BIT, GL_TIMEOUT_IGNORED);
-        glDeleteSync(swapFense);
-        swapFense = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-    }
 }
 
 void LLWindowMacOSX::restoreGLContext()

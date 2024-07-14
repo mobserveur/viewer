@@ -40,10 +40,6 @@
 #include "lldir.h"
 #include "llfindlocale.h"
 
-#include "../newview/llviewercontrol.h"
-
-extern LLControlGroup gSavedSettings;
-
 #if LL_GTK
 extern "C" {
 # include "gtk/gtk.h"
@@ -1096,24 +1092,11 @@ BOOL LLWindowSDL::setSizeImpl(const LLCoordWindow size)
     return FALSE;
 }
 
-
 void LLWindowSDL::swapBuffers()
 {
     if (mWindow)
     {
         SDL_GL_SwapWindow(mWindow);
-        U32 mode = gSavedSettings.getU32("MPVBufferOptiMode");
-        if (mode == 0)
-        {
-            if(gGLManager.mIsApple) mode = 2;
-            else mode = 1;
-        }
-        if (mode > 2)
-        {
-            glClientWaitSync(swapFense, GL_SYNC_FLUSH_COMMANDS_BIT, GL_TIMEOUT_IGNORED);
-            glDeleteSync(swapFense);
-            swapFense = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-        }
     }
 }
 

@@ -50,6 +50,11 @@
 #include "llglheaders.h"
 #include "llglslshader.h"
 
+#include "llvertexbuffer.h"
+#include "llcontrol.h"
+extern LLControlGroup gSavedSettings;
+
+
 #if LL_WINDOWS
 #include "lldxhardware.h"
 #endif
@@ -1262,6 +1267,15 @@ bool LLGLManager::initGL()
     }
 
     initGLStates();
+
+    U32 MPVBufferOptiMode = gSavedSettings.getU32("MPVBufferOptiMode");
+    if (MPVBufferOptiMode == 0)
+    {
+        if(mIsApple) MPVBufferOptiMode = 2;
+        else MPVBufferOptiMode = 1;
+        gSavedSettings.setU32("MPVBufferOptiMode",MPVBufferOptiMode);
+    }
+    LLVertexBuffer::sMappingMode = MPVBufferOptiMode;
 
     return true;
 }
