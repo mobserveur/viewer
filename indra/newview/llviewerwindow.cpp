@@ -2010,6 +2010,8 @@ LLViewerWindow::LLViewerWindow(const Params& p)
     mDebugText = new LLDebugText(this);
 
     mWorldViewRectScaled = calcScaledRect(mWorldViewRectRaw, mDisplayScale);
+
+    mWindow->toggleVSync(gSavedSettings.getBOOL("RenderVSyncEnabled"));
 }
 
 std::string LLViewerWindow::getLastSnapshotDir()
