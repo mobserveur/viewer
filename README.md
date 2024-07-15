@@ -61,6 +61,7 @@ $ cd build/`uname -m`-apple-darwin`uname -r`
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release ../..
 $ sudo cp src/lib/openjp2/opj_config_private.h /opt/local/include/openjpeg-2.5/
 $ cd ../../../xmlrpc-epi-0.54.2
+$ export CPPFLAGS="$CPPFLAGS -I$PWD/src"
 $ rm -f config.sub missing
 $ autoreconf -is
 $ mkdir -p build/x86_64-apple-darwin`uname -r`
@@ -79,7 +80,7 @@ $ ../../configure --host=aarch64-apple-darwin`uname -r`
 $ make -j`sysctl -n hw.ncpu`
 $ sudo lipo src/.libs/libxmlrpc-epi.a /usr/local/lib/libxmlrpc-epi.a -create -output /usr/local/lib/libxmlrpc-epi.a
 $ sudo lipo src/.libs/libxmlrpc-epi.0.dylib /usr/local/lib/libxmlrpc-epi.0.dylib -create -output /usr/local/lib/libxmlrpc-epi.0.dylib
-$ unset CFLAGS
+$ unset CPPFLAGS CFLAGS
 $ cd ../../../../3p-openssl/openssl
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
