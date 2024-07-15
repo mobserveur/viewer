@@ -379,17 +379,17 @@ void LLProgressView::initLogos()
 {
     mLogosList.clear();
 
-    //const U8 image_codec = IMG_CODEC_PNG;
-    //const LLRectf default_clip(0.f, 1.f, 1.f, 0.f);
+    const U8 image_codec = IMG_CODEC_PNG;
+    const LLRectf default_clip(0.f, 1.f, 1.f, 0.f);
     //const S32 default_height = 28;
-    //const S32 default_pad = 15;
+    const S32 default_pad = 15;
 
-    //S32 icon_width, icon_height;
+    S32 icon_width, icon_height;
 
     // We don't know final screen rect yet, so we can't precalculate position fully
-    //LLTextBox *logos_label = getChild<LLTextBox>("logos_lbl");
-    //S32 texture_start_x = logos_label->getFont()->getWidthF32(logos_label->getText()) + default_pad;
-    //S32 texture_start_y = -7;
+    LLTextBox *logos_label = getChild<LLTextBox>("logos_lbl");
+    S32 texture_start_x = logos_label->getFont()->getWidthF32(logos_label->getText()) + default_pad;
+    S32 texture_start_y = -7;
 
     // Normally we would just preload these textures from textures.xml,
     // and display them via icon control, but they are only needed on
