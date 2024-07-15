@@ -379,7 +379,7 @@ void LLProgressView::initLogos()
 {
     mLogosList.clear();
 
-#ifdef LL_FMODSTUDIO || LL_HAVOK
+#if LL_FMODSTUDIO || LL_HAVOK
     const U8 image_codec = IMG_CODEC_PNG;
     const LLRectf default_clip(0.f, 1.f, 1.f, 0.f);
     //const S32 default_height = 28;
