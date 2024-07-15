@@ -519,7 +519,7 @@
      reference="White_10" />
     <color
      name="MapParcelOutlineColor"
-     value="1 1 0 0.5" />
+     value="1 1 1 0.5" />
     <color
      name="MapTrackColor"
      reference="Red" />
