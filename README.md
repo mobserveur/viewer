@@ -206,17 +206,27 @@ $ megapahit
 ```
 $ mkdir -p build/`uname -m`-unknown-freebsd14.1/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ curl -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
 $ cd -
-$ cd indra/newview
+$ cd ..
+$ git clone https://github.com/secondlife/3p-openssl
+$ git clone https://github.com/secondlife/3p-curl
+$ cd 3p-openssl/openssl
+$ mkdir -p build/`uname -m`-unknown-freebsd14.1
+$ cd -p build/`uname -m`-unknown-freebsd14.1
+$ ../../config no-shared
+$ make -j`nproc`
+$ cd ../../../../viewer/indra/newview
 $ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
 $ cd ../../build/`uname -m`-unknown-freebsd14.1/packages
 $ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst
 $ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
 $ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
 $ tar xf ~/Downloads/mikktspace-1-linux64-8756084692.tar.zst
+$ tar xf ~/Downloads/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
 $ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
 $ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
+$ cp ../../../../3p-openssl/openssl/build/`uname -m`-unknown-freebsd14.1/lib*.a lib/release/
 $ cd ..
 $ setenv LL_BUILD "-O3 -std=c++17 -fPIC"
 $ sudo su -
