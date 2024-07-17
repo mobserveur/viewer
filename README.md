@@ -156,6 +156,7 @@ $ cmake -DCMAKE_BUILD_TYPE:STRING=Release ../..
 $ cp src/lib/openjp2/opj_config_private.h ../../../viewer/build/`uname -m`-linux-gnu/packages/include/openjpeg/
 $ cd ../../../viewer/build/`uname -m`-linux-gnu
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
+$ rm CMakeCache.txt
 ```
 
 #### Debian 12.5
@@ -243,6 +244,7 @@ $ setenv LL_BUILD "-O3 -std=c++17 -fPIC"
 $ sudo su -
 # portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 devel/collada-dom textproc/hunspell x11-toolkits/gtk20 misc/meshoptimizer graphics/nanosvg graphics/openjpeg devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
 # exit
+$ rm CMakeCache.txt
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON -DCPACK_PACKAGE_NAME:STRING=megapahit -DCPACK_BINARY_STGZ:BOOL=OFF -DCPACK_BINARY_TGZ:BOOL=OFF -DCPACK_BINARY_TZ:BOOL=OFF -DCPACK_BINARY_FREEBSD:BOOL=ON -DCPACK_FREEBSD_PACKAGE_COMMENT:STRING="A fork of the Second Life viewer" -DCPACK_FREEBSD_PACKAGE_DESCRIPTION:STRING="An entrance to virtual empires in only megabytes. A shelter for the metaverse refugees, especially those from less supported operating systems." -DCPACK_FREEBSD_PACKAGE_WWW:STRING=https://megapahit.net -DCPACK_FREEBSD_PACKAGE_LICENSE:STRING=LGPL21 -DCPACK_FREEBSD_PACKAGE_MAINTAINER:STRING=$USER@$HOST -DCPACK_FREEBSD_PACKAGE_ORIGIN:STRING=net/megapahit -DCPACK_FREEBSD_PACKAGE_DEPS:STRING="audio/freealut;devel/collada-dom;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;www/libnghttp2;graphics/openjpeg;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi" ../../indra
 $ cmake ../../indra
 $ make -j`nproc`
