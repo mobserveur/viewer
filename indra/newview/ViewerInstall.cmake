@@ -1,3 +1,29 @@
+add_custom_command(
+    OUTPUT contributors.txt
+    COMMAND sed
+    ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sort
+    ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND paste
+    ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+    COMMAND sed
+    ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+    )
+
+add_custom_target(contributors ALL
+    DEPENDS contributors.txt
+    )
+
 if (DARWIN)
 
     configure_file(
@@ -32,32 +58,6 @@ if (DARWIN)
         tr.lproj
         zh-Hans.lproj
         DESTINATION .
-        )
-
-    add_custom_command(
-        OUTPUT contributors.txt
-        COMMAND sed
-        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sort
-        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND paste
-        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        COMMAND sed
-        ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        )
-
-    add_custom_target(contributors ALL
-        DEPENDS contributors.txt
         )
 
     install(FILES
@@ -210,6 +210,7 @@ endif (IS_ARTWORK_PRESENT)
 
 install(FILES ${SCRIPTS_DIR}/messages/message_template.msg
         ${SCRIPTS_DIR}/../etc/message.xml
+        ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
         DESTINATION share/${VIEWER_BINARY_NAME}/app_settings
         )
 
