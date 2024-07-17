@@ -26,8 +26,8 @@
             bottom="-5"
             orientation="vertical">
         <layout_panel
-                border="true"
-                bevel_style="in"
+                border="false"
+                bevel_style="none"
                 auto_resize="false"
                 tab_group="1"
                 height="54"
@@ -147,7 +147,7 @@
                 name="pnl_control"
                 font="SansSerifBold">
             <panel
-                    background_visible="true"
+                    background_visible="false"
                     bevel_style="none"
                     top_pad="1"
                     follows="top|left|right"

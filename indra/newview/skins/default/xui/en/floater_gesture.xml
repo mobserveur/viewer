@@ -52,7 +52,7 @@
          width="80" />
     </scroll_list>
               <panel
-             background_visible="true"
+             background_visible="false"
              bevel_style="none"
              top_pad="0"
              follows="left|right|bottom"

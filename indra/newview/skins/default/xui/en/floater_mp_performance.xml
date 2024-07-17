@@ -3,7 +3,7 @@
  positioning="cascading"
  legacy_header_height="40"
  top="12"
- right="2"
+ right="-324"
  height="120"
  min_height="120"
  width="320"
@@ -74,14 +74,9 @@
      name="MPVBuffModeComboBox"
      width="150"
      height="23"
-     left="120"
+     left="130"
      top="4"
      >
-        <combo_box.item
-         enabled="true"
-         label="Auto"
-         name="Auto"
-         value="0" />
         <combo_box.item
          enabled="true"
          label="Normal"
@@ -94,8 +89,8 @@
          value="2" />
         <combo_box.item
          enabled="true"
-         label="Optimized+ (AMD GPU)"
-         name="Optimized+"
+         label="Experimental"
+         name="Experimental"
          value="3" />
     </combo_box>
 

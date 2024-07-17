@@ -570,7 +570,7 @@
     </button>
     <scroll_list
      draw_stripes="false"
-     bg_writeable_color="Transparent"
+     bg_writeable_color="0.75 0.75 0.75 0.15"
      follows="all"
      height="145"
      layout="topleft"

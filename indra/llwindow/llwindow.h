@@ -34,8 +34,6 @@
 #include "llinstancetracker.h"
 #include "llsd.h"
 
-#include "../llrender/llglheaders.h"
-
 class LLSplashScreen;
 class LLPreeditor;
 class LLWindowCallbacks;
@@ -244,8 +242,6 @@ protected:
     S32         mMinWindowWidth;
     S32         mMinWindowHeight;
     S32         mRefreshRate;
-
-    GLsync      swapFense;
 
     // Handle a UTF-16 encoding unit received from keyboard.
     // Converting the series of UTF-16 encoding units to UTF-32 data,

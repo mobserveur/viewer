@@ -379,6 +379,7 @@ void LLProgressView::initLogos()
 {
     mLogosList.clear();
 
+#if LL_FMODSTUDIO || LL_HAVOK
     const U8 image_codec = IMG_CODEC_PNG;
     const LLRectf default_clip(0.f, 1.f, 1.f, 0.f);
     //const S32 default_height = 28;
@@ -390,6 +391,7 @@ void LLProgressView::initLogos()
     LLTextBox *logos_label = getChild<LLTextBox>("logos_lbl");
     S32 texture_start_x = logos_label->getFont()->getWidthF32(logos_label->getText()) + default_pad;
     S32 texture_start_y = -7;
+#endif //LL_FMODSTUDIO || LL_HAVOK
 
     // Normally we would just preload these textures from textures.xml,
     // and display them via icon control, but they are only needed on

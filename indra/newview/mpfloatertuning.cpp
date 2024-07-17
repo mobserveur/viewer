@@ -1,5 +1,5 @@
 /**
-* @file mpvfloatertuning.cpp
+* @file mpfloatertuning.cpp
 * @brief Controller for viewer tuning
 * @author observeur@megapahit.net
 *
@@ -27,7 +27,7 @@
 
 #include "llviewerprecompiledheaders.h"
 
-#include "mpvfloatertuning.h"
+#include "mpfloatertuning.h"
 #include "llsliderctrl.h"
 #include "llcheckboxctrl.h"
 #include "llcombobox.h"
@@ -36,34 +36,41 @@
 
 #include "../llrender/llvertexbuffer.cpp"
 
-MPVFloaterTuning::MPVFloaterTuning(const LLSD& key) : LLFloater(key)
+MPFloaterTuning::MPFloaterTuning(const LLSD& key) : LLFloater(key)
 {
 }
 
-void MPVFloaterTuning::syncFromPreferenceSetting(void *user_data)
+void MPFloaterTuning::syncFromPreferenceSetting(void *user_data)
 {
-    MPVFloaterTuning *self = static_cast<MPVFloaterTuning*>(user_data);
+    MPFloaterTuning *self = static_cast<MPFloaterTuning*>(user_data);
 
     U32 fps = gSavedSettings.getU32("MaxFPS");
     LLSliderCtrl* fpsSliderCtrl = self->getChild<LLSliderCtrl>("fpsSlider");
     fpsSliderCtrl->setValue(fps,FALSE);
 
     U32 optBuf = gSavedSettings.getU32("MPVBufferOptiMode");
+
+    if(optBuf == 0)
+    {
+        if(gGLManager.mIsApple) optBuf = 2;
+        else optBuf = 1;
+    }
+
     LLComboBox * optBufCtrl = self->getChild<LLComboBox>("MPVBuffModeComboBox");
-    optBufCtrl->setCurrentByIndex(optBuf);
+    optBufCtrl->setCurrentByIndex(optBuf-1);
 
     LL_INFOS() << "syncFromPreferenceSetting optBuf=" << optBuf << LL_ENDL;
 }
 
-BOOL MPVFloaterTuning::postBuild()
+BOOL MPFloaterTuning::postBuild()
 {
     LLSliderCtrl* fpsSliderCtrl = getChild<LLSliderCtrl>("fpsSlider");
     fpsSliderCtrl->setMinValue(0);
     fpsSliderCtrl->setMaxValue(165);
-    fpsSliderCtrl->setSliderMouseUpCallback(boost::bind(&MPVFloaterTuning::onFinalCommit,this));
+    fpsSliderCtrl->setSliderMouseUpCallback(boost::bind(&MPFloaterTuning::onFinalCommit,this));
 
     LLComboBox* optBufCtrl = getChild<LLComboBox>("MPVBuffModeComboBox");
-    optBufCtrl->setCommitCallback(boost::bind(&MPVFloaterTuning::onFinalCommit,this));
+    optBufCtrl->setCommitCallback(boost::bind(&MPFloaterTuning::onFinalCommit,this));
 
     syncFromPreferenceSetting(this);
 
@@ -72,19 +79,19 @@ BOOL MPVFloaterTuning::postBuild()
 
 // Do send-to-the-server work when slider drag completes, or new
 // value entered as text.
-void MPVFloaterTuning::onFinalCommit()
+void MPFloaterTuning::onFinalCommit()
 {
     LLSliderCtrl* fpsSliderCtrl = getChild<LLSliderCtrl>("fpsSlider");
     U32 fps = (U32)fpsSliderCtrl->getValueF32();
     gSavedSettings.setU32("MaxFPS",fps);
 
     LLComboBox* optBufCtrl = getChild<LLComboBox>("MPVBuffModeComboBox");
-    S16 optBuf = optBufCtrl->getCurrentIndex();
+    S16 optBuf = optBufCtrl->getCurrentIndex() + 1;
     gSavedSettings.setU32("MPVBufferOptiMode",optBuf);
 
     LLVertexBuffer::sMappingMode = optBuf;
 }
 
-void MPVFloaterTuning::onClose(bool app_quitting)
+void MPFloaterTuning::onClose(bool app_quitting)
 {
 }
