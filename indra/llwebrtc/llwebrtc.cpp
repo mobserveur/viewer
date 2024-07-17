@@ -556,7 +556,6 @@ void LLWebRTCImpl::updateDevices()
     }
 }
 
-#if __x86_64__ && !__FreeBSD__
 void LLWebRTCImpl::OnDevicesUpdated()
 {
     // reset these to a bad value so an update is forced
@@ -565,7 +564,6 @@ void LLWebRTCImpl::OnDevicesUpdated()
 
     updateDevices();
 }
-#endif
 
 
 void LLWebRTCImpl::setTuningMode(bool enable)

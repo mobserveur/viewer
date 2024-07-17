@@ -171,9 +171,11 @@ class LLWebRTCImpl : public LLWebRTCDeviceInterface
     //
     // AudioDeviceSink
     //
+    void OnDevicesUpdated()
 #if __x86_64__ && !__FreeBSD__
-    void OnDevicesUpdated() override;
+            override
 #endif
+            ;
 
     //
     // Helpers
