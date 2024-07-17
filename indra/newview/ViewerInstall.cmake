@@ -1,24 +1,48 @@
-add_custom_command(
-    OUTPUT contributors.txt
-    COMMAND sed
-    ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-    COMMAND sed
-    ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-    COMMAND sed
-    ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-    COMMAND sed
-    ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-    COMMAND sed
-    ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-    COMMAND sed
-    ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-    COMMAND sort
-    ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-    COMMAND paste
-    ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-    COMMAND sed
-    ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-    )
+if (LINUX)
+    add_custom_command(
+        OUTPUT contributors.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sort
+        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND paste
+        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        )
+else (LINUX)
+    add_custom_command(
+        OUTPUT contributors.txt
+        COMMAND sed
+        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sort
+        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND paste
+        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        COMMAND sed
+        ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        )
+endif (LINUX)
 
 add_custom_target(contributors ALL
     DEPENDS contributors.txt
