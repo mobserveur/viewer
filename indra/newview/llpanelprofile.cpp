@@ -1386,6 +1386,11 @@ void LLPanelProfileSecondLife::onCommitMenu(const LLSD& userdata)
         LLWString wstr = utf8str_to_wstring(getAvatarId().asString());
         LLClipboard::instance().copyToClipboard(wstr, 0, wstr.size());
     }
+    else if (item_name == "copy_profile_link")
+    {
+        LLWString wstr = utf8str_to_wstring(llformat("secondlife:///app/agent/%s/about", getAvatarId().asString().c_str()));
+        LLClipboard::instance().copyToClipboard(wstr, 0, wstr.size());
+    }
     else if (item_name == "agent_permissions")
     {
         onShowAgentPermissionsDialog();

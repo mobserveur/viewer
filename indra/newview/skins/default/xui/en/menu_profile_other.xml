@@ -168,4 +168,12 @@
      function="Profile.Commit"
      parameter="copy_user_id"/>
   </menu_item_call>
+  <menu_item_call
+   label="Copy Profile Link"
+   layout="topleft"
+   name="copy_link">
+    <menu_item_call.on_click
+     function="Profile.Commit"
+     parameter="copy_profile_link"/>
+  </menu_item_call>
 </toggleable_menu>
