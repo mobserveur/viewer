@@ -14,7 +14,7 @@
     button_display_mode="icons_only">
     <command name="search"/>
     <command name="map"/>
-    <command name="places"/>
+    <command name="build"/>
     <command name="minimap"/>
     <command name="snapshot"/>
     <command name="aboutland"/>
