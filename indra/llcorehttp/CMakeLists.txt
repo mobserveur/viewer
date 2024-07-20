@@ -3,9 +3,6 @@
 project(llcorehttp)
 
 include(00-Common)
-if (LL_TESTS)
-include(GoogleMock)
-endif ()
 include(CURL)
 include(OpenSSL)
 include(NGHTTP2)
@@ -15,9 +12,6 @@ if (LL_TESTS)
 include(LLAddBuildTest)
 endif ()
 include(LLCommon)
-if (LL_TESTS)
-include(Tut)
-endif ()
 include(bugsplat)
 
 set(llcorehttp_SOURCE_FILES

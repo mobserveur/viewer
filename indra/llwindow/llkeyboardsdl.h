@@ -1,8 +1,7 @@
 /**
- * @file llkeyboardsdl.h
- * @brief Handler for assignable key bindings
+ * @author This module has many fathers, and it shows.
  *
- * $LicenseInfo:firstyear=2004&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2001&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2010, Linden Research, Inc.
  *
@@ -24,8 +23,8 @@
  * $/LicenseInfo$
  */
 
-#ifndef LL_LLKEYBOARDSDL_H
-#define LL_LLKEYBOARDSDL_H
+#ifndef LL_LLKEYBOARDSDL2_H
+#define LL_LLKEYBOARDSDL2_H
 
 #include "llkeyboard.h"
 #if !defined(__i386__) && !defined(__x86_64__)
@@ -49,10 +48,13 @@ protected:
     MASK    updateModifiers(const U32 mask);
     void    setModifierKeyLevel( KEY key, BOOL new_state );
     BOOL    translateNumpadKey( const U32 os_key, KEY *translated_key );
-    U32 inverseTranslateNumpadKey(const KEY translated_key);
+    U16 inverseTranslateNumpadKey(const KEY translated_key);
 private:
     std::map<U32, KEY> mTranslateNumpadMap;  // special map for translating OS keys to numpad keys
     std::map<KEY, U32> mInvTranslateNumpadMap; // inverse of the above
+
+public:
+    static U32 mapSDL2toWin( U32 );
 };
 
 #endif

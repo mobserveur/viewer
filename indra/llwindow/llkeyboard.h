@@ -55,6 +55,11 @@ class LLWindowCallbacks;
 class LLKeyboard
 {
 public:
+#ifndef LL_SDL
+    typedef U16 NATIVE_KEY_TYPE;
+#else
+    typedef U32 NATIVE_KEY_TYPE;
+#endif
     LLKeyboard();
     virtual ~LLKeyboard();
 
@@ -67,24 +72,13 @@ public:
     BOOL            getKeyDown(const KEY key) { return mKeyLevel[key]; }
     BOOL            getKeyRepeated(const KEY key) { return mKeyRepeated[key]; }
 
-#if LL_SDL
-    BOOL            translateKey(const U32 os_key, KEY *translated_key);
-    U32             inverseTranslateKey(const KEY translated_key);
-#else
-    BOOL            translateKey(const U16 os_key, KEY *translated_key);
-    U16             inverseTranslateKey(const KEY translated_key);
-#endif
+    BOOL            translateKey(const NATIVE_KEY_TYPE os_key, KEY *translated_key);
+    NATIVE_KEY_TYPE     inverseTranslateKey(const KEY translated_key);
     BOOL            handleTranslatedKeyUp(KEY translated_key, U32 translated_mask);     // Translated into "Linden" keycodes
     BOOL            handleTranslatedKeyDown(KEY translated_key, U32 translated_mask);   // Translated into "Linden" keycodes
 
-
-#if LL_SDL
-    virtual BOOL    handleKeyUp(const U32 key, MASK mask) = 0;
-    virtual BOOL    handleKeyDown(const U32 key, MASK mask) = 0;
-#else
-    virtual BOOL    handleKeyUp(const U16 key, MASK mask) = 0;
-    virtual BOOL    handleKeyDown(const U16 key, MASK mask) = 0;
-#endif
+    virtual BOOL    handleKeyUp(const NATIVE_KEY_TYPE key, MASK mask) = 0;
+    virtual BOOL    handleKeyDown(const NATIVE_KEY_TYPE key, MASK mask) = 0;
 
 #if defined(LL_DARWIN) && !defined(LL_SDL)
     // We only actually use this for OS X.
@@ -121,13 +115,8 @@ protected:
     void            addKeyName(KEY key, const std::string& name);
 
 protected:
-#if LL_SDL
-    std::map<U32, KEY>  mTranslateKeyMap;       // Map of translations from OS keys to Linden KEYs
-    std::map<KEY, U32>  mInvTranslateKeyMap;    // Map of translations from Linden KEYs to OS keys
-#else
-    std::map<U16, KEY>  mTranslateKeyMap;       // Map of translations from OS keys to Linden KEYs
-    std::map<KEY, U16>  mInvTranslateKeyMap;    // Map of translations from Linden KEYs to OS keys
-#endif
+    std::map<NATIVE_KEY_TYPE, KEY>  mTranslateKeyMap;       // Map of translations from OS keys to Linden KEYs
+    std::map<KEY, NATIVE_KEY_TYPE>  mInvTranslateKeyMap;    // Map of translations from Linden KEYs to OS keys
     LLWindowCallbacks *mCallbacks;
 
     LLTimer         mKeyLevelTimer[KEY_COUNT];  // Time since level was set

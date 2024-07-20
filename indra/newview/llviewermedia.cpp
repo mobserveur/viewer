@@ -1723,8 +1723,6 @@ LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_
         std::string user_data_path_cache = gDirUtilp->getCacheDir(false);
         user_data_path_cache += gDirUtilp->getDirDelimiter();
 
-        std::string user_data_path_cef_log = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "cef_log.txt");
-
         // See if the plugin executable exists
         llstat s;
         if(LLFile::stat(launcher_name, &s))
@@ -1739,6 +1737,7 @@ LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_
         {
             media_source = new LLPluginClassMedia(owner);
             media_source->setSize(default_width, default_height);
+            std::string user_data_path_cef_log = gDirUtilp->getExpandedFilename(LL_PATH_LOGS, "cef.log");
             media_source->setUserDataPath(user_data_path_cache, gDirUtilp->getUserName(), user_data_path_cef_log);
             media_source->setLanguageCode(LLUI::getLanguage());
             media_source->setZoomFactor(zoom_factor);
@@ -1765,6 +1764,11 @@ LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_
 
             bool media_plugin_debugging_enabled = gSavedSettings.getBOOL("MediaPluginDebugging");
             media_source->enableMediaPluginDebugging( media_plugin_debugging_enabled  || clean_browser);
+
+#if LL_LINUX
+            bool media_plugin_pipewire_volume_catcher = gSavedSettings.getBOOL("MediaPluginPipeWireVolumeCatcher");
+            media_source->enablePipeWireVolumeCatcher( media_plugin_pipewire_volume_catcher );
+#endif
 
             // need to set agent string here before instance created
             media_source->setBrowserUserAgent(LLViewerMedia::getInstance()->getCurrentUserAgent());
