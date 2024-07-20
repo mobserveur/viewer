@@ -1023,6 +1023,7 @@
             </menu_item_check>
             <menu_item_check
              label="Use Shared Environment"
+             shortcut="control|shift|X"
              name="Use Shared Environment">
                 <menu_item_check.on_click
                  function="World.EnvSettings"
