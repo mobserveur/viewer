@@ -691,10 +691,22 @@ LLProcess::LLProcess(const LLSDOrParams& params):
     // terminate with a null pointer
     argv.push_back(NULL);
 
+    // create an env vector for the child process
+    std::vector<const char*> envv;
+
+    // Add environment value assignments. See above remarks about c_str().
+    for (const std::string& env : params.envs)
+    {
+        envv.push_back(env.c_str());
+    }
+
+    // terminate with a null pointer
+    envv.push_back(NULL);
+
     // Launch! The NULL would be the environment block, if we were passing
     // one. Hand-expand chkapr() macro so we can fill in the actual command
     // string instead of the variable names.
-    if (ll_apr_warn_status(apr_proc_create(&mProcess, argv[0], &argv[0], NULL, procattr,
+    if (ll_apr_warn_status(apr_proc_create(&mProcess, argv[0], &argv[0], &envv[0], procattr,
                                            mPool)))
     {
         LLTHROW(LLProcessError(STRINGIZE(params << " failed")));

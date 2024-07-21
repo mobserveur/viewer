@@ -165,6 +165,7 @@ public:
         Params():
             executable("executable"),
             args("args"),
+            envs("envs"),
             cwd("cwd"),
             autokill("autokill", true),
             attached("attached", true),
@@ -182,6 +183,10 @@ public:
          * argument while assembling the command line.
          */
         Multiple<std::string> args;
+        /**
+         * zero or more additional command-line environment values.
+         */
+        Multiple<std::string> envs;
         /// current working directory, if need it changed
         Optional<std::string> cwd;
         /// implicitly kill child process on termination of parent, whether
