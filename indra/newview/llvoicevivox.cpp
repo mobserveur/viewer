@@ -948,11 +948,15 @@ bool LLVivoxVoiceClient::startAndLaunchDaemon()
             // vivox executable exists.  Build the command line and launch the daemon.
             LLProcess::Params params;
 #if LL_LINUX || __FreeBSD__
+#if __FreeBSD__
+            params.envs.add("WINEARCH=win32");
+            params.envs.add("WINEPREFIX=~/.i386-wine-pkg");
+#endif // __FreeBSD__
             params.executable = "wine";
             params.args.add(exe_path);
 #else
             params.executable = exe_path;
-#endif
+#endif // LL_LINUX || __FreeBSD__
 
             // VOICE-88: Cycle through [portbase..portbase+portrange) on
             // successive tries because attempting to relaunch (after manually
