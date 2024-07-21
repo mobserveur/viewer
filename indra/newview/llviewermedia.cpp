@@ -1719,6 +1719,13 @@ LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_
     {
         std::string launcher_name = gDirUtilp->getLLPluginLauncher();
         std::string plugin_name = gDirUtilp->getLLPluginFilename(plugin_basename);
+#if __FreeBSD__
+        if (plugin_basename == "media_plugin_cef")
+        {
+            launcher_name = "/compat/linux/usr/libexec/megapahit/SLPlugin";
+            plugin_name = "/compat/linux/usr/lib/x86_64-linux-gnu/libmedia_plugin_cef.so";
+        }
+#endif
 
         std::string user_data_path_cache = gDirUtilp->getCacheDir(false);
         user_data_path_cache += gDirUtilp->getDirDelimiter();
@@ -1779,7 +1786,16 @@ LLPluginClassMedia* LLViewerMediaImpl::newSourceFromMediaType(std::string media_
 
             media_source->setTarget(target);
 
+#if __FreeBSD__
+            std::string plugin_dir = gDirUtilp->getLLPluginDir();
+            if (plugin_basename == "media_plugin_cef")
+            {
+                plugin_dir = "/compat/linux/usr/lib/x86_64-linux-gnu";
+                plugin_name = "/usr/lib/x86_64-linux-gnu/libmedia_plugin_cef.so";
+            }
+#else
             const std::string plugin_dir = gDirUtilp->getLLPluginDir();
+#endif
             if (media_source->init(launcher_name, plugin_dir, plugin_name, gSavedSettings.getBOOL("PluginAttachDebuggerToPlugins")))
             {
                 return media_source;

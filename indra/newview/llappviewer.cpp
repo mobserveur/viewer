@@ -132,7 +132,7 @@
 #include "stringize.h"
 #include "llcoros.h"
 #include "llexception.h"
-#if LL_DARWIN || LL_LINUX
+#if LL_DARWIN || LL_LINUX || __FreeBSD__
 #include "cef/dullahan_version.h"
 #endif
 #include "vlc/libvlc_version.h"
@@ -3420,7 +3420,7 @@ LLSD LLAppViewer::getViewerInfo() const
         info["VOICE_VERSION"] = LLTrans::getString("NotConnected");
     }
 
-#if LL_DARWIN || LL_LINUX
+#if LL_DARWIN || LL_LINUX || __FreeBSD__
     std::ostringstream cef_ver_codec;
     cef_ver_codec << "Dullahan: ";
     cef_ver_codec << DULLAHAN_VERSION_MAJOR;
