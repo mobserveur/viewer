@@ -1702,12 +1702,18 @@ void LLRender::flush()
 
                 if (attribute_mask & LLVertexBuffer::MAP_TEXCOORD0)
                 {
-                    vb->setTexCoordData(mTexcoordsp.get());
+                    vb->setTexCoord0Data(mTexcoordsp.get());
                 }
 
                 if (attribute_mask & LLVertexBuffer::MAP_COLOR)
                 {
                     vb->setColorData(mColorsp.get());
+                }
+
+                //LL_INFOS() << "LLVertexBuffer::sMappingMode " << LLVertexBuffer::sMappingMode << LL_ENDL;
+                if(LLVertexBuffer::sMappingMode > 1)
+                {
+                    vb->unmapBuffer();
                 }
 
                 vb->unbind();

@@ -89,7 +89,7 @@ void MPFloaterTuning::onFinalCommit()
     S16 optBuf = optBufCtrl->getCurrentIndex() + 1;
     gSavedSettings.setU32("MPVBufferOptiMode",optBuf);
 
-    LLVertexBuffer::sMappingMode = optBuf;
+    //LLVertexBuffer::sMappingMode = optBuf;
 }
 
 void MPFloaterTuning::onClose(bool app_quitting)

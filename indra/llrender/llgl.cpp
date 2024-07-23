@@ -1272,6 +1272,9 @@ bool LLGLManager::initGL()
         gSavedSettings.setU32("MPVBufferOptiMode",MPVBufferOptiMode);
     }
     LLVertexBuffer::sMappingMode = MPVBufferOptiMode;
+    //LLRender::sMappingMode = MPVBufferOptiMode;
+
+    LL_INFOS() << "milo init sMappingMode " << MPVBufferOptiMode << LL_ENDL;
 
     return true;
 }
