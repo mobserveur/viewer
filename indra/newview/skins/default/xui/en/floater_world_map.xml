@@ -86,7 +86,7 @@
       height="22"
       width="238"
       follows="right|top"
-      top="6"     
+      top="6"
       background_visible="false"
       bg_alpha_color="DkGray2">
     <text
@@ -605,7 +605,7 @@
       Location:
       </text>
       <spinner
-        control_name="Teleport_Coordinate_X"
+        control_name="teleport_coordinate_x"
         decimal_digits="0"
         follows="right|bottom"
         height="23"
@@ -617,11 +617,11 @@
         min_val="0"
         name="teleport_coordinate_x"
         width="44" >
-        <spinner.commit_callback 
+        <spinner.commit_callback
           function="WMap.Coordinates" />
       </spinner>
       <spinner
-        control_name="Teleport_Coordinate_Y"
+        control_name="teleport_coordinate_y"
         decimal_digits="0"
         follows="right|bottom"
         height="23"
@@ -637,7 +637,7 @@
           function="WMap.Coordinates" />
       </spinner>
       <spinner
-        control_name="Teleport_Coordinate_Z"
+        control_name="teleport_coordinate_z"
         decimal_digits="0"
         follows="right|bottom"
         height="23"

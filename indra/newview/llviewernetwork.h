@@ -174,6 +174,20 @@ class LLGridManager : public LLSingleton<LLGridManager>
 
     //@}
 
+    typedef enum e_grid_platform {
+        NOPLATFORM = 0,
+        SLMAIN,
+        SLBETA,
+        OPENSIM,
+        HALCYON
+    } EGridPlatform;
+
+    typedef enum e_add_grid {
+        ADD_MANUAL = 0,
+        ADD_HYPERGRID,
+        ADD_LINK
+    } EAddGridType;
+
     /* ================================================================
      * @name Selecting the current grid
      * @{
@@ -197,6 +211,11 @@ class LLGridManager : public LLSingleton<LLGridManager>
 
     /// Is the selected grid one of the hard-coded default grids (Agni or Aditi)
     bool isSystemGrid() { return isSystemGrid(mGrid); }
+
+    /// Is the selected grid Second Life?
+    bool isInSecondlife();
+
+    bool isInOpenSim();
 
     /// Is the selected grid a production grid?
     bool isInProductionGrid();
