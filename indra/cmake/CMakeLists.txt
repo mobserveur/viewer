@@ -22,13 +22,11 @@ set(cmake_SOURCE_FILES
         DragDrop.cmake
         EXPAT.cmake
         FindAutobuild.cmake
-        FMODSTUDIO.cmake
         FreeType.cmake
         GLEXT.cmake
         GLH.cmake
         Havok.cmake
         Hunspell.cmake
-        JsonCpp.cmake
         LLAddBuildTest.cmake
         LLAppearance.cmake
         LLAudio.cmake

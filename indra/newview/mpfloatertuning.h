@@ -34,7 +34,7 @@ class MPFloaterTuning: public LLFloater
 public:
     MPFloaterTuning(const LLSD& key);
 
-    BOOL postBuild();
+    bool postBuild();
 
     void onFinalCommit();
 

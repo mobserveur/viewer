@@ -110,6 +110,7 @@ public:
         TYPE_WEIGHT,            //  "weight"
         TYPE_WEIGHT4,           //  "weight4"
         TYPE_CLOTHWEIGHT,       //  "clothing"
+        TYPE_JOINT,             //  "joint"
         TYPE_TEXTURE_INDEX,     //  "texture_index"
         TYPE_MAX,   // TYPE_MAX is the size/boundary marker for attributes that go in the vertex buffer
         TYPE_INDEX, // TYPE_INDEX is beyond _MAX because it lives in a separate (index) buffer
@@ -129,6 +130,7 @@ public:
         MAP_WEIGHT = (1<<TYPE_WEIGHT),
         MAP_WEIGHT4 = (1<<TYPE_WEIGHT4),
         MAP_CLOTHWEIGHT = (1<<TYPE_CLOTHWEIGHT),
+        MAP_JOINT = (1<<TYPE_JOINT),
         MAP_TEXTURE_INDEX = (1<<TYPE_TEXTURE_INDEX),
     };
 
@@ -193,7 +195,7 @@ public:
     void setNormalData(const LLVector4a* data);
     void setTangentData(const LLVector4a* data);
     void setWeight4Data(const LLVector4a* data);
-    void setTexCoordData(const LLVector2* data);
+    void setJointData(const U64* data);
     void setTexCoord0Data(const LLVector2* data);
     void setTexCoord1Data(const LLVector2* data);
     void setColorData(const LLColor4U* data);
@@ -204,7 +206,7 @@ public:
     void setNormalData(const LLVector4a* data, U32 offset, U32 count);
     void setTangentData(const LLVector4a* data, U32 offset, U32 count);
     void setWeight4Data(const LLVector4a* data, U32 offset, U32 count);
-    //void setJointData(const U64* data, U32 offset, U32 count);
+    void setJointData(const U64* data, U32 offset, U32 count);
     void setTexCoord0Data(const LLVector2* data, U32 offset, U32 count);
     void setTexCoord1Data(const LLVector2* data, U32 offset, U32 count);
     void setColorData(const LLColor4U* data, U32 offset, U32 count);
@@ -276,7 +278,7 @@ private:
         : LLVertexBuffer(typemask)
     {}
 
-    bool    allocateBuffer(S32 nverts, S32 nindices, BOOL create) { return allocateBuffer(nverts, nindices); }
+    bool    allocateBuffer(S32 nverts, S32 nindices, bool create) { return allocateBuffer(nverts, nindices); }
 
 public:
 

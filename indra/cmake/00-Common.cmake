@@ -88,7 +88,7 @@ if (WINDOWS)
   if( ADDRESS_SIZE EQUAL 32 )
     add_compile_options( /arch:SSE2 )
   endif()
-     
+
   # Are we using the crummy Visual Studio KDU build workaround?
   if (NOT VS_DISABLE_FATAL_WARNINGS)
     add_compile_options(/WX)
@@ -109,6 +109,9 @@ if (WINDOWS)
   # https://github.com/actions/runner-images/issues/10004#issuecomment-2153445161
   # can be removed after the above issue is resolved and deployed across GHA
   add_compile_definitions(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
+
+  # Allow use of sprintf etc
+  add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif (WINDOWS)
 
 if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")

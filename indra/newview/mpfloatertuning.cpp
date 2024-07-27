@@ -62,7 +62,7 @@ void MPFloaterTuning::syncFromPreferenceSetting(void *user_data)
     LL_INFOS() << "syncFromPreferenceSetting optBuf=" << optBuf << LL_ENDL;
 }
 
-BOOL MPFloaterTuning::postBuild()
+bool MPFloaterTuning::postBuild()
 {
     LLSliderCtrl* fpsSliderCtrl = getChild<LLSliderCtrl>("fpsSlider");
     fpsSliderCtrl->setMinValue(0);

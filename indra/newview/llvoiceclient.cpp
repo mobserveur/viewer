@@ -37,6 +37,7 @@
 #include "llui.h"
 #include "llkeyboard.h"
 #include "llagent.h"
+#include "lltrans.h"
 #include "lluiusage.h"
 
 const F32 LLVoiceClient::OVERDRIVEN_POWER_LEVEL = 0.7f;
@@ -423,16 +424,16 @@ bool LLVoiceClient::isParticipant(const LLUUID &speaker_id)
 //--------------------------------------------------
 // text chat
 
-BOOL LLVoiceClient::isSessionTextIMPossible(const LLUUID& id)
+bool LLVoiceClient::isSessionTextIMPossible(const LLUUID& id)
 {
     // all sessions can do TextIM, as we no longer support PSTN
-    return TRUE;
+    return true;
 }
 
-BOOL LLVoiceClient::isSessionCallBackPossible(const LLUUID& id)
+bool LLVoiceClient::isSessionCallBackPossible(const LLUUID& id)
 {
     // we don't support PSTN calls anymore.  (did we ever?)
-    return TRUE;
+    return true;
 }
 
 //----------------------------------------------
@@ -597,7 +598,11 @@ bool LLVoiceClient::voiceEnabled()
     bool enabled = enable_voice_chat && !cmd_line_disable_voice && !gNonInteractive;
     if (enabled && !mVoiceEffectSupportNotified && getVoiceEffectEnabled() && !getVoiceEffectDefault().isNull())
     {
-        LLNotificationsUtil::add("VoiceEffectsNotSupported", LLSD(), LLSD(), &LLVoiceClient::onVoiceEffectsNotSupported);
+        static const LLSD args = llsd::map(
+            "FAQ_URL", LLTrans::getString("no_voice_morphing_faq_url")
+        );
+
+        LLNotificationsUtil::add("VoiceEffectsNotSupported", args, LLSD(), &LLVoiceClient::onVoiceEffectsNotSupported);
         mVoiceEffectSupportNotified = true;
     }
     return enabled;
@@ -713,9 +718,9 @@ void LLVoiceClient::toggleUserPTTState(void)
 //-------------------------------------------
 // nearby speaker accessors
 
-BOOL LLVoiceClient::getVoiceEnabled(const LLUUID& id)
+bool LLVoiceClient::getVoiceEnabled(const LLUUID& id)
 {
-    return isParticipant(id) ? TRUE : FALSE;
+    return isParticipant(id);
 }
 
 std::string LLVoiceClient::getDisplayName(const LLUUID& id)
@@ -734,23 +739,23 @@ bool LLVoiceClient::isVoiceWorking() const
            LLWebRTCVoiceClient::getInstance()->isVoiceWorking();
 }
 
-BOOL LLVoiceClient::isParticipantAvatar(const LLUUID& id)
+bool LLVoiceClient::isParticipantAvatar(const LLUUID& id)
 {
-    return TRUE;
+    return true;
 }
 
-BOOL LLVoiceClient::isOnlineSIP(const LLUUID& id)
+bool LLVoiceClient::isOnlineSIP(const LLUUID& id)
 {
-    return FALSE;
+    return false;
 }
 
-BOOL LLVoiceClient::getIsSpeaking(const LLUUID& id)
+bool LLVoiceClient::getIsSpeaking(const LLUUID& id)
 {
     return LLWebRTCVoiceClient::getInstance()->getIsSpeaking(id) ||
            LLVivoxVoiceClient::getInstance()->getIsSpeaking(id);
 }
 
-BOOL LLVoiceClient::getIsModeratorMuted(const LLUUID& id)
+bool LLVoiceClient::getIsModeratorMuted(const LLUUID& id)
 {
     // don't bother worrying about p2p calls, as
     // p2p calls don't have mute.
@@ -764,7 +769,7 @@ F32 LLVoiceClient::getCurrentPower(const LLUUID& id)
                      LLWebRTCVoiceClient::getInstance()->getCurrentPower(id));
 }
 
-BOOL LLVoiceClient::getOnMuteList(const LLUUID& id)
+bool LLVoiceClient::getOnMuteList(const LLUUID& id)
 {
     // don't bother worrying about p2p calls, as
     // p2p calls don't have mute.

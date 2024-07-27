@@ -78,7 +78,7 @@ LLFloaterIMSessionTab::LLFloaterIMSessionTab(const LLSD& session_id)
     mInputPanels(NULL),
     mChatLayoutPanelHeight(0)
 {
-    setAutoFocus(FALSE);
+    setAutoFocus(false);
     mSession = LLIMModel::getInstance()->findIMSession(mSessionID);
 
     mCommitCallbackRegistrar.add("IMSession.Menu.Action",
@@ -161,7 +161,7 @@ LLFloaterIMSessionTab* LLFloaterIMSessionTab::getConversation(const LLUUID& uuid
 };
 
 // virtual
-void LLFloaterIMSessionTab::setVisible(BOOL visible)
+void LLFloaterIMSessionTab::setVisible(bool visible)
 {
     if (visible && !mHasVisibleBeenInitialized)
     {
@@ -184,7 +184,7 @@ void LLFloaterIMSessionTab::setVisible(BOOL visible)
 }
 
 // virtual
-void LLFloaterIMSessionTab::setFocus(BOOL focus)
+void LLFloaterIMSessionTab::setFocus(bool focus)
 {
     super::setFocus(focus);
 
@@ -195,7 +195,7 @@ void LLFloaterIMSessionTab::setFocus(BOOL focus)
 
         if (mInputEditor)
         {
-            mInputEditor->setFocus(TRUE);
+            mInputEditor->setFocus(true);
         }
     }
 }
@@ -258,9 +258,9 @@ void LLFloaterIMSessionTab::assignResizeLimits()
 }
 
 // virtual
-BOOL LLFloaterIMSessionTab::postBuild()
+bool LLFloaterIMSessionTab::postBuild()
 {
-    BOOL result;
+    bool result;
 
     mBodyStack = getChild<LLLayoutStack>("main_stack");
     mParticipantListAndHistoryStack = getChild<LLLayoutStack>("im_panels");
@@ -329,8 +329,8 @@ BOOL LLFloaterIMSessionTab::postBuild()
 
     mInputEditor->setTextExpandedCallback(boost::bind(&LLFloaterIMSessionTab::reshapeChatLayoutPanel, this));
     mInputEditor->setMouseUpCallback(boost::bind(&LLFloaterIMSessionTab::onInputEditorClicked, this));
-    mInputEditor->setCommitOnFocusLost( FALSE );
-    mInputEditor->setPassDelete(TRUE);
+    mInputEditor->setCommitOnFocusLost( false );
+    mInputEditor->setPassDelete(true);
     mInputEditor->setFont(LLViewerChat::getChatFont());
 
     mChatLayoutPanelHeight = mChatLayoutPanel->getRect().getHeight();
@@ -477,19 +477,19 @@ void LLFloaterIMSessionTab::onInputEditorClicked()
 
 void LLFloaterIMSessionTab::onEmojiRecentPanelToggleBtnClicked()
 {
-    BOOL show = mEmojiRecentPanel->getVisible() ? FALSE : TRUE;
+    bool show = !mEmojiRecentPanel->getVisible();
     if (show)
     {
         initEmojiRecentPanel();
     }
 
     mEmojiRecentPanel->setVisible(show);
-    mInputEditor->setFocus(TRUE);
+    mInputEditor->setFocus(true);
 }
 
 void LLFloaterIMSessionTab::onEmojiPickerShowBtnClicked()
 {
-    mInputEditor->setFocus(TRUE);
+    mInputEditor->setFocus(true);
     mInputEditor->showEmojiHelper();
 }
 
@@ -498,8 +498,8 @@ void LLFloaterIMSessionTab::initEmojiRecentPanel()
     std::list<llwchar>& recentlyUsed = LLFloaterEmojiPicker::getRecentlyUsed();
     if (recentlyUsed.empty())
     {
-        mEmojiRecentEmptyText->setVisible(TRUE);
-        mEmojiRecentContainer->setVisible(FALSE);
+        mEmojiRecentEmptyText->setVisible(true);
+        mEmojiRecentContainer->setVisible(false);
     }
     else
     {
@@ -509,8 +509,8 @@ void LLFloaterIMSessionTab::initEmojiRecentPanel()
             emojis += emoji;
         }
         mEmojiRecentIconsCtrl->setEmojis(emojis);
-        mEmojiRecentEmptyText->setVisible(FALSE);
-        mEmojiRecentContainer->setVisible(TRUE);
+        mEmojiRecentEmptyText->setVisible(false);
+        mEmojiRecentContainer->setVisible(true);
     }
 }
 
@@ -587,13 +587,13 @@ void LLFloaterIMSessionTab::appendMessage(const LLChat& chat, const LLSD& args)
     mChatHistory->appendMessage(chat, chat_args);
 }
 
-void LLFloaterIMSessionTab::updateUsedEmojis(LLWString text)
+void LLFloaterIMSessionTab::updateUsedEmojis(LLWStringView text)
 {
     LLEmojiDictionary* dictionary = LLEmojiDictionary::getInstance();
     llassert_always(dictionary);
 
     bool emojiSent = false;
-    for (llwchar& c : text)
+    for (const llwchar& c : text)
     {
         if (dictionary->isEmoji(c))
         {
@@ -674,7 +674,7 @@ void LLFloaterIMSessionTab::addConversationViewParticipant(LLConversationItem* p
         mConversationsWidgets[uuid] = participant_view;
         participant_view->addToFolder(mConversationsRoot);
         participant_view->addToSession(mSessionID);
-        participant_view->setVisible(TRUE);
+        participant_view->setVisible(true);
     }
 }
 
@@ -688,7 +688,7 @@ void LLFloaterIMSessionTab::removeConversationViewParticipant(const LLUUID& part
         {
             // This is the last pointer, remove participant from session
             // before participant gets deleted on destroyView.
-            // 
+            //
             // Floater (widget) and participant's view can simultaneously
             // co-own the model, in which case view is responsible for
             // the deletion and floater is free to clear and recreate
@@ -697,7 +697,7 @@ void LLFloaterIMSessionTab::removeConversationViewParticipant(const LLUUID& part
             // See "add_participant".
             //
             // Todo: If it keeps causing issues turn participants
-            // into LLPointers in the session 
+            // into LLPointers in the session
             LLParticipantList* session = getParticipantList();
             if (session)
             {
@@ -740,7 +740,7 @@ void LLFloaterIMSessionTab::refreshConversation()
         if (widget_it->second->getViewModelItem())
         {
             widget_it->second->refresh();
-            widget_it->second->setVisible(TRUE);
+            widget_it->second->setVisible(true);
         }
         ++widget_it;
     }
@@ -985,7 +985,7 @@ void LLFloaterIMSessionTab::forceReshape()
 
 void LLFloaterIMSessionTab::reshapeChatLayoutPanel()
 {
-    mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + mInputEditorPad, FALSE);
+    mChatLayoutPanel->reshape(mChatLayoutPanel->getRect().getWidth(), mInputEditor->getRect().getHeight() + mInputEditorPad, false);
 }
 
 // static
@@ -1146,7 +1146,7 @@ void LLFloaterIMSessionTab::onOpen(const LLSD& key)
 
     mInputButtonPanel->setVisible(isTornOff());
 
-    setFocus(TRUE);
+    setFocus(true);
 }
 
 
@@ -1178,8 +1178,7 @@ void LLFloaterIMSessionTab::onTearOffClicked()
 
 void LLFloaterIMSessionTab::updateGearBtn()
 {
-
-    BOOL prevVisibility = mGearBtn->getVisible();
+    bool prevVisibility = mGearBtn->getVisible();
     mGearBtn->setVisible(checkIfTornOff() && mIsP2PChat);
 
 
@@ -1324,9 +1323,9 @@ LLView* LLFloaterIMSessionTab::getChatHistory()
     return mChatHistory;
 }
 
-BOOL LLFloaterIMSessionTab::handleKeyHere(KEY key, MASK mask )
+bool LLFloaterIMSessionTab::handleKeyHere(KEY key, MASK mask )
 {
-    BOOL handled = FALSE;
+    bool handled = false;
 
     if(mask == MASK_ALT)
     {
@@ -1334,17 +1333,17 @@ BOOL LLFloaterIMSessionTab::handleKeyHere(KEY key, MASK mask )
         if (KEY_RETURN == key && !isTornOff())
         {
             floater_container->expandConversation();
-            handled = TRUE;
+            handled = true;
         }
         if ((KEY_UP == key) || (KEY_LEFT == key))
         {
             floater_container->selectNextorPreviousConversation(false);
-            handled = TRUE;
+            handled = true;
         }
         if ((KEY_DOWN == key ) || (KEY_RIGHT == key))
         {
             floater_container->selectNextorPreviousConversation(true);
-            handled = TRUE;
+            handled = true;
         }
     }
     return handled;

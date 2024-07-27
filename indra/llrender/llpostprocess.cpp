@@ -165,7 +165,7 @@ void LLPostProcess::invalidate()
     mSceneRenderTexture = NULL ;
     mNoiseTexture = NULL ;
     mTempBloomTexture = NULL ;
-    initialized = FALSE ;
+    initialized = false ;
 }
 
 void LLPostProcess::apply(unsigned int width, unsigned int height)
@@ -373,7 +373,7 @@ void LLPostProcess::createTexture(LLPointer<LLImageGL>& texture, unsigned int wi
 {
     std::vector<GLubyte> data(width * height * 4, 0) ;
 
-    texture = new LLImageGL(FALSE) ;
+    texture = new LLImageGL(false) ;
     if(texture->createGLTexture())
     {
         gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, texture->getTexName());
@@ -395,7 +395,7 @@ void LLPostProcess::createNoiseTexture(LLPointer<LLImageGL>& texture)
         }
     }
 
-    texture = new LLImageGL(FALSE) ;
+    texture = new LLImageGL(false) ;
     if(texture->createGLTexture())
     {
         gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_TEXTURE, texture->getTexName());

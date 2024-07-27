@@ -12,7 +12,6 @@ if (LL_TESTS)
 include(LLAddBuildTest)
 endif ()
 include(Python)
-include(JsonCpp)
 
 set(llmessage_SOURCE_FILES
     llassetstorage.cpp

@@ -8,7 +8,6 @@ include(bugsplat)
 include(Linking)
 include(Boost)
 include(LLSharedLibs)
-include(JsonCpp)
 if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(Copy3rdPartyLibs)
 endif ()
@@ -283,7 +282,6 @@ target_link_libraries(
         llcommon
         ll::apr
         ll::expat
-        ll::jsoncpp
         ll::zlib-ng
         ll::boost
         ll::uriparser
