@@ -485,6 +485,8 @@ public:
     static bool sNsightDebugSupport;
     static LLVector2 sUIGLScaleFactor;
 
+    //static U32 sMappingMode;
+
 private:
     friend class LLLightState;
 

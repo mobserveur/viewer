@@ -148,6 +148,11 @@ LLPointer<LLViewerFetchedTexture> LLWorldMipmap::getObjectsTile(U32 grid_x, U32 
         {
             // Load it
             LLPointer<LLViewerFetchedTexture> img = loadObjectsTile(grid_x, grid_y, level);
+            if(img == nullptr)
+            {
+                LL_ERRS() << "loadObjectsTile() failed" << LL_ENDL;
+                return NULL;
+            }
             // Insert the image in the map
             level_mipmap.insert(sublevel_tiles_t::value_type( handle, img ));
             // Find the element again in the map (it's there now...)
@@ -162,6 +167,12 @@ LLPointer<LLViewerFetchedTexture> LLWorldMipmap::getObjectsTile(U32 grid_x, U32 
 
     // Get the image pointer and check if this asset is missing
     LLPointer<LLViewerFetchedTexture> img = found->second;
+    if(img == nullptr)
+    {
+        LL_ERRS() << "img is NULL" << LL_ENDL;
+        return NULL;
+    }
+
     if (img->isMissingAsset())
     {
         // Return NULL if asset missing
@@ -190,6 +201,12 @@ LLPointer<LLViewerFetchedTexture> LLWorldMipmap::loadObjectsTile(U32 grid_x, U32
     //LL_INFOS("WorldMap") << "LLWorldMipmap::loadObjectsTile(), URL = " << imageurl << LL_ENDL;
 
     LLPointer<LLViewerFetchedTexture> img = LLViewerTextureManager::getFetchedTextureFromUrl(imageurl, FTT_MAP_TILE, TRUE, LLGLTexture::BOOST_NONE, LLViewerTexture::LOD_TEXTURE);
+
+    if(img == nullptr)
+    {
+        LL_ERRS() << "fetching map tile FAILED from " << imageurl << LL_ENDL;
+        return nullptr;
+    }
     LL_INFOS("MAPURL") << "fetching map tile from " << imageurl << LL_ENDL;
 
     img->setBoostLevel(LLGLTexture::BOOST_MAP);
