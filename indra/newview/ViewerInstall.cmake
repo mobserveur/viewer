@@ -114,6 +114,11 @@ if (DARWIN)
         )
 
     install(DIRECTORY
+        /Applications/VLC.app/Contents/MacOS/plugins
+        DESTINATION ../Frameworks
+        )
+
+    install(DIRECTORY
         "${AUTOBUILD_INSTALL_DIR}/lib/release/Chromium Embedded Framework.framework"
         DESTINATION ../Frameworks
         )
