@@ -28,7 +28,9 @@ list(APPEND llwebrtc_SOURCE_FILES ${llwebrtc_HEADER_FILES})
 
 add_library (llwebrtc SHARED ${llwebrtc_SOURCE_FILES})
 
+if (NOT INSTALL)
 set_target_properties(llwebrtc PROPERTIES PUBLIC_HEADER llwebrtc.h)
+endif ()
 
 if (WINDOWS)
     target_link_libraries(llwebrtc PRIVATE ll::webrtc 
@@ -62,7 +64,7 @@ endif (LL_TESTS)
 
 if (INSTALL)
     if (DARWIN)
-        set(_LIB ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources)
+        set(_LIB ../Frameworks)
     elseif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
         set(_LIB lib/${ARCH}-linux-gnu)
     elseif (EXISTS /lib64)
