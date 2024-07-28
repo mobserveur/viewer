@@ -74,10 +74,8 @@ target_link_libraries(llprimitive
         ll::glh_linear
         )
 
-if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
-	set_source_files_properties(lldaeloader.cpp PROPERTIES COMPILE_FLAGS
-		-std=c++14)
-	add_subdirectory(llphysicsextensions)
+if (USESYSTEMLIBS)
+    add_subdirectory(llphysicsextensions)
 endif ()
 
 include(LibraryInstall)
