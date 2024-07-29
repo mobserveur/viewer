@@ -1110,7 +1110,7 @@ bool LLFilePicker::getSaveFileModeless(ESaveFilter filter,
 
 #if LL_FLTK
 
-BOOL LLFilePicker::getSaveFileModeless(ESaveFilter filter,
+bool LLFilePicker::getSaveFileModeless(ESaveFilter filter,
                                        const std::string& filename,
                                        void (*callback)(bool, std::string&, void*),
                                        void *userdata)
@@ -1119,7 +1119,7 @@ BOOL LLFilePicker::getSaveFileModeless(ESaveFilter filter,
     return FALSE;
 }
 
-BOOL LLFilePicker::getOpenFileModeless(ELoadFilter filter,
+bool LLFilePicker::getOpenFileModeless(ELoadFilter filter,
                                        void (*callback)(bool, std::vector<std::string> &, void*),
                                        void *userdata)
 {
@@ -1127,7 +1127,7 @@ BOOL LLFilePicker::getOpenFileModeless(ELoadFilter filter,
     return FALSE;
 }
 
-BOOL LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
+bool LLFilePicker::getMultipleOpenFilesModeless(ELoadFilter filter,
                                                 void (*callback)(bool, std::vector<std::string> &, void*),
                                                 void *userdata )
 {
