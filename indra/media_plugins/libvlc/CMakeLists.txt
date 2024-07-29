@@ -63,8 +63,8 @@ if (DARWIN)
         -change "/opt/local/lib/liburiparser.1.dylib" "@loader_path/../../Frameworks/liburiparser.1.dylib"
         -change "/opt/local/lib/libnghttp2.14.dylib" "@loader_path/../../Frameworks/libnghttp2.14.dylib"
         -change "/usr/local/lib/libxmlrpc-epi.0.dylib" "@loader_path/../../Frameworks/libxmlrpc-epi.0.dylib"
-        -change "@rpath/libvlc.dylib" "@loader_path/../../Frameworks/libvlc.dylib"
-        -change "@rpath/libvlccore.dylib" "@loader_path/../../Frameworks/libvlccore.dylib"
+        -change "@rpath/libvlc.dylib" "@loader_path/plugins/libvlc.dylib"
+        -change "@rpath/libvlccore.dylib" "@loader_path/plugins/libvlccore.dylib"
         "$<TARGET_FILE:media_plugin_libvlc>"
     VERBATIM
     COMMENT "Fixing paths to LibVLC media plugin dependencies"
