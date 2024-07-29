@@ -2916,17 +2916,6 @@ void LLWindowSDL::toggleVSync(bool enable_vsync)
     }
 }
 
-U32 LLWindowSDL::getAvailableVRAMMegabytes()
-{
-#if LL_DARWIN
-    static const U32 mb = 1024*1024;
-    static const U32 total_factor = 2;
-    return gGLManager.mVRAM - (LLImageGL::getTextureBytesAllocated() * total_factor/mb);
-#else
-    return 4096;
-#endif
-}
-
 void LLWindowSDL::setLanguageTextInput(const LLCoordGL& position)
 {
     LLCoordWindow win_pos;
