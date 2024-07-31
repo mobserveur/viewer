@@ -27,7 +27,7 @@
 #ifndef LL_LLGLHEADERS_H
 #define LL_LLGLHEADERS_H
 
-#if LL_MESA
+#if LL_MESA || LL_LINUX || __FreeBSD__
 //----------------------------------------------------------------------------
 // MESA headers
 // quotes so we get libraries/.../GL/ version
@@ -41,7 +41,7 @@
 # include "GL/glh_extensions.h"
 # undef __APPLE__
 
-#elif LL_LINUX || __FreeBSD__
+#elif LL_LINUX
 #define GL_GLEXT_PROTOTYPES
 #define GLX_GLEXT_PROTOTYPES
 
