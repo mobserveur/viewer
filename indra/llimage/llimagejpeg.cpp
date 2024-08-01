@@ -77,11 +77,13 @@ bool LLImageJPEG::updateData()
     //try/catch will crash on Mac and Linux if LLImageJPEG::errorExit throws an error
     //so as instead, we use setjmp/longjmp to avoid this crash, which is the best we can get. --bao
     //
+#if !(LL_DARWIN && defined(__arm64__))
     if(setjmp(sSetjmpBuffer))
     {
         jpeg_destroy_decompress(&cinfo);
         return false;
     }
+#endif
     try
     {
         // Now we can initialize the JPEG decompression object.
@@ -218,11 +220,13 @@ bool LLImageJPEG::decode(LLImageRaw* raw_image, F32 decode_time)
     //try/catch will crash on Mac and Linux if LLImageJPEG::errorExit throws an error
     //so as instead, we use setjmp/longjmp to avoid this crash, which is the best we can get. --bao
     //
+#if !(LL_DARWIN && defined(__arm64__))
     if(setjmp(sSetjmpBuffer))
     {
         jpeg_destroy_decompress(&cinfo);
         return true; // done
     }
+#endif
     try
     {
         // Now we can initialize the JPEG decompression object.
@@ -426,7 +430,9 @@ void LLImageJPEG::errorExit( j_common_ptr cinfo )
     jpeg_destroy(cinfo);
 
     // Return control to the setjmp point
+#if !(LL_DARWIN && defined(__arm64__))
     longjmp(sSetjmpBuffer, 1) ;
+#endif
 }
 
 // Decide whether to emit a trace or warning message.
@@ -535,6 +541,7 @@ bool LLImageJPEG::encode( const LLImageRaw* raw_image, F32 encode_time )
     //try/catch will crash on Mac and Linux if LLImageJPEG::errorExit throws an error
     //so as instead, we use setjmp/longjmp to avoid this crash, which is the best we can get. --bao
     //
+#if !(LL_DARWIN && defined(__arm64__))
     if( setjmp(sSetjmpBuffer) )
     {
         // If we get here, the JPEG code has signaled an error.
@@ -545,6 +552,7 @@ bool LLImageJPEG::encode( const LLImageRaw* raw_image, F32 encode_time )
         mOutputBufferSize = 0;
         return false;
     }
+#endif
 
     try
     {
