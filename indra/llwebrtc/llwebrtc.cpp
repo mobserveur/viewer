@@ -154,7 +154,8 @@ void LLCustomProcessor::Process(webrtc::AudioBuffer *audio_in)
 // LLWebRTCImpl implementation
 //
 
-LLWebRTCImpl::LLWebRTCImpl() :
+LLWebRTCImpl::LLWebRTCImpl(LLWebRTCLogCallback* logCallback) :
+    mLogSink(new LLWebRTCLogSink(logCallback)),
     mPeerCustomProcessor(nullptr),
     mMute(true),
     mTuningMode(false),
@@ -173,6 +174,7 @@ void LLWebRTCImpl::init()
     // Normal logging is rather spammy, so turn it off.
     rtc::LogMessage::LogToDebug(rtc::LS_NONE);
     rtc::LogMessage::SetLogToStderr(true);
+    rtc::LogMessage::AddLogToStream(mLogSink, rtc::LS_VERBOSE);
 
     mTaskQueueFactory = webrtc::CreateDefaultTaskQueueFactory();
 
@@ -314,6 +316,7 @@ void LLWebRTCImpl::terminate()
             mPeerDeviceModule   = nullptr;
             mTaskQueueFactory   = nullptr;
         });
+    rtc::LogMessage::RemoveLogToStream(mLogSink);
 }
 
 //
@@ -460,7 +463,7 @@ void ll_set_device_module_render_device(rtc::scoped_refptr<webrtc::AudioDeviceMo
     {
         device_module->SetPlayoutDevice(webrtc::AudioDeviceModule::kDefaultDevice);
     }
-    else 
+    else
     {
         device_module->SetPlayoutDevice(device);
     }
@@ -658,7 +661,7 @@ void LLWebRTCImpl::freePeerConnection(LLWebRTCPeerConnectionInterface* peer_conn
 // Most peer connection (signaling) happens on
 // the signaling thread.
 
-LLWebRTCPeerConnectionImpl::LLWebRTCPeerConnectionImpl() : 
+LLWebRTCPeerConnectionImpl::LLWebRTCPeerConnectionImpl() :
     mWebRTCImpl(nullptr),
     mPeerConnection(nullptr),
     mMute(false),
@@ -1173,7 +1176,7 @@ void LLWebRTCPeerConnectionImpl::OnSuccess(webrtc::SessionDescriptionInterface *
     {
         observer->OnOfferAvailable(mangled_sdp);
     }
-    
+
    mPeerConnection->SetLocalDescription(std::unique_ptr<webrtc::SessionDescriptionInterface>(
                                                      webrtc::CreateSessionDescription(webrtc::SdpType::kOffer, mangled_sdp)),
                                                  rtc::scoped_refptr<webrtc::SetLocalDescriptionObserverInterface>(this));
@@ -1329,9 +1332,9 @@ void freePeerConnection(LLWebRTCPeerConnectionInterface* peer_connection)
 }
 
 
-void init()
+void init(LLWebRTCLogCallback* logCallback)
 {
-    gWebRTCImpl = new LLWebRTCImpl();
+    gWebRTCImpl = new LLWebRTCImpl(logCallback);
     gWebRTCImpl->init();
 }
 
