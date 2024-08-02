@@ -39,6 +39,8 @@ class LLVivoxProtocolParser;
 #include "llcallingcard.h"   // for LLFriendObserver
 #include "lleventcoro.h"
 #include "llcoros.h"
+#include "llparcel.h"
+#include "llmutelist.h"
 #include <queue>
 
 #ifdef LL_USESYSTEMLIBS

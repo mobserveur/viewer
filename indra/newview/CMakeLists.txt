@@ -748,6 +748,10 @@ set(viewer_SOURCE_FILES
     pipeline.cpp
     )
 
+if (CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+    list(REMOVE_ITEM viewer_SOURCE_FILES llvoicewebrtc.cpp)
+endif ()
+
 set(VIEWER_BINARY_NAME "secondlife-bin" CACHE STRING
     "The name of the viewer executable to create.")
 
@@ -1962,7 +1966,6 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         llcorehttp
         llcommon
         llmeshoptimizer
-        llwebrtc
         ll::ndof
         lllogin
         llprimitive
@@ -1971,6 +1974,10 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ll::bugsplat
         ll::tracy
         )
+
+if (NOT CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+   target_link_libraries(${VIEWER_BINARY_NAME} llwebrtc )
+endif ()
 
 if (ENABLE_MEDIA_PLUGINS)
    target_link_libraries(${VIEWER_BINARY_NAME} ll::libvlc )
