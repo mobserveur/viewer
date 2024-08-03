@@ -114,6 +114,19 @@ if (DARWIN)
         )
 
     install(DIRECTORY
+        /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/plugins
+        DESTINATION llplugin
+        )
+
+    install(FILES
+        /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlc.5.dylib
+        /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlc.dylib
+        /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlccore.9.dylib
+        /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlccore.dylib
+        DESTINATION llplugin/plugins
+        )
+
+    install(DIRECTORY
         "${AUTOBUILD_INSTALL_DIR}/lib/release/Chromium Embedded Framework.framework"
         DESTINATION ../Frameworks
         )

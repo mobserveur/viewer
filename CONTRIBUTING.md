@@ -29,7 +29,7 @@ developer-to-developer or support.
   roadmap. Github issues are useful for collaboration between viewer forks
   and the official upstream and when engineering-specific and technical
   collaboration is beneficial. 
-- The [In-world group][] and [Discord][] exist for many topics including content creation,
+- The [in-world group][] and [Discord][] exist for many topics including content creation,
   scripting, social topics and more, and are useful for announcements and
   discussion between viewer maintainers. 
 
@@ -39,7 +39,7 @@ developer-to-developer or support.
 Report bugs and provide ideas for features using the respective board on Megapahit's
 feedback portal:
 
-- [Viewer bugs and features](https://megapahit.com/enter_bug.cgi)
+- [Viewer bugs and features](https://megapahit.com/enter_bug.cgi?product=Viewer)
 
 Creating posts on Bugzilla is important as it allows the greatest
 exposure and input from Second Life users. It also allows Megapahit staff to
@@ -65,5 +65,5 @@ reference for best git practices.
 [IRC]: irc://megapahit.net/#viewer
 [PR etiquette]: https://gist.github.com/mikepea/863f63d6e37281e329f8
 [Github issues]: https://github.com/megapahit/viewer/issues
-[In-world group]: https://world.secondlife.com/group/1142646c-5fb2-162c-ecf8-c5e422ab5c6d
+[in-world group]: https://world.secondlife.com/group/1142646c-5fb2-162c-ecf8-c5e422ab5c6d
 [Discord]: https://discord.gg/jpt33HPVEK
