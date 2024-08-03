@@ -298,7 +298,6 @@ LLVivoxVoiceClient::LLVivoxVoiceClient() :
     mDevicesListUpdated(false),
 
     mAudioSession(), // TBD - should be NULL
-    mAudioSessionChanged(false),
     mNextAudioSession(),
 
     mCurrentParcelLocalID(0),
@@ -1653,7 +1652,6 @@ bool LLVivoxVoiceClient::addAndJoinSession(const sessionStatePtr_t &nextSession)
     LL_INFOS("Voice") << "Adding or joining voice session " << nextSession->mHandle << LL_ENDL;
 
     mAudioSession = nextSession;
-    mAudioSessionChanged = true;
     if (!mAudioSession || !mAudioSession->mReconnect)
     {
         mNextAudioSession.reset();
@@ -1910,9 +1908,8 @@ bool LLVivoxVoiceClient::terminateAudioSession(bool wait)
 
         sessionStatePtr_t oldSession = mAudioSession;
 
+        notifyStatusObservers(LLVoiceClientStatusObserver::STATUS_LEFT_CHANNEL); // needs mAudioSession for uri
         mAudioSession.reset();
-        // We just notified status observers about this change.  Don't do it again.
-        mAudioSessionChanged = false;
 
         // The old session may now need to be deleted.
         reapSession(oldSession);
@@ -1920,9 +1917,9 @@ bool LLVivoxVoiceClient::terminateAudioSession(bool wait)
     else
     {
         LL_WARNS("Voice") << "terminateAudioSession(" << wait << ") with NULL mAudioSession" << LL_ENDL;
+        notifyStatusObservers(LLVoiceClientStatusObserver::STATUS_LEFT_CHANNEL);
     }
 
-    notifyStatusObservers(LLVoiceClientStatusObserver::STATUS_LEFT_CHANNEL);
 
     // Always reset the terminate request flag when we get here.
     // Some slower PCs have a race condition where they can switch to an incoming  P2P call faster than the state machine leaves
@@ -3844,7 +3841,6 @@ void LLVivoxVoiceClient::joinedAudioSession(const sessionStatePtr_t &session)
         sessionStatePtr_t oldSession = mAudioSession;
 
         mAudioSession = session;
-        mAudioSessionChanged = true;
 
         // The old session may now need to be deleted.
         reapSession(oldSession);
@@ -5154,7 +5150,7 @@ bool LLVivoxVoiceClient::inProximalChannel()
     return result;
 }
 
-std::string LLVivoxVoiceClient::sipURIFromID(const LLUUID &id)
+std::string LLVivoxVoiceClient::sipURIFromID(const LLUUID &id) const
 {
     std::string result;
     result = "sip:";
@@ -5162,6 +5158,14 @@ std::string LLVivoxVoiceClient::sipURIFromID(const LLUUID &id)
     result += "@";
     result += mVoiceSIPURIHostName;
 
+    return result;
+}
+
+LLSD LLVivoxVoiceClient::getP2PChannelInfoTemplate(const LLUUID& id) const
+{
+    LLSD result;
+    result["channel_uri"] = sipURIFromID(id);
+    result["voice_server_type"] = VIVOX_VOICE_SERVER_TYPE;
     return result;
 }
 
@@ -5179,7 +5183,7 @@ std::string LLVivoxVoiceClient::sipURIFromAvatar(LLVOAvatar *avatar)
     return result;
 }
 
-std::string LLVivoxVoiceClient::nameFromID(const LLUUID &uuid)
+std::string LLVivoxVoiceClient::nameFromID(const LLUUID &uuid) const
 {
     std::string result;
 
@@ -6159,7 +6163,6 @@ void LLVivoxVoiceClient::deleteSession(const sessionStatePtr_t &session)
     if(mAudioSession == session)
     {
         mAudioSession.reset();
-        mAudioSessionChanged = true;
     }
 
     // ditto for the next audio session
@@ -6268,9 +6271,10 @@ void LLVivoxVoiceClient::notifyStatusObservers(LLVoiceClientStatusObserver::ESta
         }
     }
 
+    LLSD channel_info = getAudioSessionChannelInfo();
     LL_DEBUGS("Voice")
         << " " << LLVoiceClientStatusObserver::status2string(status)
-        << ", session channelInfo " << getAudioSessionChannelInfo()
+        << ", session channelInfo " << channel_info
         << ", proximal is " << inSpatialChannel()
         << LL_ENDL;
 
@@ -6285,7 +6289,7 @@ void LLVivoxVoiceClient::notifyStatusObservers(LLVoiceClientStatusObserver::ESta
         )
     {
         LLVoiceClientStatusObserver* observer = *it;
-        observer->onChange(status, getAudioSessionChannelInfo(), inSpatialChannel());
+        observer->onChange(status, channel_info, inSpatialChannel());
         // In case onError() deleted an entry.
         it = mStatusObservers.upper_bound(observer);
     }

@@ -69,6 +69,54 @@ namespace llwebrtc
 
 class LLWebRTCPeerConnectionImpl;
 
+class LLWebRTCLogSink : public rtc::LogSink {
+public:
+    LLWebRTCLogSink(LLWebRTCLogCallback* callback) :
+    mCallback(callback)
+    {
+    }
+
+    // Destructor: close the log file
+    ~LLWebRTCLogSink() override
+    {
+    }
+
+    void OnLogMessage(const std::string& msg,
+                      rtc::LoggingSeverity severity) override
+    {
+        if (mCallback)
+        {
+            switch(severity)
+            {
+                case rtc::LS_VERBOSE:
+                    mCallback->LogMessage(LLWebRTCLogCallback::LOG_LEVEL_VERBOSE, msg);
+                    break;
+                case rtc::LS_INFO:
+                    mCallback->LogMessage(LLWebRTCLogCallback::LOG_LEVEL_VERBOSE, msg);
+                    break;
+                case rtc::LS_WARNING:
+                    mCallback->LogMessage(LLWebRTCLogCallback::LOG_LEVEL_VERBOSE, msg);
+                    break;
+                case rtc::LS_ERROR:
+                    mCallback->LogMessage(LLWebRTCLogCallback::LOG_LEVEL_VERBOSE, msg);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    void OnLogMessage(const std::string& message) override
+    {
+        if (mCallback)
+        {
+            mCallback->LogMessage(LLWebRTCLogCallback::LOG_LEVEL_VERBOSE, message);
+        }
+    }
+
+private:
+    LLWebRTCLogCallback* mCallback;
+};
 
 // Implements a class allowing capture of audio data
 // to determine audio level of the microphone.
@@ -142,8 +190,11 @@ class LLWebRTCImpl : public LLWebRTCDeviceInterface
 #endif
 {
   public:
-    LLWebRTCImpl();
-    ~LLWebRTCImpl() {}
+    LLWebRTCImpl(LLWebRTCLogCallback* logCallback);
+    ~LLWebRTCImpl()
+    {
+        delete mLogSink;
+    }
 
     void init();
     void terminate();
@@ -235,6 +286,8 @@ class LLWebRTCImpl : public LLWebRTCDeviceInterface
     void setRecording(bool recording);
 
   protected:
+    LLWebRTCLogSink*                                           mLogSink;
+
     // The native webrtc threads
     std::unique_ptr<rtc::Thread>                               mNetworkThread;
     std::unique_ptr<rtc::Thread>                               mWorkerThread;
@@ -242,7 +295,7 @@ class LLWebRTCImpl : public LLWebRTCDeviceInterface
 
     // The factory that allows creation of native webrtc PeerConnections.
     rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface> mPeerConnectionFactory;
-    
+
     rtc::scoped_refptr<webrtc::AudioProcessing>                mAudioProcessingModule;
 
     // more native webrtc stuff
