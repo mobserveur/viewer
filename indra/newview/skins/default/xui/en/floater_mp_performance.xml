@@ -66,7 +66,7 @@
      height="15"
      left="2"
      top="8">
-     Buffer mapping
+     Optimisations:
      (needs restart):
     </text>
 
@@ -85,13 +85,13 @@
          value="1" />
         <combo_box.item
          enabled="true"
-         label="Optimized (Apple GPU)"
-         name="Optimized"
+         label="Apple GPU (smoothie)"
+         name="Megapahit Optimisations"
          value="2" />
         <combo_box.item
          enabled="true"
-         label="Experimental"
-         name="Experimental"
+         label="Apple GPU (LL)"
+         name="LL Optimisations"
          value="3" />
     </combo_box>
 
