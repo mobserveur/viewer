@@ -2155,6 +2155,7 @@ if (DARWIN)
     LINK_FLAGS "-rpath @loader_path/../Frameworks"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-SecondLife.plist"
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${MACOSX_BUNDLE_GUI_IDENTIFIER}"
+    MACOSX_BUNDLE TRUE
     )
 
   set(VIEWER_APP_BUNDLE "${CMAKE_CURRENT_BINARY_DIR}/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,>/${product}.app")
@@ -2167,9 +2168,10 @@ if (DARWIN)
      "${VIEWER_APP_BUNDLE}/Contents/Info.plist"
     )
 
- if (INSTALL)
-  install(PROGRAMS ${VIEWER_APP_EXE} DESTINATION ../MacOS)
- else (INSTALL)
+ if (USESYSTEMLIBS)
+
+ else (USESYSTEMLIBS)
+
   add_custom_command(
     TARGET ${VIEWER_BINARY_NAME} POST_BUILD
     COMMAND ${PYTHON_EXECUTABLE}
@@ -2194,7 +2196,8 @@ if (DARWIN)
       ${VIEWER_BINARY_NAME}
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
- endif (INSTALL)
+
+ endif (USESYSTEMLIBS)
 
  if (ENABLE_MEDIA_PLUGINS)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
