@@ -2170,6 +2170,11 @@ if (DARWIN)
 
  if (USESYSTEMLIBS)
 
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/InfoPlist.strings
+    ${CMAKE_CURRENT_BINARY_DIR}/InfoPlist.strings
+    )
+
  else (USESYSTEMLIBS)
 
   add_custom_command(

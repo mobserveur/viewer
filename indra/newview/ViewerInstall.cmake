@@ -50,12 +50,8 @@ add_custom_target(contributors ALL
 
 if (DARWIN)
 
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/InfoPlist.strings
-        ${VIEWER_APP_BUNDLE}/Contents/Resources/English.lproj/InfoPlist.strings
-        )
-
     install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/InfoPlist.strings
         ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/language.txt
         DESTINATION English.lproj
         )
