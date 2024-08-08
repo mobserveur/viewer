@@ -54,6 +54,33 @@ if (USE_FMODSTUDIO)
           WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
           RESULT_VARIABLE ${_binary}_installed
           )
+      else (DARWIN)
+        execute_process(
+          COMMAND tar -xf $ENV{HOME}/Downloads/fmodstudioapi20223linux.tar.gz -C /tmp
+          COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
+          )
+        execute_process(
+          COMMAND cp
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod.h
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod.hpp
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_codec.h
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_common.h
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_dsp.h
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_dsp_effects.h
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_errors.h
+            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_output.h
+            ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio/
+          COMMAND cp -P
+            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so
+            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13
+            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13.23
+            ${AUTOBUILD_INSTALL_DIR}/lib/release/
+          )
+        execute_process(
+          COMMAND rm -rf /tmp/fmodstudioapi20223linux
+          WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+          RESULT_VARIABLE ${_binary}_installed
+          )
       endif (DARWIN)
     else (USESYSTEMLIBS)
     use_prebuilt_binary(fmodstudio)
