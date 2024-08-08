@@ -35,6 +35,7 @@ if (USE_FMODSTUDIO)
         execute_process(
           COMMAND hdiutil attach -noverify $ENV{HOME}/Downloads/fmodstudioapi20223mac-installer.dmg
           COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
+          COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/lib/release
           )
         execute_process(
           COMMAND cp
