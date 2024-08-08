@@ -34,8 +34,9 @@ if (USE_FMODSTUDIO)
       if (DARWIN)
         execute_process(
           COMMAND hdiutil attach -noverify $ENV{HOME}/Downloads/fmodstudioapi20223mac-installer.dmg
-          COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
-          COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/lib/release
+          COMMAND mkdir -p
+            ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
+            ${AUTOBUILD_INSTALL_DIR}/lib/release
           )
         execute_process(
           COMMAND cp
@@ -48,7 +49,9 @@ if (USE_FMODSTUDIO)
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_errors.h
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_output.h
             ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio/
-          COMMAND cp /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/lib/libfmod.dylib ${AUTOBUILD_INSTALL_DIR}/lib/release/
+          COMMAND cp
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/lib/libfmod.dylib
+            ${AUTOBUILD_INSTALL_DIR}/lib/release/
           )
         execute_process(
           COMMAND hdiutil detach /Volumes/FMOD\ Programmers\ API\ Mac
