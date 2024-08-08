@@ -37,7 +37,7 @@ $ cd viewer
 $ sudo port install cmake pkgconfig autoconf automake apr-util +universal boost +universal collada-dom +universal hunspell +universal freetype +universal jsoncpp +universal openjpeg +universal openssl11 +universal uriparser +universal libvorbis +universal xxhashlib +universal
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -L https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz -o meshoptimizer-0.21.tar.gz -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.8e9edc7/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst -L https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz -o openjpeg-2.5.2.tar.gz -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst -OL https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-universal.dmg -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2 -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -L https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz -o meshoptimizer-0.21.tar.gz -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-darwin64-8756084692.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.8e9edc7/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst -L https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz -o openjpeg-2.5.2.tar.gz -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-universal.dmg -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
 $ cd -
 $ cd ..
 $ open ~/Downloads/vlc-3.0.21-universal.dmg
@@ -99,12 +99,9 @@ $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING=arm64 -DCMAKE_C_FLAGS:STRING=-DTARGET_OS_MAC ../..
 $ make -j`sysctl -n hw.ncpu`
-$ cd ../../../../viewer/indra/newview
-$ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
-$ cd ../../build/universal-apple-darwin`uname -r`/packages
+$ cd ../../../../viewer/build/universal-apple-darwin`uname -r`/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
 $ tar xf ~/Downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwinuniversal-233471337.tar.bz2
-$ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-darwin64-5413f58.tar.zst
 $ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
 $ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
 $ tar xf ~/Downloads/mikktspace-1-darwin64-8756084692.tar.zst
@@ -134,14 +131,11 @@ $ open newview/Megapahit.app
 ```
 $ mkdir -p build/`uname -m`-linux-gnu/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst -OL https://github.com/secondlife/dullahan/releases/download/v1.14.0-r2/dullahan-1.14.0.202404051708_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-8573290624.tar.zst -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-open-libndofdev/releases/download/v1.14-r2/open_libndofdev-0.14.8730039102-linux64-8730039102.tar.zst -OL https://github.com/uclouvain/openjpeg/releases/download/v2.5.2/openjpeg-v2.5.2-linux-x86_64.tar.gz -L https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz -o openjpeg-2.5.2.tar.gz -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst -OL https://github.com/secondlife/dullahan/releases/download/v1.14.0-r2/dullahan-1.14.0.202404051708_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-8573290624.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-open-libndofdev/releases/download/v1.14-r2/open_libndofdev-0.14.8730039102-linux64-8730039102.tar.zst -OL https://github.com/uclouvain/openjpeg/releases/download/v2.5.2/openjpeg-v2.5.2-linux-x86_64.tar.gz -L https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz -o openjpeg-2.5.2.tar.gz -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst
 $ cd -
-$ cd indra/newview
-$ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
-$ cd ../../build/`uname -m`-linux-gnu/packages
+$ cd build/`uname -m`-linux-gnu/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-linux64-513145c.tar.zst
 $ tar xf ~/Downloads/dullahan-1.14.0.202404051708_118.4.1_g3dd6078_chromium-118.0.5993.54-linux64-8573290624.tar.zst
-$ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst
 $ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
 $ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
 $ tar xf ~/Downloads/mikktspace-1-linux64-8756084692.tar.zst
@@ -225,7 +219,7 @@ $ megapahit
 ```
 $ mkdir -p build/`uname -m`-unknown-freebsd14.1/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-emoji-shortcodes/releases/download/v6.1.0.5413f58/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst -OL https://github.com/secondlife/3p-viewer-fonts/releases/download/v1.0.0-r1/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
+$ curl -OL https://github.com/secondlife/3p-glh_linear/releases/download/v1.0.1-dev4-984c397/glh_linear-1.0.1-dev4-common-984c397.tar.zst -OL https://github.com/secondlife/llca/releases/download/v202402012004.0-0f5d9c3/llca-202402012004.0-common-0f5d9c3.tar.zst -OL https://github.com/secondlife/3p-mikktspace/releases/download/v2-e967e1b/mikktspace-1-linux64-8756084692.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst -OL https://github.com/secondlife/3p-tinyexr/releases/download/v1.0.8-ba4bc64/tinyexr-v1.0.8-common-9373975608.tar.zst -OL https://github.com/secondlife/3p-tinygltf/releases/download/v2.5.0-1ae57fd/tinygltf-v2.5.0-common-1ae57fd.tar.zst
 $ cd -
 $ cd ..
 $ git clone https://github.com/secondlife/3p-openssl
@@ -235,10 +229,7 @@ $ mkdir -p build/`uname -m`-unknown-freebsd14.1
 $ cd -p build/`uname -m`-unknown-freebsd14.1
 $ ../../config no-shared
 $ make -j`nproc`
-$ cd ../../../../viewer/indra/newview
-$ tar xf ~/Downloads/viewer_fonts-1.0.0.8512067490-common-8512067490.tar.zst
-$ cd ../../build/`uname -m`-unknown-freebsd14.1/packages
-$ tar xf ~/Downloads/emoji_shortcodes-6.1.0.5413f58-linux64-5413f58.tar.zst
+$ cd ../../../../viewer/build/`uname -m`-unknown-freebsd14.1/packages
 $ tar xf ~/Downloads/glh_linear-1.0.1-dev4-common-984c397.tar.zst
 $ tar xf ~/Downloads/llca-202402012004.0-common-0f5d9c3.tar.zst
 $ tar xf ~/Downloads/mikktspace-1-linux64-8756084692.tar.zst
