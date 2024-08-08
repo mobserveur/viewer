@@ -50,6 +50,9 @@ macro (use_prebuilt_binary _binary)
                 )
             if ("${package_url}" STREQUAL "")
                 string(TOLOWER ${CMAKE_SYSTEM_NAME} system_name)
+                if (${system_name} MATCHES freebsd)
+                    set(system_name "linux")
+                endif (${system_name} MATCHES freebsd)
                 execute_process(COMMAND xmllint
                     --xpath
                     "//map/map/map/map/map/map/string[contains(text(),'${_binary}')][contains(text(),'${system_name}64')]/text()" autobuild.xml
