@@ -44,7 +44,7 @@ macro (use_prebuilt_binary _binary)
             execute_process(COMMAND xmllint
                 --xpath
                 "//map/map/map/map/map/map/string[contains(text(),'${_binary}')][contains(text(),'common')]/text()" autobuild.xml
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
                 OUTPUT_VARIABLE package_url
                 OUTPUT_STRIP_TRAILING_WHITESPACE
                 )
