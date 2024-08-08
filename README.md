@@ -150,10 +150,6 @@ $ tar xf ~/Downloads/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
 $ tar xf ~/Downloads/tinyexr-v1.0.8-common-9373975608.tar.zst
 $ tar xf ~/Downloads/tinygltf-v2.5.0-common-1ae57fd.tar.zst
 $ cd ../../../..
-$ tar xf ~/Downloads/fmodstudioapi20223linux.tar.gz
-$ mkdir viewer/build/`uname -m`-linux-gnu/packages/include/fmodstudio
-$ cp fmodstudioapi20223linux/api/core/inc/fmod*.h* viewer/build/`uname -m`-linux-gnu/packages/include/fmodstudio/
-$ cp -P fmodstudioapi20223linux/api/core/lib/x86_64/libfmod.so* viewer/build/`uname -m`-linux-gnu/packages/lib/release/
 $ tar xf ~/Downloads/openjpeg-v2.5.2-linux-x86_64.tar.gz
 $ cp -R openjpeg-v2.5.2-linux-x86_64/include/openjpeg-2.5 viewer/build/`uname -m`-linux-gnu/packages/include/openjpeg
 $ cp openjpeg-v2.5.2-linux-x86_64/lib/libopenjp2.a viewer/build/`uname -m`-linux-gnu/packages/lib/release/
