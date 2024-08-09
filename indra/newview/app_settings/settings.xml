@@ -13808,8 +13808,8 @@
       OpenGL buffer mapping mode:
       0:auto
       1:normal
-      2:optimised
-      3:experimental.</string>
+      2:MP optimised
+      3:LL optimized.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>

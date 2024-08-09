@@ -9,12 +9,12 @@ include(Linking)
 
 include(Boost)
 include(bugsplat)
-if (USE_AUTOBUILD_3P OR USE_CONAN)
+if (NOT USESYSTEMLIBS)
 include(BuildPackagesInfo)
 endif ()
 include(BuildVersion)
 include(CMakeCopyIfDifferent)
-if (USE_AUTOBUILD_3P OR USE_CONAN)
+if (NOT USESYSTEMLIBS)
 include(CubemapToEquirectangularJS)
 include(DBusGlib)
 endif ()
@@ -22,15 +22,13 @@ include(DragDrop)
 include(EXPAT)
 include(FMODSTUDIO)
 include(Hunspell)
-if (USE_AUTOBUILD_3P OR USE_CONAN)
+if (NOT USESYSTEMLIBS)
 include(JPEGEncoderBasic)
 endif ()
 include(JsonCpp)
 include(LLAppearance)
 include(LLAudio)
-if (USE_AUTOBUILD_3P OR USE_CONAN)
 include(LLCA)
-endif ()
 include(LLCommon)
 include(LLCoreHttp)
 include(LLImage)
@@ -52,7 +50,7 @@ endif ()
 include(Tracy)
 include(UI)
 include(ViewerMiscLibs)
-if (USE_AUTOBUILD_3P OR USE_CONAN)
+if (NOT USESYSTEMLIBS)
 include(ViewerManager)
 endif ()
 include(VisualLeakDetector)
@@ -60,15 +58,16 @@ include(VulkanGltf)
 include(ZLIBNG)
 include(URIPARSER)
 include(LLPrimitive)
+
 if (ENABLE_MEDIA_PLUGINS)
-	include(LibVLCPlugin)
-	if (DARWIN OR LINUX)
-		include(CEFPlugin)
-	endif (DARWIN OR LINUX)
+    include(LibVLCPlugin)
+    if (DARWIN OR LINUX)
+        include(CEFPlugin)
+    endif (DARWIN OR LINUX)
 endif (ENABLE_MEDIA_PLUGINS)
 include(UnixInstall)
 
-if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
+if (NOT (USESYSTEMLIBS OR HAVOK_TPV))
    # When using HAVOK_TPV, the library is precompiled, so no need for this
 
    # Stub and probably havok lib itself is a hack, autobuild loads a 3p that really is a source tarball
@@ -89,7 +88,7 @@ if ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
         target_compile_options( llphysicsextensions  PRIVATE -Wno-unused-local-typedef)
       endif (DARWIN)
    endif()
-endif ((USE_AUTOBUILD_3P OR USE_CONAN) AND NOT HAVOK_TPV)
+endif (NOT (USESYSTEMLIBS OR HAVOK_TPV))
 
 set(viewer_SOURCE_FILES
     gltfscenemanager.cpp
@@ -1425,21 +1424,18 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/viewer_version.txt"
            "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}\n")
 
 set_source_files_properties(
-   llversioninfo.cpp tests/llversioninfo_test.cpp
+   llversioninfo.cpp tests/llversioninfo_test.cpp 
    PROPERTIES
    COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}" # see BuildVersion.cmake
    )
 
 if (DARWIN)
-#  if (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx.cpp)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.mm)
   LIST(APPEND viewer_SOURCE_FILES llappviewermacosx-objc.h)
-#  endif (NOT USESYSTEMLIBS)
   LIST(APPEND viewer_SOURCE_FILES llfilepicker_mac.mm)
   LIST(APPEND viewer_HEADER_FILES llfilepicker_mac.h)
 
-#  if (NOT USESYSTEMLIBS)
   # This should be compiled with the viewer.
   LIST(APPEND viewer_SOURCE_FILES llappdelegate-objc.mm)
   set_source_files_properties(
@@ -1454,7 +1450,6 @@ if (DARWIN)
     # warnings.
     COMPILE_FLAGS "-fmodules -fcxx-modules -Wno-nullability-completeness"
     )
-#  endif (NOT USESYSTEMLIBS)
 
   # Add resource files to the project.
   set(viewer_RESOURCE_FILES
@@ -1481,9 +1476,9 @@ if (USESYSTEMLIBS AND NOT DARWIN)
       PROPERTIES
       COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}"
       )
-    if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "AppleClang"))
+  if (NOT CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
-    endif ()
+  endif ()
 
 endif (USESYSTEMLIBS AND NOT DARWIN)
 
@@ -1632,7 +1627,7 @@ endif (WINDOWS)
 file(GLOB_RECURSE viewer_XUI_FILES LIST_DIRECTORIES FALSE
     ${CMAKE_CURRENT_SOURCE_DIR}/skins/*.xml)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/skins PREFIX "XUI Files" FILES ${viewer_XUI_FILES})
-set_source_files_properties(${viewer_XUI_FILES}
+set_source_files_properties(${viewer_XUI_FILES} 
                             PROPERTIES HEADER_FILE_ONLY TRUE)
 list(APPEND viewer_SOURCE_FILES ${viewer_XUI_FILES})
 
@@ -1640,7 +1635,7 @@ list(APPEND viewer_SOURCE_FILES ${viewer_XUI_FILES})
 file(GLOB_RECURSE viewer_SHADER_FILES LIST_DIRECTORIES FALSE
     ${CMAKE_CURRENT_SOURCE_DIR}/app_settings/shaders/*.glsl)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/app_settings/shaders PREFIX "Shaders" FILES ${viewer_SHADER_FILES})
-set_source_files_properties(${viewer_SHADER_FILES}
+set_source_files_properties(${viewer_SHADER_FILES} 
                             PROPERTIES HEADER_FILE_ONLY TRUE)
 list(APPEND viewer_SOURCE_FILES ${viewer_SHADER_FILES})
 
@@ -1672,8 +1667,8 @@ set(viewer_APPSETTINGS_FILES
     featuretable_mac.txt
     )
 
-if (NOT (USE_AUTOBUILD_3P OR USE_CONAN))
-	list(REMOVE_ITEM viewer_APPSETTINGS_FILES packages-info.txt)
+if (USESYSTEMLIBS)
+    list(REMOVE_ITEM viewer_APPSETTINGS_FILES packages-info.txt)
 endif ()
 
 source_group("App Settings" FILES ${viewer_APPSETTINGS_FILES})
@@ -1934,7 +1929,7 @@ endif (WINDOWS)
 # one of these being libz where you can find four or more versions in play
 # at once.  On Linux, libz can be found at link and run time via a number
 # of paths:
-#
+#     
 #      => -lfreetype
 #        => libz.so.1 (on install machine, not build)
 #      => -lSDL
@@ -1998,43 +1993,43 @@ set(ARTWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH
     "Path to artwork files.")
 
 set_source_files_properties(llinventorygallery.cpp PROPERTIES COMPILE_FLAGS
-	-Wno-unused-but-set-variable)
+    -Wno-unused-but-set-variable)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-	set_source_files_properties(llappviewerlinux.cpp PROPERTIES
-		COMPILE_FLAGS -Wno-dangling-gsl
-	)
-	set_source_files_properties(llviewerstats.cpp PROPERTIES
-		COMPILE_FLAGS -Wno-unused-value)
+    set_source_files_properties(llappviewerlinux.cpp PROPERTIES
+        COMPILE_FLAGS -Wno-dangling-gsl
+    )
+    set_source_files_properties(llviewerstats.cpp PROPERTIES
+        COMPILE_FLAGS -Wno-unused-value)
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-	set_source_files_properties(
-		llface.cpp
-		llhttpretrypolicy.cpp
-		llmodelpreview.cpp
-		llpanelface.cpp
-		lltexturefetch.cpp
-		PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
-	set_source_files_properties(llfasttimerview.cpp PROPERTIES
-		COMPILE_FLAGS -Wno-nonnull)
-	set_source_files_properties(llinventorygallerymenu.cpp PROPERTIES
-		COMPILE_FLAGS -Wno-uninitialized)
-	set_source_files_properties(llviewerstats.cpp PROPERTIES
-		COMPILE_FLAGS -Wno-unused-value)
-	set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
-		-Wno-stringop-truncation)
-	set_source_files_properties(
-		llfloaterimsessiontab.cpp
-		llfloatersimplesnapshot.cpp
-		llfloatersidepanelcontainer.cpp
-		llinventorypanel.cpp
-		llpanelmaininventory.cpp
-		llpathfindingnavmesh.cpp
-		llsidepanelinventory.cpp
-		PROPERTIES COMPILE_FLAGS -Wno-dangling-reference
-	)
-	set_source_files_properties(
-		gltf/animation.cpp
-		gltf/primitive.cpp
-		PROPERTIES COMPILE_FLAGS -Wno-unused-function)
+    set_source_files_properties(
+        llface.cpp
+        llhttpretrypolicy.cpp
+        llmodelpreview.cpp
+        llpanelface.cpp
+        lltexturefetch.cpp
+        PROPERTIES COMPILE_FLAGS -Wno-maybe-uninitialized)
+    set_source_files_properties(llfasttimerview.cpp PROPERTIES
+        COMPILE_FLAGS -Wno-nonnull)
+    set_source_files_properties(llinventorygallerymenu.cpp PROPERTIES
+        COMPILE_FLAGS -Wno-uninitialized)
+    set_source_files_properties(llviewerstats.cpp PROPERTIES
+        COMPILE_FLAGS -Wno-unused-value)
+    set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
+        -Wno-stringop-truncation)
+    set_source_files_properties(
+        llfloaterimsessiontab.cpp
+        llfloatersimplesnapshot.cpp
+        llfloatersidepanelcontainer.cpp
+        llinventorypanel.cpp
+        llpanelmaininventory.cpp
+        llpathfindingnavmesh.cpp
+        llsidepanelinventory.cpp
+        PROPERTIES COMPILE_FLAGS -Wno-dangling-reference
+    )
+    set_source_files_properties(
+        gltf/animation.cpp
+        gltf/primitive.cpp
+        PROPERTIES COMPILE_FLAGS -Wno-unused-function)
 endif ()
 
 message("Copying fonts")
@@ -2055,11 +2050,59 @@ foreach(elem ${country_codes})
    set(emoji_mapping_src_file
       "${emoji_mapping_src_folder}/${elem}/emoji_characters.xml")
    set(emoji_mapping_dst_file
-      "${emoji_mapping_dst_folder}/${elem}/emoji_characters.xml")
+      "${emoji_mapping_dst_folder}/${elem}/emoji_characters.xml")      
    configure_file(${emoji_mapping_src_file} ${emoji_mapping_dst_file} COPYONLY)
 endforeach()
 
-if (NOT USESYSTEMLIBS)
+if (USESYSTEMLIBS)
+
+  if (LINUX)
+    add_custom_command(
+        TARGET ${VIEWER_BINARY_NAME} POST_BUILD
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sort
+        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND paste
+        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        )
+  else (LINUX)
+    add_custom_command(
+        TARGET ${VIEWER_BINARY_NAME} POST_BUILD
+        COMMAND sed
+        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sed
+        ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND sort
+        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+        COMMAND paste
+        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        COMMAND sed
+        ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+        )
+  endif (LINUX)
+
+else (USESYSTEMLIBS)
 
 if (LINUX)
   set(product SecondLife-${ARCH}-${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION})
@@ -2138,7 +2181,7 @@ if (LINUX)
   endif (PACKAGE)
 endif (LINUX)
 
-endif (NOT USESYSTEMLIBS)
+endif (USESYSTEMLIBS)
 
 if (DARWIN)
   # These all get set with PROPERTIES. It's not that the property names are
@@ -2153,13 +2196,13 @@ if (DARWIN)
   set(MACOSX_BUNDLE_BUNDLE_NAME "Megapahit")
   set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION}")
   set(MACOSX_BUNDLE_BUNDLE_VERSION "${VIEWER_SHORT_VERSION}${VIEWER_MACOSX_PHASE}${VIEWER_REVISION}")
-  set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Megapahit. 2024")
+  set(MACOSX_BUNDLE_COPYRIGHT "Copyright © Megapahit 2024")
   set(MACOSX_BUNDLE_NSMAIN_NIB_FILE "SecondLife.nib")
   set(MACOSX_BUNDLE_NSPRINCIPAL_CLASS "LLApplication")
 
   # https://blog.kitware.com/upcoming-in-cmake-2-8-12-osx-rpath-support/
   set(CMAKE_MACOSX_RPATH 1)
-
+  
   set_target_properties(
     ${VIEWER_BINARY_NAME}
     PROPERTIES
@@ -2171,6 +2214,7 @@ if (DARWIN)
     LINK_FLAGS "-rpath @loader_path/../Frameworks"
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info-SecondLife.plist"
     XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${MACOSX_BUNDLE_GUI_IDENTIFIER}"
+    MACOSX_BUNDLE TRUE
     )
 
   set(VIEWER_APP_BUNDLE "${CMAKE_CURRENT_BINARY_DIR}/$<IF:$<BOOL:${LL_GENERATOR_IS_MULTI_CONFIG}>,$<CONFIG>,>/${product}.app")
@@ -2183,9 +2227,15 @@ if (DARWIN)
      "${VIEWER_APP_BUNDLE}/Contents/Info.plist"
     )
 
-  if (INSTALL)
-    install(PROGRAMS ${VIEWER_APP_EXE} DESTINATION ../MacOS)
-  else (INSTALL)
+ if (USESYSTEMLIBS)
+
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/InfoPlist.strings
+    ${CMAKE_CURRENT_BINARY_DIR}/InfoPlist.strings
+    )
+
+ else (USESYSTEMLIBS)
+
   add_custom_command(
     TARGET ${VIEWER_BINARY_NAME} POST_BUILD
     COMMAND ${PYTHON_EXECUTABLE}
@@ -2210,13 +2260,12 @@ if (DARWIN)
       ${VIEWER_BINARY_NAME}
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
-  endif (INSTALL)
 
-  if (ENABLE_MEDIA_PLUGINS)
+ endif (USESYSTEMLIBS)
+
+ if (ENABLE_MEDIA_PLUGINS)
   add_dependencies(${VIEWER_BINARY_NAME} SLPlugin media_plugin_libvlc media_plugin_cef)
-  else (ENABLE_MEDIA_PLUGINS)
-      add_dependencies(${VIEWER_BINARY_NAME} SLPlugin)
-  endif (ENABLE_MEDIA_PLUGINS)
+ endif ()
 
   if (ENABLE_SIGNING)
       set(SIGNING_SETTING "--signature=${SIGNING_IDENTITY}")
@@ -2366,7 +2415,7 @@ if (LL_TESTS)
 #    llremoteparcelrequest.cpp
     llviewerhelputil.cpp
     llversioninfo.cpp
-#    llvocache.cpp
+#    llvocache.cpp  
     llworldmap.cpp
     llworldmipmap.cpp
   )
@@ -2375,7 +2424,7 @@ if (LL_TESTS)
     llworldmap.cpp
     llworldmipmap.cpp
     PROPERTIES
-    LL_TEST_ADDITIONAL_SOURCE_FILES
+    LL_TEST_ADDITIONAL_SOURCE_FILES 
     tests/llviewertexture_stub.cpp
     #llviewertexturelist.cpp
   )
@@ -2409,7 +2458,7 @@ if (LL_TESTS)
     llworldmap.cpp
     llworldmipmap.cpp
     PROPERTIES
-    LL_TEST_ADDITIONAL_SOURCE_FILES
+    LL_TEST_ADDITIONAL_SOURCE_FILES 
     tests/llviewertexture_stub.cpp
   )
 

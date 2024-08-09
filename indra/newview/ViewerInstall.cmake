@@ -1,61 +1,7 @@
-if (LINUX)
-    add_custom_command(
-        OUTPUT contributors.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sort
-        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND paste
-        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        )
-else (LINUX)
-    add_custom_command(
-        OUTPUT contributors.txt
-        COMMAND sed
-        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sort
-        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND paste
-        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        COMMAND sed
-        ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        )
-endif (LINUX)
-
-add_custom_target(contributors ALL
-    DEPENDS contributors.txt
-    )
-
 if (DARWIN)
 
-    configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/InfoPlist.strings
-        ${VIEWER_APP_BUNDLE}/Contents/Resources/English.lproj/InfoPlist.strings
-        )
-
     install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/InfoPlist.strings
         ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/language.txt
         DESTINATION English.lproj
         )
@@ -184,7 +130,7 @@ if (LINUX)
             install(FILES
                 ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so
                 ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13
-                ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13.22
+                ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.so.13.23
             DESTINATION ${_LIB})
         endif (USE_FMODSTUDIO)
         install(PROGRAMS

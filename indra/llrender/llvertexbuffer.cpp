@@ -317,7 +317,7 @@ public:
 
     ~LLVBOPool()
     {
-        if(mMappingMode > 1) return;
+        if(mMappingMode == 3) return;
         clear();
     }
 
@@ -336,7 +336,7 @@ public:
 
     U64 getVramBytesUsed()
     {
-        if(mMappingMode > 1) return mAllocated;
+        if(mMappingMode == 3) return mAllocated;
         else return mAllocated + mReserved;
     }
 
@@ -359,7 +359,7 @@ public:
         llassert(data == nullptr);  // non null data indicates a buffer that wasn't freed
         llassert(size >= 2);  // any buffer size smaller than a single index is nonsensical
 
-        if(mMappingMode > 1)
+        if(mMappingMode == 3)
         {
             mAllocated += size;
 
@@ -427,7 +427,7 @@ public:
         llassert(type == GL_ARRAY_BUFFER || type == GL_ELEMENT_ARRAY_BUFFER);
         llassert(size >= 2);
 
-        if(mMappingMode > 1)
+        if(mMappingMode == 3)
         {
             if (data)
             {
@@ -785,7 +785,7 @@ void LLVertexBuffer::initClass(LLWindow* window)
     sVBOPool = new LLVBOPool();
     sVBOPool->mMappingMode = sMappingMode;
 
-    //LL_INFOS() << "milo sVBOPool intialized with " << sMappingMode << LL_ENDL;
+    //LL_INFOS() << "sVBOPool intialized with mapping mode: " << sMappingMode << LL_ENDL;
 
 #if ENABLE_GL_WORK_QUEUE
     sQueue = new GLWorkQueue();
@@ -1093,7 +1093,7 @@ U8* LLVertexBuffer::mapVertexBuffer(LLVertexBuffer::AttributeType type, U32 inde
         count = mNumVerts - index;
     }
 
-    if(sMappingMode < 2)
+    if(sMappingMode != 3)
     {
         U32 start = mOffsets[type] + sTypeSize[type] * index;
         U32 end = start + sTypeSize[type] * count-1;
@@ -1130,7 +1130,7 @@ U8* LLVertexBuffer::mapIndexBuffer(U32 index, S32 count)
         count = mNumIndices-index;
     }
 
-    if(sMappingMode < 2)
+    if(sMappingMode != 3)
     {
         U32 start = sizeof(U16) * index;
         U32 end = start + sizeof(U16) * count-1;
@@ -1165,9 +1165,24 @@ U8* LLVertexBuffer::mapIndexBuffer(U32 index, S32 count)
 //  dst -- mMappedData or mMappedIndexData
 void LLVertexBuffer::flush_vbo(GLenum target, U32 start, U32 end, void* data, U8* dst)
 {
-    if(sMappingMode > 1)
+    if(sMappingMode == 2)
     {
-        //LL_INFOS() << "milo flush_vbo() NO POOL" << LL_ENDL;
+        //LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("vb glMapBufferRange");
+        if (end == 0) return;
+        U32 buffer_size = end-start+1;
+        U8 * mptr = (U8*) glMapBufferRange( target, start, end-start+1, GL_MAP_WRITE_BIT);
+
+        if (mptr)
+        {
+            std::memcpy(mptr, (U8*) data, buffer_size);
+            if(!glUnmapBuffer(target)) LL_WARNS() << "glUnmapBuffer() failed" << LL_ENDL;
+        }
+        else LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
+        return;
+    }
+
+    if(sMappingMode == 3)
+    {
         LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("vb memcpy");
         //STOP_GLERROR;
         // copy into mapped buffer
@@ -1208,7 +1223,7 @@ void LLVertexBuffer::unmapBuffer()
         }
     };
 
-    if(sMappingMode > 1)
+    if(sMappingMode == 3)
     {
         //STOP_GLERROR;
         if (mMappedData)
@@ -1220,8 +1235,7 @@ void LLVertexBuffer::unmapBuffer()
             mGLBuffer = gen_buffer();
             glBindBuffer(GL_ARRAY_BUFFER, mGLBuffer);
             sGLRenderBuffer = mGLBuffer;
-            if(sMappingMode==2) glBufferData(GL_ARRAY_BUFFER, mSize, mMappedData, GL_STATIC_DRAW);
-            else glBufferData(GL_ARRAY_BUFFER, mSize, mMappedData, GL_DYNAMIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, mSize, mMappedData, GL_DYNAMIC_DRAW);
         }
         else if (mGLBuffer != sGLRenderBuffer)
         {
@@ -1241,8 +1255,7 @@ void LLVertexBuffer::unmapBuffer()
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mGLIndices);
             sGLRenderIndices = mGLIndices;
 
-            if(sMappingMode==2) glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndicesSize, mMappedIndexData, GL_STATIC_DRAW);
-            else glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndicesSize, mMappedIndexData, GL_DYNAMIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndicesSize, mMappedIndexData, GL_DYNAMIC_DRAW);
         }
         else if (mGLIndices != sGLRenderIndices)
         {
@@ -1439,10 +1452,10 @@ bool LLVertexBuffer::getClothWeightStrider(LLStrider<LLVector4>& strider, U32 in
 // Set for rendering
 void LLVertexBuffer::setBuffer()
 {
-    if(sMappingMode > 1)
+    if(sMappingMode == 3)
     {
         if (!mGLBuffer)
-        { // OS X doesn't allocate a buffer until we call unmapBuffer
+        {
             return;
         }
     }
