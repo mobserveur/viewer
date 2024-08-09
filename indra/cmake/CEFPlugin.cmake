@@ -5,8 +5,23 @@ include(Prebuilt)
 include_guard()
 add_library( ll::cef INTERFACE IMPORTED )
 
-#use_prebuilt_binary(dullahan)
-target_include_directories( ll::cef SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include ${LIBS_PREBUILT_DIR}/include/cef)
+if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+    execute_process(COMMAND curl
+        -O
+        https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
+        WORKING_DIRECTORY $ENV{HOME}/Downloads
+        )
+    execute_process(COMMAND tar
+        xf
+        $ENV{HOME}/Downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
+        WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+        RESULT_VARIABLE dullahan_installed
+        )
+else ()
+use_prebuilt_binary(dullahan)
+endif ()
+
+target_include_directories( ll::cef SYSTEM INTERFACE  ${LIBS_PREBUILT_DIR}/include/cef)
 
 if (WINDOWS)
     target_link_libraries( ll::cef INTERFACE
