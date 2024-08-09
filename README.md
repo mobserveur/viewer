@@ -96,7 +96,7 @@ $ unset CFLAGS
 $ cd ../../../../3p-libndofdev/libndofdev
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
-$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING=arm64 -DCMAKE_C_FLAGS:STRING=-DTARGET_OS_MAC ../..
+$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING=arm64 -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_MAC -Wno-int-conversion" ../..
 $ make -j`sysctl -n hw.ncpu`
 $ cd ../../../../viewer/build/universal-apple-darwin`uname -r`/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
