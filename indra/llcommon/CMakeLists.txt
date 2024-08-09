@@ -294,6 +294,16 @@ target_link_libraries(
 target_include_directories(llcommon INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(llcommon PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+if (CMAKE_OSX_ARCHITECTURES MATCHES "(x86_64;)*arm64(;x86_64)*")
+  execute_process(COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/include/sse2neon)
+  execute_process(COMMAND curl
+    -OL
+    https://raw.githubusercontent.com/DLTcollab/sse2neon/master/sse2neon.h
+    WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}/include/sse2neon
+    )
+  target_include_directories(llcommon PUBLIC ${AUTOBUILD_INSTALL_DIR}/include/sse2neon)
+endif ()
+
 if (USE_AUTOBUILD_3P OR USE_CONAN)
 add_dependencies(llcommon stage_third_party_libs)
 else ()
