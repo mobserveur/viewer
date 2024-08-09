@@ -49,7 +49,7 @@ $ git clone https://github.com/secondlife/3p-libndofdev
 $ cd meshoptimizer-0.21
 $ mkdir -p build/universal-apple-darwin`uname -r`
 $ cd build/universal-apple-darwin`uname -r`
-$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=12.0 -DMESHOPT_BUILD_SHARED_LIBS:BOOL=ON ../..
+$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.5 -DMESHOPT_BUILD_SHARED_LIBS:BOOL=ON ../..
 $ make -j`sysctl -n hw.ncpu`
 $ sudo make install
 $ cd ../../../openjpeg-2.5.2
@@ -64,7 +64,7 @@ $ rm -f config.sub missing
 $ autoreconf -is
 $ mkdir -p build/x86_64-apple-darwin`uname -r`
 $ cd build/x86_64-apple-darwin`uname -r`
-$ export CFLAGS="-arch x86_64"
+$ export CFLAGS="-arch x86_64 -mmacosx-version-min=10.5"
 $ ../../configure --host=x86_64-apple-darwin`uname -r`
 $ make -j`sysctl -n hw.ncpu`
 $ sudo make install
@@ -73,7 +73,7 @@ $ sed -i '' -e 's/XMLRPC_VALUE find_named_value/__attribute__((always_inline)) X
 $ sed -i '' -e 's/void describe_method/__attribute__((always_inline)) void describe_method/g' src/xmlrpc_introspection.c
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
-$ export CFLAGS="-arch arm64"
+$ export CFLAGS="-arch arm64 -mmacosx-version-min=11.0"
 $ ../../configure --host=aarch64-apple-darwin`uname -r`
 $ make -j`sysctl -n hw.ncpu`
 $ sudo lipo src/.libs/libxmlrpc-epi.a /usr/local/lib/libxmlrpc-epi.a -create -output /usr/local/lib/libxmlrpc-epi.a
@@ -113,7 +113,7 @@ $ cd ../../..
 $ cd /opt/local/include
 $ sudo curl -OL https://raw.githubusercontent.com/DLTcollab/sse2neon/master/sse2neon.h
 $ cd -
-$ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
+$ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -mmacosx-version-min=10.15 -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=newview/Megapahit.app/Contents/Resources -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=OFF -DUSE_FMODSTUDIO:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF ../../indra
 $ make -j`sysctl -n hw.ncpu`
 $ make install
