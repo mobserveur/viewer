@@ -5,7 +5,7 @@ include(Prebuilt)
 include_guard()
 add_library( ll::cef INTERFACE IMPORTED )
 
-if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+if (CMAKE_OSX_ARCHITECTURES MATCHES arm64 AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0))
     execute_process(COMMAND curl
         -O
         https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
