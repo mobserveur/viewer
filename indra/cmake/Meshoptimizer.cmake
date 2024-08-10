@@ -15,6 +15,7 @@ else (NOT USESYSTEMLIBS)
   endif (LINUX)
   if (NOT (${LINUX_DISTRO} MATCHES fedora OR DARWIN))
     find_package(meshoptimizer)
+    target_link_libraries( ll::meshoptimizer INTERFACE meshoptimizer)
   endif (NOT (${LINUX_DISTRO} MATCHES fedora OR DARWIN))
 endif (NOT USESYSTEMLIBS)
 
