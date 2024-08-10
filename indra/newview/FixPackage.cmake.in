@@ -32,11 +32,6 @@ file(CREATE_LINK
         SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libmeshoptimizer.dylib"
-        "${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libmeshoptimizer.dylib"
-        SYMBOLIC
-    )
-file(CREATE_LINK
         "../../../../Frameworks/libaprutil-1.0.dylib"
         "${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libaprutil-1.0.dylib"
         SYMBOLIC
