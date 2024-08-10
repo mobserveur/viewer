@@ -4,6 +4,7 @@ project(llfilesystem)
 
 include(00-Common)
 include(LLCommon)
+include(UnixInstall)
 
 set(llfilesystem_SOURCE_FILES
     lldir.cpp

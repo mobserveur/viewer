@@ -65,7 +65,6 @@ if (ENABLE_MEDIA_PLUGINS)
         include(CEFPlugin)
     endif (DARWIN OR LINUX)
 endif (ENABLE_MEDIA_PLUGINS)
-include(UnixInstall)
 
 if (NOT (USESYSTEMLIBS OR HAVOK_TPV))
    # When using HAVOK_TPV, the library is precompiled, so no need for this
