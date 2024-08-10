@@ -41,7 +41,7 @@ if (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR NOT USESYSTEMLIBS)
       if (DARWIN)
         execute_process(
           COMMAND cmake
-            -DCMAKE_OSX_ARCHITECTURES:STRING=arm64
+            -DCMAKE_OSX_ARCHITECTURES:STRING=${CMAKE_OSX_ARCHITECTURES}
             -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.15
             .
           WORKING_DIRECTORY /tmp/meshoptimizer-0.21
