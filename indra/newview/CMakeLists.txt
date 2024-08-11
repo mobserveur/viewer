@@ -2040,57 +2040,80 @@ foreach(elem ${country_codes})
    configure_file(${emoji_mapping_src_file} ${emoji_mapping_dst_file} COPYONLY)
 endforeach()
 
-if (USESYSTEMLIBS)
-
-  if (LINUX)
-    add_custom_command(
-        TARGET ${VIEWER_BINARY_NAME} POST_BUILD
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sort
-        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND paste
-        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
-        ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        )
-  else (LINUX)
-    add_custom_command(
-        TARGET ${VIEWER_BINARY_NAME} POST_BUILD
-        COMMAND sed
-        ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sed
-        ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND sort
-        ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
-        COMMAND paste
-        ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        COMMAND sed
-        ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
-        )
-  endif (LINUX)
-
-else (USESYSTEMLIBS)
+if (PACKAGE AND USESYSTEMLIBS)
+  set(CPACK_PACKAGE_NAME ${VIEWER_BINARY_NAME}
+    CACHE STRING "Viewer binary name.")
+  set(CPACK_PACKAGE_VERSION ${VIEWER_VERSION_MAJOR}.${VIEWER_VERSION_MINOR}.${VIEWER_VERSION_PATCH}.${VIEWER_VERSION_REVISION}
+    CACHE STRING "Viewer major.minor.patch.revision versions.")
+  set(VIEWER_PACKAGE_COMMENT
+    "A fork of the Second Life viewer"
+    )
+  set(VIEWER_PACKAGE_DESCRIPTION
+    "An entrance to virtual empires in only megabytes. A shelter for the metaverse refugees, especially those from less supported operating systems."
+    )
+  set(VIEWER_PACKAGE_DOMAIN_NAME
+    ${VIEWER_BINARY_NAME}.net
+    )
+endif (PACKAGE AND USESYSTEMLIBS)
 
 if (LINUX)
+  if (USESYSTEMLIBS)
+    add_custom_command(
+      TARGET ${VIEWER_BINARY_NAME} POST_BUILD
+      COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+      ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+      COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+      ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+      COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+      ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+      COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+      ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+      COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+      ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+      COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+      ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+      COMMAND sort
+      ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+      COMMAND paste
+      ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+      COMMAND ${CMAKE_SYSROOT}/usr/bin/sed
+      ARGS -i ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+      )
+    if (PACKAGE)
+      if (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
+        set(CPACK_BINARY_DEB ON CACHE BOOL "Able to package Debian DEB.")
+        set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE
+          amd64
+          CACHE STRING "Debian package architecture.")
+        set(CPACK_DEBIAN_PACKAGE_DESCRIPTION ${VIEWER_PACKAGE_COMMENT}
+          CACHE STRING "Debian package description.")
+        set(CPACK_DEBIAN_PACKAGE_MAINTAINER
+          $ENV{USER}@${VIEWER_PACKAGE_DOMAIN_NAME}
+          CACHE STRING "Debian package maintainer.")
+        set(CPACK_DEBIAN_PACKAGE_SECTION net
+          CACHE STRING "Debian package section.")
+      elseif (${LINUX_DISTRO} MATCHES fedora)
+        set(CPACK_BINARY_RPM ON CACHE BOOL "Able to package Fedora RPM.")
+        set(CPACK_RPM_PACKAGE_SUMMARY ${VIEWER_PACKAGE_COMMENT}
+          CACHE STRING "RPM package summary.")
+        set(CPACK_RPM_PACKAGE_ARCHITECTURE
+          ${CMAKE_SYSTEM_PROCESSOR}
+          CACHE STRING "RPM package architecture.")
+        set(CPACK_RPM_PACKAGE_LICENSE LGPL-2.1-only
+          CACHE STRING "RPM package license.")
+        set(CPACK_RPM_PACKAGE_VENDOR ${VIEWER_CHANNEL}
+          CACHE STRING "RPM package vendor.")
+        set(CPACK_RPM_PACKAGE_URL
+          https://${VIEWER_PACKAGE_DOMAIN_NAME}
+          CACHE STRING "RPM package URL.")
+        set(CPACK_RPM_PACKAGE_DESCRIPTION ${VIEWER_PACKAGE_DESCRIPTION}
+          CACHE STRING "RPM package description.")
+        set(CPACK_RPM_PACKAGE_REQUIRES
+          "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, collada-dom, expat, fltk, mesa-libGLU, hunspell, jsoncpp, libnghttp2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
+          CACHE STRING "RPM package requirements.")
+      endif (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
+    endif (PACKAGE)
+  else (USESYSTEMLIBS)
   set(product SecondLife-${ARCH}-${VIEWER_SHORT_VERSION}.${VIEWER_VERSION_REVISION})
 
   # These are the generated targets that are copied to package/
@@ -2165,9 +2188,50 @@ if (LINUX)
     add_dependencies(llpackage copy_l_viewer_manifest)
     check_message_template(llpackage)
   endif (PACKAGE)
+  endif (USESYSTEMLIBS)
+elseif (USESYSTEMLIBS)
+  add_custom_command(
+    TARGET ${VIEWER_BINARY_NAME} POST_BUILD
+    COMMAND sed
+    ARGS -e '/Linden Lab.*/d' ${CMAKE_HOME_DIRECTORY}/../doc/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/following residents.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/along with.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/^$$/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/\t.*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sed
+    ARGS -i '' -e '/^    .*/d' ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND sort
+    ARGS -R contributions.txt -o ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt
+    COMMAND paste
+    ARGS -s -d, ${CMAKE_CURRENT_BINARY_DIR}/contributions.txt > ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+    COMMAND sed
+    ARGS -i '' -e 's/,/, /g' ${CMAKE_CURRENT_BINARY_DIR}/contributors.txt
+    )
+  if (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND PACKAGE)
+    set(CPACK_BINARY_FREEBSD ON CACHE BOOL "Able to package FreeBSD PKG.")
+    set(CPACK_FREEBSD_PACKAGE_COMMENT ${VIEWER_PACKAGE_COMMENT}
+      CACHE STRING "FreeBSD package comment.")
+    set(CPACK_FREEBSD_PACKAGE_DESCRIPTION ${VIEWER_PACKAGE_DESCRIPTION}
+      CACHE STRING "FreeBSD package description.")
+    set(CPACK_FREEBSD_PACKAGE_WWW
+      https://${VIEWER_PACKAGE_DOMAIN_NAME}
+      CACHE STRING "FreeBSD package WWW.")
+    set(CPACK_FREEBSD_PACKAGE_LICENSE LGPL21
+      CACHE STRING "FreeBSD package license.")
+    set(CPACK_FREEBSD_PACKAGE_MAINTAINER
+      $ENV{USER}@${VIEWER_PACKAGE_DOMAIN_NAME}
+      CACHE STRING "FreeBSD package maintainer.")
+    set(CPACK_FREEBSD_PACKAGE_ORIGIN net/${VIEWER_BINARY_NAME}
+      CACHE STRING "FreeBSD package origin.")
+    set(CPACK_FREEBSD_PACKAGE_DEPS
+      "audio/freealut;devel/collada-dom;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;www/libnghttp2;graphics/openjpeg;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi"
+      CACHE STRING "FreeBSD package dependencies.")
+  endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND PACKAGE)
 endif (LINUX)
-
-endif (USESYSTEMLIBS)
 
 if (DARWIN)
   # These all get set with PROPERTIES. It's not that the property names are
@@ -2312,6 +2376,9 @@ endif (DARWIN)
 if (INSTALL)
   include(${CMAKE_CURRENT_SOURCE_DIR}/ViewerInstall.cmake)
 endif (INSTALL)
+if (PACKAGE AND USESYSTEMLIBS)
+  include(CPack)
+endif (PACKAGE AND USESYSTEMLIBS)
 
 # Note that the conventional VIEWER_SYMBOL_FILE is set by ../../build.sh
 if (PACKAGE AND (RELEASE_CRASH_REPORTING OR NON_RELEASE_CRASH_REPORTING) AND VIEWER_SYMBOL_FILE)
