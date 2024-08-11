@@ -22,7 +22,6 @@ if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
 else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
 use_prebuilt_binary(dullahan)
   if (LINUX)
-    cmake_host_system_information(RESULT LINUX_DISTRO QUERY DISTRIB_ID)
     if (${LINUX_DISTRO} MATCHES fedora)
       execute_process(
         COMMAND patchelf --remove-rpath bin/release/dullahan_host
