@@ -2092,6 +2092,15 @@ if (LINUX)
           CACHE STRING "Debian package maintainer.")
         set(CPACK_DEBIAN_PACKAGE_SECTION net
           CACHE STRING "Debian package section.")
+        if (${LINUX_DISTRO} MATCHES debian)
+          set(CPACK_DEBIAN_PACKAGE_DEPENDS
+            "libaprutil1, libboost-fiber1.74.0 | libboost-fiber1.81.0, libboost-filesystem1.74.0 | libboost-filesystem1.81.0, libboost-program-options1.74.0 | libboost-program-options1.81.0, libboost-regex1.74.0 | libboost-regex1.81.0, libboost-thread1.74.0 | libboost-thread1.81.0, libcollada-dom2.5-dp0, libexpat1, libfltk1.3, libglu1-mesa, libhunspell-1.7-0, libjsoncpp25, libmeshoptimizer2d (>= 0.18), libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0, vlc-plugin-base"
+          CACHE STRING "Debian package dependencies.")
+        elseif (${LINUX_DISTRO} MATCHES ubuntu)
+          set(CPACK_DEBIAN_PACKAGE_DEPENDS
+            "libaprutil1t64, libboost-fiber1.83.0, libboost-filesystem1.83.0, libboost-program-options1.83.0, libboost-regex1.83.0, libboost-thread1.83.0, libcollada-dom2.5-dp0, libexpat1, libfltk2.0-0t64, libglu1-mesa, libhunspell-1.7-0, libjsoncpp25, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0t64, vlc-plugin-base"
+          CACHE STRING "Debian package dependencies.")
+        endif (${LINUX_DISTRO} MATCHES debian)
       elseif (${LINUX_DISTRO} MATCHES fedora)
         set(CPACK_BINARY_RPM ON CACHE BOOL "Able to package Fedora RPM.")
         set(CPACK_RPM_PACKAGE_SUMMARY ${VIEWER_PACKAGE_COMMENT}
