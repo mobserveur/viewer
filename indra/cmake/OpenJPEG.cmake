@@ -41,6 +41,7 @@ if (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_
       WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
       RESULT_VARIABLE openjpeg_installed
       )
+    file(WRITE ${PREBUILD_TRACKING_DIR}/openjpeg_installed "${openjpeg_installed}")
   endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/openjpeg_installed OR NOT ${openjpeg_installed} EQUAL 0)
 else (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_NAME MATCHES FreeBSD))
 use_prebuilt_binary(openjpeg)

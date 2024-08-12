@@ -86,6 +86,7 @@ if (USE_FMODSTUDIO)
           RESULT_VARIABLE ${_binary}_installed
           )
       endif (DARWIN)
+      file(WRITE ${PREBUILD_TRACKING_DIR}/fmodstudio_installed "${fmodstudio_installed}")
     else (USESYSTEMLIBS)
     use_prebuilt_binary(fmodstudio)
     endif (USESYSTEMLIBS)

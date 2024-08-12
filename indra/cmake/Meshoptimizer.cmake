@@ -54,6 +54,7 @@ if (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR NOT USESYSTEMLIBS)
         WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
         RESULT_VARIABLE meshoptimizer_installed
         )
+      file(WRITE ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed "${meshoptimizer_installed}")
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed OR NOT ${meshoptimizer_installed} EQUAL 0)
   else (USESYSTEMLIBS)
 use_prebuilt_binary(meshoptimizer)

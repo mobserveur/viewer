@@ -18,6 +18,7 @@ if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
             WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
             RESULT_VARIABLE dullahan_installed
             )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/dullahan_installed "${dullahan_installed}")
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
 elseif (CMAKE_OSX_ARCHITECTURES MATCHES x86_64)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
@@ -32,6 +33,7 @@ elseif (CMAKE_OSX_ARCHITECTURES MATCHES x86_64)
             WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
             RESULT_VARIABLE dullahan_installed
             )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/dullahan_installed "${dullahan_installed}")
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
 else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
 use_prebuilt_binary(dullahan)
