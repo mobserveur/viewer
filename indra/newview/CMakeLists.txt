@@ -2118,7 +2118,7 @@ if (LINUX)
         set(CPACK_RPM_PACKAGE_DESCRIPTION ${VIEWER_PACKAGE_DESCRIPTION}
           CACHE STRING "RPM package description.")
         set(CPACK_RPM_PACKAGE_REQUIRES
-          "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, collada-dom, expat, fltk, mesa-libGLU, hunspell, jsoncpp, libnghttp2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
+          "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, collada-dom, expat, fltk, mesa-libGLU, hunspell, jsoncpp, libnghttp2, openjpeg2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
           CACHE STRING "RPM package requirements.")
       endif (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
     endif (PACKAGE)
