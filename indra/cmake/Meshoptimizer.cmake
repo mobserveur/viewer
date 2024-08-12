@@ -49,9 +49,9 @@ if (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR NOT USESYSTEMLIBS)
         WORKING_DIRECTORY /tmp/meshoptimizer-0.21
         )
       execute_process(
-        COMMAND cp /tmp/meshoptimizer-0.21/src/meshoptimizer.h ${AUTOBUILD_INSTALL_DIR}/include/meshoptimizer/
-        COMMAND cp /tmp/meshoptimizer-0.21/libmeshoptimizer.a ${AUTOBUILD_INSTALL_DIR}/lib/release/
-        WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+        COMMAND cp src/meshoptimizer.h ${AUTOBUILD_INSTALL_DIR}/include/meshoptimizer/
+        COMMAND cp libmeshoptimizer.a ${AUTOBUILD_INSTALL_DIR}/lib/release/
+        WORKING_DIRECTORY /tmp/meshoptimizer-0.21
         )
       execute_process(
         COMMAND rm -rf meshoptimizer-0.21

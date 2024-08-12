@@ -35,50 +35,53 @@ if (USE_FMODSTUDIO)
         execute_process(
           COMMAND hdiutil attach -noverify $ENV{HOME}/Downloads/fmodstudioapi20223mac-installer.dmg
           COMMAND mkdir -p
-            ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
-            ${AUTOBUILD_INSTALL_DIR}/lib/release
+            include/fmodstudio
+            lib/release
+          WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
           )
         execute_process(
           COMMAND cp
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod.h
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod.hpp
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_codec.h
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_common.h
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_dsp.h
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_dsp_effects.h
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_errors.h
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_output.h
+            inc/fmod.h
+            inc/fmod.hpp
+            inc/fmod_codec.h
+            inc/fmod_common.h
+            inc/fmod_dsp.h
+            inc/fmod_dsp_effects.h
+            inc/fmod_errors.h
+            inc/fmod_output.h
             ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio/
           COMMAND cp
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/lib/libfmod.dylib
             ${AUTOBUILD_INSTALL_DIR}/lib/release/
+          WORKING_DIRECTORY /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core
           )
         execute_process(
-          COMMAND hdiutil detach /Volumes/FMOD\ Programmers\ API\ Mac
-          WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-          RESULT_VARIABLE ${_binary}_installed
+          COMMAND hdiutil detach FMOD\ Programmers\ API\ Mac
+          WORKING_DIRECTORY /Volumes
+          RESULT_VARIABLE fmodstudio_installed
           )
       else (DARWIN)
         execute_process(
-          COMMAND tar -xf $ENV{HOME}/Downloads/fmodstudioapi20223linux.tar.gz -C /tmp
           COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
+          COMMAND tar -xf $ENV{HOME}/Downloads/fmodstudioapi20223linux.tar.gz
+          WORKING_DIRECTORY /tmp
           )
         execute_process(
           COMMAND cp
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod.hpp
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_codec.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_common.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_dsp.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_dsp_effects.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_errors.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_output.h
+            inc/fmod.h
+            inc/fmod.hpp
+            inc/fmod_codec.h
+            inc/fmod_common.h
+            inc/fmod_dsp.h
+            inc/fmod_dsp_effects.h
+            inc/fmod_errors.h
+            inc/fmod_output.h
             ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio/
           COMMAND cp -P
-            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so
-            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13
-            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13.23
+            lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so
+            lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13
+            lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13.23
             ${AUTOBUILD_INSTALL_DIR}/lib/release/
+          WORKING_DIRECTORY /tmp/fmodstudioapi20223linux/api/core
           )
         execute_process(
           COMMAND rm -rf fmodstudioapi20223linux

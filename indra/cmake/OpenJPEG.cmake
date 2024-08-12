@@ -34,11 +34,11 @@ if (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_
       )
     execute_process(
       COMMAND cp
-        /tmp/openjpeg-2.5.2/src/lib/openjp2/cio.h
-        /tmp/openjpeg-2.5.2/src/lib/openjp2/event.h
-        /tmp/openjpeg-2.5.2/src/lib/openjp2/opj_config_private.h
+        cio.h
+        event.h
+        opj_config_private.h
         ${AUTOBUILD_INSTALL_DIR}/include/openjpeg-2.5/
-      WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+      WORKING_DIRECTORY /tmp/openjpeg-2.5.2/src/lib/openjp2
       )
     execute_process(
       COMMAND rm -rf openjpeg-2.5.2
