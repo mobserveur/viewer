@@ -37,14 +37,12 @@ elseif (CMAKE_OSX_ARCHITECTURES MATCHES x86_64)
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
 else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
 use_prebuilt_binary(dullahan)
-  if (LINUX)
-    if (${LINUX_DISTRO} MATCHES fedora)
-      execute_process(
-        COMMAND patchelf --remove-rpath bin/release/dullahan_host
-        WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
-        )
-    endif (${LINUX_DISTRO} MATCHES fedora)
-  endif (LINUX)
+  if (${LINUX_DISTRO} MATCHES fedora)
+    execute_process(
+      COMMAND patchelf --remove-rpath bin/release/dullahan_host
+      WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+      )
+  endif (${LINUX_DISTRO} MATCHES fedora)
 endif (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
 
 target_include_directories( ll::cef SYSTEM INTERFACE  ${LIBS_PREBUILT_DIR}/include/cef)
