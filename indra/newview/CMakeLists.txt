@@ -2287,14 +2287,18 @@ if (DARWIN)
     )
 
  if (USESYSTEMLIBS)
-
   configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/InfoPlist.strings
     ${CMAKE_CURRENT_BINARY_DIR}/InfoPlist.strings
     )
-
+  add_custom_command(
+    TARGET ${VIEWER_BINARY_NAME} POST_BUILD
+    COMMAND ${CMAKE_INSTALL_NAME_TOOL}
+      -change "/usr/local/lib/libxmlrpc-epi.0.dylib" "${AUTOBUILD_INSTALL_DIR}/lib/release/libxmlrpc-epi.0.dylib"
+      ${VIEWER_APP_EXE}
+    VERBATIM
+  )
  else (USESYSTEMLIBS)
-
   add_custom_command(
     TARGET ${VIEWER_BINARY_NAME} POST_BUILD
     COMMAND ${PYTHON_EXECUTABLE}
@@ -2319,7 +2323,6 @@ if (DARWIN)
       ${VIEWER_BINARY_NAME}
       ${CMAKE_CURRENT_SOURCE_DIR}/viewer_manifest.py
     )
-
  endif (USESYSTEMLIBS)
 
  if (ENABLE_MEDIA_PLUGINS)

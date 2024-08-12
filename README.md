@@ -37,35 +37,13 @@ $ cd viewer
 $ sudo port install cmake pkgconfig autoconf automake apr-util +universal boost +universal collada-dom +universal hunspell +universal freetype +universal jsoncpp +universal openjpeg +universal openssl11 +universal uriparser +universal libvorbis +universal xxhashlib
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.8e9edc7/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst -OL https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.8e9edc7/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ cd -
 $ cd ..
-$ tar xf ~/Downloads/xmlrpc-epi-0.54.2.tar.bz2
 $ git clone https://github.com/secondlife/3p-openssl
 $ git clone https://github.com/secondlife/3p-curl
 $ git clone https://github.com/secondlife/3p-libndofdev
-$ cd xmlrpc-epi-0.54.2
-$ export CPPFLAGS="$CPPFLAGS -I$PWD/src"
-$ rm -f config.sub missing
-$ autoreconf -is
-$ mkdir -p build/x86_64-apple-darwin`uname -r`
-$ cd build/x86_64-apple-darwin`uname -r`
-$ export CFLAGS="-arch x86_64 -mmacosx-version-min=10.5"
-$ ../../configure --host=x86_64-apple-darwin`uname -r`
-$ make -j`sysctl -n hw.ncpu`
-$ sudo make install
-$ cd -
-$ sed -i '' -e 's/XMLRPC_VALUE find_named_value/__attribute__((always_inline)) XMLRPC_VALUE find_named_value/g' src/xmlrpc_introspection.c
-$ sed -i '' -e 's/void describe_method/__attribute__((always_inline)) void describe_method/g' src/xmlrpc_introspection.c
-$ mkdir -p build/aarch64-apple-darwin`uname -r`
-$ cd build/aarch64-apple-darwin`uname -r`
-$ export CFLAGS="-arch arm64 -mmacosx-version-min=11.0"
-$ ../../configure --host=aarch64-apple-darwin`uname -r`
-$ make -j`sysctl -n hw.ncpu`
-$ sudo lipo src/.libs/libxmlrpc-epi.a /usr/local/lib/libxmlrpc-epi.a -create -output /usr/local/lib/libxmlrpc-epi.a
-$ sudo lipo src/.libs/libxmlrpc-epi.0.dylib /usr/local/lib/libxmlrpc-epi.0.dylib -create -output /usr/local/lib/libxmlrpc-epi.0.dylib
-$ unset CPPFLAGS CFLAGS
-$ cd ../../../3p-openssl/openssl
+$ cd 3p-openssl/openssl
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
 $ ../../Configure no-shared darwin64-arm64-cc
