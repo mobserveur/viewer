@@ -52,6 +52,10 @@ if (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR NOT USESYSTEMLIBS)
         COMMAND cp /tmp/meshoptimizer-0.21/src/meshoptimizer.h ${AUTOBUILD_INSTALL_DIR}/include/meshoptimizer/
         COMMAND cp /tmp/meshoptimizer-0.21/libmeshoptimizer.a ${AUTOBUILD_INSTALL_DIR}/lib/release/
         WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+        )
+      execute_process(
+        COMMAND rm -rf meshoptimizer-0.21
+        WORKING_DIRECTORY /tmp
         RESULT_VARIABLE meshoptimizer_installed
         )
       file(WRITE ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed "${meshoptimizer_installed}")

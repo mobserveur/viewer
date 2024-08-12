@@ -39,6 +39,10 @@ if (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_
         /tmp/openjpeg-2.5.2/src/lib/openjp2/opj_config_private.h
         ${AUTOBUILD_INSTALL_DIR}/include/openjpeg-2.5/
       WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+      )
+    execute_process(
+      COMMAND rm -rf openjpeg-2.5.2
+      WORKING_DIRECTORY /tmp
       RESULT_VARIABLE openjpeg_installed
       )
     file(WRITE ${PREBUILD_TRACKING_DIR}/openjpeg_installed "${openjpeg_installed}")

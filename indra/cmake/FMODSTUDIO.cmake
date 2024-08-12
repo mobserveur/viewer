@@ -81,9 +81,9 @@ if (USE_FMODSTUDIO)
             ${AUTOBUILD_INSTALL_DIR}/lib/release/
           )
         execute_process(
-          COMMAND rm -rf /tmp/fmodstudioapi20223linux
-          WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-          RESULT_VARIABLE ${_binary}_installed
+          COMMAND rm -rf fmodstudioapi20223linux
+          WORKING_DIRECTORY /tmp
+          RESULT_VARIABLE fmodstudio_installed
           )
       endif (DARWIN)
       file(WRITE ${PREBUILD_TRACKING_DIR}/fmodstudio_installed "${fmodstudio_installed}")
