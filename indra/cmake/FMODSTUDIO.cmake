@@ -50,8 +50,10 @@ if (USE_FMODSTUDIO)
             inc/fmod_errors.h
             inc/fmod_output.h
             ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio/
-          COMMAND cp
-            ${AUTOBUILD_INSTALL_DIR}/lib/release/
+          COMMAND lipo
+            lib/libfmod.dylib
+            -thin ${CMAKE_OSX_ARCHITECTURES}
+            -output ${AUTOBUILD_INSTALL_DIR}/lib/release/libfmod.dylib
           WORKING_DIRECTORY /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core
           )
         execute_process(
