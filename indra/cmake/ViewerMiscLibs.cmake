@@ -37,7 +37,7 @@ elseif (${LINUX_DISTRO} MATCHES debian OR DARWIN)
         DESTINATION ${LIBS_PREBUILT_DIR}
         )
     endif (DARWIN)
-    file(WRITE ${PREBUILD_TRACKING_DIR}/nanosvg_installed "${nanosvg_installed}")
+    file(WRITE ${PREBUILD_TRACKING_DIR}/nanosvg_installed "0")
   endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/nanosvg_installed OR NOT ${nanosvg_installed} EQUAL 0)
 endif (NOT USESYSTEMLIBS)
 use_prebuilt_binary(viewer-fonts)

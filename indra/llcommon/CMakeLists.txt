@@ -296,18 +296,14 @@ target_include_directories(llcommon PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
   if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/sse2neon_installed OR NOT ${sse2neon_installed} EQUAL 0)
-    execute_process(
-      COMMAND mkdir -p include/sse2neon
-      WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+    file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/sse2neon)
+    file(DOWNLOAD
+      https://raw.githubusercontent.com/DLTcollab/sse2neon/master/sse2neon.h
+      ${LIBS_PREBUILT_DIR}/include/sse2neon
       )
-    execute_process(
-      COMMAND curl -OL https://raw.githubusercontent.com/DLTcollab/sse2neon/master/sse2neon.h
-      WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}/include/sse2neon
-      RESULT_VARIABLE sse2neon_installed
-      )
-    file(WRITE ${PREBUILD_TRACKING_DIR}/sse2neon_installed "${sse2neon_installed}")
+    file(WRITE ${PREBUILD_TRACKING_DIR}/sse2neon_installed "0")
   endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/sse2neon_installed OR NOT ${sse2neon_installed} EQUAL 0)
-  target_include_directories(llcommon PUBLIC ${AUTOBUILD_INSTALL_DIR}/include/sse2neon)
+  target_include_directories(llcommon PUBLIC ${LIBS_PREBUILT_DIR}/include/sse2neon)
 endif ()
 
 if (USE_AUTOBUILD_3P OR USE_CONAN)

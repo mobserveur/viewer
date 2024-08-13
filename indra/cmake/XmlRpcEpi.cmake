@@ -17,7 +17,7 @@ elseif (DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${
     INPUT ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2
     DESTINATION ${CMAKE_BINARY_DIR}
     )
-  file(MAKE_DIRECTORY ${AUTOBUILD_INSTALL_DIR}/include/xmlrpc-epi)
+  file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/xmlrpc-epi)
   file(COPY
     ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/base64.h
     ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/encodings.h

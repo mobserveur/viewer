@@ -18,47 +18,49 @@ endif (NOT USESYSTEMLIBS)
 if (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR NOT USESYSTEMLIBS)
   if (USESYSTEMLIBS)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed OR NOT ${meshoptimizer_installed} EQUAL 0)
-      execute_process(
-        COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/include/meshoptimizer
-        COMMAND curl
-          -L https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz
-          -o meshoptimizer-0.21.tar.gz
-        WORKING_DIRECTORY $ENV{HOME}/Downloads
+      file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/meshoptimizer)
+      file(DOWNLOAD
+        https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz
+        ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz
         )
-      execute_process(
-        COMMAND tar xf $ENV{HOME}/Downloads/meshoptimizer-0.21.tar.gz
-        WORKING_DIRECTORY /tmp
-        )
-      execute_process(
-        COMMAND cmake
-          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-          .
-        WORKING_DIRECTORY /tmp/meshoptimizer-0.21
+      file(ARCHIVE_EXTRACT
+        INPUT ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz
+        DESTINATION ${CMAKE_BINARY_DIR}
         )
       if (DARWIN)
-        execute_process(
-          COMMAND cmake
+        try_compile(MESHOPTIMIZER_RESULT
+          PROJECT meshoptimizer
+          SOURCE_DIR ${CMAKE_BINARY_DIR}/meshoptimizer-0.21
+          BINARY_DIR ${CMAKE_BINARY_DIR}/meshoptimizer-0.21
+          TARGET meshoptimizer
+          CMAKE_FLAGS
+            -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
             -DCMAKE_OSX_ARCHITECTURES:STRING=${CMAKE_OSX_ARCHITECTURES}
             -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.15
-            .
-          WORKING_DIRECTORY /tmp/meshoptimizer-0.21
+          OUTPUT_VARIABLE meshoptimizer_installed
+          )
+      else (DARWIN)
+        try_compile(MESHOPTIMIZER_RESULT
+          PROJECT meshoptimizer
+          SOURCE_DIR ${CMAKE_BINARY_DIR}/meshoptimizer-0.21
+          BINARY_DIR ${CMAKE_BINARY_DIR}/meshoptimizer-0.21
+          TARGET meshoptimizer
+          CMAKE_FLAGS
+            -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+          OUTPUT_VARIABLE meshoptimizer_installed
           )
       endif (DARWIN)
-      execute_process(
-        COMMAND make -j${MAKE_JOBS}
-        WORKING_DIRECTORY /tmp/meshoptimizer-0.21
-        )
-      execute_process(
-        COMMAND cp src/meshoptimizer.h ${AUTOBUILD_INSTALL_DIR}/include/meshoptimizer/
-        COMMAND cp libmeshoptimizer.a ${AUTOBUILD_INSTALL_DIR}/lib/release/
-        WORKING_DIRECTORY /tmp/meshoptimizer-0.21
-        )
-      execute_process(
-        COMMAND rm -rf meshoptimizer-0.21
-        WORKING_DIRECTORY /tmp
-        RESULT_VARIABLE meshoptimizer_installed
-        )
-      file(WRITE ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed "${meshoptimizer_installed}")
+      if (${MESHOPTIMIZER_RESULT})
+        file(
+          COPY ${CMAKE_BINARY_DIR}/meshoptimizer-0.21/src/meshoptimizer.h
+          DESTINATION ${LIBS_PREBUILT_DIR}/include/meshoptimizer
+          )
+        file(
+          COPY ${CMAKE_BINARY_DIR}/meshoptimizer-0.21/libmeshoptimizer.a
+          DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
+          )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed "${meshoptimizer_installed}")
+      endif (${MESHOPTIMIZER_RESULT})
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed OR NOT ${meshoptimizer_installed} EQUAL 0)
   else (USESYSTEMLIBS)
 use_prebuilt_binary(meshoptimizer)

@@ -7,36 +7,36 @@ add_library( ll::cef INTERFACE IMPORTED )
 
 if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
-        execute_process(
-            COMMAND curl -O https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
-            WORKING_DIRECTORY $ENV{HOME}/Downloads
+        file(DOWNLOAD
+            https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
+            ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
+            SHOW_PROGRESS
             )
-        execute_process(
-            COMMAND tar xf $ENV{HOME}/Downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
-            WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
-            RESULT_VARIABLE dullahan_installed
+        file(ARCHIVE_EXTRACT
+            INPUT ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
+            DESTINATION ${LIBS_PREBUILT_DIR}
             )
-        file(WRITE ${PREBUILD_TRACKING_DIR}/dullahan_installed "${dullahan_installed}")
+        file(WRITE ${PREBUILD_TRACKING_DIR}/dullahan_installed "0")
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
 elseif (CMAKE_OSX_ARCHITECTURES MATCHES x86_64)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
-        execute_process(
-            COMMAND curl -O https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
-            WORKING_DIRECTORY $ENV{HOME}/Downloads
+        file(DOWNLOAD
+            https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
+            ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
+            SHOW_PROGRESS
             )
-        execute_process(
-            COMMAND tar xf $ENV{HOME}/Downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
-            WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
-            RESULT_VARIABLE dullahan_installed
+        file(ARCHIVE_EXTRACT
+            INPUT ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
+            DESTINATION ${LIBS_PREBUILT_DIR}
             )
-        file(WRITE ${PREBUILD_TRACKING_DIR}/dullahan_installed "${dullahan_installed}")
+        file(WRITE ${PREBUILD_TRACKING_DIR}/dullahan_installed "0")
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
 else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
 use_prebuilt_binary(dullahan)
   if (${LINUX_DISTRO} MATCHES fedora)
     execute_process(
       COMMAND patchelf --remove-rpath bin/release/dullahan_host
-      WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
+      WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}
       )
   endif (${LINUX_DISTRO} MATCHES fedora)
 endif (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
