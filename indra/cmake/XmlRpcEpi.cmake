@@ -17,15 +17,16 @@ elseif (DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${
     INPUT ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2
     DESTINATION ${CMAKE_BINARY_DIR}
     )
-  file(COPY
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/base64.h
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/encodings.h
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/queue.h
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/simplestring.h
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xml_element.h
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xml_to_xmlrpc.h
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xmlrpc.h
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xmlrpc_introspection.h
+  file(
+    COPY
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/base64.h
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/encodings.h
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/queue.h
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/simplestring.h
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xml_element.h
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xml_to_xmlrpc.h
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xmlrpc.h
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/xmlrpc_introspection.h
     DESTINATION ${LIBS_PREBUILT_DIR}/include/xmlrpc-epi
     )
   file(REMOVE
@@ -66,9 +67,10 @@ elseif (DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${
     )
   unset(ENV{CPPFLAGS})
   unset(ENV{CFLAGS})
-  file(COPY
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/.libs/libxmlrpc-epi.dylib
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/.libs/libxmlrpc-epi.0.dylib
+  file(
+    COPY
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/.libs/libxmlrpc-epi.dylib
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/.libs/libxmlrpc-epi.0.dylib
     DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
     FOLLOW_SYMLINK_CHAIN
     )
