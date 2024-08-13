@@ -37,7 +37,7 @@ $ cd viewer
 $ sudo port install cmake pkgconfig autoconf automake apr-util +universal boost +universal collada-dom +universal hunspell +universal freetype +universal jsoncpp +universal openjpeg +universal openssl11 +universal uriparser +universal libvorbis +universal xxhashlib
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115452/994130/nanosvg-2022.09.27-darwin64-580364.tar.bz2 -OL https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.8e9edc7/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.8e9edc7/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ cd -
 $ cd ..
 $ git clone https://github.com/secondlife/3p-openssl
@@ -64,7 +64,6 @@ $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING=arm64
 $ make -j`sysctl -n hw.ncpu`
 $ cd ../../../../viewer/build/universal-apple-darwin`uname -r`/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
-$ tar xf ~/Downloads/nanosvg-2022.09.27-darwin64-580364.tar.bz2
 $ tar xf ~/Downloads/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst
 $ tar xf ~/Downloads/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ cd lib/release
@@ -99,12 +98,6 @@ $ rm CMakeCache.txt
 #### Debian 12.5
 
 ```
-$ cd ~/Downloads
-$ curl -OL https://automated-builds-secondlife-com.s3.amazonaws.com/ct2/115397/993664/nanosvg-2022.09.27-linux-580337.tar.bz2
-$ cd -
-$ cd packages
-$ tar xf ~/Downloads/nanosvg-2022.09.27-linux-580337.tar.bz2
-$ cd ..
 $ sudo apt install pkg-config libaprutil1-dev libboost-fiber-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libexpat1-dev libfltk1.3-dev libfontconfig-dev libfreetype-dev libglu1-mesa-dev libhunspell-dev libjpeg-dev libjsoncpp-dev libmeshoptimizer-dev libnghttp2-dev libpng-dev libpipewire-0.3-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxft-dev libxmlrpc-epi-dev libxxhash-dev
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=OFF -DUSE_FMODSTUDIO:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../../indra
 $ make -j`nproc`
