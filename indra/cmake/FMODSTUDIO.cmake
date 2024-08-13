@@ -31,10 +31,6 @@ if (USE_FMODSTUDIO)
     # as accessing the private LL location will fail if you don't have the credential
     include(Prebuilt)
     if (USESYSTEMLIBS AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/fmodstudio_installed OR NOT ${fmodstudio_installed} EQUAL 0))
-      file(MAKE_DIRECTORY
-        ${LIBS_PREBUILT_DIR}/include/fmodstudio
-        ${LIBS_PREBUILT_DIR}/lib/release
-        )
       if (DARWIN)
         execute_process(
           COMMAND hdiutil attach -noverify fmodstudioapi20223mac-installer.dmg

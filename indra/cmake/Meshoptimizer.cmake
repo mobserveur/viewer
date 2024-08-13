@@ -18,7 +18,6 @@ endif (NOT USESYSTEMLIBS)
 if (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR NOT USESYSTEMLIBS)
   if (USESYSTEMLIBS)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed OR NOT ${meshoptimizer_installed} EQUAL 0)
-      file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/meshoptimizer)
       file(DOWNLOAD
         https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz
         ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz

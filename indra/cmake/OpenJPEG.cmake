@@ -23,7 +23,6 @@ if (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_
       INPUT ${CMAKE_BINARY_DIR}/openjpeg-2.5.2.tar.gz
       DESTINATION ${CMAKE_BINARY_DIR}
       )
-    file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/openjpeg-2.5)
     execute_process(
       COMMAND cmake
         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
