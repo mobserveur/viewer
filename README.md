@@ -37,17 +37,11 @@ $ cd viewer
 $ sudo port install cmake pkgconfig autoconf automake apr-util +universal boost +universal collada-dom +universal hunspell +universal freetype +universal jsoncpp +universal openjpeg +universal openssl11 +universal uriparser +universal libvorbis +universal xxhashlib
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst
 $ cd -
 $ cd ..
-$ git clone https://github.com/secondlife/3p-openssl
 $ git clone https://github.com/secondlife/3p-curl
-$ cd 3p-openssl/openssl
-$ mkdir -p build/aarch64-apple-darwin`uname -r`
-$ cd build/aarch64-apple-darwin`uname -r`
-$ ../../Configure no-shared darwin64-arm64-cc
-$ make -j`sysctl -n hw.ncpu`
-$ cd ../../../../3p-curl/curl
+$ cd 3p-curl/curl
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
 $ export CFLAGS="-arch arm64 -mmacosx-version-min=11.0 -std=c90"
@@ -58,10 +52,7 @@ $ sudo port activate openssl3
 $ unset CFLAGS
 $ cd ../../../../viewer/build/universal-apple-darwin`uname -r`/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
-$ tar xf ~/Downloads/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ cd lib/release
-$ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libcrypto.a libcrypto.a -create -output libcrypto.a
-$ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libssl.a libssl.a -create -output libssl.a
 $ lipo ../../../../../../3p-curl/curl/build/aarch64-apple-darwin`uname -r`/lib/.libs/libcurl.a libcurl.a -create -output libcurl.a
 $ cd ../../..
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -mmacosx-version-min=10.15 -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
@@ -76,11 +67,10 @@ $ open newview/Megapahit.app
 ```
 $ mkdir -p build/`uname -m`-linux-gnu/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst
 $ cd -
 $ cd build/`uname -m`-linux-gnu/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-linux64-513145c.tar.zst
-$ tar xf ~/Downloads/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
 $ cd ..
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ rm CMakeCache.txt
@@ -122,22 +112,6 @@ $ megapahit
 ### FreeBSD
 
 ```
-$ mkdir -p build/`uname -m`-unknown-freebsd14.1/packages
-$ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
-$ cd -
-$ cd ..
-$ git clone https://github.com/secondlife/3p-openssl
-$ git clone https://github.com/secondlife/3p-curl
-$ cd 3p-openssl/openssl
-$ mkdir -p build/`uname -m`-unknown-freebsd14.1
-$ cd -p build/`uname -m`-unknown-freebsd14.1
-$ ../../config no-shared
-$ make -j`nproc`
-$ cd ../../../../viewer/build/`uname -m`-unknown-freebsd14.1/packages
-$ tar xf ~/Downloads/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
-$ cp ../../../../3p-openssl/openssl/build/`uname -m`-unknown-freebsd14.1/lib*.a lib/release/
-$ cd ..
 $ setenv LL_BUILD "-O3 -std=c++17 -fPIC"
 $ sudo su -
 # portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 devel/collada-dom x11-toolkits/fltk textproc/hunspell misc/meshoptimizer graphics/nanosvg graphics/openjpeg devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
