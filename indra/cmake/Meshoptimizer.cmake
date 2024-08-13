@@ -18,10 +18,12 @@ endif (NOT USESYSTEMLIBS)
 if (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR NOT USESYSTEMLIBS)
   if (USESYSTEMLIBS)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/meshoptimizer_installed OR NOT ${meshoptimizer_installed} EQUAL 0)
-      file(DOWNLOAD
-        https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz
-        ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz
-        )
+      if (NOT EXISTS ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz)
+        file(DOWNLOAD
+          https://github.com/zeux/meshoptimizer/archive/refs/tags/v0.21.tar.gz
+          ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz
+          )
+      endif (NOT EXISTS ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz)
       file(ARCHIVE_EXTRACT
         INPUT ${CMAKE_BINARY_DIR}/meshoptimizer-0.21.tar.gz
         DESTINATION ${CMAKE_BINARY_DIR}

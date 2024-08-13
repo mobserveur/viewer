@@ -7,11 +7,13 @@ add_library( ll::cef INTERFACE IMPORTED )
 
 if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
-        file(DOWNLOAD
-            https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
-            ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
-            SHOW_PROGRESS
-            )
+        if (NOT EXISTS ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2)
+            file(DOWNLOAD
+                https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
+                ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
+                SHOW_PROGRESS
+                )
+        endif (NOT EXISTS ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2)
         file(ARCHIVE_EXTRACT
             INPUT ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070244.tar.bz2
             DESTINATION ${LIBS_PREBUILT_DIR}
@@ -20,11 +22,13 @@ if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
 elseif (CMAKE_OSX_ARCHITECTURES MATCHES x86_64)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/dullahan_installed OR NOT ${dullahan_installed} EQUAL 0)
-        file(DOWNLOAD
-            https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
-            ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
-            SHOW_PROGRESS
-            )
+        if (NOT EXISTS ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2)
+            file(DOWNLOAD
+                https://megapahit.net/downloads/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
+                ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
+                SHOW_PROGRESS
+                )
+        endif (NOT EXISTS ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2)
         file(ARCHIVE_EXTRACT
             INPUT ${CMAKE_BINARY_DIR}/dullahan-1.14.0.202312131437_118.7.1_g99817d2_chromium-118.0.5993.119-darwin64-242070158.tar.bz2
             DESTINATION ${LIBS_PREBUILT_DIR}

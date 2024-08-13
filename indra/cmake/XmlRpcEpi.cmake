@@ -9,10 +9,12 @@ use_system_binary( xmlrpc-epi )
 
 use_prebuilt_binary(xmlrpc-epi)
 elseif (DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/xmlrpc-epi_installed OR NOT ${xmlrpc-epi_installed} EQUAL 0))
-  file(DOWNLOAD
-    https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
-    ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2
-    )
+  if (NOT EXISTS ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2)
+    file(DOWNLOAD
+      https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
+      ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2
+      )
+  endif (NOT EXISTS ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2)
   file(ARCHIVE_EXTRACT
     INPUT ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2
     DESTINATION ${CMAKE_BINARY_DIR}

@@ -297,10 +297,12 @@ target_include_directories(llcommon PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
   if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/sse2neon_installed OR NOT ${sse2neon_installed} EQUAL 0)
     file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/sse2neon)
-    file(DOWNLOAD
-      https://raw.githubusercontent.com/DLTcollab/sse2neon/master/sse2neon.h
-      ${LIBS_PREBUILT_DIR}/include/sse2neon/sse2neon.h
-      )
+    if (NOT EXISTS ${LIBS_PREBUILT_DIR}/include/sse2neon/sse2neon.h)
+      file(DOWNLOAD
+        https://raw.githubusercontent.com/DLTcollab/sse2neon/master/sse2neon.h
+        ${LIBS_PREBUILT_DIR}/include/sse2neon/sse2neon.h
+        )
+    endif (NOT EXISTS ${LIBS_PREBUILT_DIR}/include/sse2neon/sse2neon.h)
     file(WRITE ${PREBUILD_TRACKING_DIR}/sse2neon_installed "0")
   endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/sse2neon_installed OR NOT ${sse2neon_installed} EQUAL 0)
   target_include_directories(llcommon PUBLIC ${LIBS_PREBUILT_DIR}/include/sse2neon)

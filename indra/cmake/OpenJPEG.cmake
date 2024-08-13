@@ -15,10 +15,12 @@ elseif (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_NAME MATCHES Fr
 endif (NOT USESYSTEMLIBS)
 if (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_NAME MATCHES FreeBSD))
   if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/openjpeg_installed OR NOT ${openjpeg_installed} EQUAL 0)
-    file(DOWNLOAD
-      https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz
-      ${CMAKE_BINARY_DIR}/openjpeg-2.5.2.tar.gz
-      )
+    if (NOT EXISTS ${CMAKE_BINARY_DIR}/openjpeg-2.5.2.tar.gz)
+      file(DOWNLOAD
+        https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.2.tar.gz
+        ${CMAKE_BINARY_DIR}/openjpeg-2.5.2.tar.gz
+        )
+    endif (NOT EXISTS ${CMAKE_BINARY_DIR}/openjpeg-2.5.2.tar.gz)
     file(ARCHIVE_EXTRACT
       INPUT ${CMAKE_BINARY_DIR}/openjpeg-2.5.2.tar.gz
       DESTINATION ${CMAKE_BINARY_DIR}

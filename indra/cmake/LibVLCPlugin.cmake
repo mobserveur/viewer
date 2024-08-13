@@ -9,10 +9,12 @@ if (USESYSTEMLIBS)
     if (DARWIN)
         if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
             if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/vlc_installed OR NOT ${vlc_installed} EQUAL 0)
-                file(DOWNLOAD
-                    https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-arm64.dmg
-                    ${CMAKE_BINARY_DIR}/vlc-3.0.21-arm64.dmg
-                    )
+                if (NOT EXISTS ${CMAKE_BINARY_DIR}/vlc-3.0.21-arm64.dmg)
+                    file(DOWNLOAD
+                        https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-arm64.dmg
+                        ${CMAKE_BINARY_DIR}/vlc-3.0.21-arm64.dmg
+                        )
+                endif (NOT EXISTS ${CMAKE_BINARY_DIR}/vlc-3.0.21-arm64.dmg)
                 file(WRITE ${PREBUILD_TRACKING_DIR}/vlc_installed "0")
             endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/vlc_installed OR NOT ${vlc_installed} EQUAL 0)
             execute_process(
@@ -21,10 +23,12 @@ if (USESYSTEMLIBS)
                 )
         else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
             if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/vlc_installed OR NOT ${vlc_installed} EQUAL 0)
-                file(DOWNLOAD
-                    https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-intel64.dmg
-                    ${CMAKE_BINARY_DIR}/vlc-3.0.21-intel64.dmg
-                    )
+                if (NOT EXISTS ${CMAKE_BINARY_DIR}/vlc-3.0.21-intel64.dmg)
+                    file(DOWNLOAD
+                        https://get.videolan.org/vlc/3.0.21/macosx/vlc-3.0.21-intel64.dmg
+                        ${CMAKE_BINARY_DIR}/vlc-3.0.21-intel64.dmg
+                        )
+                endif (NOT EXISTS ${CMAKE_BINARY_DIR}/vlc-3.0.21-intel64.dmg)
                 file(WRITE ${PREBUILD_TRACKING_DIR}/vlc_installed "0")
             endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/vlc_installed OR NOT ${vlc_installed} EQUAL 0)
             execute_process(
