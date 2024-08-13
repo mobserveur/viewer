@@ -37,12 +37,11 @@ $ cd viewer
 $ sudo port install cmake pkgconfig autoconf automake apr-util +universal boost +universal collada-dom +universal hunspell +universal freetype +universal jsoncpp +universal openjpeg +universal openssl11 +universal uriparser +universal libvorbis +universal xxhashlib
 $ mkdir -p build/universal-apple-darwin`uname -r`/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://github.com/secondlife/3p-libndofdev/releases/download/v0.1.8e9edc7/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ cd -
 $ cd ..
 $ git clone https://github.com/secondlife/3p-openssl
 $ git clone https://github.com/secondlife/3p-curl
-$ git clone https://github.com/secondlife/3p-libndofdev
 $ cd 3p-openssl/openssl
 $ mkdir -p build/aarch64-apple-darwin`uname -r`
 $ cd build/aarch64-apple-darwin`uname -r`
@@ -57,20 +56,13 @@ $ ../../configure --host=aarch64-apple-darwin`uname -r` --disable-alt-svc --disa
 $ make -j`sysctl -n hw.ncpu`
 $ sudo port activate openssl3
 $ unset CFLAGS
-$ cd ../../../../3p-libndofdev/libndofdev
-$ mkdir -p build/aarch64-apple-darwin`uname -r`
-$ cd build/aarch64-apple-darwin`uname -r`
-$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES:STRING=arm64 -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_MAC -Wno-int-conversion" ../..
-$ make -j`sysctl -n hw.ncpu`
 $ cd ../../../../viewer/build/universal-apple-darwin`uname -r`/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
-$ tar xf ~/Downloads/libndofdev-0.1.8e9edc7-darwin64-8e9edc7.tar.zst
 $ tar xf ~/Downloads/openssl-1.1.1q.de53f55-darwin64-de53f55.tar.zst
 $ cd lib/release
 $ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libcrypto.a libcrypto.a -create -output libcrypto.a
 $ lipo ../../../../../../3p-openssl/openssl/build/aarch64-apple-darwin`uname -r`/libssl.a libssl.a -create -output libssl.a
 $ lipo ../../../../../../3p-curl/curl/build/aarch64-apple-darwin`uname -r`/lib/.libs/libcurl.a libcurl.a -create -output libcurl.a
-$ lipo ../../../../../../3p-libndofdev/libndofdev/build/aarch64-apple-darwin`uname -r`/src/libndofdev.dylib libndofdev.dylib -create -output libndofdev.dylib
 $ cd ../../..
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -mmacosx-version-min=10.15 -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=newview/Megapahit.app/Contents/Resources -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=OFF -DUSE_FMODSTUDIO:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF ../../indra
@@ -84,11 +76,10 @@ $ open newview/Megapahit.app
 ```
 $ mkdir -p build/`uname -m`-linux-gnu/packages
 $ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst -OL https://github.com/secondlife/3p-open-libndofdev/releases/download/v1.14-r2/open_libndofdev-0.14.8730039102-linux64-8730039102.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
+$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst -OL https://github.com/secondlife/3p-openssl/releases/download/v1.1.1q.de53f55/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
 $ cd -
 $ cd build/`uname -m`-linux-gnu/packages
 $ tar xf ~/Downloads/curl-7.54.1-513145c-linux64-513145c.tar.zst
-$ tar xf ~/Downloads/open_libndofdev-0.14.8730039102-linux64-8730039102.tar.zst
 $ tar xf ~/Downloads/openssl-1.1.1q.de53f55-linux64-de53f55.tar.zst
 $ cd ..
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
