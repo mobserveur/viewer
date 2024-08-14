@@ -289,10 +289,8 @@ void LLVoiceClient::setNonSpatialVoiceModule(const std::string &voice_server_typ
 
 void LLVoiceClient::setHidden(bool hidden)
 {
-    if (mSpatialVoiceModule)
-    {
-        mSpatialVoiceModule->setHidden(hidden);
-    }
+    LLWebRTCVoiceClient::getInstance()->setHidden(hidden);
+    LLVivoxVoiceClient::getInstance()->setHidden(hidden);
 }
 
 void LLVoiceClient::terminate()
@@ -897,9 +895,15 @@ void LLVoiceClient::addObserver(LLVoiceClientStatusObserver* observer)
 
 void LLVoiceClient::removeObserver(LLVoiceClientStatusObserver* observer)
 {
-    LLVivoxVoiceClient::getInstance()->removeObserver(observer);
+    if (LLVivoxVoiceClient::instanceExists())
+    {
+        LLVivoxVoiceClient::getInstance()->removeObserver(observer);
+    }
 #if !__FreeBSD__
-    LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
+    if (LLWebRTCVoiceClient::instanceExists())
+    {
+        LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
+    }
 #endif
 }
 
@@ -913,9 +917,15 @@ void LLVoiceClient::addObserver(LLFriendObserver* observer)
 
 void LLVoiceClient::removeObserver(LLFriendObserver* observer)
 {
-    LLVivoxVoiceClient::getInstance()->removeObserver(observer);
+    if (LLVivoxVoiceClient::instanceExists())
+    {
+        LLVivoxVoiceClient::getInstance()->removeObserver(observer);
+    }
 #if !__FreeBSD__
-    LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
+    if (LLWebRTCVoiceClient::instanceExists())
+    {
+        LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
+    }
 #endif
 }
 
@@ -929,9 +939,15 @@ void LLVoiceClient::addObserver(LLVoiceClientParticipantObserver* observer)
 
 void LLVoiceClient::removeObserver(LLVoiceClientParticipantObserver* observer)
 {
-    LLVivoxVoiceClient::getInstance()->removeObserver(observer);
+    if (LLVivoxVoiceClient::instanceExists())
+    {
+        LLVivoxVoiceClient::getInstance()->removeObserver(observer);
+    }
 #if !__FreeBSD__
-    LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
+    if (LLWebRTCVoiceClient::instanceExists())
+    {
+        LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
+    }
 #endif
 }
 

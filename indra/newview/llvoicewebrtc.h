@@ -70,6 +70,7 @@ class LLWebRTCVoiceClient : public LLSingleton<LLWebRTCVoiceClient>,
     virtual ~LLWebRTCVoiceClient();
 
 public:
+    void cleanupSingleton() override;
     /// @name LLVoiceModuleInterface virtual implementations
     ///  @see LLVoiceModuleInterface
     //@{
@@ -88,6 +89,7 @@ public:
     std::string sipURIFromID(const LLUUID &id) const override;
     LLSD getP2PChannelInfoTemplate(const LLUUID& id) const override;
 
+    void setHidden(bool hidden) override;  // virtual
 
     ///////////////////
     /// @name Logging
@@ -299,6 +301,7 @@ public:
         static void for_each(sessionFunc_t func);
 
         static void reapEmptySessions();
+        static void clearSessions();
 
         bool isEmpty() { return mWebRTCConnections.empty(); }
 
@@ -318,7 +321,7 @@ public:
         participantUUIDMap mParticipantsByUUID;
 
         static bool hasSession(const std::string &sessionID)
-        { return mSessions.find(sessionID) != mSessions.end(); }
+        { return sSessions.find(sessionID) != sSessions.end(); }
 
        bool mHangupOnLastLeave;  // notify observers after the session becomes empty.
        bool mNotifyOnFirstJoin;  // notify observers when the first peer joins.
@@ -329,7 +332,7 @@ public:
 
     private:
 
-        static std::map<std::string, ptr_t> mSessions;  // canonical list of outstanding sessions.
+        static std::map<std::string, ptr_t> sSessions;  // canonical list of outstanding sessions.
 
         static void for_eachPredicate(const std::pair<std::string,
                                       LLWebRTCVoiceClient::sessionState::wptr_t> &a,
@@ -479,8 +482,6 @@ private:
     bool inEstateChannel();
 
     LLSD getAudioSessionChannelInfo();
-
-    void setHidden(bool hidden) override; //virtual
 
     void enforceTether();
 
