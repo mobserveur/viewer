@@ -16,7 +16,7 @@ if (NOT USESYSTEMLIBS)
 use_prebuilt_binary(slvoice)
 
 use_prebuilt_binary(nanosvg)
-elseif (${LINUX_DISTRO} MATCHES debian OR DARWIN)
+elseif (${LINUX_DISTRO} MATCHES debian OR (${LINUX_DISTRO} MATCHES ubuntu) OR DARWIN)
   if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/nanosvg_installed OR NOT ${nanosvg_installed} EQUAL 0)
     if (DARWIN)
       if (NOT EXISTS ${CMAKE_BINARY_DIR}/nanosvg-2022.09.27-darwin64-580364.tar.bz2)
