@@ -30,16 +30,14 @@ if (USE_FMODSTUDIO)
     # Note: if you're not using INSTALL_PROPRIETARY, the package URL should be local (file:/// URL)
     # as accessing the private LL location will fail if you don't have the credential
     include(Prebuilt)
-    if (USESYSTEMLIBS)
+    if (USESYSTEMLIBS AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/fmodstudio_installed OR NOT ${fmodstudio_installed} EQUAL 0))
       if (DARWIN)
         execute_process(
-          COMMAND hdiutil attach -noverify $ENV{HOME}/Downloads/fmodstudioapi20223mac-installer.dmg
-          COMMAND mkdir -p
-            ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
-            ${AUTOBUILD_INSTALL_DIR}/lib/release
+          COMMAND hdiutil attach -noverify fmodstudioapi20223mac-installer.dmg
+          WORKING_DIRECTORY $ENV{HOME}/Downloads
           )
-        execute_process(
-          COMMAND cp
+        file(
+          COPY
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod.h
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod.hpp
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_codec.h
@@ -48,47 +46,51 @@ if (USE_FMODSTUDIO)
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_dsp_effects.h
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_errors.h
             /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_output.h
-            ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio/
-          COMMAND cp
-            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/lib/libfmod.dylib
-            ${AUTOBUILD_INSTALL_DIR}/lib/release/
+          DESTINATION ${LIBS_PREBUILT_DIR}/include/fmodstudio
           )
         execute_process(
-          COMMAND hdiutil detach /Volumes/FMOD\ Programmers\ API\ Mac
-          WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-          RESULT_VARIABLE ${_binary}_installed
+          COMMAND lipo
+            lib/libfmod.dylib
+            -thin ${CMAKE_OSX_ARCHITECTURES}
+            -output ${LIBS_PREBUILT_DIR}/lib/release/libfmod.dylib
+          WORKING_DIRECTORY /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core
           )
+        execute_process(
+          COMMAND hdiutil detach FMOD\ Programmers\ API\ Mac
+          WORKING_DIRECTORY /Volumes
+          RESULT_VARIABLE fmodstudio_installed
+          )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/fmodstudio_installed "${fmodstudio_installed}")
       else (DARWIN)
-        execute_process(
-          COMMAND tar -xf $ENV{HOME}/Downloads/fmodstudioapi20223linux.tar.gz -C /tmp
-          COMMAND mkdir -p ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio
+        file(ARCHIVE_EXTRACT
+          INPUT $ENV{HOME}/Downloads/fmodstudioapi20223linux.tar.gz
+          DESTINATION ${CMAKE_BINARY_DIR}
           )
-        execute_process(
-          COMMAND cp
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod.hpp
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_codec.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_common.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_dsp.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_dsp_effects.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_errors.h
-            /tmp/fmodstudioapi20223linux/api/core/inc/fmod_output.h
-            ${AUTOBUILD_INSTALL_DIR}/include/fmodstudio/
-          COMMAND cp -P
-            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so
-            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13
-            /tmp/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13.23
-            ${AUTOBUILD_INSTALL_DIR}/lib/release/
+        file(
+          COPY
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod.hpp
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_codec.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_common.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_dsp.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_dsp_effects.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_errors.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_output.h
+          DESTINATION ${LIBS_PREBUILT_DIR}/include/fmodstudio
           )
-        execute_process(
-          COMMAND rm -rf /tmp/fmodstudioapi20223linux
-          WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-          RESULT_VARIABLE ${_binary}_installed
+        file(
+          COPY
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13.23
+          DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
+          FOLLOW_SYMLINK_CHAIN
           )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/fmodstudio_installed "0")
       endif (DARWIN)
-    else (USESYSTEMLIBS)
+    else (USESYSTEMLIBS AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/fmodstudio_installed OR NOT ${fmodstudio_installed} EQUAL 0))
     use_prebuilt_binary(fmodstudio)
-    endif (USESYSTEMLIBS)
+    endif (USESYSTEMLIBS AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/fmodstudio_installed OR NOT ${fmodstudio_installed} EQUAL 0))
     if (WINDOWS)
       target_link_libraries( ll::fmodstudio INTERFACE  fmod_vc)
     elseif (DARWIN)

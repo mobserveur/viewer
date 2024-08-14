@@ -32,11 +32,6 @@ file(CREATE_LINK
         SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libmeshoptimizer.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libmeshoptimizer.dylib"
-        SYMBOLIC
-    )
-file(CREATE_LINK
         "../../../../Frameworks/libaprutil-1.0.dylib"
         "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libaprutil-1.0.dylib"
         SYMBOLIC
