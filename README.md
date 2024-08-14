@@ -34,27 +34,7 @@ $ cd viewer
 ### macOS
 
 ```
-$ sudo port install cmake pkgconfig autoconf automake libtool apr-util +universal boost +universal collada-dom +universal hunspell +universal freetype +universal jsoncpp +universal openjpeg +universal openssl11 +universal uriparser +universal libvorbis +universal xxhashlib
-$ mkdir -p build/universal-apple-darwin`uname -r`/packages
-$ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-darwin64-513145c.tar.zst
-$ cd -
-$ cd ..
-$ git clone https://github.com/secondlife/3p-curl
-$ cd 3p-curl/curl
-$ mkdir -p build/aarch64-apple-darwin`uname -r`
-$ cd build/aarch64-apple-darwin`uname -r`
-$ export CFLAGS="-arch arm64 -mmacosx-version-min=11.0 -std=c90"
-$ sudo port deactivate openssl3
-$ ../../configure --host=aarch64-apple-darwin`uname -r` --disable-alt-svc --disable-dict --disable-doh --disable-file --disable-gopher --disable-headers-api --disable-hsts --disable-imap --disable-ldap --disable-ldaps --disable-libcurl-option --disable-manual --disable-mqtt --disable-ntlm --disable-ntlm-wb --disable-pop3 --disable-rtsp --disable-shared --disable-smb --disable-smtp --disable-sspi --disable-telnet --disable-tftp --disable-tls-srp --disable-unix-sockets --disable-verbose --disable-versioned-symbols --enable-threaded-resolver --with-ssl=/opt/local/libexec/openssl11 --without-libidn2 --without-libpsl
-$ make -j`sysctl -n hw.ncpu`
-$ sudo port activate openssl3
-$ unset CFLAGS
-$ cd ../../../../viewer/build/universal-apple-darwin`uname -r`/packages
-$ tar xf ~/Downloads/curl-7.54.1-513145c-darwin64-513145c.tar.zst
-$ cd lib/release
-$ lipo ../../../../../../3p-curl/curl/build/aarch64-apple-darwin`uname -r`/lib/.libs/libcurl.a libcurl.a -create -output libcurl.a
-$ cd ../../..
+$ sudo port install cmake pkgconfig autoconf automake libtool apr-util +universal boost +universal collada-dom +universal hunspell +universal freetype +universal jsoncpp +universal openjpeg +universal uriparser +universal libvorbis +universal xxhashlib
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -mmacosx-version-min=10.15 -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_INSTALL_PREFIX:PATH=newview/Megapahit.app/Contents/Resources -DCMAKE_OSX_ARCHITECTURES:STRING="arm64;x86_64" -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=OFF -DUSE_FMODSTUDIO:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF ../../indra
 $ make -j`sysctl -n hw.ncpu`
@@ -65,13 +45,6 @@ $ open newview/Megapahit.app
 ### GNU/Linux
 
 ```
-$ mkdir -p build/`uname -m`-linux-gnu/packages
-$ cd ~/Downloads
-$ curl -OL https://github.com/secondlife/3p-curl/releases/download/v7.54.1-513145c/curl-7.54.1-513145c-linux64-513145c.tar.zst
-$ cd -
-$ cd build/`uname -m`-linux-gnu/packages
-$ tar xf ~/Downloads/curl-7.54.1-513145c-linux64-513145c.tar.zst
-$ cd ..
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 ```
 
