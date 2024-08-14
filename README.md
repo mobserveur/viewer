@@ -29,8 +29,8 @@ As a third party maintained fork, which includes Apple Silicon native builds, Me
 ```
 $ git clone git://megapahit.org/viewer.git
 $ cd viewer
-$ mkdir build-`uname -s|tr [:upper:] [:lower:]`-`uname -m`
-$ cd build-`uname -s|tr [:upper:] [:lower:]`-`uname -m`
+$ mkdir build-`uname -s|tr '[:upper:]' '[:lower:]'`-`uname -m`
+$ cd build-`uname -s|tr '[:upper:]' '[:lower:]'`-`uname -m`
 ```
 
 ### macOS

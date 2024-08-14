@@ -1,5 +1,5 @@
 # -*- cmake -*-
 
-include(CURL)
 include(OpenSSL)
+include(CURL)
 include(NGHTTP2)
