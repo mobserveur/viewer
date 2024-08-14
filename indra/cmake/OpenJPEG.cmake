@@ -43,12 +43,12 @@ if (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_
   endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/openjpeg_installed OR NOT ${openjpeg_installed} EQUAL 0)
 else (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_NAME MATCHES FreeBSD))
 use_prebuilt_binary(openjpeg)
-  if (EXISTS ${LIBS_PREBUILT_DIR}/include/openjpeg)
+  if (NOT EXISTS ${LIBS_PREBUILT_DIR}/include/openjpeg-2.5)
     file(RENAME
       ${LIBS_PREBUILT_DIR}/include/openjpeg
       ${LIBS_PREBUILT_DIR}/include/openjpeg-2.5
       )
-  endif (EXISTS ${LIBS_PREBUILT_DIR}/include/openjpeg)
+  endif (NOT EXISTS ${LIBS_PREBUILT_DIR}/include/openjpeg-2.5)
 
 target_link_libraries(ll::openjpeg INTERFACE openjp2 )
 endif (USESYSTEMLIBS AND (${LINUX_DISTRO} MATCHES fedora OR DARWIN OR CMAKE_SYSTEM_NAME MATCHES FreeBSD))
