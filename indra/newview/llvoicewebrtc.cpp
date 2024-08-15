@@ -2152,8 +2152,10 @@ LLVoiceWebRTCConnection::LLVoiceWebRTCConnection(const LLUUID &regionID, const s
     mOutstandingRequests(0),
     mChannelID(channelID),
     mRegionID(regionID),
+    mPrimary(true),
     mRetryWaitPeriod(0)
 {
+
     // retries wait a short period...randomize it so
     // all clients don't try to reconnect at once.
     mRetryWaitSecs = ((F32) rand() / (RAND_MAX)) + 0.5;
@@ -2399,6 +2401,12 @@ void LLVoiceWebRTCConnection::OnPeerConnectionClosed()
                 setVoiceConnectionState(VOICE_STATE_CLOSED);
                 mOutstandingRequests--;
             }
+            else if (LLWebRTCVoiceClient::isShuttingDown())
+            {
+                // disconnect was initialized by llwebrtc::terminate() instead of connectionStateMachine
+                LL_INFOS("Voice") << "Peer connection has closed, but state is " << mVoiceConnectionState << LL_ENDL;
+                setVoiceConnectionState(VOICE_STATE_CLOSED);
+            }
         });
 }
 
@@ -2513,7 +2521,11 @@ void LLVoiceWebRTCConnection::breakVoiceConnectionCoro(connectionPtr_t connectio
     LLSD result = httpAdapter->postAndSuspend(httpRequest, url, body, httpOpts);
 
     connection->mOutstandingRequests--;
-    connection->setVoiceConnectionState(VOICE_STATE_SESSION_EXIT);
+
+    if (connection->getVoiceConnectionState() == VOICE_STATE_WAIT_FOR_EXIT)
+    {
+        connection->setVoiceConnectionState(VOICE_STATE_SESSION_EXIT);
+    }
 }
 
 // Tell the simulator to tell the Secondlife WebRTC server that we want a voice
@@ -2747,6 +2759,17 @@ bool LLVoiceWebRTCConnection::connectionStateMachine()
         {
             mRetryWaitPeriod = 0;
             mRetryWaitSecs   = ((F32) rand() / (RAND_MAX)) + 0.5;
+            LLUUID agentRegionID;
+            if (isSpatial() && gAgent.getRegion())
+            {
+
+                bool primary = (mRegionID == gAgent.getRegion()->getRegionID());
+                if (primary != mPrimary)
+                {
+                    mPrimary = primary;
+                    sendJoin();
+                }
+            }
 
             // we'll stay here as long as the session remains up.
             if (mShutDown)
@@ -2775,9 +2798,18 @@ bool LLVoiceWebRTCConnection::connectionStateMachine()
             break;
 
         case VOICE_STATE_DISCONNECT:
-            setVoiceConnectionState(VOICE_STATE_WAIT_FOR_EXIT);
-            LLCoros::instance().launch("LLVoiceWebRTCConnection::breakVoiceConnectionCoro",
-                                       boost::bind(&LLVoiceWebRTCConnection::breakVoiceConnectionCoro, this->shared_from_this()));
+            if (!LLWebRTCVoiceClient::isShuttingDown())
+            {
+                setVoiceConnectionState(VOICE_STATE_WAIT_FOR_EXIT);
+                LLCoros::instance().launch("LLVoiceWebRTCConnection::breakVoiceConnectionCoro",
+                                           boost::bind(&LLVoiceWebRTCConnection::breakVoiceConnectionCoro, this->shared_from_this()));
+            }
+            else
+            {
+                // llwebrtc::terminate() is already shuting down the connection.
+                setVoiceConnectionState(VOICE_STATE_WAIT_FOR_CLOSE);
+                mOutstandingRequests++;
+            }
             break;
 
         case VOICE_STATE_WAIT_FOR_EXIT:
@@ -2787,7 +2819,11 @@ bool LLVoiceWebRTCConnection::connectionStateMachine()
         {
             setVoiceConnectionState(VOICE_STATE_WAIT_FOR_CLOSE);
             mOutstandingRequests++;
-            mWebRTCPeerConnectionInterface->shutdownConnection();
+            if (!LLWebRTCVoiceClient::isShuttingDown())
+            {
+                mWebRTCPeerConnectionInterface->shutdownConnection();
+            }
+            // else was already posted by llwebrtc::terminate().
             break;
         case VOICE_STATE_WAIT_FOR_CLOSE:
             break;
@@ -3002,7 +3038,7 @@ void LLVoiceWebRTCConnection::sendJoin()
     Json::Value      root     = Json::objectValue;
     Json::Value      join_obj = Json::objectValue;
     LLUUID           regionID = gAgent.getRegion()->getRegionID();
-    if ((regionID == mRegionID) || !isSpatial())
+    if (mPrimary)
     {
         join_obj["p"] = true;
     }
@@ -3020,6 +3056,10 @@ LLVoiceWebRTCSpatialConnection::LLVoiceWebRTCSpatialConnection(const LLUUID &reg
     LLVoiceWebRTCConnection(regionID, channelID),
     mParcelLocalID(parcelLocalID)
 {
+    if (gAgent.getRegion())
+    {
+        mPrimary = (regionID == gAgent.getRegion()->getRegionID());
+    }
 }
 
 LLVoiceWebRTCSpatialConnection::~LLVoiceWebRTCSpatialConnection()
