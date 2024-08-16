@@ -61,18 +61,16 @@ macro (use_prebuilt_binary _binary)
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                     )
             endif ("${package_url}" STREQUAL "")
-            execute_process(COMMAND curl
-                -L
+            string(REGEX REPLACE ^https://github.com/secondlife/3p-${_binary}/releases/download/v[0-9]+.*/ "" package_name ${package_url})
+            file(DOWNLOAD
                 ${package_url}
-                -o ${_binary}.tar.zst
-                WORKING_DIRECTORY /tmp
+                ${CMAKE_BINARY_DIR}/${package_name}
                 )
-            execute_process(COMMAND tar
-                xf
-                /tmp/${_binary}.tar.zst
-                WORKING_DIRECTORY ${AUTOBUILD_INSTALL_DIR}
-                RESULT_VARIABLE ${_binary}_installed
+            file(ARCHIVE_EXTRACT
+                INPUT ${CMAKE_BINARY_DIR}/${package_name}
+                DESTINATION ${AUTOBUILD_INSTALL_DIR}
                 )
+            set(${_binary}_installed 0)
         else(USESYSTEMLIBS)
         execute_process(COMMAND "${AUTOBUILD_EXECUTABLE}"
                 install
