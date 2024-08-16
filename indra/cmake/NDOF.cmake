@@ -39,7 +39,7 @@ if (NDOF)
           COPY ${CMAKE_BINARY_DIR}/3p-libndofdev-0.1.8e9edc7/libndofdev/src/libndofdev.dylib
           DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
           )
-        file(WRITE ${PREBUILD_TRACKING_DIR}/libndofdev_installed "${libndofdev_installed}")
+        file(WRITE ${PREBUILD_TRACKING_DIR}/libndofdev_installed "0")
       endif (${LIBNDOFDEV_RESULT})
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/libndofdev_installed OR NOT ${libndofdev_installed} EQUAL 0)
   else (USESYSTEMLIBS)
