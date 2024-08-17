@@ -36,6 +36,7 @@
 #include "lltextutil.h"
 
 // newview
+#include "llagent.h"
 #include "llagentdata.h" // for comparator
 #include "llavatariconctrl.h"
 #include "llavatarnamecache.h"
@@ -47,6 +48,7 @@
 #include "llvoiceclient.h"
 #include "llviewercontrol.h"    // for gSavedSettings
 #include "lltooldraganddrop.h"
+#include "llworld.h"
 
 static LLDefaultChildRegistry::Register<LLAvatarList> r("avatar_list");
 
@@ -131,6 +133,7 @@ LLAvatarList::LLAvatarList(const Params& p)
 :   LLFlatListViewEx(p)
 , mIgnoreOnlineStatus(p.ignore_online_status)
 , mShowLastInteractionTime(p.show_last_interaction_time)
+, mAvatarDistance(true)
 , mContextMenu(NULL)
 , mDirty(true) // to force initial update
 , mNeedUpdateNames(false)
@@ -147,7 +150,7 @@ LLAvatarList::LLAvatarList(const Params& p)
     // Set default sort order.
     setComparator(&NAME_COMPARATOR);
 
-    if (mShowLastInteractionTime)
+    if (mShowLastInteractionTime || mAvatarDistance)
     {
         mLITUpdateTimer = new LLTimer();
         mLITUpdateTimer->setTimerExpirySec(0); // zero to force initial update
@@ -196,9 +199,16 @@ void LLAvatarList::draw()
     if (mDirty)
         refresh();
 
-    if (mShowLastInteractionTime && mLITUpdateTimer->hasExpired())
+    if ((mShowLastInteractionTime || mAvatarDistance) && mLITUpdateTimer->hasExpired())
     {
+        if (mAvatarDistance)
+        {
+            updateAvatarDistance();
+        }
+        if (mShowLastInteractionTime)
+        {
         updateLastInteractionTimes();
+        }
         mLITUpdateTimer->setTimerExpirySec(LIT_UPDATE_PERIOD); // restart the timer
     }
 }
@@ -422,6 +432,7 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
     // This sets the name as a side effect
     item->setAvatarId(id, mSessionID, mIgnoreOnlineStatus);
     item->setOnline(mIgnoreOnlineStatus ? true : is_online);
+    item->showAvatarDistance(true);
     item->showLastInteractionTime(mShowLastInteractionTime);
 
     item->setAvatarIconVisible(mShowIcons);
@@ -526,6 +537,28 @@ void LLAvatarList::computeDifference(
     }
 
     LLCommonUtils::computeDifference(vnew_unsorted, vcur, vadded, vremoved);
+}
+
+void LLAvatarList::updateAvatarDistance()
+{
+    std::vector<LLPanel*> items;
+    getItems(items);
+    auto uuids = getIDs();
+    std::vector<LLVector3d> positions;
+    auto me_pos = gAgent.getPositionGlobal();
+    LLWorld::getInstance()->getAvatars(&uuids, &positions, me_pos, gSavedSettings.getF32("MPVNearMeRange"));
+    std::map <LLUUID, LLVector3d> avatarsPositions;
+    auto pos_it = positions.begin();
+    auto id_it = uuids.begin();
+    for (;pos_it != positions.end() && id_it != uuids.end(); ++pos_it, ++id_it)
+    {
+        avatarsPositions[*id_it] = *pos_it;
+    }
+    for (auto it = items.begin(); it != items.end(); it++)
+    {
+        auto item = static_cast<LLAvatarListItem*>(*it);
+        item->setAvatarDistance(dist_vec(avatarsPositions[item->getAvatarId()], me_pos));
+    }
 }
 
 // Refresh shown time of our last interaction with all listed avatars.

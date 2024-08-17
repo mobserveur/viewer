@@ -110,6 +110,7 @@ protected:
         const uuid_vec_t& vnew,
         uuid_vec_t& vadded,
         uuid_vec_t& vremoved);
+    void updateAvatarDistance();
     void updateLastInteractionTimes();
     void rebuildNames();
     void onItemDoubleClicked(LLUICtrl* ctrl, S32 x, S32 y, MASK mask);
@@ -118,6 +119,7 @@ protected:
 private:
 
     bool mIgnoreOnlineStatus;
+    bool mAvatarDistance;
     bool mShowLastInteractionTime;
     bool mDirty;
     bool mNeedUpdateNames;
