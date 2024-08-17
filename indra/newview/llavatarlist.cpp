@@ -121,6 +121,7 @@ static const LLFlatListView::ItemReverseComparator REVERSE_NAME_COMPARATOR(NAME_
 
 LLAvatarList::Params::Params()
 : ignore_online_status("ignore_online_status", false)
+, show_avatar_distance("show_avatar_distance", false)
 , show_last_interaction_time("show_last_interaction_time", false)
 , show_info_btn("show_info_btn", true)
 , show_profile_btn("show_profile_btn", true)
@@ -133,7 +134,7 @@ LLAvatarList::LLAvatarList(const Params& p)
 :   LLFlatListViewEx(p)
 , mIgnoreOnlineStatus(p.ignore_online_status)
 , mShowLastInteractionTime(p.show_last_interaction_time)
-, mAvatarDistance(true)
+, mAvatarDistance(p.show_avatar_distance)
 , mContextMenu(NULL)
 , mDirty(true) // to force initial update
 , mNeedUpdateNames(false)
@@ -432,7 +433,7 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
     // This sets the name as a side effect
     item->setAvatarId(id, mSessionID, mIgnoreOnlineStatus);
     item->setOnline(mIgnoreOnlineStatus ? true : is_online);
-    item->showAvatarDistance(true);
+    item->showAvatarDistance(mAvatarDistance);
     item->showLastInteractionTime(mShowLastInteractionTime);
 
     item->setAvatarIconVisible(mShowIcons);
