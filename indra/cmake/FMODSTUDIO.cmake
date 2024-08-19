@@ -30,9 +30,68 @@ if (USE_FMODSTUDIO)
     # Note: if you're not using INSTALL_PROPRIETARY, the package URL should be local (file:/// URL)
     # as accessing the private LL location will fail if you don't have the credential
     include(Prebuilt)
-    if (NOT USESYSTEMLIBS)
+    if (USESYSTEMLIBS AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/fmodstudio_installed OR NOT ${fmodstudio_installed} EQUAL 0))
+      file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release)
+      if (DARWIN)
+        execute_process(
+          COMMAND hdiutil attach -noverify fmodstudioapi20223mac-installer.dmg
+          WORKING_DIRECTORY $ENV{HOME}/Downloads
+          )
+        file(
+          COPY
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod.h
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod.hpp
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_codec.h
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_common.h
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_dsp.h
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_dsp_effects.h
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_errors.h
+            /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core/inc/fmod_output.h
+          DESTINATION ${LIBS_PREBUILT_DIR}/include/fmodstudio
+          )
+        execute_process(
+          COMMAND lipo
+            lib/libfmod.dylib
+            -thin ${CMAKE_OSX_ARCHITECTURES}
+            -output ${LIBS_PREBUILT_DIR}/lib/release/libfmod.dylib
+          WORKING_DIRECTORY /Volumes/FMOD\ Programmers\ API\ Mac/FMOD\ Programmers\ API/api/core
+          )
+        execute_process(
+          COMMAND hdiutil detach FMOD\ Programmers\ API\ Mac
+          WORKING_DIRECTORY /Volumes
+          RESULT_VARIABLE fmodstudio_installed
+          )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/fmodstudio_installed "${fmodstudio_installed}")
+      else (DARWIN)
+        file(ARCHIVE_EXTRACT
+          INPUT $ENV{HOME}/Downloads/fmodstudioapi20223linux.tar.gz
+          DESTINATION ${CMAKE_BINARY_DIR}
+          )
+        file(
+          COPY
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod.hpp
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_codec.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_common.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_dsp.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_dsp_effects.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_errors.h
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/inc/fmod_output.h
+          DESTINATION ${LIBS_PREBUILT_DIR}/include/fmodstudio
+          )
+        file(
+          COPY
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13
+            ${CMAKE_BINARY_DIR}/fmodstudioapi20223linux/api/core/lib/${CMAKE_SYSTEM_PROCESSOR}/libfmod.so.13.23
+          DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
+          FOLLOW_SYMLINK_CHAIN
+          )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/fmodstudio_installed "0")
+      endif (DARWIN)
+    else (USESYSTEMLIBS AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/fmodstudio_installed OR NOT ${fmodstudio_installed} EQUAL 0))
     use_prebuilt_binary(fmodstudio)
-    endif ()
+    endif (USESYSTEMLIBS AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/fmodstudio_installed OR NOT ${fmodstudio_installed} EQUAL 0))
     if (WINDOWS)
       target_link_libraries( ll::fmodstudio INTERFACE  fmod_vc)
     elseif (DARWIN)
@@ -42,9 +101,7 @@ if (USE_FMODSTUDIO)
       target_link_libraries( ll::fmodstudio INTERFACE  fmod)
     endif (WINDOWS)
 
-    if (NOT USESYSTEMLIBS)
     target_include_directories( ll::fmodstudio SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include/fmodstudio)
-    endif ()
   endif (FMODSTUDIO_LIBRARY AND FMODSTUDIO_INCLUDE_DIR)
 else()
   set( USE_FMODSTUDIO "OFF")

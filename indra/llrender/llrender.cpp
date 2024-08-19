@@ -1714,7 +1714,7 @@ void LLRender::flush()
                 }
 
                 //LL_INFOS() << "LLVertexBuffer::sMappingMode " << LLVertexBuffer::sMappingMode << LL_ENDL;
-                if(LLVertexBuffer::sMappingMode > 1)
+                if(LLVertexBuffer::sMappingMode == 3)
                 {
                     vb->unmapBuffer();
                 }

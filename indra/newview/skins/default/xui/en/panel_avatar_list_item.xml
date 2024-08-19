@@ -66,6 +66,17 @@
      value="(loading)"
      width="180" />
     <text
+     follows="left|right"
+     font="SansSerifSmall"
+     height="15"
+     layout="topleft"
+     left_pad="5"
+     name="avatar_distance"
+     top="6"
+     text_color="LtGray_50"
+     value="0m"
+     width="35" />
+    <text
      follows="right"
      font="SansSerifSmall"
      height="15"

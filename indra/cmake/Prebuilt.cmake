@@ -40,6 +40,38 @@ macro (use_prebuilt_binary _binary)
         --install-dir=${AUTOBUILD_INSTALL_DIR}
         ${_binary} ")
         endif(DEBUG_PREBUILT)
+        if(USESYSTEMLIBS)
+            execute_process(COMMAND xmllint
+                --xpath
+                "//map/map/map/map/map/map/string[contains(text(),'${_binary}')][contains(text(),'common')]/text()" autobuild.xml
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
+                OUTPUT_VARIABLE package_url
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                )
+            if ("${package_url}" STREQUAL "")
+                string(TOLOWER ${CMAKE_SYSTEM_NAME} system_name)
+                if (${system_name} MATCHES freebsd)
+                    set(system_name "linux")
+                endif (${system_name} MATCHES freebsd)
+                execute_process(COMMAND xmllint
+                    --xpath
+                    "//map/map/map/map/map/map/string[contains(text(),'${_binary}')][contains(text(),'${system_name}64')]/text()" autobuild.xml
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
+                    OUTPUT_VARIABLE package_url
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    )
+            endif ("${package_url}" STREQUAL "")
+            string(REGEX REPLACE ^https://github.com/secondlife/3p-${_binary}/releases/download/[vm][0-9]+.*/ "" package_name ${package_url})
+            file(DOWNLOAD
+                ${package_url}
+                ${CMAKE_BINARY_DIR}/${package_name}
+                )
+            file(ARCHIVE_EXTRACT
+                INPUT ${CMAKE_BINARY_DIR}/${package_name}
+                DESTINATION ${AUTOBUILD_INSTALL_DIR}
+                )
+            set(${_binary}_installed 0)
+        else(USESYSTEMLIBS)
         execute_process(COMMAND "${AUTOBUILD_EXECUTABLE}"
                 install
                 --install-dir=${AUTOBUILD_INSTALL_DIR}
@@ -47,6 +79,7 @@ macro (use_prebuilt_binary _binary)
                 WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
                 RESULT_VARIABLE ${_binary}_installed
                 )
+        endif(USESYSTEMLIBS)
         file(WRITE ${PREBUILD_TRACKING_DIR}/${_binary}_installed "${${_binary}_installed}")
     endif(${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/${_binary}_installed OR NOT ${${_binary}_installed} EQUAL 0)
 

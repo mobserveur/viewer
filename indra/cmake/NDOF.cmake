@@ -7,13 +7,47 @@ include_guard()
 add_library( ll::ndof INTERFACE IMPORTED )
 
 if (NDOF)
-  if (NOT USESYSTEMLIBS)
   if (WINDOWS OR DARWIN)
+  if (USESYSTEMLIBS)
+    if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/libndofdev_installed OR NOT ${libndofdev_installed} EQUAL 0)
+      file(DOWNLOAD
+        https://github.com/secondlife/3p-libndofdev/archive/refs/tags/v0.1.8e9edc7.tar.gz
+        ${CMAKE_BINARY_DIR}/3p-libndofdev-0.1.8e9edc7.tar.gz
+        )
+      file(ARCHIVE_EXTRACT
+        INPUT ${CMAKE_BINARY_DIR}/3p-libndofdev-0.1.8e9edc7.tar.gz
+        DESTINATION ${CMAKE_BINARY_DIR}
+        )
+      try_compile(LIBNDOFDEV_RESULT
+        PROJECT libndofdev
+        SOURCE_DIR ${CMAKE_BINARY_DIR}/3p-libndofdev-0.1.8e9edc7/libndofdev
+        BINARY_DIR ${CMAKE_BINARY_DIR}/3p-libndofdev-0.1.8e9edc7/libndofdev
+        TARGET ndofdev
+        CMAKE_FLAGS
+          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+          -DCMAKE_OSX_ARCHITECTURES:STRING=${CMAKE_OSX_ARCHITECTURES}
+          -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.15
+          -DCMAKE_C_FLAGS:STRING=-DTARGET_OS_MAC\ -Wno-int-conversion
+        OUTPUT_VARIABLE libndofdev_installed
+        )
+      if (${LIBNDOFDEV_RESULT})
+        file(
+          COPY ${CMAKE_BINARY_DIR}/3p-libndofdev-0.1.8e9edc7/libndofdev/src/ndofdev_external.h
+          DESTINATION ${LIBS_PREBUILT_DIR}/include
+          )
+        file(
+          COPY ${CMAKE_BINARY_DIR}/3p-libndofdev-0.1.8e9edc7/libndofdev/src/libndofdev.dylib
+          DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
+          )
+        file(WRITE ${PREBUILD_TRACKING_DIR}/libndofdev_installed "0")
+      endif (${LIBNDOFDEV_RESULT})
+    endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/libndofdev_installed OR NOT ${libndofdev_installed} EQUAL 0)
+  else (USESYSTEMLIBS)
     use_prebuilt_binary(libndofdev)
+  endif (USESYSTEMLIBS)
   elseif (LINUX)
     use_prebuilt_binary(open-libndofdev)
   endif (WINDOWS OR DARWIN)
-  endif (NOT USESYSTEMLIBS)
 
   if (WINDOWS)
     target_link_libraries( ll::ndof INTERFACE libndofdev)

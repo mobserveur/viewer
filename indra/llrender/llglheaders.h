@@ -839,7 +839,7 @@ extern PFNGLPOLYGONOFFSETCLAMPPROC              glPolygonOffsetClamp;
 
 #define GL_EXT_separate_specular_color 1
 #define GL_GLEXT_PROTOTYPES
-#include "GL/glext.h"
+#include <OpenGL/glext.h>
 
 #define GL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
 #include <OpenGL/gl3.h>

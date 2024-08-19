@@ -4,6 +4,9 @@ project(llfilesystem)
 
 include(00-Common)
 include(LLCommon)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+  include(UnixInstall)
+endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
 
 set(llfilesystem_SOURCE_FILES
     lldir.cpp
@@ -30,17 +33,17 @@ if (DARWIN)
   LIST(APPEND llfilesystem_HEADER_FILES lldir_mac.h)
 endif (DARWIN)
 
-if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
   LIST(APPEND llfilesystem_SOURCE_FILES lldir_linux.cpp)
   LIST(APPEND llfilesystem_HEADER_FILES lldir_linux.h)
 
   if (INSTALL)
     set_source_files_properties(lldir_linux.cpp
                                 PROPERTIES COMPILE_FLAGS
-				"-DAPP_RO_DATA_DIR=\\\"${APP_SHARE_DIR}\\\" -DAPP_LIBEXEC_DIR=\\\"${APP_LIBEXEC_DIR}\\\" -DAPP_PLUGIN_DIR=\\\"${INSTALL_LIBRARY_DIR}\\\""
+                                "-DAPP_RO_DATA_DIR=\\\"${APP_SHARE_DIR}\\\" -DAPP_LIBEXEC_DIR=\\\"${APP_LIBEXEC_DIR}\\\" -DAPP_PLUGIN_DIR=\\\"${INSTALL_LIBRARY_DIR}\\\""
                                 )
   endif (INSTALL)
-endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+endif (LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
 
 if (WINDOWS)
   LIST(APPEND llfilesystem_SOURCE_FILES lldir_win32.cpp)
@@ -55,7 +58,6 @@ target_link_libraries(llfilesystem
         llcommon
     )
 target_include_directories( llfilesystem  INTERFACE   ${CMAKE_CURRENT_SOURCE_DIR})
-
 include(LibraryInstall)
 
 # Add tests

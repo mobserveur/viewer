@@ -9,19 +9,30 @@ if( USE_CONAN )
   target_compile_definitions( ll::boost INTERFACE BOOST_ALLOW_DEPRECATED_HEADERS BOOST_BIND_GLOBAL_PLACEHOLDERS )
   return()
 elseif( NOT USE_AUTOBUILD_3P )
-  find_package( Boost REQUIRED )
-  target_compile_definitions( ll::boost INTERFACE BOOST_BIND_GLOBAL_PLACEHOLDERS )
   if (DARWIN)
-    set(sfx "-mt")
-  endif()
-  target_link_libraries( ll::boost INTERFACE
-	  boost_context${sfx}
-	  boost_fiber${sfx}
-	  boost_filesystem${sfx}
-	  boost_program_options${sfx}
-	  boost_regex${sfx}
-	  boost_system${sfx}
-	  boost_thread${sfx})
+    target_include_directories( ll::boost SYSTEM INTERFACE /opt/local/libexec/boost/1.81/include)
+    target_link_libraries( ll::boost INTERFACE
+      /opt/local/libexec/boost/1.81/lib/libboost_context-mt.a
+      /opt/local/libexec/boost/1.81/lib/libboost_fiber-mt.a
+      /opt/local/libexec/boost/1.81/lib/libboost_filesystem-mt.a
+      /opt/local/libexec/boost/1.81/lib/libboost_program_options-mt.a
+      /opt/local/libexec/boost/1.81/lib/libboost_regex-mt.a
+      /opt/local/libexec/boost/1.81/lib/libboost_system-mt.a
+      /opt/local/libexec/boost/1.81/lib/libboost_thread-mt.a
+      )
+  else (DARWIN)
+    find_package( Boost REQUIRED )
+    target_link_libraries( ll::boost INTERFACE
+      boost_context
+      boost_fiber
+      boost_filesystem
+      boost_program_options
+      boost_regex
+      boost_system
+      boost_thread
+      )
+  endif (DARWIN)
+  target_compile_definitions( ll::boost INTERFACE BOOST_BIND_GLOBAL_PLACEHOLDERS )
   return()
 endif()
 

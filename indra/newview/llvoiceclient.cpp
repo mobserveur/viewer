@@ -289,7 +289,9 @@ void LLVoiceClient::setNonSpatialVoiceModule(const std::string &voice_server_typ
 
 void LLVoiceClient::setHidden(bool hidden)
 {
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setHidden(hidden);
+#endif
     LLVivoxVoiceClient::getInstance()->setHidden(hidden);
 }
 
