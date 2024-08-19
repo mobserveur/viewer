@@ -65,6 +65,7 @@ LLAvatarListItem::LLAvatarListItem(bool not_from_ui_factory/* = true*/)
     LLFriendObserver(),
     mAvatarIcon(NULL),
     mAvatarName(NULL),
+    mAvatarDistance(NULL),
     mLastInteractionTime(NULL),
     mIconPermissionOnline(NULL),
     mIconPermissionMap(NULL),
@@ -107,6 +108,7 @@ BOOL  LLAvatarListItem::postBuild()
 {
     mAvatarIcon = getChild<LLAvatarIconCtrl>("avatar_icon");
     mAvatarName = getChild<LLTextBox>("avatar_name");
+    mAvatarDistance = getChild<LLTextBox>("avatar_distance");
     mLastInteractionTime = getChild<LLTextBox>("last_interaction");
 
     mIconPermissionOnline = getChild<LLIconCtrl>("permission_online_icon");
@@ -299,6 +301,17 @@ void LLAvatarListItem::setAvatarId(const LLUUID& id, const LLUUID& session_id, b
         // Set avatar name.
         fetchAvatarName();
     }
+}
+
+void LLAvatarListItem::showAvatarDistance(bool show)
+{
+    mAvatarDistance->setVisible(show);
+    updateChildren();
+}
+
+void LLAvatarListItem::setAvatarDistance(F32 distance)
+{
+    mAvatarDistance->setValue(llformat("%.1f m", distance));
 }
 
 void LLAvatarListItem::showLastInteractionTime(bool show)
@@ -538,6 +551,9 @@ void LLAvatarListItem::initChildrenWidths(LLAvatarListItem* avatar_item)
     // last interaction time textbox width + padding
     S32 last_interaction_time_width = avatar_item->mIconPermissionEditTheirs->getRect().mLeft - avatar_item->mLastInteractionTime->getRect().mLeft;
 
+    // avatar distance textbox width + padding
+    S32 avatar_distance_width = avatar_item->mAvatarDistance->getRect().mLeft - avatar_item->mAvatarName->getRect().mLeft;
+
     // avatar icon width + padding
     S32 icon_width = avatar_item->mAvatarName->getRect().mLeft - avatar_item->mAvatarIcon->getRect().mLeft;
 
@@ -546,6 +562,7 @@ void LLAvatarListItem::initChildrenWidths(LLAvatarListItem* avatar_item)
     S32 index = ALIC_COUNT;
     sChildrenWidths[--index] = icon_width;
     sChildrenWidths[--index] = 0; // for avatar name we don't need its width, it will be calculated as "left available space"
+    sChildrenWidths[--index] = avatar_distance_width;
     sChildrenWidths[--index] = last_interaction_time_width;
     sChildrenWidths[--index] = permission_edit_theirs_width;
     sChildrenWidths[--index] = permission_edit_mine_width;
@@ -665,6 +682,9 @@ LLView* LLAvatarListItem::getItemChildView(EAvatarListItemChildIndex child_view_
         break;
     case ALIC_NAME:
         child_view = mAvatarName;
+        break;
+    case ALIC_DISTANCE:
+        child_view = mAvatarDistance;
         break;
     case ALIC_INTERACTION_TIME:
         child_view = mLastInteractionTime;

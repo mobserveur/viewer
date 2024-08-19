@@ -2114,7 +2114,7 @@ if (LINUX)
             "libaprutil1t64, libboost-fiber1.83.0, libboost-filesystem1.83.0, libboost-program-options1.83.0, libboost-regex1.83.0, libboost-thread1.83.0, libcollada-dom2.5-dp0, libexpat1, libfltk2.0-0t64, libglu1-mesa, libhunspell-1.7-0, libjsoncpp25, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0t64, vlc-plugin-base"
           CACHE STRING "Debian package dependencies.")
         endif (${LINUX_DISTRO} MATCHES debian)
-      elseif (${LINUX_DISTRO} MATCHES fedora)
+      elseif (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
         set(CPACK_BINARY_RPM ON CACHE BOOL "Able to package Fedora RPM.")
         set(CPACK_RPM_PACKAGE_SUMMARY ${VIEWER_PACKAGE_COMMENT}
           CACHE STRING "RPM package summary.")
@@ -2130,9 +2130,12 @@ if (LINUX)
           CACHE STRING "RPM package URL.")
         set(CPACK_RPM_PACKAGE_DESCRIPTION ${VIEWER_PACKAGE_DESCRIPTION}
           CACHE STRING "RPM package description.")
-        set(CPACK_RPM_PACKAGE_REQUIRES
-          "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, collada-dom, expat, fltk, mesa-libGLU, hunspell, jsoncpp, libnghttp2, openjpeg2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
-          CACHE STRING "RPM package requirements.")
+        if (${LINUX_DISTRO} MATCHES fedora)
+          set(CPACK_RPM_PACKAGE_REQUIRES
+            "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, collada-dom, expat, fltk, mesa-libGLU, hunspell, jsoncpp, libnghttp2, openjpeg2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
+            CACHE STRING "RPM package requirements.")
+        elseif (${LINUX_DISTRO} MATCHES opensuse-tumbleweed)
+        endif (${LINUX_DISTRO} MATCHES fedora)
       endif (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
     endif (PACKAGE)
   else (USESYSTEMLIBS)

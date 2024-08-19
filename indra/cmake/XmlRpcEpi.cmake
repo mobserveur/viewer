@@ -8,7 +8,7 @@ if (NOT USESYSTEMLIBS)
 use_system_binary( xmlrpc-epi )
 
 use_prebuilt_binary(xmlrpc-epi)
-elseif (DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/xmlrpc-epi_installed OR NOT ${xmlrpc-epi_installed} EQUAL 0))
+elseif ((${LINUX_DISTRO} MATCHES opensuse-tumbleweed OR DARWIN) AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/xmlrpc-epi_installed OR NOT ${xmlrpc-epi_installed} EQUAL 0))
   if (NOT EXISTS ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2.tar.bz2)
     file(DOWNLOAD
       https://sourceforge.net/projects/xmlrpc-epi/files/xmlrpc-epi-base/0.54.2/xmlrpc-epi-0.54.2.tar.bz2
@@ -40,35 +40,42 @@ elseif (DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2
     )
   set(ENV{CPPFLAGS} -I${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src)
-  set(ENV{CFLAGS} "-arch ${CMAKE_OSX_ARCHITECTURES} -mmacosx-version-min=10.15")
-  if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+  if (DARWIN)
+    set(ENV{CFLAGS} "-arch ${CMAKE_OSX_ARCHITECTURES} -mmacosx-version-min=10.15")
+    if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+      execute_process(
+        COMMAND sed -i '' -e "s/XMLRPC_VALUE find_named_value/__attribute__((always_inline)) XMLRPC_VALUE find_named_value/g"
+          xmlrpc_introspection.c
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src
+        )
+      execute_process(
+        COMMAND sed -i '' -e "s/void describe_method/__attribute__((always_inline)) void describe_method/g"
+          xmlrpc_introspection.c
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src
+        )
+      execute_process(
+        COMMAND ./configure --disable-static --host=aarch64-apple-darwin
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2
+        )
+    else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+      execute_process(
+        COMMAND ./configure --disable-static --host=${CMAKE_OSX_ARCHITECTURES}-apple-darwin
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2
+        )
+    endif (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+    unset(ENV{CFLAGS})
+  else (DARWIN)
     execute_process(
-      COMMAND sed -i '' -e "s/XMLRPC_VALUE find_named_value/__attribute__((always_inline)) XMLRPC_VALUE find_named_value/g"
-        xmlrpc_introspection.c
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src
-      )
-    execute_process(
-      COMMAND sed -i '' -e "s/void describe_method/__attribute__((always_inline)) void describe_method/g"
-        xmlrpc_introspection.c
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src
-      )
-    execute_process(
-      COMMAND ./configure --host=aarch64-apple-darwin
+      COMMAND ./configure --disable-shared
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2
       )
-  else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
-    execute_process(
-      COMMAND ./configure --host=${CMAKE_OSX_ARCHITECTURES}-apple-darwin
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2
-      )
-  endif (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+  endif (DARWIN)
   execute_process(
     COMMAND make -j${MAKE_JOBS}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2
     RESULT_VARIABLE xmlrpc-epi_installed
     )
   unset(ENV{CPPFLAGS})
-  unset(ENV{CFLAGS})
   file(
     COPY
       ${CMAKE_BINARY_DIR}/xmlrpc-epi-0.54.2/src/.libs/libxmlrpc-epi.dylib
@@ -81,7 +88,7 @@ endif (NOT USESYSTEMLIBS)
 target_link_libraries(ll::xmlrpc-epi INTERFACE xmlrpc-epi )
 if (NOT USESYSTEMLIBS)
 target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include)
-elseif (DARWIN)
+elseif (${LINUX_DISTRO} MATCHES opensuse-tumbleweed OR DARWIN)
   target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE ${LIBS_PREBUILT_DIR}/include/xmlrpc-epi)
 elseif (LINUX)
   target_include_directories( ll::xmlrpc-epi SYSTEM INTERFACE ${CMAKE_SYSROOT}/usr/include/xmlrpc-epi)
