@@ -50,6 +50,7 @@ public:
     struct Params : public LLInitParam::Block<Params, LLFlatListViewEx::Params>
     {
         Optional<bool>  ignore_online_status, // show all items as online
+                        show_avatar_arrival_time,
                         show_avatar_distance,
                         show_last_interaction_time, // show most recent interaction time. *HACK: move this to a derived class
                         show_info_btn,
@@ -111,6 +112,7 @@ protected:
         const uuid_vec_t& vnew,
         uuid_vec_t& vadded,
         uuid_vec_t& vremoved);
+    void updateAvatarArrivalTime();
     void updateAvatarDistance();
     void updateLastInteractionTimes();
     void rebuildNames();
@@ -120,6 +122,7 @@ protected:
 private:
 
     bool mIgnoreOnlineStatus;
+    bool mAvatarArrivalTime;
     bool mAvatarDistance;
     bool mShowLastInteractionTime;
     bool mDirty;

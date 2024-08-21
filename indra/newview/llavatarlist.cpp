@@ -53,7 +53,7 @@
 static LLDefaultChildRegistry::Register<LLAvatarList> r("avatar_list");
 
 // Last interaction time update period.
-static const F32 LIT_UPDATE_PERIOD = 5;
+static const F32 LIT_UPDATE_PERIOD = 1;
 
 // Maximum number of avatars that can be added to a list in one pass.
 // Used to limit time spent for avatar list update per frame.
@@ -121,6 +121,7 @@ static const LLFlatListView::ItemReverseComparator REVERSE_NAME_COMPARATOR(NAME_
 
 LLAvatarList::Params::Params()
 : ignore_online_status("ignore_online_status", false)
+, show_avatar_arrival_time("show_avatar_arrival_time", false)
 , show_avatar_distance("show_avatar_distance", false)
 , show_last_interaction_time("show_last_interaction_time", false)
 , show_info_btn("show_info_btn", true)
@@ -135,6 +136,7 @@ LLAvatarList::LLAvatarList(const Params& p)
 , mIgnoreOnlineStatus(p.ignore_online_status)
 , mShowLastInteractionTime(p.show_last_interaction_time)
 , mAvatarDistance(p.show_avatar_distance)
+, mAvatarArrivalTime(p.show_avatar_arrival_time)
 , mContextMenu(NULL)
 , mDirty(true) // to force initial update
 , mNeedUpdateNames(false)
@@ -151,7 +153,7 @@ LLAvatarList::LLAvatarList(const Params& p)
     // Set default sort order.
     setComparator(&NAME_COMPARATOR);
 
-    if (mShowLastInteractionTime || mAvatarDistance)
+    if (mShowLastInteractionTime || mAvatarDistance || mAvatarArrivalTime)
     {
         mLITUpdateTimer = new LLTimer();
         mLITUpdateTimer->setTimerExpirySec(0); // zero to force initial update
@@ -200,8 +202,12 @@ void LLAvatarList::draw()
     if (mDirty)
         refresh();
 
-    if ((mShowLastInteractionTime || mAvatarDistance) && mLITUpdateTimer->hasExpired())
+    if ((mShowLastInteractionTime || mAvatarDistance || mAvatarArrivalTime) && mLITUpdateTimer->hasExpired())
     {
+        if (mAvatarArrivalTime)
+        {
+            updateAvatarArrivalTime();
+        }
         if (mAvatarDistance)
         {
             updateAvatarDistance();
@@ -433,6 +439,7 @@ void LLAvatarList::addNewItem(const LLUUID& id, const std::string& name, BOOL is
     // This sets the name as a side effect
     item->setAvatarId(id, mSessionID, mIgnoreOnlineStatus);
     item->setOnline(mIgnoreOnlineStatus ? true : is_online);
+    item->showAvatarArrivalTime(mAvatarArrivalTime);
     item->showAvatarDistance(mAvatarDistance);
     item->showLastInteractionTime(mShowLastInteractionTime);
 
@@ -540,7 +547,25 @@ void LLAvatarList::computeDifference(
     LLCommonUtils::computeDifference(vnew_unsorted, vcur, vadded, vremoved);
 }
 
-void LLAvatarList::updateAvatarDistance()
+void LLAvatarList::updateAvatarArrivalTime()
+{
+    std::vector<LLPanel*> items;
+    getItems(items);
+    auto uuids = getIDs();
+    std::vector<LLVector3d> positions;
+    auto me_pos = gAgent.getPositionGlobal();
+    LLWorld::getInstance()->getAvatars(&uuids, &positions, me_pos, gSavedSettings.getF32("MPVNearMeRange"));
+    LLRecentPeople::instance().updateAvatarsArrivalTime(uuids);
+    for (auto it = items.begin(); it != items.end(); it++)
+    {
+        auto item = static_cast<LLAvatarListItem*>(*it);
+        auto secs_since = LLDate::now().secondsSinceEpoch() - LLRecentPeople::instance().getArrivalTimeByID(item->getAvatarId());
+        if (secs_since >= 0)
+            item->setAvatarArrivalTime(secs_since);
+    }
+}
+
+ void LLAvatarList::updateAvatarDistance()
 {
     std::vector<LLPanel*> items;
     getItems(items);
