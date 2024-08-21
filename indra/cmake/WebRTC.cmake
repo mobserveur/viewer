@@ -23,7 +23,7 @@ if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
           ${LIBS_PREBUILT_DIR}/lib/libwebrtc.a
           ${LIBS_PREBUILT_DIR}/lib/release/libwebrtc.a
           )
-        file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/Frameworks/WebRTC.xcframework/macos-arm64/WebRTC.framework)
+        file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/lib/release/WebRTC.framework)
         file(RENAME
           ${LIBS_PREBUILT_DIR}/Frameworks/WebRTC.xcframework/macos-arm64/WebRTC.framework
           ${LIBS_PREBUILT_DIR}/lib/release/WebRTC.framework
