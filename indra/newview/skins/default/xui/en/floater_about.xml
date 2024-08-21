@@ -70,7 +70,7 @@
      follows="all"
      left="10"
      name="megapahit_credits_panel"
-     height="295"
+     height="320"
      top="10">
       <text
           follows="top|left|right"
@@ -86,7 +86,7 @@ Megapahit is brought to you by (in order of appearance):
       <text_editor
        enabled="false"
        follows="top|left"
-       height="90"
+       height="160"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -95,11 +95,16 @@ Megapahit is brought to you by (in order of appearance):
        width="545"
        word_wrap="true">
 Erik Kundiman
-observeur
+milo (observeur)
 Fritigern Gothly
 Hadet Sonnenkern
-Secret Foxtail
+Remmy (Secret Foxtail)
 Eris Ravenwood
+EmilyAmiee
+Bavid Dailey
+Aria (Tashia Redrose)
+Cate (32a)
+Melodey
     </text_editor>
     <text
           follows="top|left"
