@@ -71,6 +71,17 @@
      height="15"
      layout="topleft"
      left_pad="5"
+     name="avatar_arrival_time"
+     top="6"
+     text_color="LtGray_50"
+     value="0s"
+     width="35" />
+    <text
+     follows="left|right"
+     font="SansSerifSmall"
+     height="15"
+     layout="topleft"
+     left_pad="5"
      name="avatar_distance"
      top="6"
      text_color="LtGray_50"
