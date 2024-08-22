@@ -46,4 +46,12 @@
          function="IMSession.Menu.ShowModes.Enable"
          parameter="IMShowNamesForP2PConv" />    
     </menu_item_check>      
+    <menu_item_check name="IMShowArrivalsDepartures" label="Show arrivals and departures">
+        <menu_item_check.on_click
+         function="IMSession.Menu.Action"
+         parameter="IMShowArrivalsDepartures" />
+        <menu_item_check.on_check
+         function="IMSession.Menu.ShowModes.CheckItem"
+         parameter="IMShowArrivalsDepartures" />
+    </menu_item_check>
 </toggleable_menu>

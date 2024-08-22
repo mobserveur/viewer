@@ -812,7 +812,10 @@ void LLVOAvatar::debugAvatarRezTime(std::string notification_name, std::string c
 //------------------------------------------------------------------------
 LLVOAvatar::~LLVOAvatar()
 {
-    LLNotificationsUI::LLNotificationManager::instance().onChat(LLChat{llformat("%s left.", getFullname().c_str())}, LLSD{});
+    if (gSavedSettings.getBOOL("IMShowArrivalsDepartures") && !getFullname().empty())
+    {
+        LLNotificationsUI::LLNotificationManager::instance().onChat(LLChat{llformat("%s left.", getFullname().c_str())}, LLSD{});
+    }
     if (!mFullyLoaded)
     {
         debugAvatarRezTime("AvatarRezLeftCloudNotification","left after ruth seconds as cloud");
@@ -2464,18 +2467,21 @@ U32 LLVOAvatar::processUpdateMessage(LLMessageSystem *mesgsys,
     {
         mDebugExistenceTimer.reset();
         debugAvatarRezTime("AvatarRezArrivedNotification","avatar arrived");
-        uuid_vec_t uuids;
-        std::vector<LLVector3d> positions;
-        LLWorld::getInstance()->getAvatars(&uuids, &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("MPVNearMeRange"));
-        auto pos_it = positions.begin();
-        auto id_it = uuids.begin();
-        for (;pos_it != positions.end() && id_it != uuids.end(); ++pos_it, ++id_it)
+        if (gSavedSettings.getBOOL("IMShowArrivalsDepartures"))
         {
-            if (*id_it == getID() && !isSelf())
+            uuid_vec_t uuids;
+            std::vector<LLVector3d> positions;
+            LLWorld::getInstance()->getAvatars(&uuids, &positions, gAgent.getPositionGlobal(), gSavedSettings.getF32("MPVNearMeRange"));
+            auto pos_it = positions.begin();
+            auto id_it = uuids.begin();
+            for (;pos_it != positions.end() && id_it != uuids.end(); ++pos_it, ++id_it)
             {
-                LLNotificationsUI::LLNotificationManager::instance()
-                    .onChat(LLChat{llformat("%s arrived (%.1f m).", getFullname().c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))}, LLSD{});
-                break;
+                if (*id_it == getID() && !isSelf())
+                {
+                    LLNotificationsUI::LLNotificationManager::instance()
+                        .onChat(LLChat{llformat("%s arrived (%.1f m).", getFullname().c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))}, LLSD{});
+                    break;
+                }
             }
         }
     }
