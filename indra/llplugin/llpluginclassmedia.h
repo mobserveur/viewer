@@ -311,6 +311,7 @@ public:
 
 
     const std::string& getMediaName() const { return mMediaName; };
+    const std::string& getMediaNowPlaying() const { return mMediaNowPlaying; };
     std::string getMediaDescription() const { return mMediaDescription; };
 
     // Crash the plugin.  If you use this outside of a testbed, you will be punished.
@@ -428,6 +429,7 @@ protected:
     bool            mCanPaste;
 
     std::string     mMediaName;
+    std::string     mMediaNowPlaying;
     std::string     mMediaDescription;
 
     LLColor4        mBackgroundColor;
