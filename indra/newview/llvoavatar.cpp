@@ -814,7 +814,13 @@ LLVOAvatar::~LLVOAvatar()
 {
     if (gSavedSettings.getBOOL("IMShowArrivalsDepartures") && !getFullname().empty())
     {
-        LLNotificationsUI::LLNotificationManager::instance().onChat(LLChat{llformat("%s left.", getFullname().c_str())}, LLSD{});
+        LLAvatarName av_name;
+        LLAvatarNameCache::get(getID(), &av_name);
+        auto display_name = av_name.getDisplayName();
+        LLChat chat{llformat("%s left.", display_name.c_str())};
+        chat.mFromName = display_name;
+        chat.mFromID = getID();
+        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
     }
     if (!mFullyLoaded)
     {
@@ -2478,8 +2484,13 @@ U32 LLVOAvatar::processUpdateMessage(LLMessageSystem *mesgsys,
             {
                 if (*id_it == getID() && !isSelf())
                 {
-                    LLNotificationsUI::LLNotificationManager::instance()
-                        .onChat(LLChat{llformat("%s arrived (%.1f m).", getFullname().c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))}, LLSD{});
+                    LLAvatarName av_name;
+                    LLAvatarNameCache::get(getID(), &av_name);
+                    auto display_name = av_name.getDisplayName();
+                    LLChat chat{llformat("%s arrived (%.1f m).", display_name.c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))};
+                    chat.mFromName = display_name;
+                    chat.mFromID = getID();
+                    LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
                     break;
                 }
             }
