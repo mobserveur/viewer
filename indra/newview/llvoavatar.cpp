@@ -812,17 +812,20 @@ void LLVOAvatar::debugAvatarRezTime(std::string notification_name, std::string c
 //------------------------------------------------------------------------
 LLVOAvatar::~LLVOAvatar()
 {
-    if (gSavedSettings.getBOOL("IMShowArrivalsDepartures") && !getFullname().empty())
+    if (gSavedSettings.getBOOL("IMShowArrivalsDepartures"))
     {
         LLAvatarName av_name;
         LLAvatarNameCache::get(getID(), &av_name);
         auto display_name = av_name.getDisplayName();
-        LLChat chat{llformat("%s left.", display_name.c_str())};
-        chat.mFromName = display_name;
-        chat.mFromID = getID();
-        LLSD args;
-        args["COLOR"] = "ChatHistoryTextColor";
-        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+        if (!display_name.empty())
+        {
+            LLChat chat{llformat("%s left.", display_name.c_str())};
+            chat.mFromName = display_name;
+            chat.mFromID = getID();
+            LLSD args;
+            args["COLOR"] = "ChatHistoryTextColor";
+            LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+        }
     }
     if (!mFullyLoaded)
     {
@@ -2489,12 +2492,15 @@ U32 LLVOAvatar::processUpdateMessage(LLMessageSystem *mesgsys,
                     LLAvatarName av_name;
                     LLAvatarNameCache::get(getID(), &av_name);
                     auto display_name = av_name.getDisplayName();
-                    LLChat chat{llformat("%s arrived (%.1f m).", display_name.c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))};
-                    chat.mFromName = display_name;
-                    chat.mFromID = getID();
-                    LLSD args;
-                    args["COLOR"] = "ChatHistoryTextColor";
-                    LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+                    if (!display_name.empty())
+                    {
+                        LLChat chat{llformat("%s arrived (%.1f m).", display_name.c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))};
+                        chat.mFromName = display_name;
+                        chat.mFromID = getID();
+                        LLSD args;
+                        args["COLOR"] = "ChatHistoryTextColor";
+                        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+                    }
                     break;
                 }
             }
