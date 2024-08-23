@@ -64,29 +64,31 @@
      top="6"
      use_ellipses="true"
      value="(loading)"
-     width="80" />
+     width="0" />
     <text
-     follows="left|right"
+     follows="right"
      font="SansSerifSmall"
      height="15"
      layout="topleft"
      left_pad="5"
+     right="-47"
      name="avatar_arrival_time"
-     top="6"
+     top="5"
      text_color="LtGray_50"
      value="0s"
-     width="50" />
+     width="200" />
     <text
-     follows="left|right"
+     follows="right"
      font="SansSerifSmall"
      height="15"
      layout="topleft"
      left_pad="5"
+     right="-132"
      name="avatar_distance"
      top="6"
      text_color="LtGray_50"
      value="0m"
-     width="35" />
+     width="60" />
     <text
      follows="right"
      font="SansSerifSmall"
