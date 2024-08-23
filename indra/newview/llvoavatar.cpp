@@ -820,7 +820,9 @@ LLVOAvatar::~LLVOAvatar()
         LLChat chat{llformat("%s left.", display_name.c_str())};
         chat.mFromName = display_name;
         chat.mFromID = getID();
-        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
+        LLSD args;
+        args["COLOR"] = "ChatHistoryTextColor";
+        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
     }
     if (!mFullyLoaded)
     {
@@ -2490,7 +2492,9 @@ U32 LLVOAvatar::processUpdateMessage(LLMessageSystem *mesgsys,
                     LLChat chat{llformat("%s arrived (%.1f m).", display_name.c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))};
                     chat.mFromName = display_name;
                     chat.mFromID = getID();
-                    LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
+                    LLSD args;
+                    args["COLOR"] = "ChatHistoryTextColor";
+                    LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
                     break;
                 }
             }
