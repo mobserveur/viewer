@@ -64,7 +64,7 @@
      top="6"
      use_ellipses="true"
      value="(loading)"
-     width="180" />
+     width="80" />
     <text
      follows="left|right"
      font="SansSerifSmall"
@@ -75,7 +75,7 @@
      top="6"
      text_color="LtGray_50"
      value="0s"
-     width="35" />
+     width="50" />
     <text
      follows="left|right"
      font="SansSerifSmall"
