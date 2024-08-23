@@ -816,9 +816,20 @@ void LLVOAvatar::debugAvatarRezTime(std::string notification_name, std::string c
 //------------------------------------------------------------------------
 LLVOAvatar::~LLVOAvatar()
 {
-    if (gSavedSettings.getBOOL("IMShowArrivalsDepartures") && !getFullname().empty())
+    if (gSavedSettings.getBOOL("IMShowArrivalsDepartures"))
     {
-        LLNotificationsUI::LLNotificationManager::instance().onChat(LLChat{llformat("%s left.", getFullname().c_str())}, LLSD{});
+        LLAvatarName av_name;
+        LLAvatarNameCache::get(getID(), &av_name);
+        auto display_name = av_name.getDisplayName();
+        if (!display_name.empty())
+        {
+            LLChat chat{llformat("%s left.", display_name.c_str())};
+            chat.mFromName = display_name;
+            chat.mFromID = getID();
+            LLSD args;
+            args["COLOR"] = "ChatHistoryTextColor";
+            LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+        }
     }
     if (!mFullyLoaded)
     {
@@ -2511,8 +2522,18 @@ U32 LLVOAvatar::processUpdateMessage(LLMessageSystem *mesgsys,
             {
                 if (*id_it == getID() && !isSelf())
                 {
-                    LLNotificationsUI::LLNotificationManager::instance()
-                        .onChat(LLChat{llformat("%s arrived (%.1f m).", getFullname().c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))}, LLSD{});
+                    LLAvatarName av_name;
+                    LLAvatarNameCache::get(getID(), &av_name);
+                    auto display_name = av_name.getDisplayName();
+                    if (!display_name.empty())
+                    {
+                        LLChat chat{llformat("%s arrived (%.1f m).", display_name.c_str(), dist_vec(*pos_it, gAgent.getPositionGlobal()))};
+                        chat.mFromName = display_name;
+                        chat.mFromID = getID();
+                        LLSD args;
+                        args["COLOR"] = "ChatHistoryTextColor";
+                        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
+                    }
                     break;
                 }
             }

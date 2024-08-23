@@ -1249,7 +1249,10 @@ void LLChatHistory::appendMessage(const LLChat& chat, const LLSD &args, const LL
 
     LLStyle::Params body_message_params;
     body_message_params.color(txt_color);
-    body_message_params.readonly_color(txt_color);
+    if (args["COLOR"])
+        body_message_params.readonly_color(LLUIColorTable::instance().getColor(args["COLOR"]));
+    else
+        body_message_params.readonly_color(txt_color);
     body_message_params.font.name(font_name);
     body_message_params.font.size(font_size);
     body_message_params.font.style(input_append_params.font.style);
