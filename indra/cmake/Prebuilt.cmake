@@ -55,13 +55,13 @@ macro (use_prebuilt_binary _binary)
                 endif (${system_name} MATCHES freebsd)
                 execute_process(COMMAND xmllint
                     --xpath
-                    "//map/map/map/map/map/map/string[contains(text(),'${_binary}')][contains(text(),'${system_name}64')]/text()" autobuild.xml
+                    "//map/map/map/map/map/map/string[contains(text(),'${_binary}')][contains(text(),'${system_name}')]/text()" autobuild.xml
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/..
                     OUTPUT_VARIABLE package_url
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                     )
             endif ("${package_url}" STREQUAL "")
-            string(REGEX REPLACE ^https://github.com/secondlife/3p-${_binary}/releases/download/v[0-9]+.*/ "" package_name ${package_url})
+            string(REGEX REPLACE "^https://(megapahit.net/downloads|github.com/secondlife/3p-${_binary}/releases/download|automated-builds-secondlife-com.s3.amazonaws.com/ct2).*/" "" package_name ${package_url})
             file(DOWNLOAD
                 ${package_url}
                 ${CMAKE_BINARY_DIR}/${package_name}
