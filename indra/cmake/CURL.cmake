@@ -16,7 +16,7 @@ use_prebuilt_binary(curl)
       OUTPUT_VARIABLE curl_archs
       OUTPUT_STRIP_TRAILING_WHITESPACE
       )
-    if (NOT ${curl_archs} EQUAL ${CMAKE_OSX_ARCHITECTURES})
+    if (NOT ${curl_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
       execute_process(
         COMMAND lipo
           libcurl.a
@@ -24,7 +24,7 @@ use_prebuilt_binary(curl)
           -output libcurl.a
         WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
         )
-    endif (NOT ${curl_archs} EQUAL ${CMAKE_OSX_ARCHITECTURES})
+    endif (NOT ${curl_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
   endif (DARWIN)
 elseif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/curl_installed OR NOT ${curl_installed} EQUAL 0)
   if (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-curl-7.54.1-r1.tar.gz)

@@ -17,7 +17,7 @@ use_prebuilt_binary(xmlrpc-epi)
       OUTPUT_VARIABLE xmlrpc-epi_archs
       OUTPUT_STRIP_TRAILING_WHITESPACE
       )
-    if (NOT ${xmlrpc-epi_archs} EQUAL ${CMAKE_OSX_ARCHITECTURES})
+    if (NOT ${xmlrpc-epi_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
       execute_process(
         COMMAND lipo
           libxmlrpc-epi.0.dylib
@@ -25,7 +25,7 @@ use_prebuilt_binary(xmlrpc-epi)
           -output libxmlrpc-epi.0.dylib
         WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
         )
-    endif (NOT ${xmlrpc-epi_archs} EQUAL ${CMAKE_OSX_ARCHITECTURES})
+    endif (NOT ${xmlrpc-epi_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
   endif (DARWIN)
 endif (${LINUX_DISTRO} MATCHES opensuse-tumbleweed OR DARWIN OR NOT USESYSTEMLIBS)
 target_link_libraries(ll::xmlrpc-epi INTERFACE xmlrpc-epi )
