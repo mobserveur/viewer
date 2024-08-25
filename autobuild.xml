@@ -2878,7 +2878,7 @@ Copyright (c) 2012, 2014, 2015, 2016 nghttp2 contributors</string>
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-xmlrpc-epi/releases/download/v0.54.1.8a05acf/xmlrpc_epi-0.54.1.8a05acf-darwin64-8a05acf.tar.zst</string>
+              <string>https://megapahit.net/downloads/xmlrpc-epi-0.54.2-darwin64.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
