@@ -7,8 +7,40 @@ add_library( ll::openssl INTERFACE IMPORTED )
 if (NOT USESYSTEMLIBS)
 use_system_binary(openssl)
 endif (NOT USESYSTEMLIBS)
-if (CMAKE_OSX_ARCHITECTURES MATCHES x86_64 OR LINUX OR NOT USESYSTEMLIBS)
+if (DARWIN OR LINUX OR NOT USESYSTEMLIBS)
 use_prebuilt_binary(openssl)
+  if (DARWIN)
+    execute_process(
+      COMMAND lipo -archs libcrypto.a
+      WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
+      OUTPUT_VARIABLE crypto_archs
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
+    if (NOT ${crypto_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
+      execute_process(
+        COMMAND lipo
+          libcrypto.a
+          -thin ${CMAKE_OSX_ARCHITECTURES}
+          -output libcrypto.a
+        WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
+        )
+    endif (NOT ${crypto_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
+    execute_process(
+      COMMAND lipo -archs libssl.a
+      WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
+      OUTPUT_VARIABLE ssl_archs
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
+    if (NOT ${ssl_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
+      execute_process(
+        COMMAND lipo
+          libssl.a
+          -thin ${CMAKE_OSX_ARCHITECTURES}
+          -output libssl.a
+        WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
+        )
+    endif (NOT ${ssl_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
+  endif (DARWIN)
 elseif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/openssl_installed OR NOT ${openssl_installed} EQUAL 0)
   if (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-openssl-1.1.1q.de53f55.tar.gz)
     file(DOWNLOAD
@@ -20,26 +52,15 @@ elseif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRA
     INPUT ${CMAKE_BINARY_DIR}/3p-openssl-1.1.1q.de53f55.tar.gz
     DESTINATION ${CMAKE_BINARY_DIR}
     )
-  if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
-    set(ENV{CFLAGS} "-mmacosx-version-min=11.0")
-    execute_process(
-      COMMAND ./Configure no-shared darwin64-arm64-cc
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-openssl-1.1.1q.de53f55/openssl
-      )
-  else (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
-    execute_process(
-      COMMAND ./config no-shared
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-openssl-1.1.1q.de53f55/openssl
-      )
-  endif (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+  execute_process(
+    COMMAND ./config no-shared
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-openssl-1.1.1q.de53f55/openssl
+    )
   execute_process(
     COMMAND make -j${MAKE_JOBS}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-openssl-1.1.1q.de53f55/openssl
     RESULT_VARIABLE openssl_installed
     )
-  if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
-    unset(ENV{CFLAGS})
-  endif (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
   file(
     COPY
       ${CMAKE_BINARY_DIR}/3p-openssl-1.1.1q.de53f55/openssl/include/openssl/aes.h
@@ -155,7 +176,7 @@ elseif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRA
     DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
     )
   file(WRITE ${PREBUILD_TRACKING_DIR}/openssl_installed "${openssl_installed}")
-endif (CMAKE_OSX_ARCHITECTURES MATCHES x86_64 OR LINUX OR NOT USESYSTEMLIBS)
+endif (DARWIN OR LINUX OR NOT USESYSTEMLIBS)
 if (WINDOWS)
   target_link_libraries(ll::openssl INTERFACE libssl libcrypto)
 elseif (LINUX)
