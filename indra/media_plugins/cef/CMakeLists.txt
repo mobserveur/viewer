@@ -133,10 +133,46 @@ endif (DARWIN)
 if (INSTALL)
     if (DARWIN)
         set(_LIB llplugin)
-    elseif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
-        set(_LIB lib/${ARCH}-linux-gnu)
-    elseif (EXISTS /lib64)
-        set(_LIB lib64)
+        install(
+            DIRECTORY "${AUTOBUILD_INSTALL_DIR}/lib/release/Chromium Embedded Framework.framework"
+            DESTINATION ../Frameworks
+            )
+        install(
+            DIRECTORY
+                "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper.app"
+                "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (GPU).app"
+                "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Plugin).app"
+                "${AUTOBUILD_INSTALL_DIR}/lib/release/DullahanHelper (Renderer).app"
+            DESTINATION SLPlugin.app/Contents/Frameworks
+            )
+    elseif (LINUX)
+        if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+            set(_LIB lib/${ARCH}-linux-gnu)
+        elseif (EXISTS /lib64)
+            set(_LIB lib64)
+        endif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+        install(
+            PROGRAMS
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/dullahan_host
+            DESTINATION libexec/${VIEWER_BINARY_NAME}
+            #PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+        )
+        install(
+            FILES
+                ${AUTOBUILD_INSTALL_DIR}/lib/release/libcef.so
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/snapshot_blob.bin
+                ${AUTOBUILD_INSTALL_DIR}/bin/release/v8_context_snapshot.bin
+                ${AUTOBUILD_INSTALL_DIR}/resources/chrome_100_percent.pak
+                ${AUTOBUILD_INSTALL_DIR}/resources/chrome_200_percent.pak
+                ${AUTOBUILD_INSTALL_DIR}/resources/icudtl.dat
+                ${AUTOBUILD_INSTALL_DIR}/resources/resources.pak
+            DESTINATION ${_LIB}
+            )
+        install(
+            DIRECTORY ${AUTOBUILD_INSTALL_DIR}/resources/locales
+            DESTINATION ${_LIB}
+            )
     else (DARWIN)
         set(_LIB lib)
     endif (DARWIN)

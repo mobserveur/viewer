@@ -81,6 +81,18 @@ endif (DARWIN)
 if (INSTALL)
     if (DARWIN)
         set(_LIB llplugin)
+        install(
+            DIRECTORY /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/plugins
+            DESTINATION ${_LIB}
+            )
+        install(
+            FILES
+                /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlc.5.dylib
+                /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlc.dylib
+                /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlccore.9.dylib
+                /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlccore.dylib
+            DESTINATION ${_LIB}/plugins
+            )
     elseif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
         set(_LIB lib/${ARCH}-linux-gnu)
     elseif (EXISTS /lib64)
