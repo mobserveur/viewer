@@ -364,7 +364,7 @@
               <key>hash_algorithm</key>
               <string>sha1</string>
               <key>url</key>
-              <string>https://github.com/secondlife/3p-curl/releases/download/v7.54.1-5a4a82d/curl-7.54.1-5a4a82d-darwin64-5a4a82d.tar.zst</string>
+              <string>https://megapahit.net/downloads/curl-7.54.1-10342910827-darwin64-10342910827.tar.zst</string>
             </map>
             <key>name</key>
             <string>darwin64</string>
