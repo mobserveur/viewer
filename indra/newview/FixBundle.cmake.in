@@ -7,150 +7,145 @@ set(dirs
 fixup_bundle(${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/MacOS/${VIEWER_CHANNEL} "" "${dirs}")
 
 file(CREATE_LINK
-        "../../../../Frameworks/libnghttp2.14.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libnghttp2.14.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libnghttp2.14.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libnghttp2.14.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libxmlrpc-epi.0.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libxmlrpc-epi.0.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libxmlrpc-epi.0.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libxmlrpc-epi.0.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libopenjp2.7.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libopenjp2.7.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libopenjp2.7.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libopenjp2.7.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libpng16.16.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libpng16.16.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libpng16.16.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libpng16.16.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libjpeg.8.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libjpeg.8.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libjpeg.8.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libjpeg.8.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libaprutil-1.0.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libaprutil-1.0.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libaprutil-1.0.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libaprutil-1.0.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libiconv.2.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libiconv.2.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libiconv.2.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libiconv.2.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libapr-1.0.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libapr-1.0.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libapr-1.0.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libapr-1.0.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libjsoncpp.25.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libjsoncpp.25.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libjsoncpp.25.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libjsoncpp.25.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libz.1.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libz.1.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libz.1.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libz.1.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libboost_context-mt.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_context-mt.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libboost_context-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_context-mt.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libboost_fiber-mt.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_fiber-mt.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libboost_fiber-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_fiber-mt.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libboost_filesystem-mt.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_filesystem-mt.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libboost_filesystem-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_filesystem-mt.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libboost_program_options-mt.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_program_options-mt.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libboost_program_options-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_program_options-mt.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libboost_regex-mt.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_regex-mt.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libboost_regex-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_regex-mt.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libboost_system-mt.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_system-mt.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libboost_system-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_system-mt.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libboost_thread-mt.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_thread-mt.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libboost_thread-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_thread-mt.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/liburiparser.1.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/liburiparser.1.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/liburiparser.1.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/liburiparser.1.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libexpat.1.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libexpat.1.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libexpat.1.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libexpat.1.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libfreetype.6.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libfreetype.6.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libfreetype.6.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libfreetype.6.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libicudata.74.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicudata.74.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libicudata.74.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicudata.74.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libicui18n.74.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicui18n.74.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libicui18n.74.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicui18n.74.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libicuuc.74.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicuuc.74.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libicuuc.74.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicuuc.74.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libbz2.1.0.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbz2.1.0.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libbz2.1.0.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbz2.1.0.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libbrotlidec.1.1.0.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbrotlidec.1.1.0.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libbrotlidec.1.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbrotlidec.1.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libbrotlidec.1.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbrotlidec.1.dylib"
-        SYMBOLIC
+    "../../../../Frameworks/libbrotlicommon.1.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbrotlicommon.1.dylib"
+    SYMBOLIC
     )
 file(CREATE_LINK
-        "../../../../Frameworks/libbrotlicommon.1.dylib"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbrotlicommon.1.dylib"
-        SYMBOLIC
-    )
-file(CREATE_LINK
-        "../../../../Frameworks/Chromium Embedded Framework.framework"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework"
-        SYMBOLIC
+    "../../../../Frameworks/Chromium Embedded Framework.framework"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/Chromium Embedded Framework.framework"
+    SYMBOLIC
     )
 
 file(CHMOD
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper.app/Contents/MacOS/DullahanHelper"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (GPU).app/Contents/MacOS/DullahanHelper (GPU)"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Plugin).app/Contents/MacOS/DullahanHelper (Plugin)"
-        "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Renderer).app/Contents/MacOS/DullahanHelper (Renderer)"
-        PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper.app/Contents/MacOS/DullahanHelper"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (GPU).app/Contents/MacOS/DullahanHelper (GPU)"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Plugin).app/Contents/MacOS/DullahanHelper (Plugin)"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Renderer).app/Contents/MacOS/DullahanHelper (Renderer)"
+    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
     )
