@@ -47,48 +47,8 @@ file(CREATE_LINK
     SYMBOLIC
     )
 file(CREATE_LINK
-    "../../../../Frameworks/libjsoncpp.25.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libjsoncpp.25.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
     "../../../../Frameworks/libz.1.dylib"
     "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libz.1.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libboost_context-mt.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_context-mt.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libboost_fiber-mt.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_fiber-mt.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libboost_filesystem-mt.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_filesystem-mt.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libboost_program_options-mt.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_program_options-mt.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libboost_regex-mt.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_regex-mt.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libboost_system-mt.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_system-mt.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libboost_thread-mt.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_thread-mt.dylib"
     SYMBOLIC
     )
 file(CREATE_LINK
@@ -104,21 +64,6 @@ file(CREATE_LINK
 file(CREATE_LINK
     "../../../../Frameworks/libfreetype.6.dylib"
     "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libfreetype.6.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libicudata.74.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicudata.74.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libicui18n.74.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicui18n.74.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/libicuuc.74.dylib"
-    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicuuc.74.dylib"
     SYMBOLIC
     )
 file(CREATE_LINK
