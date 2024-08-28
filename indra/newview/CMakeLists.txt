@@ -2092,7 +2092,7 @@ if (LINUX)
           CACHE STRING "Debian package dependencies.")
         elseif (${LINUX_DISTRO} MATCHES ubuntu)
           set(CPACK_DEBIAN_PACKAGE_DEPENDS
-            "libalut0, libaprutil1t64, libboost-fiber1.83.0, libboost-filesystem1.83.0, libboost-program-options1.83.0, libboost-regex1.83.0, libboost-thread1.83.0, libcollada-dom2.5-dp0, libexpat1, libfltk2.0-0t64, libglu1-mesa, libhunspell-1.7-0, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0t64, vlc-plugin-base"
+            "libalut0, libaprutil1t64, libboost-fiber1.83.0, libboost-filesystem1.83.0, libboost-program-options1.83.0, libboost-regex1.83.0, libboost-thread1.83.0, libcollada-dom2.5-dp0, libexpat1, libfltk1.3t64, libglu1-mesa, libhunspell-1.7-0, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0t64, vlc-plugin-base"
           CACHE STRING "Debian package dependencies.")
         endif (${LINUX_DISTRO} MATCHES debian)
       elseif (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
