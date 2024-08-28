@@ -19,6 +19,39 @@ if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
             INPUT ${CMAKE_BINARY_DIR}/libwebrtc-macos-arm64.tar.xz
             DESTINATION ${LIBS_PREBUILT_DIR}
             )
+        file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/webrtc)
+        foreach(directory
+          api
+          audio
+          base
+          build
+          buildtools
+          call
+          common_audio
+          common_video
+          examples
+          logging
+          media
+          modules
+          net
+          p2p
+          pc
+          rtc_base
+          rtc_tools
+          sdk
+          stats
+          system_wrappers
+          test
+          testing
+          third_party
+          tools
+          video
+          )
+          file(RENAME
+            ${LIBS_PREBUILT_DIR}/include/${directory}
+            ${LIBS_PREBUILT_DIR}/include/webrtc/${directory}
+            )
+        endforeach()
         file(RENAME
           ${LIBS_PREBUILT_DIR}/lib/libwebrtc.a
           ${LIBS_PREBUILT_DIR}/lib/release/libwebrtc.a
