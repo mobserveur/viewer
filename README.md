@@ -36,7 +36,7 @@ $ cd build-`uname -s|tr '[:upper:]' '[:lower:]'`-`uname -m`
 ### macOS
 
 ```
-$ sudo port install cmake pkgconfig autoconf automake libtool freealut +universal apr-util +universal boost181 +universal -no_static collada-dom +universal glm hunspell +universal freetype +universal openjpeg +universal uriparser +universal libvorbis +universal xxhashlib
+$ sudo port install cmake pkgconfig freealut +universal apr-util +universal boost181 +universal -no_static collada-dom +universal glm hunspell +universal freetype +universal openjpeg +universal uriparser +universal libvorbis +universal xxhashlib
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -mmacosx-version-min=10.15 -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF -DCMAKE_INSTALL_PREFIX:PATH=newview/Megapahit.app/Contents/Resources -DCMAKE_OSX_ARCHITECTURES:STRING=`uname -m` ../indra
 $ sudo port deactivate boost
@@ -49,31 +49,31 @@ $ open newview/Megapahit.app
 ### Debian
 
 ```
-$ sudo apt install pkg-config libalut-dev libaprutil1-dev libboost-fiber1.81-dev libboost-json1.81-dev libboost-program-options1.81-dev libboost-regex1.81-dev libcollada-dom-dev libexpat1-dev libfltk1.3-dev libglu1-mesa-dev libhunspell-dev libmeshoptimizer-dev libnghttp2-dev libpipewire-0.3-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
+$ sudo apt install cmake pkg-config libxml2-utils libalut-dev libaprutil1-dev libboost-fiber1.81-dev libboost-json1.81-dev libboost-program-options1.81-dev libboost-regex1.81-dev libcollada-dom-dev libexpat1-dev libfltk1.3-dev libfontconfig-dev libfreetype-dev libglu1-mesa-dev libhunspell-dev libjpeg-dev libmeshoptimizer-dev libnghttp2-dev libpipewire-0.3-dev libpng-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxft-dev libxmlrpc-epi-dev libxxhash-dev
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
 $ cpack -G DEB
-$ sudo apt install megapahit-`cat newview/viewer_version.txt`-Linux.deb
+$ sudo apt install ./megapahit-`cat newview/viewer_version.txt`-Linux.deb
 $ megapahit
 ```
 
 ### Ubuntu
 
 ```
-$ sudo apt install pkg-config libalut-dev libaprutil1-dev libboost-fiber-dev libboost-json-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libexpat1-dev libfltk1.3-dev libglu1-mesa-dev libhunspell-dev libmeshoptimizer-dev libnanosvg-dev libnghttp2-dev libpipewire-0.3-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxmlrpc-epi-dev libxxhash-dev
+$ sudo apt install cmake pkg-config libxml2-utils libalut-dev libaprutil1-dev libboost-fiber-dev libboost-json-dev libboost-program-options-dev libboost-regex-dev libcollada-dom-dev libexpat1-dev libfltk1.3-dev libfontconfig-dev libfreetype-dev libglu1-mesa-dev libhunspell-dev libjpeg-dev libmeshoptimizer-dev libnanosvg-dev libnghttp2-dev libpipewire-0.3-dev libpng-dev libsdl2-dev liburiparser-dev libvlc-dev libvlccore-dev libvorbis-dev libxft-dev libxmlrpc-epi-dev libxxhash-dev
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
 $ cpack -G DEB
-$ sudo apt install megapahit-`cat newview/viewer_version.txt`-Linux.deb
+$ sudo apt install ./megapahit-`cat newview/viewer_version.txt`-Linux.deb
 $ megapahit
 ```
 
 ### Fedora
 
 ```
-$ sudo dnf install gcc-c++ patchelf freealut-devel apr-util-devel boost-devel collada-dom-devel expat-devel fltk-devel mesa-libGLU-devel hunspell-devel libnghttp2-devel nanosvg-devel openjpeg-devel pipewire-devel pulseaudio-libs-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xmlrpc-epi-devel xxhash-devel
+$ sudo dnf install cmake gcc-c++ patchelf apr-util-devel boost-devel collada-dom-devel expat-devel fltk-devel mesa-libGLU-devel hunspell-devel libnghttp2-devel nanosvg-devel openjpeg-devel pipewire-devel pulseaudio-libs-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xmlrpc-epi-devel xxhash-devel
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=OFF -DUSE_FMODSTUDIO:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
