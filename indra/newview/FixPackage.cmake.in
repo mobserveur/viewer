@@ -94,3 +94,8 @@ file(CHMOD
     "${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper (Renderer).app/Contents/MacOS/DullahanHelper (Renderer)"
     PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
     )
+
+execute_process(
+    COMMAND hdiutil detach VLC\ media\ player
+    WORKING_DIRECTORY /Volumes
+    )
