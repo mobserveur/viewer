@@ -611,12 +611,13 @@ execute_process(
         Resources/llplugin/plugins/libyuy2_i420_plugin.dylib
         Resources/llplugin/plugins/libyuy2_i422_plugin.dylib
         Resources/llplugin/plugins/libzvbi_plugin.dylib
-        Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper.app
         Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper\ \(GPU\).app/Contents/MacOS/DullahanHelper\ \(GPU\)
         Resources/SLPlugin.app/Contents/Frameworks/DullahanHelper\ \(Plugin\).app/Contents/MacOS/DullahanHelper\ \(Plugin\)
         WORKING_DIRECTORY ${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents
     )
 execute_process(
+    COMMAND sudo codesign -f -s ${SIGNING_IDENTITY} --timestamp -o runtime --runtime-version ${CMAKE_OSX_DEPLOYMENT_TARGET}
+        DullahanHelper.app
     COMMAND sudo codesign -f -s ${SIGNING_IDENTITY} --timestamp -o runtime --runtime-version ${CMAKE_OSX_DEPLOYMENT_TARGET}
         --entitlements ${CMAKE_SOURCE_DIR}/newview/slplugin.entitlements
         DullahanHelper\ \(Renderer\).app/Contents/MacOS/DullahanHelper\ \(Renderer\)
