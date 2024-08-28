@@ -741,9 +741,9 @@ set(viewer_SOURCE_FILES
     pipeline.cpp
     )
 
-if (LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+if (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed) OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
     list(REMOVE_ITEM viewer_SOURCE_FILES llvoicewebrtc.cpp)
-endif ()
+endif (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed) OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
 
 set(VIEWER_BINARY_NAME "secondlife-bin" CACHE STRING
     "The name of the viewer executable to create.")
