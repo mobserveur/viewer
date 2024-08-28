@@ -6,6 +6,7 @@ include_guard()
 
 add_library( ll::webrtc INTERFACE IMPORTED )
 target_include_directories( ll::webrtc SYSTEM INTERFACE "${LIBS_PREBUILT_DIR}/include/webrtc" "${LIBS_PREBUILT_DIR}/include/webrtc/third_party/abseil-cpp")
+target_compile_definitions( ll::webrtc INTERFACE LL_WEBRTC=1)
 if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/webrtc_installed OR NOT ${webrtc_installed} EQUAL 0)
         if (NOT EXISTS ${CMAKE_BINARY_DIR}/libwebrtc-macos-arm64.tar.xz)

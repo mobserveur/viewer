@@ -741,7 +741,7 @@ set(viewer_SOURCE_FILES
     pipeline.cpp
     )
 
-if (CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+if (LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
     list(REMOVE_ITEM viewer_SOURCE_FILES llvoicewebrtc.cpp)
 endif ()
 
@@ -1950,9 +1950,9 @@ target_link_libraries(${VIEWER_BINARY_NAME}
         ll::tracy
         )
 
-if (NOT CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+if (NOT (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed) OR CMAKE_SYSTEM_NAME MATCHES FreeBSD))
    target_link_libraries(${VIEWER_BINARY_NAME} llwebrtc )
-endif ()
+endif (NOT (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed) OR CMAKE_SYSTEM_NAME MATCHES FreeBSD))
 
 if (ENABLE_MEDIA_PLUGINS)
    target_link_libraries(${VIEWER_BINARY_NAME} ll::libvlc )
