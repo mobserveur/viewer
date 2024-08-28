@@ -96,6 +96,121 @@ file(CHMOD
     )
 
 execute_process(
-    COMMAND hdiutil detach VLC\ media\ player
-    WORKING_DIRECTORY /Volumes
+    COMMAND hdiutil detach /Volumes/VLC\ media\ player
+    COMMAND lipo libalut.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libalut.0.dylib
+    COMMAND lipo libapr-1.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libapr-1.0.dylib
+    COMMAND lipo libaprutil-1.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libaprutil-1.0.dylib
+    COMMAND lipo libboost_filesystem-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_filesystem-mt.dylib
+    COMMAND lipo libboost_system-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_system-mt.dylib
+    COMMAND lipo libbrotlicommon.1.1.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libbrotlicommon.1.1.0.dylib
+    COMMAND lipo libbrotlidec.1.1.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libbrotlidec.1.1.0.dylib
+    COMMAND lipo libbz2.1.0.8.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libbz2.1.0.8.dylib
+    COMMAND lipo libcollada-dom2.4-dp.2.4.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libcollada-dom2.4-dp.2.4.0.dylib
+    COMMAND lipo libexpat.1.9.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libexpat.1.9.2.dylib
+    COMMAND lipo libfreetype.6.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libfreetype.6.dylib
+    COMMAND lipo libhunspell-1.7.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libhunspell-1.7.0.dylib
+    COMMAND lipo libiconv.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libiconv.2.dylib
+    COMMAND lipo libicudata.74.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libicudata.74.2.dylib
+    COMMAND lipo libicui18n.74.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libicui18n.74.2.dylib
+    COMMAND lipo libicuuc.74.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libicuuc.74.2.dylib
+    COMMAND lipo libjpeg.8.3.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libjpeg.8.3.2.dylib
+    COMMAND lipo libllwebrtc.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libllwebrtc.dylib
+    COMMAND lipo liblzma.5.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output liblzma.5.dylib
+    COMMAND lipo libminizip.1.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libminizip.1.dylib
+    COMMAND lipo libncurses.6.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libncurses.6.dylib
+    COMMAND lipo libndofdev.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libndofdev.dylib
+    COMMAND lipo libnghttp2.14.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libnghttp2.14.dylib
+    COMMAND lipo libogg.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libogg.0.dylib
+    COMMAND lipo libopenal.1.23.1.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libopenal.1.23.1.dylib
+    COMMAND lipo libopenjp2.2.5.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libopenjp2.2.5.2.dylib
+    COMMAND lipo libpcre.1.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libpcre.1.dylib
+    COMMAND lipo libpcrecpp.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libpcrecpp.0.dylib
+    COMMAND lipo libpng16.16.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libpng16.16.dylib
+    COMMAND lipo liburiparser.1.0.31.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output liburiparser.1.0.31.dylib
+    COMMAND lipo libvlc.5.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libvlc.5.dylib
+    COMMAND lipo libvlccore.9.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libvlccore.9.dylib
+    COMMAND lipo libvorbis.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libvorbis.0.dylib
+    COMMAND lipo libvorbisenc.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libvorbisenc.2.dylib
+    COMMAND lipo libvorbisfile.3.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libvorbisfile.3.dylib
+    COMMAND lipo libxml2.2.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libxml2.2.dylib
+    COMMAND lipo libxmlrpc-epi.0.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libxmlrpc-epi.0.dylib
+    COMMAND lipo libz.1.3.1.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libz.1.3.1.dylib
+    WORKING_DIRECTORY ${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Frameworks
+    ERROR_QUIET
     )
