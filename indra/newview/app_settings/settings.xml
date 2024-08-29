@@ -6063,6 +6063,28 @@
       <key>Value</key>
       <integer>1</integer>
     </map>
+    <key>StreamNotificationChannel</key>
+    <map>
+      <key>Comment</key>
+      <string>Custom stream notification channel</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>157157</integer>
+    </map>
+    <key>StreamNotificationChannelEnabled</key>
+    <map>
+      <key>Comment</key>
+      <string>Use the stream notification channel?</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
     <key>ParticipantListShowIcons</key>
     <map>
       <key>Comment</key>
