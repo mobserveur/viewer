@@ -108,6 +108,8 @@ void LLStreamingAudio_MediaPlugins::update()
         mMediaPlugin->idle();
 }
 
+extern void send_chat_from_viewer(const std::string& utf8_out_text, EChatType type, S32 channel);
+
 int LLStreamingAudio_MediaPlugins::isPlaying()
 {
     if (!mMediaPlugin)
@@ -120,10 +122,18 @@ int LLStreamingAudio_MediaPlugins::isPlaying()
     {
         mTitle = mMediaPlugin->getMediaTitle();
         mNowPlaying = nowPlaying;
-        LLChat chat{llformat("Now playing %s.", nowPlaying.c_str())};
-        chat.mFromName = mTitle;
-        chat.mSourceType = CHAT_SOURCE_SYSTEM;
-        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
+        auto text = llformat("Now playing %s.", nowPlaying.c_str());
+        if (gSavedSettings.getBOOL("StreamNotificationChannelEnabled"))
+        {
+            send_chat_from_viewer(text, CHAT_TYPE_NORMAL, gSavedSettings.getS32("StreamNotificationChannel"));
+        }
+        else
+        {
+            LLChat chat{text};
+            chat.mFromName = mTitle;
+            chat.mSourceType = CHAT_SOURCE_SYSTEM;
+            LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
+        }
     }
 
     switch (status)
