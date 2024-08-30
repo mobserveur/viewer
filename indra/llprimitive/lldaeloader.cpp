@@ -941,20 +941,12 @@ bool LLDAELoader::OpenFile(const std::string& filename)
     domCOLLADA* dom;
     if (mPreprocessDAE)
     {
-#ifdef LL_USESYSTEMLIBS
-        dom = static_cast<domCOLLADA *>(dae.openFromMemory(uri_filename, preprocessDAE(filename).c_str()));
-#else
         dom = dae.openFromMemory(uri_filename, preprocessDAE(filename).c_str());
-#endif
     }
     else
     {
         LL_INFOS() << "Skipping dae preprocessing" << LL_ENDL;
-#ifdef LL_USESYSTEMLIBS
-        dom = static_cast<domCOLLADA *>(dae.open(uri_filename));
-#else
         dom = dae.open(uri_filename);
-#endif
     }
 
     if (!dom)
