@@ -3,6 +3,7 @@
 project(llprimitive)
 
 include(00-Common)
+include(DepsBuild)
 include(LLCommon)
 include(LLCoreHttp)
 include(LLPhysicsExtensions)
@@ -10,6 +11,21 @@ include(LLPrimitive)
 include(GLH)
 include(GLM)
 include(TinyGLTF)
+
+if(LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD )
+  checkout_deps_repository(
+	"https://github.com/oikumene/3p-colladadom-test.git"
+	"collada-dom" "v2.3-r7-megapahit"
+  )
+  set(OPT_COLLADA14 TRUE)
+  add_subdirectory(${CMAKE_SOURCE_DIR}/../../collada-dom "collada-dom")
+  target_include_directories(
+	  ll::colladadom INTERFACE
+	  ${colladadom_SOURCE_DIR}/include
+	  ${colladadom_SOURCE_DIR}/include/1.4
+  )
+  target_link_libraries( ll::colladadom INTERFACE collada14dom )
+endif(LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD )
 
 set(llprimitive_SOURCE_FILES
     lldaeloader.cpp
