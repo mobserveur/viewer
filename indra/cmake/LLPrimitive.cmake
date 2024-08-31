@@ -18,16 +18,6 @@ if( USE_CONAN )
     "${CONAN_INCLUDE_DIRS_COLLADADOM}/collada-dom/1.4/" )
 endif()
 
-if(LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD )
-  include(FindPkgConfig)
-  pkg_check_modules(Colladadom REQUIRED collada-dom)
-  target_compile_definitions( ll::colladadom INTERFACE COLLADA_DOM_SUPPORT141 )
-  target_include_directories( ll::colladadom SYSTEM INTERFACE ${Colladadom_INCLUDE_DIRS} ${Colladadom_INCLUDE_DIRS}/1.4 )
-  target_link_directories( ll::colladadom INTERFACE ${Colladadom_LIBRARY_DIRS} )
-  target_link_libraries( ll::colladadom INTERFACE ${Colladadom_LIBRARIES} )
-  return ()
-endif(LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD )
-
 if( USESYSTEMLIBS )
   if ( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
     if (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz)
@@ -45,7 +35,7 @@ if( USESYSTEMLIBS )
     pkg_check_modules(Minizip REQUIRED minizip)
     pkg_check_modules(Libxml2 REQUIRED libxml-2.0)
     pkg_check_modules(Libpcrecpp libpcrecpp)
-    if (DARWIN)
+    if( DARWIN )
       try_compile(COLLADADOM_RESULT
         PROJECT colladadom
         SOURCE_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
@@ -79,7 +69,12 @@ if( USESYSTEMLIBS )
           FOLLOW_SYMLINK_CHAIN
           )
       endif (${COLLADADOM_RESULT})
-    else (DARWIN)
+    elseif( CMAKE_SYSTEM_NAME MATCHES FreeBSD )
+      execute_process(
+        COMMAND sed -i "" -e "s/linux/FreeBSD/g" dae/daeUtils.cpp
+        COMMAND sed -i "" -e "s/SHARED/STATIC/g" 1.4/CMakeLists.txt
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src
+        )
       try_compile(COLLADADOM_RESULT
         PROJECT colladadom
         SOURCE_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
@@ -94,7 +89,7 @@ if( USESYSTEMLIBS )
           -DBoost_SYSTEM_LIBRARY:STRING=boost_system
           -Dlibpcrecpp_CFLAGS_OTHERS:STRING=-I${Libxml2_INCLUDE_DIRS}
           -DEXTRA_COMPILE_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
--I${Libpcrecpp_INCLUDE_DIRS}
+          -DBoost_CFLAGS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
           -DOPT_COLLADA14:BOOL=ON
           -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
           -DCOLLADA_DOM_SOVERSION:STRING=0
@@ -107,7 +102,7 @@ if( USESYSTEMLIBS )
           DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
           )
       endif (${COLLADADOM_RESULT})
-    endif (DARWIN)
+    endif( DARWIN )
     if (${COLLADADOM_RESULT})
       file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/include/collada/1.4)
       file(
@@ -154,6 +149,6 @@ if (WINDOWS)
     target_link_libraries(ll::colladadom INTERFACE libcollada14dom23-s ll::libxml ll::minizip-ng )
 elseif (DARWIN)
     target_link_libraries(ll::colladadom INTERFACE collada14dom ll::libxml ll::minizip-ng)
-elseif (LINUX)
+else ()
     target_link_libraries(ll::colladadom INTERFACE collada14dom ll::libxml ll::minizip-ng)
 endif()
