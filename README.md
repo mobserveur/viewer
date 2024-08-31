@@ -87,13 +87,13 @@ $ megapahit
 ```
 $ setenv LL_BUILD "-O3 -std=c++17 -fPIC"
 $ sudo su -
-# portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 devel/collada-dom x11-toolkits/fltk math/glm textproc/hunspell misc/meshoptimizer graphics/nanosvg graphics/openjpeg devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
+# portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 x11-toolkits/fltk math/glm textproc/hunspell misc/meshoptimizer archivers/minizip graphics/nanosvg graphics/openjpeg devel/pcre devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
 # exit
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
 $ sudo cpack -G FREEBSD
 $ sudo pkg add megapahit-`cat newview/viewer_version.txt`-FreeBSD.pkg
-$ sudo pkg set -yA 1 freealut apr1 collada-dom fltk hunspell meshoptimizer nanosvg openjpeg sdl20 uriparser vlc libvorbis xmlrpc-epi
+$ sudo pkg set -yA 1 freealut apr1 fltk hunspell meshoptimizer minizip nanosvg openjpeg pcre sdl20 uriparser vlc libvorbis xmlrpc-epi
 $ megapahit
 ```
 
