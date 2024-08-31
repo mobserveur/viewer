@@ -19,6 +19,7 @@ if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
             INPUT ${CMAKE_BINARY_DIR}/libwebrtc-macos-arm64.tar.xz
             DESTINATION ${LIBS_PREBUILT_DIR}
             )
+        file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/include/webrtc)
         file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/webrtc)
         foreach(directory
           api
