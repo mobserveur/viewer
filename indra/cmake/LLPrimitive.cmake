@@ -19,6 +19,15 @@ if( USE_CONAN )
 endif()
 
 if( USESYSTEMLIBS )
+  if( LINUX )
+    include(FindPkgConfig)
+    pkg_check_modules(Colladadom REQUIRED collada-dom)
+    target_compile_definitions( ll::colladadom INTERFACE COLLADA_DOM_SUPPORT141 )
+    target_include_directories( ll::colladadom SYSTEM INTERFACE ${Colladadom_INCLUDE_DIRS} ${Colladadom_INCLUDE_DIRS}/1.4 )
+    target_link_directories( ll::colladadom INTERFACE ${Colladadom_LIBRARY_DIRS} )
+    target_link_libraries( ll::colladadom INTERFACE ${Colladadom_LIBRARIES} )
+    return ()
+  endif( LINUX )
   if ( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
     if (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz)
       file(DOWNLOAD
@@ -69,9 +78,14 @@ if( USESYSTEMLIBS )
           FOLLOW_SYMLINK_CHAIN
           )
       endif (${COLLADADOM_RESULT})
-    elseif( CMAKE_SYSTEM_NAME MATCHES FreeBSD )
+    else( DARWIN )
+      if( CMAKE_SYSTEM_NAME MATCHES FreeBSD )
+        execute_process(
+          COMMAND sed -i "" -e "s/linux/FreeBSD/g" dae/daeUtils.cpp
+          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src
+          )
+      endif( CMAKE_SYSTEM_NAME MATCHES FreeBSD )
       execute_process(
-        COMMAND sed -i "" -e "s/linux/FreeBSD/g" dae/daeUtils.cpp
         COMMAND sed -i "" -e "s/SHARED/STATIC/g" 1.4/CMakeLists.txt
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src
         )
