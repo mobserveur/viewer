@@ -108,15 +108,12 @@ LLXmlTreeNode::LLXmlTreeNode( const std::string& name, LLXmlTreeNode* parent, LL
 
 LLXmlTreeNode::~LLXmlTreeNode()
 {
-    for (auto& attr : mAttributes)
+    attribute_map_t::iterator iter;
+    for (iter=mAttributes.begin(); iter != mAttributes.end(); iter++)
+        delete iter->second;
+    for(LLXmlTreeNode* node : mChildren)
     {
-        delete attr.second;
-    }
-    mAttributes.clear();
-
-    for (auto& child : mChildren)
-    {
-        delete child;
+        delete node;
     }
     mChildren.clear();
 }

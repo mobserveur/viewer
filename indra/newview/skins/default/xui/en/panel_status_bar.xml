@@ -55,11 +55,11 @@
 		 text_pad_left="6"
 		 tool_tip="Type the search term you are interested in here. Results will be displayed for partial fulltext matches within the menu."
 		 top="0">
-			<search_button
+			<search_button 
 			 top_pad="4"
-			 left_pad="4"
+			 left_pad="4" 
 			 width="12"
-			 height="12"
+			 height="12" 
 			 image_unselected="Search"
 			 image_selected="Search"/>
 			<clear_button
@@ -77,20 +77,20 @@
     left="-398"
     width="185"
     top="1"
-    follows="right|top"
+    follows="right|top" 
     name="balance_bg">
     <text
      halign="center"
      font="SansSerifSmall"
      follows="all"
      height="18"
-     left="0"
+     left="0" 
      name="balance"
      tool_tip="Click to refresh your L$ balance"
      v_pad="4"
      top="0"
-     wrap="false"
-     value="L$??"
+     wrap="false" 
+     value="L$??" 
      width="40" />
     <button
      halign="center"
@@ -199,5 +199,5 @@
      tool_tip="fps"
      width="32">
      60
-     </text>
+     </button>
 </panel>

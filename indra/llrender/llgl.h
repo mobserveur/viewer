@@ -103,6 +103,9 @@ public:
     bool mIsIntel;
     bool mIsApple;
 
+    // hints to the render pipe
+    U32 mDownScaleMethod = 0; // see settings.xml RenderDownScaleMethod
+
 #if LL_DARWIN
     // Needed to distinguish problem cards on older Macs that break with Materials
     bool mIsMobileGF;

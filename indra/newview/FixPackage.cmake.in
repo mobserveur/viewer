@@ -12,11 +12,6 @@ file(CREATE_LINK
     SYMBOLIC
     )
 file(CREATE_LINK
-    "../../../../Frameworks/libxmlrpc-epi.0.dylib"
-    "${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libxmlrpc-epi.0.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
     "../../../../Frameworks/libopenjp2.7.dylib"
     "${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libopenjp2.7.dylib"
     SYMBOLIC
@@ -49,11 +44,6 @@ file(CREATE_LINK
 file(CREATE_LINK
     "../../../../Frameworks/libz.1.dylib"
     "${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libz.1.dylib"
-    SYMBOLIC
-    )
-file(CREATE_LINK
-    "../../../../Frameworks/liburiparser.1.dylib"
-    "${CMAKE_CACHEFILE_DIR}/_CPack_Packages/${CMAKE_SYSTEM_NAME}/Bundle/${CPACK_BUNDLE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}/${CPACK_BUNDLE_NAME}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/liburiparser.1.dylib"
     SYMBOLIC
     )
 file(CREATE_LINK
@@ -184,9 +174,6 @@ execute_process(
     COMMAND lipo libpng16.16.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libpng16.16.dylib
-    COMMAND lipo liburiparser.1.0.31.dylib
-        -thin ${CMAKE_OSX_ARCHITECTURES}
-        -output liburiparser.1.0.31.dylib
     COMMAND lipo libvlc.5.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libvlc.5.dylib
@@ -205,9 +192,6 @@ execute_process(
     COMMAND lipo libxml2.2.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libxml2.2.dylib
-    COMMAND lipo libxmlrpc-epi.0.dylib
-        -thin ${CMAKE_OSX_ARCHITECTURES}
-        -output libxmlrpc-epi.0.dylib
     COMMAND lipo libz.1.3.1.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libz.1.3.1.dylib
@@ -250,14 +234,12 @@ execute_process(
         Frameworks/libpcre.1.dylib
         Frameworks/libpcrecpp.0.dylib
         Frameworks/libpng16.16.dylib
-        Frameworks/liburiparser.1.0.31.dylib
         Frameworks/libvlc.5.dylib
         Frameworks/libvlccore.9.dylib
         Frameworks/libvorbis.0.dylib
         Frameworks/libvorbisenc.2.dylib
         Frameworks/libvorbisfile.3.dylib
         Frameworks/libxml2.2.dylib
-        Frameworks/libxmlrpc-epi.0.dylib
         Frameworks/libz.1.3.1.dylib
         Resources/libndofdev.dylib
         Resources/llplugin/media_plugin_cef.dylib

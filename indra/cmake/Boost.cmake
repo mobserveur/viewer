@@ -19,6 +19,7 @@ elseif( NOT USE_AUTOBUILD_3P )
       /opt/local/libexec/boost/1.81/lib/libboost_regex-mt.a
       /opt/local/libexec/boost/1.81/lib/libboost_system-mt.a
       /opt/local/libexec/boost/1.81/lib/libboost_thread-mt.a
+      /opt/local/libexec/boost/1.81/lib/libboost_url-mt.a
       )
   else (DARWIN)
     find_package( Boost REQUIRED )
@@ -30,6 +31,7 @@ elseif( NOT USE_AUTOBUILD_3P )
       boost_regex
       boost_system
       boost_thread
+      boost_url
       )
   endif (DARWIN)
   target_compile_definitions( ll::boost INTERFACE BOOST_BIND_GLOBAL_PLACEHOLDERS )
@@ -50,7 +52,8 @@ if (WINDOWS)
           libboost_program_options-mt${addrsfx}
           libboost_regex-mt${addrsfx}
           libboost_system-mt${addrsfx}
-          libboost_thread-mt${addrsfx})
+          libboost_thread-mt${addrsfx}
+          libboost_url-mt${addrsfx})
 elseif (LINUX)
   target_link_libraries( ll::boost INTERFACE
           boost_fiber-mt${addrsfx}
@@ -60,7 +63,8 @@ elseif (LINUX)
           boost_regex-mt${addrsfx}
           boost_thread-mt${addrsfx}
           boost_system-mt${addrsfx}
-  )
+          boost_thread-mt${addrsfx}
+          boost_url-mt${addrsfx})
 elseif (DARWIN)
   target_link_libraries( ll::boost INTERFACE
           boost_context-mt${addrsfx}
@@ -69,7 +73,8 @@ elseif (DARWIN)
           boost_program_options-mt${addrsfx}
           boost_regex-mt${addrsfx}
           boost_system-mt${addrsfx}
-          boost_thread-mt${addrsfx})
+          boost_thread-mt${addrsfx}
+          boost_url-mt${addrsfx})
 endif (WINDOWS)
 
 if (LINUX)
