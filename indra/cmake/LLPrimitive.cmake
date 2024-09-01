@@ -18,12 +18,13 @@ if( USE_CONAN )
     "${CONAN_INCLUDE_DIRS_COLLADADOM}/collada-dom/1.4/" )
 endif()
 
-if(LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD )
-  return ()
-endif(LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD )
-
 if( USESYSTEMLIBS )
-  if ( NOT DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0) )
+  if( LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+    # Build of the collada-dom for Linux and FreeBSD is done in
+    # indra/llprimitive/CMakeLists.txt
+    return ()
+  endif( LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+  if ( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
     if (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz)
       file(DOWNLOAD
         https://github.com/secondlife/3p-colladadom/archive/refs/tags/v2.3-r4.tar.gz
@@ -39,66 +40,96 @@ if( USESYSTEMLIBS )
     pkg_check_modules(Minizip REQUIRED minizip)
     pkg_check_modules(Libxml2 REQUIRED libxml-2.0)
     pkg_check_modules(Libpcrecpp libpcrecpp)
-    try_compile(COLLADADOM_RESULT
-      PROJECT colladadom
-      SOURCE_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
-      BINARY_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
-      TARGET collada14dom
-      CMAKE_FLAGS
-        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-        -DOPT_COLLADA14:BOOL=ON
-        -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
-        -DCOLLADA_DOM_SOVERSION:STRING=0
-        -DCOLLADA_DOM_VERSION:STRING=2.3-r4
-        -DEXTRA_COMPILE_FLAGS:STRING="-I${Minizip_INCLUDE_DIRS} -I${Libxml2_INCLUDE_DIRS} -I${Libpcrecpp_INCLUDE_DIRS}"
-        -DCMAKE_SHARED_LINKER_FLAGS:STRING="-L${Libxml2_LIBRARY_DIRS} -l${Libxml2_LIBRARIES}"
-        -Dlibpcrecpp_LIBRARIES:STRING=pcrecpp
-        -DBoost_FILESYSTEM_LIBRARY:STRING=boost_filesystem
-        -DBoost_SYSTEM_LIBRARY:STRING=boost_system
-      OUTPUT_VARIABLE colladadom_installed
-      )
-    if (${COLLADADOM_RESULT})
-      file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/include/collada)
-      file(
-        COPY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/dom/include
-        DESTINATION ${LIBS_PREBUILT_DIR}/include/collada
+    if( DARWIN )
+      try_compile(COLLADADOM_RESULT
+        PROJECT colladadom
+        SOURCE_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
+        BINARY_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
+        TARGET collada14dom
+        CMAKE_FLAGS
+          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+          -DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Libxml2_LIBRARY_DIRS}
+          -Dlibpcrecpp_LIBRARIES:STRING=pcrecpp
+          -DZLIB_LIBRARIES:STRING=${Libxml2_LIBRARIES}
+          -DBoost_FILESYSTEM_LIBRARY:STRING=boost_filesystem-mt
+          -DBoost_SYSTEM_LIBRARY:STRING=boost_system-mt
+          -Dlibpcrecpp_CFLAGS_OTHERS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}/libxml2
+          -DEXTRA_COMPILE_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
+          -DBoost_CFLAGS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
+          -DOPT_COLLADA14:BOOL=ON
+          -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
+          -DCOLLADA_DOM_SOVERSION:STRING=0
+          -DCOLLADA_DOM_VERSION:STRING=2.3-r4
+          -DCMAKE_OSX_ARCHITECTURES:STRING=${CMAKE_OSX_ARCHITECTURES}
+          -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.15
+        OUTPUT_VARIABLE colladadom_installed
         )
+      if (${COLLADADOM_RESULT})
+        file(
+          COPY
+            ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src/1.4/libcollada14dom.2.3-r4.dylib
+            ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src/1.4/libcollada14dom.0.dylib
+            ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src/1.4/libcollada14dom.dylib
+          DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
+          FOLLOW_SYMLINK_CHAIN
+          )
+      endif (${COLLADADOM_RESULT})
+    else( DARWIN )
+      execute_process(
+        COMMAND sed -i "" -e "s/SHARED/STATIC/g" 1.4/CMakeLists.txt
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src
+        )
+      try_compile(COLLADADOM_RESULT
+        PROJECT colladadom
+        SOURCE_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
+        BINARY_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
+        TARGET collada14dom
+        CMAKE_FLAGS
+          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+          -DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Libxml2_LIBRARY_DIRS}
+          -Dlibpcrecpp_LIBRARIES:STRING=pcrecpp
+          -DZLIB_LIBRARIES:STRING=${Libxml2_LIBRARIES}
+          -DBoost_FILESYSTEM_LIBRARY:STRING=boost_filesystem
+          -DBoost_SYSTEM_LIBRARY:STRING=boost_system
+          -Dlibpcrecpp_CFLAGS_OTHERS:STRING=-I${Libxml2_INCLUDE_DIRS}
+          -DEXTRA_COMPILE_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
+          -DBoost_CFLAGS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
+          -DOPT_COLLADA14:BOOL=ON
+          -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
+          -DCOLLADA_DOM_SOVERSION:STRING=0
+          -DCOLLADA_DOM_VERSION:STRING=2.3-r4
+        OUTPUT_VARIABLE colladadom_installed
+        )
+      if (${COLLADADOM_RESULT})
+        file(
+          COPY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src/1.4/libcollada14dom.a
+          DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
+          )
+      endif (${COLLADADOM_RESULT})
+    endif( DARWIN )
+    if (${COLLADADOM_RESULT})
+      file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/include/collada/1.4)
       file(
-        COPY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/dom/libcollada14dom.a
-        DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
+        COPY
+          ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/include/1.4
+          ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/include/1.5
+          ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/include/dae
+          ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/include/dae.h
+          ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/include/dom.h
+          ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/include/modules
+        DESTINATION ${LIBS_PREBUILT_DIR}/include/collada
         )
       file(WRITE ${PREBUILD_TRACKING_DIR}/colladadom_installed "0")
     endif (${COLLADADOM_RESULT})
-  endif ( NOT DARWIN AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0) )
+  endif( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
 else( USESYSTEMLIBS )
 use_system_binary( colladadom )
-endif( USESYSTEMLIBS )
 
-if( DARWIN OR NOT USESYSTEMLIBS )
 use_prebuilt_binary(colladadom)
-  if( DARWIN )
-    execute_process(
-      COMMAND lipo -archs libcollada14dom.2.3-r4.dylib
-      WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
-      OUTPUT_VARIABLE colladadom_archs
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-      )
-    if( NOT ${colladadom_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES} )
-      execute_process(
-        COMMAND lipo
-          libcollada14dom.2.3-r4.dylib
-          -thin ${CMAKE_OSX_ARCHITECTURES}
-          -output libcollada14dom.2.3-r4.dylib
-        WORKING_DIRECTORY ${LIBS_PREBUILT_DIR}/lib/release
-        )
-    endif( NOT ${colladadom_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES} )
-  endif( DARWIN )
-endif( DARWIN OR NOT USESYSTEMLIBS )
-if( NOT USESYSTEMLIBS )
 use_prebuilt_binary(minizip-ng) # needed for colladadom
 use_prebuilt_binary(pcre)
 use_prebuilt_binary(libxml2)
-endif( NOT USESYSTEMLIBS )
+endif( USESYSTEMLIBS )
 
 target_link_libraries( ll::pcre INTERFACE pcrecpp pcre )
 
@@ -122,6 +153,6 @@ if (WINDOWS)
     target_link_libraries(ll::colladadom INTERFACE libcollada14dom23-s ll::libxml ll::minizip-ng )
 elseif (DARWIN)
     target_link_libraries(ll::colladadom INTERFACE collada14dom ll::libxml ll::minizip-ng)
-elseif (LINUX)
+else ()
     target_link_libraries(ll::colladadom INTERFACE collada14dom ll::libxml ll::minizip-ng)
 endif()

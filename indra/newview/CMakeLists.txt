@@ -2232,7 +2232,7 @@ elseif (USESYSTEMLIBS)
     set(CPACK_FREEBSD_PACKAGE_ORIGIN net/${VIEWER_BINARY_NAME}
       CACHE STRING "FreeBSD package origin.")
     set(CPACK_FREEBSD_PACKAGE_DEPS
-      "audio/freealut;devel/collada-dom;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;www/libnghttp2;graphics/openjpeg;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi"
+      "audio/freealut;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;archivers/minizip;www/libnghttp2;graphics/openjpeg;devel/pcre;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi"
       CACHE STRING "FreeBSD package dependencies.")
   endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND PACKAGE)
 endif (LINUX)
