@@ -127,16 +127,13 @@ int LLStreamingAudio_MediaPlugins::isPlaying()
         mTitle = mMediaPlugin->getMediaTitle();
         mNowPlaying = nowPlaying;
         auto text = llformat("Now playing %s.", nowPlaying.c_str());
+        LLChat chat{text};
+        chat.mFromName = mTitle;
+        chat.mSourceType = CHAT_SOURCE_SYSTEM;
+        LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
         if (gSavedSettings.getBOOL("StreamNotificationChannelEnabled"))
         {
             send_chat_from_viewer(text, CHAT_TYPE_NORMAL, gSavedSettings.getS32("StreamNotificationChannel"));
-        }
-        else
-        {
-            LLChat chat{text};
-            chat.mFromName = mTitle;
-            chat.mSourceType = CHAT_SOURCE_SYSTEM;
-            LLNotificationsUI::LLNotificationManager::instance().onChat(chat, LLSD{});
         }
     }
 
