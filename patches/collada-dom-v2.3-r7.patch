@@ -1,21 +1,27 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b1c1993..9df2dee 100644
+index b1c1993..3cbf2fb 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1,14 +1,35 @@
+@@ -1,14 +1,41 @@
 -include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 -set(COLLADA14_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/1.4)
 -set(COLLADA15_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/1.5)
 +project(colladadom)
 +cmake_minimum_required(VERSION 3.17)
++cmake_policy(SET CMP0167 NEW)
 +
 +include(FindPkgConfig)
 +
++find_package(Boost REQUIRED CONFIG)
 +pkg_check_modules(LIBXML2 libxml-2.0)
-+pkg_check_modules(MINIZIP minizip-ng)
++if(LINUX)
++  pkg_check_modules(MINIZIP minizip)
++else(LINUX)
++  pkg_check_modules(MINIZIP minizip-ng)
++endif(LINUX)
 +pkg_check_modules(ZLIB zlib)
 +
-+set(COLLADA_DOM_SOVERSION "2")
++set(COLLADA_DOM_SOVERSION "0")
 +set(COLLADA_DOM_VERSION "2.3")
 +set(COLLADA_DOM_INCLUDE_INSTALL_DIR
 +	${CMAKE_BINARY_DIR}/packages/include/collada
