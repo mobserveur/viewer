@@ -763,7 +763,9 @@ bool LLAppViewer::init()
     // inits from settings.xml and from strings.xml
     if (!initConfiguration())
     {
-        LL_ERRS("InitInfo") << "initConfiguration() failed." << LL_ENDL;
+        LL_WARNS("InitInfo") << "initConfiguration() failed." << LL_ENDL;
+        // quit immediately
+        return false;
     }
 
     LL_INFOS("InitInfo") << "Configuration initialized." << LL_ENDL ;
@@ -930,7 +932,9 @@ bool LLAppViewer::init()
     if (!initHardwareTest())
     {
         // Early out from user choice.
-        LL_ERRS("InitInfo") << "initHardwareTest() failed." << LL_ENDL;
+        LL_WARNS("InitInfo") << "initHardwareTest() failed." << LL_ENDL;
+        // quit immediately
+        return false;
     }
     LL_INFOS("InitInfo") << "Hardware test initialization done." << LL_ENDL ;
 
@@ -946,7 +950,9 @@ bool LLAppViewer::init()
     {
         std::string msg = LLTrans::getString("MBUnableToAccessFile");
         OSMessageBox(msg.c_str(), LLStringUtil::null, OSMB_OK);
-        LL_ERRS("InitInfo") << "Failed to init cache" << LL_ENDL;
+        LL_WARNS("InitInfo") << "Failed to init cache" << LL_ENDL;
+        // quit immediately
+        return false;
     }
     LL_INFOS("InitInfo") << "Cache initialization is done." << LL_ENDL ;
 
@@ -979,7 +985,9 @@ bool LLAppViewer::init()
     if (!gGLManager.mHasRequirements)
     {
         // Already handled with a MBVideoDrvErr
-        LL_ERRS("InitInfo") << "gGLManager.mHasRequirements is false." << LL_ENDL;
+        LL_WARNS("InitInfo") << "gGLManager.mHasRequirements is false." << LL_ENDL;
+        // quit immediately
+        return false;
     }
 
 #if defined(__i386__) || defined(__x86_64__) || defined(__amd64__)
@@ -990,7 +998,9 @@ bool LLAppViewer::init()
         // all hell breaks lose.
         std::string msg = LLNotifications::instance().getGlobalString("UnsupportedCPUSSE2");
         OSMessageBox(msg.c_str(), LLStringUtil::null, OSMB_OK);
-        LL_ERRS("InitInfo") << "SSE2 is not supported" << LL_ENDL;
+        LL_WARNS("InitInfo") << "SSE2 is not supported" << LL_ENDL;
+        // quit immediately
+        return false;
     }
 #endif
 
@@ -4021,7 +4031,6 @@ void LLAppViewer::forceQuit()
     LLApp::setQuitting();
 }
 
-//TODO: remove
 void LLAppViewer::fastQuit(S32 error_code)
 {
     // finish pending transfers
