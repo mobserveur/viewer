@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b1c1993..3cbf2fb 100644
+index b1c1993..7bd70d4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,14 +1,41 @@
@@ -43,29 +43,34 @@ index b1c1993..3cbf2fb 100644
  set(COLLADA_BASE_SOURCES ${dae_files} ${libxmlplugin_files} ${stddatabase_files} ${stderrplugin_files})
 -set(COLLADA_LIBS minizip ${ZLIB_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 -set(COLLADA_COMPILE_FLAGS "${EXTRA_COMPILE_FLAGS} ${Boost_CFLAGS} -DDOM_INCLUDE_LIBXML")
-+set(COLLADA_LIBS ${LIBXML2_LIBRARIES} ${MINIZIP_LIBRARIES} ${ZLIB_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
++set(COLLADA_LIBS ${LIBXML2_LIBRARIES} ${MINIZIP_LIBRARIES} ${ZLIB_LIBRARIES} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
 +list(JOIN MINIZIP_CFLAGS " " VAR_MINIZIP_CFLAGS)
 +set(COLLADA_COMPILE_FLAGS "${EXTRA_COMPILE_FLAGS} ${VAR_MINIZIP_CFLAGS} ${Boost_CFLAGS} -DDOM_INCLUDE_LIBXML")
  
  if( OPT_COLLADA15 )
    add_subdirectory(src/1.5)
 diff --git a/src/1.4/CMakeLists.txt b/src/1.4/CMakeLists.txt
-index 17fbaea..a5f0b51 100644
+index 17fbaea..8df5462 100644
 --- a/src/1.4/CMakeLists.txt
 +++ b/src/1.4/CMakeLists.txt
-@@ -1,10 +1,21 @@
+@@ -1,10 +1,26 @@
  file(GLOB dom_files ${CMAKE_CURRENT_SOURCE_DIR}/dom/*.cpp)
 -include_directories(${COLLADA14_INCLUDE_DIR})
 -add_library(collada14dom SHARED ${COLLADA_BASE_SOURCES} ${dom_files})
 +add_library(collada14dom STATIC ${COLLADA_BASE_SOURCES} ${dom_files})
++target_compile_options(collada14dom PRIVATE
++	"-Wno-error=unused-result"
++)
 +target_include_directories(collada14dom PRIVATE
 +	${colladadom_SOURCE_DIR}/include
 +	${colladadom_SOURCE_DIR}/include/1.4
++	${Boost_INCLUDE_DIRS}
 +	${LIBXML2_INCLUDE_DIRS}
 +	${MINIZIP_INCLUDE_DIRS}
 +	${ZLIB_INCLUDE_DIRS}
 +)
 +target_link_directories(collada14dom INTERFACE
++	${Boost_LIBRARY_DIRS}
 +	${LIBXML2_LIBRARY_DIRS}
 +	${MINIZIP_LIBRARY_DIRS}
 +	${ZLIB_LIBRARY_DIRS}
