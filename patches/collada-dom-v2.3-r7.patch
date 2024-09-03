@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b1c1993..7bd70d4 100644
+index b1c1993..d9787be 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1,14 +1,41 @@
+@@ -1,14 +1,37 @@
 -include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 -set(COLLADA14_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/1.4)
 -set(COLLADA15_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/1.5)
@@ -14,11 +14,7 @@ index b1c1993..7bd70d4 100644
 +
 +find_package(Boost REQUIRED CONFIG)
 +pkg_check_modules(LIBXML2 libxml-2.0)
-+if(LINUX)
-+  pkg_check_modules(MINIZIP minizip)
-+else(LINUX)
-+  pkg_check_modules(MINIZIP minizip-ng)
-+endif(LINUX)
++pkg_check_modules(MINIZIP minizip)
 +pkg_check_modules(ZLIB zlib)
 +
 +set(COLLADA_DOM_SOVERSION "0")
