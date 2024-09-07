@@ -305,18 +305,20 @@ endif ()
 if (USE_AUTOBUILD_3P OR USE_CONAN)
 add_dependencies(llcommon stage_third_party_libs)
 else ()
-	target_compile_options(${PROJECT_NAME} PUBLIC -Wno-deprecated-declarations)
-	if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-		set_source_files_properties(
-			llapp.cpp
-			llsdutil.cpp
-			PROPERTIES COMPILE_FLAGS -Wno-stringop-truncation)
-		set_source_files_properties(llevent.cpp PROPERTIES
-			COMPILE_FLAGS -Wno-nonnull)
-	elseif (LINUX AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-		set_source_files_properties(llsys.cpp PROPERTIES
-			COMPILE_FLAGS -Wno-unused-but-set-variable)
-	endif()
+    target_compile_options(${PROJECT_NAME} PUBLIC -Wno-deprecated-declarations)
+    if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        set_source_files_properties(
+            llapp.cpp
+            llsdutil.cpp
+            PROPERTIES COMPILE_FLAGS -Wno-stringop-truncation)
+        set_source_files_properties(
+            llevent.cpp
+            llfasttimer.cpp
+            PROPERTIES COMPILE_FLAGS -Wno-nonnull)
+    elseif (LINUX AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set_source_files_properties(llsys.cpp PROPERTIES
+            COMPILE_FLAGS -Wno-unused-but-set-variable)
+    endif()
 endif ()
 
 include(LibraryInstall)
