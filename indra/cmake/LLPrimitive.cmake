@@ -19,15 +19,11 @@ if( USE_CONAN )
 endif()
 
 if( USESYSTEMLIBS )
-  if( LINUX )
-    include(FindPkgConfig)
-    pkg_check_modules(Colladadom REQUIRED collada-dom)
-    target_compile_definitions( ll::colladadom INTERFACE COLLADA_DOM_SUPPORT141 )
-    target_include_directories( ll::colladadom SYSTEM INTERFACE ${Colladadom_INCLUDE_DIRS} ${Colladadom_INCLUDE_DIRS}/1.4 )
-    target_link_directories( ll::colladadom INTERFACE ${Colladadom_LIBRARY_DIRS} )
-    target_link_libraries( ll::colladadom INTERFACE ${Colladadom_LIBRARIES} )
+  if( LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+    # Build of the collada-dom for Linux and FreeBSD is done in
+    # indra/llprimitive/CMakeLists.txt
     return ()
-  endif( LINUX )
+  endif( LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
   include(FindPkgConfig)
   pkg_check_modules(Minizip REQUIRED minizip)
   pkg_check_modules(Libxml2 REQUIRED libxml-2.0)
@@ -81,12 +77,6 @@ if( USESYSTEMLIBS )
           )
       endif (${COLLADADOM_RESULT})
     else( DARWIN )
-      if( CMAKE_SYSTEM_NAME MATCHES FreeBSD )
-        execute_process(
-          COMMAND sed -i "" -e "s/linux/FreeBSD/g" dae/daeUtils.cpp
-          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src
-          )
-      endif( CMAKE_SYSTEM_NAME MATCHES FreeBSD )
       execute_process(
         COMMAND sed -i "" -e "s/SHARED/STATIC/g" 1.4/CMakeLists.txt
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src
