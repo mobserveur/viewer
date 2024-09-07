@@ -2113,7 +2113,7 @@ if (LINUX)
             CACHE STRING "RPM package requirements.")
         elseif (${LINUX_DISTRO} MATCHES opensuse-tumbleweed)
           set(CPACK_RPM_PACKAGE_REQUIRES
-            "libapr-util1-0, libboost_fiber1_85_0, libboost_regex1_85_0, libboost_thread1_85_0, expat, libfltk1_3, libGLU1, libhunspell-1_7-0, libnghttp2-14, openjpeg2, libSDL2-2_0-0, liburiparser1, libvlc5, vlc-codecs, libvorbis0"
+            "libapr-util1-0, libboost_fiber1_85_0, libboost_regex1_85_0, libboost_thread1_85_0, libboost_program_options1_85_0, expat, libfltk1_3, libGLU1, libhunspell-1_7-0, libnghttp2-14, openjpeg2, libSDL2-2_0-0, liburiparser1, libvlc5, vlc-codecs, libvorbis0"
             CACHE STRING "RPM package requirements.")
         endif (${LINUX_DISTRO} MATCHES fedora)
       endif (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
