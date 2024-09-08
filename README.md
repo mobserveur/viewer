@@ -83,7 +83,7 @@ $ megapahit
 ```
 ### OpenSUSE Tumbleweed
 ```
-$ sudo zypper install gcc-c++ patchelf apr-util-devel boost-devel libboost_url1_85_0-devel expat-devel fltk-devel glu-devel hunspell-devel libnghttp2-devel nanosvg-devel openjpeg2-devel pipewire-devel libpulse-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xxhash-devel minizip-ng-devel zlib-ng-devel
+$ sudo zypper install gcc-c++ patchelf apr-util-devel boost-devel libboost_url1_85_0-devel expat-devel fltk-devel glu-devel hunspell-devel libnghttp2-devel nanosvg-devel openjpeg2-devel pipewire-devel libpulse-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xxhash-devel minizip-ng-devel zlib-ng-devel pcre-devel
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
