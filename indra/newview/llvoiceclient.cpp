@@ -26,7 +26,7 @@
 
 #include "llvoiceclient.h"
 #include "llvoicevivox.h"
-#if LL_WEBRTC
+#if !__FreeBSD__
 #include "llvoicewebrtc.h"
 #endif
 #include "llviewernetwork.h"
@@ -122,7 +122,7 @@ LLVoiceModuleInterface *getVoiceModule(const std::string &voice_server_type)
     {
         return (LLVoiceModuleInterface *) LLVivoxVoiceClient::getInstance();
     }
-#if LL_WEBRTC
+#if !__FreeBSD__
     else if (voice_server_type == WEBRTC_VOICE_SERVER_TYPE)
     {
         return (LLVoiceModuleInterface *) LLWebRTCVoiceClient::getInstance();
@@ -169,7 +169,7 @@ void LLVoiceClient::init(LLPumpIO *pump)
 {
     // Initialize all of the voice modules
     m_servicePump = pump;
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->init(pump);
 #endif
     LLVivoxVoiceClient::getInstance()->init(pump);
@@ -178,7 +178,7 @@ void LLVoiceClient::init(LLPumpIO *pump)
 void LLVoiceClient::userAuthorized(const std::string& user_id, const LLUUID &agentID)
 {
     gAgent.addRegionChangedCallback(boost::bind(&LLVoiceClient::onRegionChanged, this));
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->userAuthorized(user_id, agentID);
 #endif
     LLVivoxVoiceClient::getInstance()->userAuthorized(user_id, agentID);
@@ -289,7 +289,7 @@ void LLVoiceClient::setNonSpatialVoiceModule(const std::string &voice_server_typ
 
 void LLVoiceClient::setHidden(bool hidden)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setHidden(hidden);
 #endif
     LLVivoxVoiceClient::getInstance()->setHidden(hidden);
@@ -332,7 +332,7 @@ void LLVoiceClient::updateSettings()
 
     updateMicMuteLogic();
 
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->updateSettings();
 #endif
     LLVivoxVoiceClient::getInstance()->updateSettings();
@@ -343,7 +343,7 @@ void LLVoiceClient::updateSettings()
 
 void LLVoiceClient::tuningStart()
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->tuningStart();
 #endif
     LLVivoxVoiceClient::getInstance()->tuningStart();
@@ -351,7 +351,7 @@ void LLVoiceClient::tuningStart()
 
 void LLVoiceClient::tuningStop()
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->tuningStop();
 #endif
     LLVivoxVoiceClient::getInstance()->tuningStop();
@@ -359,7 +359,7 @@ void LLVoiceClient::tuningStop()
 
 bool LLVoiceClient::inTuningMode()
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->inTuningMode();
 #else
     return LLVivoxVoiceClient::getInstance()->inTuningMode();
@@ -368,7 +368,7 @@ bool LLVoiceClient::inTuningMode()
 
 void LLVoiceClient::tuningSetMicVolume(float volume)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->tuningSetMicVolume(volume);
 #else
     LLVivoxVoiceClient::getInstance()->tuningSetMicVolume(volume);
@@ -377,7 +377,7 @@ void LLVoiceClient::tuningSetMicVolume(float volume)
 
 void LLVoiceClient::tuningSetSpeakerVolume(float volume)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->tuningSetSpeakerVolume(volume);
 #else
     LLVivoxVoiceClient::getInstance()->tuningSetSpeakerVolume(volume);
@@ -386,7 +386,7 @@ void LLVoiceClient::tuningSetSpeakerVolume(float volume)
 
 float LLVoiceClient::tuningGetEnergy(void)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->tuningGetEnergy();
 #else
     return LLVivoxVoiceClient::getInstance()->tuningGetEnergy();
@@ -398,7 +398,7 @@ float LLVoiceClient::tuningGetEnergy(void)
 
 bool LLVoiceClient::deviceSettingsAvailable()
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->deviceSettingsAvailable();
 #else
     return LLVivoxVoiceClient::getInstance()->deviceSettingsAvailable();
@@ -407,7 +407,7 @@ bool LLVoiceClient::deviceSettingsAvailable()
 
 bool LLVoiceClient::deviceSettingsUpdated()
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->deviceSettingsUpdated();
 #else
     return LLVivoxVoiceClient::getInstance()->deviceSettingsUpdated();
@@ -416,7 +416,7 @@ bool LLVoiceClient::deviceSettingsUpdated()
 
 void LLVoiceClient::refreshDeviceLists(bool clearCurrentList)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->refreshDeviceLists(clearCurrentList);
 #else
     LLVivoxVoiceClient::getInstance()->refreshDeviceLists(clearCurrentList);
@@ -426,7 +426,7 @@ void LLVoiceClient::refreshDeviceLists(bool clearCurrentList)
 void LLVoiceClient::setCaptureDevice(const std::string& name)
 {
     LLVivoxVoiceClient::getInstance()->setCaptureDevice(name);
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setCaptureDevice(name);
 #endif
 }
@@ -434,14 +434,14 @@ void LLVoiceClient::setCaptureDevice(const std::string& name)
 void LLVoiceClient::setRenderDevice(const std::string& name)
 {
     LLVivoxVoiceClient::getInstance()->setRenderDevice(name);
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setRenderDevice(name);
 #endif
 }
 
 const LLVoiceDeviceList& LLVoiceClient::getCaptureDevices()
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->getCaptureDevices();
 #else
     return LLVivoxVoiceClient::getInstance()->getCaptureDevices();
@@ -451,7 +451,7 @@ const LLVoiceDeviceList& LLVoiceClient::getCaptureDevices()
 
 const LLVoiceDeviceList& LLVoiceClient::getRenderDevices()
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->getRenderDevices();
 #else
     return LLVivoxVoiceClient::getInstance()->getRenderDevices();
@@ -464,7 +464,7 @@ const LLVoiceDeviceList& LLVoiceClient::getRenderDevices()
 
 void LLVoiceClient::getParticipantList(std::set<LLUUID> &participants) const
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->getParticipantList(participants);
 #endif
     LLVivoxVoiceClient::getInstance()->getParticipantList(participants);
@@ -472,7 +472,7 @@ void LLVoiceClient::getParticipantList(std::set<LLUUID> &participants) const
 
 bool LLVoiceClient::isParticipant(const LLUUID &speaker_id) const
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->isParticipant(speaker_id) ||
 #else
     return
@@ -569,7 +569,7 @@ void LLVoiceClient::activateSpatialChannel(bool activate)
 
 bool LLVoiceClient::isCurrentChannel(const LLSD& channelInfo)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->isCurrentChannel(channelInfo) ||
 #else
     return
@@ -579,7 +579,7 @@ bool LLVoiceClient::isCurrentChannel(const LLSD& channelInfo)
 
 bool LLVoiceClient::compareChannels(const LLSD &channelInfo1, const LLSD &channelInfo2)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->compareChannels(channelInfo1, channelInfo2) ||
 #else
     return
@@ -625,7 +625,7 @@ LLVoiceP2POutgoingCallInterface *LLVoiceClient::getOutgoingCallInterface(const L
 
 void LLVoiceClient::setVoiceVolume(F32 volume)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setVoiceVolume(volume);
 #endif
     LLVivoxVoiceClient::getInstance()->setVoiceVolume(volume);
@@ -633,7 +633,7 @@ void LLVoiceClient::setVoiceVolume(F32 volume)
 
 void LLVoiceClient::setMicGain(F32 gain)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setMicGain(gain);
 #endif
     LLVivoxVoiceClient::getInstance()->setMicGain(gain);
@@ -682,7 +682,7 @@ bool LLVoiceClient::voiceEnabled()
 
 void LLVoiceClient::setVoiceEnabled(bool enabled)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setVoiceEnabled(enabled);
 #endif
     LLVivoxVoiceClient::getInstance()->setVoiceEnabled(enabled);
@@ -704,7 +704,7 @@ void LLVoiceClient::updateMicMuteLogic()
         // Either of these always overrides any other PTT setting.
         new_mic_mute = true;
     }
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setMuteMic(new_mic_mute);
 #endif
     LLVivoxVoiceClient::getInstance()->setMuteMic(new_mic_mute);
@@ -801,7 +801,7 @@ bool LLVoiceClient::getVoiceEnabled(const LLUUID& id) const
 
 std::string LLVoiceClient::getDisplayName(const LLUUID& id) const
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     std::string result = LLWebRTCVoiceClient::getInstance()->getDisplayName(id);
     if (result.empty())
     {
@@ -815,7 +815,7 @@ std::string LLVoiceClient::getDisplayName(const LLUUID& id) const
 
 bool LLVoiceClient::isVoiceWorking() const
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLVivoxVoiceClient::getInstance()->isVoiceWorking() ||
            LLWebRTCVoiceClient::getInstance()->isVoiceWorking();
 #else
@@ -835,7 +835,7 @@ bool LLVoiceClient::isOnlineSIP(const LLUUID& id)
 
 bool LLVoiceClient::getIsSpeaking(const LLUUID& id)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->getIsSpeaking(id) ||
 #else
     return
@@ -847,7 +847,7 @@ bool LLVoiceClient::getIsModeratorMuted(const LLUUID& id)
 {
     // don't bother worrying about p2p calls, as
     // p2p calls don't have mute.
-#if LL_WEBRTC
+#if !__FreeBSD__
     return LLWebRTCVoiceClient::getInstance()->getIsModeratorMuted(id) ||
 #else
     return
@@ -857,7 +857,7 @@ bool LLVoiceClient::getIsModeratorMuted(const LLUUID& id)
 
 F32 LLVoiceClient::getCurrentPower(const LLUUID& id)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return std::fmax(LLVivoxVoiceClient::getInstance()->getCurrentPower(id),
                      LLWebRTCVoiceClient::getInstance()->getCurrentPower(id));
 #else
@@ -874,7 +874,7 @@ bool LLVoiceClient::getOnMuteList(const LLUUID& id)
 
 F32 LLVoiceClient::getUserVolume(const LLUUID& id)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     return std::fmax(LLVivoxVoiceClient::getInstance()->getUserVolume(id), LLWebRTCVoiceClient::getInstance()->getUserVolume(id));
 #else
     return LLVivoxVoiceClient::getInstance()->getUserVolume(id);
@@ -883,7 +883,7 @@ F32 LLVoiceClient::getUserVolume(const LLUUID& id)
 
 void LLVoiceClient::setUserVolume(const LLUUID& id, F32 volume)
 {
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->setUserVolume(id, volume);
 #endif
     LLVivoxVoiceClient::getInstance()->setUserVolume(id, volume);
@@ -895,7 +895,7 @@ void LLVoiceClient::setUserVolume(const LLUUID& id, F32 volume)
 void LLVoiceClient::addObserver(LLVoiceClientStatusObserver* observer)
 {
     LLVivoxVoiceClient::getInstance()->addObserver(observer);
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->addObserver(observer);
 #endif
 }
@@ -906,7 +906,7 @@ void LLVoiceClient::removeObserver(LLVoiceClientStatusObserver* observer)
     {
         LLVivoxVoiceClient::getInstance()->removeObserver(observer);
     }
-#if LL_WEBRTC
+#if !__FreeBSD__
     if (LLWebRTCVoiceClient::instanceExists())
     {
         LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
@@ -917,7 +917,7 @@ void LLVoiceClient::removeObserver(LLVoiceClientStatusObserver* observer)
 void LLVoiceClient::addObserver(LLFriendObserver* observer)
 {
     LLVivoxVoiceClient::getInstance()->addObserver(observer);
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->addObserver(observer);
 #endif
 }
@@ -928,7 +928,7 @@ void LLVoiceClient::removeObserver(LLFriendObserver* observer)
     {
         LLVivoxVoiceClient::getInstance()->removeObserver(observer);
     }
-#if LL_WEBRTC
+#if !__FreeBSD__
     if (LLWebRTCVoiceClient::instanceExists())
     {
         LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
@@ -939,7 +939,7 @@ void LLVoiceClient::removeObserver(LLFriendObserver* observer)
 void LLVoiceClient::addObserver(LLVoiceClientParticipantObserver* observer)
 {
     LLVivoxVoiceClient::getInstance()->addObserver(observer);
-#if LL_WEBRTC
+#if !__FreeBSD__
     LLWebRTCVoiceClient::getInstance()->addObserver(observer);
 #endif
 }
@@ -950,7 +950,7 @@ void LLVoiceClient::removeObserver(LLVoiceClientParticipantObserver* observer)
     {
         LLVivoxVoiceClient::getInstance()->removeObserver(observer);
     }
-#if LL_WEBRTC
+#if !__FreeBSD__
     if (LLWebRTCVoiceClient::instanceExists())
     {
         LLWebRTCVoiceClient::getInstance()->removeObserver(observer);
@@ -1018,7 +1018,7 @@ class LLViewerRequiredVoiceVersion : public LLHTTPNode
         {
             voiceModule = (LLVoiceModuleInterface *) LLVivoxVoiceClient::getInstance();
         }
-#if LL_WEBRTC
+#if !__FreeBSD__
         else if (voice_server_type == "webrtc")
         {
             voiceModule = (LLVoiceModuleInterface *) LLWebRTCVoiceClient::getInstance();

@@ -203,7 +203,7 @@ void LLWebRTCImpl::init()
             mTuningDeviceModule->SetPlayoutDevice(mPlayoutDevice);
             mTuningDeviceModule->SetRecordingDevice(mRecordingDevice);
             mTuningDeviceModule->EnableBuiltInAEC(false);
-#if __x86_64__ && !__FreeBSD__
+#if !CM_WEBRTC
             mTuningDeviceModule->SetAudioDeviceSink(this);
 #endif
             mTuningDeviceModule->InitMicrophone();

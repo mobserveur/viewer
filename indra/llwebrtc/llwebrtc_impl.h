@@ -184,9 +184,10 @@ class LLCustomProcessor : public webrtc::CustomProcessing
 
 // Primary singleton implementation for interfacing
 // with the native webrtc library.
+#if CM_WEBRTC
 class LLWebRTCImpl : public LLWebRTCDeviceInterface
-#if __x86_64__ && !__FreeBSD__
-    , public webrtc::AudioDeviceSink
+#else
+class LLWebRTCImpl : public LLWebRTCDeviceInterface, public webrtc::AudioDeviceSink
 #endif
 {
   public:
@@ -222,11 +223,11 @@ class LLWebRTCImpl : public LLWebRTCDeviceInterface
     //
     // AudioDeviceSink
     //
-    void OnDevicesUpdated()
-#if __x86_64__ && !__FreeBSD__
-            override
+#if CM_WEBRTC
+    void OnDevicesUpdated();
+#else
+    void OnDevicesUpdated() override;
 #endif
-            ;
 
     //
     // Helpers
