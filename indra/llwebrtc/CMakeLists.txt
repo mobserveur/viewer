@@ -28,11 +28,9 @@ list(APPEND llwebrtc_SOURCE_FILES ${llwebrtc_HEADER_FILES})
 
 add_library (llwebrtc SHARED ${llwebrtc_SOURCE_FILES})
 
-if (USESYSTEMLIBS)
-target_compile_definitions(llwebrtc INTERFACE LL_WEBRTC=1)
-else (USESYSTEMLIBS)
+if (NOT USESYSTEMLIBS)
 set_target_properties(llwebrtc PROPERTIES PUBLIC_HEADER llwebrtc.h)
-endif (USESYSTEMLIBS)
+endif (NOT USESYSTEMLIBS)
 
 if (WINDOWS)
     cmake_policy(SET CMP0091 NEW)
