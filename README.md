@@ -36,7 +36,7 @@ $ cd build-`uname -s|tr '[:upper:]' '[:lower:]'`-`uname -m`
 ### macOS
 
 ```
-$ sudo port install cmake pkgconfig freealut +universal apr-util +universal boost +universal boost181 +universal -no_static glm hunspell +universal freetype +universal minizip +universal openjpeg +universal pcre +universal uriparser +universal libvorbis +universal xxhashlib
+$ sudo port install cmake pkgconfig freealut +universal apr-util +universal boost +universal boost181 +universal -no_static glm hunspell +universal freetype +universal minizip +universal pcre +universal uriparser +universal libvorbis +universal xxhashlib
 $ export LL_BUILD="-O3 -gdwarf-2 -stdlib=libc++ -mmacosx-version-min=11 -iwithsysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -std=c++17 -fPIC -DLL_RELEASE=1 -DLL_RELEASE_FOR_DOWNLOAD=1 -DNDEBUG -DPIC -DLL_DARWIN=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF -DCMAKE_INSTALL_PREFIX:PATH=newview/Megapahit.app/Contents/Resources -DCMAKE_OSX_ARCHITECTURES:STRING=`uname -m` -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=11 -DENABLE_SIGNING:BOOL=ON -DSIGNING_IDENTITY:STRING=- ../indra
 $ sudo port deactivate boost
@@ -73,7 +73,7 @@ $ megapahit
 ### Fedora
 
 ```
-$ sudo dnf install cmake gcc-c++ patchelf apr-util-devel boost-devel boost-url expat-devel fltk-devel mesa-libGLU-devel hunspell-devel minizip-ng-compat-devel libnghttp2-devel nanosvg-devel openjpeg-devel pipewire-devel pulseaudio-libs-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xmlrpc-epi-devel xxhash-devel
+$ sudo dnf install cmake gcc-c++ patchelf apr-util-devel boost-devel boost-url expat-devel fltk-devel mesa-libGLU-devel hunspell-devel minizip-ng-compat-devel libnghttp2-devel nanosvg-devel pipewire-devel pulseaudio-libs-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xmlrpc-epi-devel xxhash-devel
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=OFF -DUSE_FMODSTUDIO:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
@@ -85,7 +85,7 @@ $ megapahit
 ### OpenSUSE Tumbleweed
 
 ```
-$ sudo zypper install gcc-c++ patchelf apr-util-devel boost-devel libboost_url1_86_0-devel libboost_program_options-devel expat-devel fltk-devel glu-devel hunspell-devel libnghttp2-devel nanosvg-devel openjpeg2-devel pipewire-devel libpulse-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xxhash-devel minizip-devel zlib-ng-devel pcre-devel
+$ sudo zypper install gcc-c++ patchelf apr-util-devel boost-devel libboost_url1_86_0-devel libboost_program_options-devel expat-devel fltk-devel glu-devel hunspell-devel libnghttp2-devel nanosvg-devel pipewire-devel libpulse-devel SDL2-devel uriparser-devel vlc-devel libvorbis-devel xxhash-devel minizip-devel zlib-ng-devel pcre-devel
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=ON -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
@@ -99,13 +99,13 @@ $ megapahit
 ```
 $ setenv LL_BUILD "-O3 -std=c++17 -fPIC"
 $ sudo su -
-# portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 x11-toolkits/fltk math/glm textproc/hunspell misc/meshoptimizer archivers/minizip graphics/nanosvg graphics/openjpeg devel/pcre devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
+# portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 x11-toolkits/fltk math/glm textproc/hunspell misc/meshoptimizer archivers/minizip graphics/nanosvg devel/pcre devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis net/xmlrpc-epi devel/xxhash
 # exit
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:INTERNAL=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
 $ sudo cpack -G FREEBSD
 $ sudo pkg add megapahit-`cat newview/viewer_version.txt`-FreeBSD.pkg
-$ sudo pkg set -yA 1 freealut apr1 fltk hunspell meshoptimizer minizip nanosvg openjpeg pcre sdl20 uriparser vlc libvorbis xmlrpc-epi
+$ sudo pkg set -yA 1 freealut apr1 fltk hunspell meshoptimizer minizip nanosvg pcre sdl20 uriparser vlc libvorbis xmlrpc-epi
 $ megapahit
 ```
 
