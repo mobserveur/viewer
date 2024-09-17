@@ -28,9 +28,9 @@
 #include "llimagej2coj.h"
 
 // this is defined so that we get static linking.
-#include <openjpeg-2.5/openjpeg.h>
-#include <openjpeg-2.5/event.h>
-#include <openjpeg-2.5/cio.h>
+#include <openjpeg/openjpeg.h>
+#include <openjpeg/event.h>
+#include <openjpeg/cio.h>
 
 #define MAX_ENCODED_DISCARD_LEVELS 5
 

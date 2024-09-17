@@ -2109,11 +2109,11 @@ if (LINUX)
           CACHE STRING "RPM package description.")
         if (${LINUX_DISTRO} MATCHES fedora)
           set(CPACK_RPM_PACKAGE_REQUIRES
-            "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, expat, fltk, mesa-libGLU, hunspell, libnghttp2, openjpeg2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
+            "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, expat, fltk, mesa-libGLU, hunspell, libnghttp2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
             CACHE STRING "RPM package requirements.")
         elseif (${LINUX_DISTRO} MATCHES opensuse-tumbleweed)
           set(CPACK_RPM_PACKAGE_REQUIRES
-            "libapr-util1-0, libboost_fiber1_85_0, libboost_regex1_85_0, libboost_thread1_85_0, libboost_program_options1_85_0, expat, libfltk1_3, libGLU1, libhunspell-1_7-0, libnghttp2-14, openjpeg2, libSDL2-2_0-0, liburiparser1, libvlc5, vlc-codecs, libvorbis0"
+            "libapr-util1-0, libboost_fiber1_85_0, libboost_regex1_85_0, libboost_thread1_85_0, libboost_program_options1_85_0, expat, libfltk1_3, libGLU1, libhunspell-1_7-0, libnghttp2-14, libSDL2-2_0-0, liburiparser1, libvlc5, vlc-codecs, libvorbis0"
             CACHE STRING "RPM package requirements.")
         endif (${LINUX_DISTRO} MATCHES fedora)
       endif (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
@@ -2231,7 +2231,7 @@ elseif (USESYSTEMLIBS)
     set(CPACK_FREEBSD_PACKAGE_ORIGIN net/${VIEWER_BINARY_NAME}
       CACHE STRING "FreeBSD package origin.")
     set(CPACK_FREEBSD_PACKAGE_DEPS
-      "audio/freealut;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;archivers/minizip;www/libnghttp2;graphics/openjpeg;devel/pcre;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi"
+      "audio/freealut;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;archivers/minizip;www/libnghttp2;devel/pcre;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi"
       CACHE STRING "FreeBSD package dependencies.")
   endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND PACKAGE)
 endif (LINUX)
