@@ -70,7 +70,7 @@
      follows="all"
      left="10"
      name="megapahit_credits_panel"
-     height="320"
+     height="340"
      top="10">
       <text
           follows="top|left|right"
@@ -86,7 +86,7 @@ Megapahit is brought to you by (in order of appearance):
       <text_editor
        enabled="false"
        follows="top|left"
-       height="160"
+       height="180"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -105,6 +105,8 @@ Bavid Dailey
 Aria (Tashia Redrose)
 Cate (32a)
 Melodey
+Hiroo Ono
+Keysin (scoutkeysin)
     </text_editor>
     <text
           follows="top|left"
