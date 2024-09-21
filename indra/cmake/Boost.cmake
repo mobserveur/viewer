@@ -10,30 +10,22 @@ if( USE_CONAN )
   return()
 elseif( NOT USE_AUTOBUILD_3P )
   if (DARWIN)
+    set(sfx "-mt")
     target_include_directories( ll::boost SYSTEM INTERFACE /opt/local/libexec/boost/1.81/include)
-    target_link_libraries( ll::boost INTERFACE
-      /opt/local/libexec/boost/1.81/lib/libboost_context-mt.a
-      /opt/local/libexec/boost/1.81/lib/libboost_fiber-mt.a
-      /opt/local/libexec/boost/1.81/lib/libboost_filesystem-mt.a
-      /opt/local/libexec/boost/1.81/lib/libboost_program_options-mt.a
-      /opt/local/libexec/boost/1.81/lib/libboost_regex-mt.a
-      /opt/local/libexec/boost/1.81/lib/libboost_system-mt.a
-      /opt/local/libexec/boost/1.81/lib/libboost_thread-mt.a
-      /opt/local/libexec/boost/1.81/lib/libboost_url-mt.a
-      )
+    target_link_directories( ll::boost INTERFACE /opt/local/libexec/boost/1.81/lib)
   else (DARWIN)
     find_package( Boost REQUIRED )
-    target_link_libraries( ll::boost INTERFACE
-      boost_context
-      boost_fiber
-      boost_filesystem
-      boost_program_options
-      boost_regex
-      boost_system
-      boost_thread
-      boost_url
-      )
   endif (DARWIN)
+  target_link_libraries( ll::boost INTERFACE
+    boost_context${sfx}
+    boost_fiber${sfx}
+    boost_filesystem${sfx}
+    boost_program_options${sfx}
+    boost_regex${sfx}
+    boost_system${sfx}
+    boost_thread${sfx}
+    boost_url${sfx}
+    )
   target_compile_definitions( ll::boost INTERFACE BOOST_BIND_GLOBAL_PLACEHOLDERS )
   return()
 endif()
@@ -61,7 +53,6 @@ elseif (LINUX)
           boost_filesystem-mt${addrsfx}
           boost_program_options-mt${addrsfx}
           boost_regex-mt${addrsfx}
-          boost_thread-mt${addrsfx}
           boost_system-mt${addrsfx}
           boost_thread-mt${addrsfx}
           boost_url-mt${addrsfx})

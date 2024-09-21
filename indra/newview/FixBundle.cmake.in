@@ -42,6 +42,51 @@ file(CREATE_LINK
     SYMBOLIC
     )
 file(CREATE_LINK
+    "../../../../Frameworks/libboost_atomic-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_atomic-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_context-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_context-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_fiber-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_fiber-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_filesystem-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_filesystem-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_program_options-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_program_options-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_regex-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_regex-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_system-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_system-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_thread-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_thread-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libboost_url-mt.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libboost_url-mt.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
     "../../../../Frameworks/libexpat.1.dylib"
     "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libexpat.1.dylib"
     SYMBOLIC
@@ -64,6 +109,21 @@ file(CREATE_LINK
 file(CREATE_LINK
     "../../../../Frameworks/libbrotlicommon.1.dylib"
     "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libbrotlicommon.1.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libicudata.74.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicudata.74.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libicui18n.74.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicui18n.74.dylib"
+    SYMBOLIC
+    )
+file(CREATE_LINK
+    "../../../../Frameworks/libicuuc.74.dylib"
+    "${viewer_BINARY_DIR}/${VIEWER_CHANNEL}.app/Contents/Resources/SLPlugin.app/Contents/Frameworks/libicuuc.74.dylib"
     SYMBOLIC
     )
 file(CREATE_LINK
@@ -91,12 +151,33 @@ execute_process(
     COMMAND lipo libaprutil-1.0.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libaprutil-1.0.dylib
+    COMMAND lipo libboost_atomic-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_atomic-mt.dylib
+    COMMAND lipo libboost_context-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_context-mt.dylib
+    COMMAND lipo libboost_fiber-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_fiber-mt.dylib
     COMMAND lipo libboost_filesystem-mt.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libboost_filesystem-mt.dylib
+    COMMAND lipo libboost_program_options-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_program_options-mt.dylib
+    COMMAND lipo libboost_regex-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_regex-mt.dylib
     COMMAND lipo libboost_system-mt.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libboost_system-mt.dylib
+    COMMAND lipo libboost_thread-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_thread-mt.dylib
+    COMMAND lipo libboost_url-mt.dylib
+        -thin ${CMAKE_OSX_ARCHITECTURES}
+        -output libboost_url-mt.dylib
     COMMAND lipo libbrotlicommon.1.1.0.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libbrotlicommon.1.1.0.dylib
@@ -200,8 +281,15 @@ execute_process(
         Frameworks/libalut.0.dylib
         Frameworks/libapr-1.0.dylib
         Frameworks/libaprutil-1.0.dylib
+        Frameworks/libboost_atomic-mt.dylib
+        Frameworks/libboost_context-mt.dylib
+        Frameworks/libboost_fiber-mt.dylib
         Frameworks/libboost_filesystem-mt.dylib
+        Frameworks/libboost_program_options-mt.dylib
+        Frameworks/libboost_regex-mt.dylib
         Frameworks/libboost_system-mt.dylib
+        Frameworks/libboost_thread-mt.dylib
+        Frameworks/libboost_url-mt.dylib
         Frameworks/libbrotlicommon.1.1.0.dylib
         Frameworks/libbrotlidec.1.1.0.dylib
         Frameworks/libbz2.1.0.8.dylib

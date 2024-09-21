@@ -50,14 +50,14 @@ if( USESYSTEMLIBS )
         TARGET collada14dom
         CMAKE_FLAGS
           -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-          -DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Libxml2_LIBRARY_DIRS}
+          -DCMAKE_CXX_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
+          "-DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Minizip_LIBRARY_DIRS} -L${Minizip_LIBRARY_DIRS}exec/boost/1.81/lib"
           -Dlibpcrecpp_LIBRARIES:STRING=pcrecpp
           -DZLIB_LIBRARIES:STRING=${Libxml2_LIBRARIES}
           -DBoost_FILESYSTEM_LIBRARY:STRING=boost_filesystem-mt
           -DBoost_SYSTEM_LIBRARY:STRING=boost_system-mt
-          -Dlibpcrecpp_CFLAGS_OTHERS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}/libxml2
-          -DEXTRA_COMPILE_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
-          -DBoost_CFLAGS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
+          -DEXTRA_COMPILE_FLAGS:STRING=-I${Libxml2_INCLUDE_DIRS}
+          -DBoost_CFLAGS:STRING=-I${Libpcrecpp_LIBRARY_DIRS}exec/boost/1.81/include
           -DOPT_COLLADA14:BOOL=ON
           -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
           -DCOLLADA_DOM_SOVERSION:STRING=0
@@ -88,13 +88,13 @@ if( USESYSTEMLIBS )
         TARGET collada14dom
         CMAKE_FLAGS
           -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-          -DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Libxml2_LIBRARY_DIRS}
+          -DCMAKE_CXX_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
+          -DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Minizip_LIBRARY_DIRS}
           -Dlibpcrecpp_LIBRARIES:STRING=pcrecpp
           -DZLIB_LIBRARIES:STRING=${Libxml2_LIBRARIES}
           -DBoost_FILESYSTEM_LIBRARY:STRING=boost_filesystem
           -DBoost_SYSTEM_LIBRARY:STRING=boost_system
-          -Dlibpcrecpp_CFLAGS_OTHERS:STRING=-I${Libxml2_INCLUDE_DIRS}
-          -DEXTRA_COMPILE_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
+          -DEXTRA_COMPILE_FLAGS:STRING=-I${Libxml2_INCLUDE_DIRS}
           -DBoost_CFLAGS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
           -DOPT_COLLADA14:BOOL=ON
           -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
@@ -121,7 +121,7 @@ if( USESYSTEMLIBS )
           ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/include/modules
         DESTINATION ${LIBS_PREBUILT_DIR}/include/collada
         )
-      file(WRITE ${PREBUILD_TRACKING_DIR}/colladadom_installed "0")
+      file(WRITE ${PREBUILD_TRACKING_DIR}/colladadom_installed "${colladadom_installed}")
     endif (${COLLADADOM_RESULT})
   endif( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
 else( USESYSTEMLIBS )
