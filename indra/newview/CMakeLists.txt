@@ -2093,11 +2093,11 @@ if (LINUX)
           CACHE STRING "Debian package section.")
         if (${LINUX_DISTRO} MATCHES debian)
           set(CPACK_DEBIAN_PACKAGE_DEPENDS
-            "libalut0, libaprutil1, libboost-fiber1.81.0, libboost-filesystem1.81.0, libboost-program-options1.81.0, libboost-regex1.81.0, libboost-thread1.81.0, libboost-url1.81.0, libexpat1, libfltk1.3, libglu1-mesa, libhunspell-1.7-0, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0, vlc-plugin-base"
+            "libalut0, libaprutil1, libboost-fiber1.81.0, libboost-filesystem1.81.0, libboost-program-options1.81.0, libboost-regex1.81.0, libboost-thread1.81.0, libboost-url1.81.0, libexpat1, libfltk1.3, libglu1-mesa, libhunspell-1.7-0, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, vlc-plugin-base"
           CACHE STRING "Debian package dependencies.")
         elseif (${LINUX_DISTRO} MATCHES ubuntu)
           set(CPACK_DEBIAN_PACKAGE_DEPENDS
-            "libaprutil1t64, libboost-fiber1.83.0, libboost-filesystem1.83.0, libboost-program-options1.83.0, libboost-regex1.83.0, libboost-thread1.83.0, libboost-url1.83.0, libexpat1, libfltk1.3t64, libglu1-mesa, libhunspell-1.7-0, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, libxmlrpc-epi0t64, vlc-plugin-base"
+            "libaprutil1t64, libboost-fiber1.83.0, libboost-filesystem1.83.0, libboost-program-options1.83.0, libboost-regex1.83.0, libboost-thread1.83.0, libboost-url1.83.0, libexpat1, libfltk1.3t64, libglu1-mesa, libhunspell-1.7-0, libmeshoptimizer2d, libnghttp2-14, libsdl2-2.0-0, liburiparser1, libvlc5, libvorbisenc2, libvorbisfile3, vlc-plugin-base"
           CACHE STRING "Debian package dependencies.")
         endif (${LINUX_DISTRO} MATCHES debian)
       elseif (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
@@ -2118,7 +2118,7 @@ if (LINUX)
           CACHE STRING "RPM package description.")
         if (${LINUX_DISTRO} MATCHES fedora)
           set(CPACK_RPM_PACKAGE_REQUIRES
-            "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, boost-url, expat, fltk, mesa-libGLU, hunspell, libnghttp2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis, xmlrpc-epi"
+            "apr-util, boost-fiber, boost-program-options, boost-regex, boost-thread, boost-url, expat, fltk, mesa-libGLU, hunspell, libnghttp2, SDL2, uriparser, vlc-libs, vlc-plugins-base, libvorbis"
             CACHE STRING "RPM package requirements.")
         elseif (${LINUX_DISTRO} MATCHES opensuse-tumbleweed)
           set(CPACK_RPM_PACKAGE_REQUIRES
@@ -2242,7 +2242,7 @@ elseif (USESYSTEMLIBS)
     set(CPACK_FREEBSD_PACKAGE_ORIGIN net/${VIEWER_BINARY_NAME}
       CACHE STRING "FreeBSD package origin.")
     set(CPACK_FREEBSD_PACKAGE_DEPS
-      "audio/freealut;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;archivers/minizip;www/libnghttp2;devel/pcre;net/uriparser;multimedia/vlc;audio/libvorbis;net/xmlrpc-epi"
+      "audio/freealut;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;archivers/minizip;www/libnghttp2;devel/pcre;net/uriparser;multimedia/vlc;audio/libvorbis"
       CACHE STRING "FreeBSD package dependencies.")
   endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND PACKAGE)
 endif (LINUX)
@@ -2294,13 +2294,6 @@ if (DARWIN)
     ${CMAKE_CURRENT_SOURCE_DIR}/English.lproj/InfoPlist.strings
     ${CMAKE_CURRENT_BINARY_DIR}/InfoPlist.strings
     )
-  add_custom_command(
-    TARGET ${VIEWER_BINARY_NAME} POST_BUILD
-    COMMAND ${CMAKE_INSTALL_NAME_TOOL}
-      -change "/usr/local/lib/libxmlrpc-epi.0.dylib" "${AUTOBUILD_INSTALL_DIR}/lib/release/libxmlrpc-epi.0.dylib"
-      ${VIEWER_APP_EXE}
-    VERBATIM
-  )
  else (USESYSTEMLIBS)
   add_custom_command(
     TARGET ${VIEWER_BINARY_NAME} POST_BUILD
