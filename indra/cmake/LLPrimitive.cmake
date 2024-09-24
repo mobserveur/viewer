@@ -56,6 +56,7 @@ if( USESYSTEMLIBS )
           -DZLIB_LIBRARIES:STRING=${Libxml2_LIBRARIES}
           -DBoost_FILESYSTEM_LIBRARY:STRING=boost_filesystem-mt
           -DBoost_SYSTEM_LIBRARY:STRING=boost_system-mt
+          -Dlibpcrecpp_CFLAGS_OTHERS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
           -DEXTRA_COMPILE_FLAGS:STRING=-I${Libxml2_INCLUDE_DIRS}
           -DBoost_CFLAGS:STRING=-I${Libpcrecpp_LIBRARY_DIRS}exec/boost/1.81/include
           -DOPT_COLLADA14:BOOL=ON
