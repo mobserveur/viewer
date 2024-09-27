@@ -2518,7 +2518,9 @@ bool LLImageGL::scaleDown(S32 desired_discard)
             sScratchPBOSize = (U32)size;
         }
 
+#if GL_VERSION_1_3
         glGetTexImage(mTarget, mip, mFormatPrimary, mFormatType, nullptr);
+#endif
 
         free_tex_image(mTexName);
 
