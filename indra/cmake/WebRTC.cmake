@@ -11,11 +11,11 @@ use_prebuilt_binary(webrtc)
 elseif (NOT CMAKE_SYSTEM_NAME MATCHES FreeBSD)
     target_compile_definitions(ll::webrtc INTERFACE CM_WEBRTC=1)
     if (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/webrtc_installed OR NOT ${webrtc_installed} EQUAL 0)
-        if (LINUX)
-          set(WEBRTC_PLATFORM linux-x64)
-        else (LINUX)
-          set(WEBRTC_PLATFORM macos-arm64)
-        endif (LINUX)
+        if (DARWIN)
+            set(WEBRTC_PLATFORM macos-arm64)
+        else (DARWIN)
+            set(WEBRTC_PLATFORM linux-x64)
+        endif (DARWIN)
         if (NOT EXISTS ${CMAKE_BINARY_DIR}/libwebrtc-${WEBRTC_PLATFORM}.tar.xz)
             file(DOWNLOAD
                 https://github.com/crow-misia/libwebrtc-bin/releases/download/114.5735.6.1/libwebrtc-${WEBRTC_PLATFORM}.tar.xz
@@ -30,48 +30,48 @@ elseif (NOT CMAKE_SYSTEM_NAME MATCHES FreeBSD)
         file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/include/webrtc)
         file(MAKE_DIRECTORY ${LIBS_PREBUILT_DIR}/include/webrtc)
         foreach(directory
-          api
-          audio
-          base
-          build
-          buildtools
-          call
-          common_audio
-          common_video
-          examples
-          logging
-          media
-          modules
-          net
-          p2p
-          pc
-          rtc_base
-          rtc_tools
-          sdk
-          stats
-          system_wrappers
-          test
-          testing
-          third_party
-          tools
-          video
-          )
-          file(RENAME
-            ${LIBS_PREBUILT_DIR}/include/${directory}
-            ${LIBS_PREBUILT_DIR}/include/webrtc/${directory}
+            api
+            audio
+            base
+            build
+            buildtools
+            call
+            common_audio
+            common_video
+            examples
+            logging
+            media
+            modules
+            net
+            p2p
+            pc
+            rtc_base
+            rtc_tools
+            sdk
+            stats
+            system_wrappers
+            test
+            testing
+            third_party
+            tools
+            video
             )
+            file(RENAME
+                ${LIBS_PREBUILT_DIR}/include/${directory}
+                ${LIBS_PREBUILT_DIR}/include/webrtc/${directory}
+                )
         endforeach()
         file(RENAME
-          ${LIBS_PREBUILT_DIR}/lib/libwebrtc.a
-          ${LIBS_PREBUILT_DIR}/lib/release/libwebrtc.a
-          )
-        if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
-          file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/lib/release/WebRTC.framework)
-          file(RENAME
-            ${LIBS_PREBUILT_DIR}/Frameworks/WebRTC.xcframework/${WEBRTC_PLATFORM}/WebRTC.framework
-            ${LIBS_PREBUILT_DIR}/lib/release/WebRTC.framework
+            ${LIBS_PREBUILT_DIR}/lib/libwebrtc.a
+            ${LIBS_PREBUILT_DIR}/lib/release/libwebrtc.a
             )
-          file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/Frameworks)
+        if (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
+            file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/lib/release/WebRTC.framework)
+            file(RENAME
+                ${LIBS_PREBUILT_DIR}/Frameworks/WebRTC.xcframework/${WEBRTC_PLATFORM}/WebRTC.framework
+                ${LIBS_PREBUILT_DIR}/lib/release/WebRTC.framework
+                )
+            file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/Frameworks)
         endif (CMAKE_OSX_ARCHITECTURES MATCHES arm64)
         file(WRITE ${PREBUILD_TRACKING_DIR}/webrtc_installed "0")
     endif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/webrtc_installed OR NOT ${webrtc_installed} EQUAL 0)
