@@ -70,7 +70,7 @@
      follows="all"
      left="10"
      name="megapahit_credits_panel"
-     height="340"
+     height="370"
      top="10">
       <text
           follows="top|left|right"
@@ -86,7 +86,7 @@ Megapahit is brought to you by (in order of appearance):
       <text_editor
        enabled="false"
        follows="top|left"
-       height="180"
+       height="210"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -107,6 +107,7 @@ Cate (32a)
 Melodey
 Hiroo Ono
 Keysin (scoutkeysin)
+gwigz
     </text_editor>
     <text
           follows="top|left"
