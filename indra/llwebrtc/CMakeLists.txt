@@ -58,7 +58,7 @@ elseif (DARWIN)
         set_target_properties(llwebrtc PROPERTIES XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
                                                   XCODE_ATTRIBUTE_DWARF_DSYM_FOLDER_PATH "${SYMBOLS_STAGING_DIR}/dSYMs")
     endif (USE_BUGSPLAT)
-elseif (LINUX)
+elseif (NOT CMAKE_SYSTEM_NAME MATCHES FreeBSD)
     target_link_libraries(llwebrtc PRIVATE ll::webrtc)
 endif (WINDOWS)
     
