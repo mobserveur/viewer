@@ -429,8 +429,8 @@ void LLRenderTarget::bindTarget()
 
     if (mTex.empty())
     { //no color buffer to draw to
-        GLenum drawbuffers[] = {GL_NONE};
-        glDrawBuffers(0, drawbuffers);
+        GLenum buffers[] = {GL_NONE};
+        glDrawBuffers(0, buffers);
         glReadBuffer(GL_NONE);
     }
     else
@@ -548,7 +548,8 @@ void LLRenderTarget::flush()
         sCurResX = gGLViewport[2];
         sCurResY = gGLViewport[3];
         glReadBuffer(GL_BACK);
-        glDrawBuffer(GL_BACK);
+        GLenum drawbuffers[] = {GL_BACK};
+        glDrawBuffers(1, drawbuffers);
     }
 }
 
