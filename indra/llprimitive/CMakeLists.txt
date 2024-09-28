@@ -8,7 +8,6 @@ include(LLCommon)
 include(LLCoreHttp)
 include(LLPhysicsExtensions)
 include(LLPrimitive)
-include(GLH)
 include(GLM)
 include(TinyGLTF)
 
@@ -90,7 +89,7 @@ target_link_libraries(llprimitive
         llrender
         llphysicsextensions_impl
         ll::colladadom
-        ll::glh_linear
+        ll::glm
         )
 
 if (USESYSTEMLIBS)

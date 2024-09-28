@@ -270,10 +270,10 @@ S32 LLFontGL::render(const LLWString &wstr, S32 begin_offset, F32 x, F32 y, cons
 
     const LLFontGlyphInfo* next_glyph = NULL;
 
-    const S32 GLYPH_BATCH_SIZE = 120;
-    LLVector4a vertices[GLYPH_BATCH_SIZE * 6];
-    LLVector2 uvs[GLYPH_BATCH_SIZE * 6];
-    LLColor4U colors[GLYPH_BATCH_SIZE * 6];
+    static constexpr S32 GLYPH_BATCH_SIZE = 30;
+    static thread_local LLVector4a vertices[GLYPH_BATCH_SIZE * 6];
+    static thread_local LLVector2 uvs[GLYPH_BATCH_SIZE * 6];
+    static thread_local LLColor4U colors[GLYPH_BATCH_SIZE * 6];
 
     LLColor4U text_color(color);
     // Preserve the transparency to render fading emojis in fading text (e.g.
@@ -343,6 +343,7 @@ S32 LLFontGL::render(const LLWString &wstr, S32 begin_offset, F32 x, F32 y, cons
                 gGL.vertexBatchPreTransformed(vertices, uvs, colors, glyph_count * 6);
             }
             gGL.end();
+
             glyph_count = 0;
         }
 
@@ -401,7 +402,6 @@ S32 LLFontGL::render(const LLWString &wstr, S32 begin_offset, F32 x, F32 y, cons
 
     if (draw_ellipses)
     {
-
         // recursively render ellipses at end of string
         // we've already reserved enough room
         gGL.pushUIMatrix();
@@ -503,6 +503,7 @@ F32 LLFontGL::getWidthF32(const std::string& utf8text, S32 begin_offset, S32 max
 
 F32 LLFontGL::getWidthF32(const llwchar* wchars, S32 begin_offset, S32 max_chars, bool no_padding) const
 {
+    LL_PROFILE_ZONE_SCOPED_CATEGORY_UI;
     const S32 LAST_CHARACTER = LLFontFreetype::LAST_CHAR_FULL;
 
     F32 cur_x = 0;
@@ -1230,34 +1231,34 @@ void LLFontGL::renderTriangle(LLVector4a* vertex_out, LLVector2* uv_out, LLColor
 {
     S32 index = 0;
 
-    vertex_out[index] = LLVector4a(screen_rect.mRight, screen_rect.mTop, 0.f);
-    uv_out[index] = LLVector2(uv_rect.mRight, uv_rect.mTop);
+    vertex_out[index].set(screen_rect.mRight, screen_rect.mTop, 0.f);
+    uv_out[index].set(uv_rect.mRight, uv_rect.mTop);
     colors_out[index] = color;
     index++;
 
-    vertex_out[index] = LLVector4a(screen_rect.mLeft, screen_rect.mTop, 0.f);
-    uv_out[index] = LLVector2(uv_rect.mLeft, uv_rect.mTop);
+    vertex_out[index].set(screen_rect.mLeft, screen_rect.mTop, 0.f);
+    uv_out[index].set(uv_rect.mLeft, uv_rect.mTop);
     colors_out[index] = color;
     index++;
 
-    vertex_out[index] = LLVector4a(screen_rect.mLeft, screen_rect.mBottom, 0.f);
-    uv_out[index] = LLVector2(uv_rect.mLeft, uv_rect.mBottom);
+    vertex_out[index].set(screen_rect.mLeft, screen_rect.mBottom, 0.f);
+    uv_out[index].set(uv_rect.mLeft, uv_rect.mBottom);
     colors_out[index] = color;
     index++;
 
 
-    vertex_out[index] = LLVector4a(screen_rect.mRight, screen_rect.mTop, 0.f);
-    uv_out[index] = LLVector2(uv_rect.mRight, uv_rect.mTop);
+    vertex_out[index].set(screen_rect.mRight, screen_rect.mTop, 0.f);
+    uv_out[index].set(uv_rect.mRight, uv_rect.mTop);
     colors_out[index] = color;
     index++;
 
-    vertex_out[index] = LLVector4a(screen_rect.mLeft, screen_rect.mBottom, 0.f);
-    uv_out[index] = LLVector2(uv_rect.mLeft, uv_rect.mBottom);
+    vertex_out[index].set(screen_rect.mLeft, screen_rect.mBottom, 0.f);
+    uv_out[index].set(uv_rect.mLeft, uv_rect.mBottom);
     colors_out[index] = color;
     index++;
 
-    vertex_out[index] = LLVector4a(screen_rect.mRight, screen_rect.mBottom, 0.f);
-    uv_out[index] = LLVector2(uv_rect.mRight, uv_rect.mBottom);
+    vertex_out[index].set(screen_rect.mRight, screen_rect.mBottom, 0.f);
+    uv_out[index].set(uv_rect.mRight, uv_rect.mBottom);
     colors_out[index] = color;
 }
 
