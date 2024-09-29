@@ -27,7 +27,7 @@ use_prebuilt_binary(curl)
         )
     endif (NOT ${curl_archs} STREQUAL ${CMAKE_OSX_ARCHITECTURES})
   endif (DARWIN)
-elseif (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/curl_installed OR NOT ${curl_installed} EQUAL 0)
+elseif (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND (${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/curl_installed OR NOT ${curl_installed} EQUAL 0))
   if (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-curl-7.54.1-r1.tar.gz)
     file(DOWNLOAD
       https://github.com/secondlife/3p-curl/archive/refs/tags/v7.54.1-r1.tar.gz

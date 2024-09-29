@@ -54,9 +54,7 @@ include(LLPrimitive)
 
 if (ENABLE_MEDIA_PLUGINS)
     include(LibVLCPlugin)
-    if (DARWIN OR LINUX)
-        include(CEFPlugin)
-    endif (DARWIN OR LINUX)
+    include(CEFPlugin)
 endif (ENABLE_MEDIA_PLUGINS)
 
 if (NOT (USESYSTEMLIBS OR HAVOK_TPV))

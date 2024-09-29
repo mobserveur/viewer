@@ -22,6 +22,7 @@ cmake_install.cmake
 LICENSES
 build/
 build-darwin-*
+build-freebsd-*
 build-linux-*
 debian/files
 debian/secondlife-appearance-utility*
