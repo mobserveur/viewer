@@ -58,7 +58,7 @@ set(CMAKE_CONFIGURATION_TYPES "RelWithDebInfo;Release" CACHE STRING "Supported b
 
 # Platform-specific compilation flags.
 
-if (WINDOWS)
+if (NOT CMAKE_CXX_COMPILER_ID MATCHES GNU AND WINDOWS)
   # Don't build DLLs.
   set(BUILD_SHARED_LIBS OFF)
 
@@ -114,7 +114,7 @@ if (WINDOWS)
 
   # Allow use of sprintf etc
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-endif (WINDOWS)
+endif (NOT CMAKE_CXX_COMPILER_ID MATCHES GNU AND WINDOWS)
 
 if (LINUX OR CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   set( CMAKE_BUILD_WITH_INSTALL_RPATH TRUE )
