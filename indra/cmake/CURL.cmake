@@ -89,7 +89,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND (${PREBUILD_TRACKING_DIR}/sentinel
     )
   file(WRITE ${PREBUILD_TRACKING_DIR}/curl_installed "${curl_installed}")
 endif (DARWIN OR LINUX OR NOT USESYSTEMLIBS)
-if (WINDOWS)
+if (WINDOWS AND NOT USESYSTEMLIBS)
   target_link_libraries(ll::libcurl INTERFACE
     ${ARCH_PREBUILT_DIRS_RELEASE}/libcurl.lib
     ll::openssl

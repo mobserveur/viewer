@@ -19,24 +19,31 @@ if( USE_CONAN )
 endif()
 
 if( USESYSTEMLIBS )
-  if( LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
-    # Build of the collada-dom for Linux and FreeBSD is done in
-    # indra/llprimitive/CMakeLists.txt
-    return ()
-  endif( LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD)
   include(FindPkgConfig)
   pkg_check_modules(Minizip REQUIRED minizip)
   pkg_check_modules(Libxml2 REQUIRED libxml-2.0)
   pkg_check_modules(Libpcrecpp libpcrecpp)
   target_link_libraries( ll::minizip-ng INTERFACE ${Minizip_LIBRARIES} )
   target_link_libraries( ll::libxml INTERFACE ${Libxml2_LIBRARIES} )
-  if ( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
-    if (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz)
+  if( WINDOWS )
+    include(FindPkgConfig)
+    pkg_check_modules(Colladadom REQUIRED collada-dom-141)
+    target_compile_definitions( ll::colladadom INTERFACE COLLADA_DOM_SUPPORT141 )
+    target_include_directories( ll::colladadom SYSTEM INTERFACE ${Colladadom_INCLUDE_DIRS} )
+    target_link_directories( ll::colladadom INTERFACE ${Colladadom_LIBRARY_DIRS} )
+    target_link_libraries( ll::colladadom INTERFACE ${Colladadom_LIBRARIES} )
+    return ()
+  elseif( LINUX OR CMAKE_SYSTEM_NAME MATCHES FreeBSD )
+    # Build of the collada-dom for Linux and FreeBSD is done in
+    # indra/llprimitive/CMakeLists.txt
+    return ()
+  elseif( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
+    if( NOT EXISTS ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz )
       file(DOWNLOAD
         https://github.com/secondlife/3p-colladadom/archive/refs/tags/v2.3-r4.tar.gz
         ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz
         )
-    endif (NOT EXISTS ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz)
+    endif( NOT EXISTS ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz )
     file(ARCHIVE_EXTRACT
       INPUT ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4.tar.gz
       DESTINATION ${CMAKE_BINARY_DIR}
@@ -49,7 +56,6 @@ if( USESYSTEMLIBS )
         BINARY_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
         TARGET collada14dom
         CMAKE_FLAGS
-          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
           -DCMAKE_CXX_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
           "-DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Minizip_LIBRARY_DIRS} -L${Minizip_LIBRARY_DIRS}exec/boost/1.81/lib"
           -Dlibpcrecpp_LIBRARIES:STRING=pcrecpp
@@ -63,11 +69,9 @@ if( USESYSTEMLIBS )
           -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
           -DCOLLADA_DOM_SOVERSION:STRING=0
           -DCOLLADA_DOM_VERSION:STRING=2.3-r4
-          -DCMAKE_OSX_ARCHITECTURES:STRING=${CMAKE_OSX_ARCHITECTURES}
-          -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.15
         OUTPUT_VARIABLE colladadom_installed
         )
-      if (${COLLADADOM_RESULT})
+      if( ${COLLADADOM_RESULT} )
         file(
           COPY
             ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src/1.4/libcollada14dom.2.3-r4.dylib
@@ -76,7 +80,7 @@ if( USESYSTEMLIBS )
           DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
           FOLLOW_SYMLINK_CHAIN
           )
-      endif (${COLLADADOM_RESULT})
+      endif( ${COLLADADOM_RESULT} )
     else( DARWIN )
       execute_process(
         COMMAND sed -i "" -e "s/SHARED/STATIC/g" 1.4/CMakeLists.txt
@@ -88,29 +92,28 @@ if( USESYSTEMLIBS )
         BINARY_DIR ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4
         TARGET collada14dom
         CMAKE_FLAGS
-          -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
           -DCMAKE_CXX_FLAGS:STRING=-I${Minizip_INCLUDE_DIRS}
           -DCMAKE_SHARED_LINKER_FLAGS:STRING=-L${Minizip_LIBRARY_DIRS}
           -Dlibpcrecpp_LIBRARIES:STRING=pcrecpp
           -DZLIB_LIBRARIES:STRING=${Libxml2_LIBRARIES}
           -DBoost_FILESYSTEM_LIBRARY:STRING=boost_filesystem
           -DBoost_SYSTEM_LIBRARY:STRING=boost_system
+          -Dlibpcrecpp_CFLAGS_OTHERS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
           -DEXTRA_COMPILE_FLAGS:STRING=-I${Libxml2_INCLUDE_DIRS}
-          -DBoost_CFLAGS:STRING=-I${Libpcrecpp_INCLUDE_DIRS}
           -DOPT_COLLADA14:BOOL=ON
           -DCOLLADA_DOM_INCLUDE_INSTALL_DIR:FILEPATH=${LIBS_PREBUILT_DIR}/include/collada
           -DCOLLADA_DOM_SOVERSION:STRING=0
           -DCOLLADA_DOM_VERSION:STRING=2.3-r4
         OUTPUT_VARIABLE colladadom_installed
         )
-      if (${COLLADADOM_RESULT})
+      if( ${COLLADADOM_RESULT} )
         file(
           COPY ${CMAKE_BINARY_DIR}/3p-colladadom-2.3-r4/src/1.4/libcollada14dom.a
           DESTINATION ${LIBS_PREBUILT_DIR}/lib/release
           )
-      endif (${COLLADADOM_RESULT})
+      endif( ${COLLADADOM_RESULT} )
     endif( DARWIN )
-    if (${COLLADADOM_RESULT})
+    if( ${COLLADADOM_RESULT} )
       file(REMOVE_RECURSE ${LIBS_PREBUILT_DIR}/include/collada/1.4)
       file(
         COPY
@@ -123,8 +126,8 @@ if( USESYSTEMLIBS )
         DESTINATION ${LIBS_PREBUILT_DIR}/include/collada
         )
       file(WRITE ${PREBUILD_TRACKING_DIR}/colladadom_installed "${colladadom_installed}")
-    endif (${COLLADADOM_RESULT})
-  endif( ${PREBUILD_TRACKING_DIR}/sentinel_installed IS_NEWER_THAN ${PREBUILD_TRACKING_DIR}/colladadom_installed OR NOT ${colladadom_installed} EQUAL 0 )
+    endif( ${COLLADADOM_RESULT} )
+  endif( WINDOWS )
 else( USESYSTEMLIBS )
 use_system_binary( colladadom )
 

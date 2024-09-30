@@ -24,6 +24,7 @@ build/
 build-darwin-*
 build-freebsd-*
 build-linux-*
+build-mingw-*
 debian/files
 debian/secondlife-appearance-utility*
 debian/secondlife-viewer*
