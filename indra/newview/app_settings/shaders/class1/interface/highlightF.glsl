@@ -25,12 +25,12 @@
 
 out vec4 frag_color;
 
-uniform vec4 color;
+uniform vec4 color4;
 uniform sampler2D diffuseMap;
 
 in vec2 vary_texcoord0;
 
 void main()
 {
-    frag_color = max(color*texture(diffuseMap, vary_texcoord0.xy), vec4(0));
+    frag_color = max(color4*texture(diffuseMap, vary_texcoord0.xy), vec4(0));
 }
