@@ -25,7 +25,7 @@
 
 out vec4 frag_color;
 
-uniform vec4 color;
+uniform vec4 color4;
 uniform vec4 clip_plane;
 
 in vec3 vary_position;
@@ -38,5 +38,5 @@ void main()
         discard;
     }
 
-    frag_color = max(color, vec4(0));
+    frag_color = max(color4, vec4(0));
 }
