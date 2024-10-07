@@ -493,6 +493,13 @@
          function="Avatar.ResetSelfSkeletonAndAnimations" />
       </menu_item_call>
       <menu_item_call
+         label="Refresh attachments"
+         name="Refresh attachments"
+         shortcut="alt|shift|R">
+            <menu_item_call.on_click
+            function="Advanced.RefreshAttachments" />
+      </menu_item_call>
+      <menu_item_call
        label="Attachment scripts..."
        name="MyScripts">
         <menu_item_call.on_click
