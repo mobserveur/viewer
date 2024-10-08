@@ -87,6 +87,9 @@ public:
 
     bool isAttachmentStateComplete() const;
 
+    // [SL:KB] - Patch: Appearance-PhantomAttach | Checked: Catznip-5.0
+    void refreshAttachments();
+
 private:
 
     class LLItemRequestTimes: public std::map<LLUUID,LLTimer>
