@@ -25,9 +25,9 @@
 
 out vec4 frag_color;
 
-uniform vec4 color4;
+uniform vec4 color;
 
 void main()
 {
-    frag_color = max(color4, vec4(0));
+    frag_color = max(color, vec4(0));
 }

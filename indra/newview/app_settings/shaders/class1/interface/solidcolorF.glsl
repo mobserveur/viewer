@@ -27,13 +27,13 @@ out vec4 frag_color;
 
 uniform sampler2D tex0;
 
-uniform vec4 color4;
+uniform vec4 color;
 
 in vec2 vary_texcoord0;
 
 void main()
 {
-    float alpha = texture(tex0, vary_texcoord0.xy).a * color4.a;
+    float alpha = texture(tex0, vary_texcoord0.xy).a * color.a;
 
-    frag_color = vec4(color4.rgb, alpha);
+    frag_color = vec4(color.rgb, alpha);
 }
