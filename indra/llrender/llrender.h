@@ -67,10 +67,16 @@ public:
     typedef enum
     {
         TT_TEXTURE = 0,         // Standard 2D Texture
+#if GL_VERSION_3_1
         TT_RECT_TEXTURE,        // Non power of 2 texture
+#endif
         TT_CUBE_MAP,            // 6-sided cube map texture
+#if GL_VERSION_4_0
         TT_CUBE_MAP_ARRAY,      // Array of cube maps
+#endif
+#if GL_VERSION_3_2
         TT_MULTISAMPLE_TEXTURE, // see GL_ARB_texture_multisample
+#endif
         TT_TEXTURE_3D,          // standard 3D Texture
         TT_NONE,                // No texture type is currently enabled
     } eTextureType;
