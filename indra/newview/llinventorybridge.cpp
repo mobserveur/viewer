@@ -4431,6 +4431,8 @@ void LLFolderBridge::buildContextMenuOptions(U32 flags, menuentry_vec_t&   items
         {
             mWearables=true;
         }
+
+        items.push_back(std::string("Set favorite folder"));
     }
     else
     {

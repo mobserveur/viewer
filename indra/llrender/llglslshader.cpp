@@ -327,16 +327,15 @@ bool LLGLSLShader::readProfileQuery(bool for_runtime, bool force_read)
             GLuint64 primitives_generated = 0;
             glGetQueryObjectui64v(mPrimitivesQuery, GL_QUERY_RESULT, &primitives_generated);
 #else
-            GLuint samples_passed = 0;
-            glGetQueryObjectuiv(mSamplesQuery, GL_QUERY_RESULT, &samples_passed);
-
             GLuint primitives_generated = 0;
             glGetQueryObjectuiv(mPrimitivesQuery, GL_QUERY_RESULT, &primitives_generated);
 #endif
             sTotalTimeElapsed += time_elapsed;
 
+#if GL_VERSION_1_5
             sTotalSamplesDrawn += samples_passed;
             mSamplesDrawn += samples_passed;
+#endif
 
             U32 tri_count = (U32)primitives_generated / 3;
 

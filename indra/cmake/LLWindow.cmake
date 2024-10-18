@@ -7,7 +7,7 @@ include(Prebuilt)
 include_guard()
 add_library( ll::SDL INTERFACE IMPORTED )
 
-if (USESYSTEMLIBS AND NOT DARWIN)
+if (USESYSTEMLIBS AND NOT (WINDOWS OR DARWIN))
   include(FindPkgConfig)
   pkg_check_modules(Sdl2 REQUIRED sdl2)
   target_compile_definitions( ll::SDL INTERFACE LL_SDL=1)

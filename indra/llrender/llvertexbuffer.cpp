@@ -386,9 +386,6 @@ class LLDefaultVBOPool final : public LLVBOPool
 {
 public:
     typedef std::chrono::steady_clock::time_point Time;
-
-    U32 mMappingMode;
-
     struct Entry
     {
         U8* mData;
@@ -398,7 +395,6 @@ public:
 
     ~LLDefaultVBOPool() override
     {
-        if(mMappingMode == 3) return;
         clear();
     }
 
@@ -417,8 +413,7 @@ public:
 
     U64 getVramBytesUsed() override
     {
-        if(mMappingMode == 3) return mAllocated;
-        else return mAllocated + mReserved;
+        return mAllocated + mReserved;
     }
 
     // increase the size to some common value (e.g. a power of two) to increase hit rate
@@ -439,20 +434,6 @@ public:
         llassert(name == 0); // non zero name indicates a gl name that wasn't freed
         llassert(data == nullptr);  // non null data indicates a buffer that wasn't freed
         llassert(size >= 2);  // any buffer size smaller than a single index is nonsensical
-
-        if(mMappingMode == 3)
-        {
-            mAllocated += size;
-
-            { //allocate a new buffer
-                LL_PROFILE_GPU_ZONE("vbo alloc");
-                // ON OS X, we don't allocate a VBO until the last possible moment
-                // in unmapBuffer
-                data = (U8*) ll_aligned_malloc_16(size);
-                //STOP_GLERROR;
-            }
-            return;
-        }
 
         mDistributed += size;
         adjustSize(size);
@@ -507,25 +488,6 @@ public:
         LL_PROFILE_ZONE_SCOPED_CATEGORY_VERTEX;
         llassert(type == GL_ARRAY_BUFFER || type == GL_ELEMENT_ARRAY_BUFFER);
         llassert(size >= 2);
-
-        if(mMappingMode == 3)
-        {
-            if (data)
-            {
-                ll_aligned_free_16(data);
-            }
-
-            mAllocated -= size;
-            //STOP_GLERROR;
-            if (name)
-            {
-                glDeleteBuffers(1, &name);
-            }
-            //STOP_GLERROR;
-
-            return;
-        }
-
         llassert(name != 0);
         llassert(data != nullptr);
 
@@ -1374,35 +1336,7 @@ U8* LLVertexBuffer::mapIndexBuffer(U32 index, S32 count)
 //  dst -- mMappedData or mMappedIndexData
 void LLVertexBuffer::flush_vbo(GLenum target, U32 start, U32 end, void* data, U8* dst)
 {
-    if(sMappingMode == 2)
-    {
-        //LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("vb glMapBufferRange");
-        if (end == 0) return;
-        U32 buffer_size = end-start+1;
-        U8 * mptr = (U8*) glMapBufferRange( target, start, end-start+1, GL_MAP_WRITE_BIT);
-
-        if (mptr)
-        {
-            std::memcpy(mptr, (U8*) data, buffer_size);
-            if(!glUnmapBuffer(target)) LL_WARNS() << "glUnmapBuffer() failed" << LL_ENDL;
-        }
-        else LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
-        return;
-    }
-
-    if(sMappingMode == 3)
-    {
-        LL_PROFILE_ZONE_NAMED_CATEGORY_VERTEX("vb memcpy");
-        //STOP_GLERROR;
-        // copy into mapped buffer
-        memcpy(dst+start, data, end-start+1);
-        return;
-    }
-
-    llassert(target == GL_ARRAY_BUFFER ? sGLRenderBuffer == mGLBuffer : sGLRenderIndices == mGLIndices);
-
-    // skip mapped data and stream to GPU via glBufferSubData
-    if (end != 0)
+    if (gGLManager.mIsApple)
     {
         // on OS X, flush_vbo doesn't actually write to the GL buffer, so be sure to call
         // _mapBuffer to tag the buffer for flushing to GL
@@ -1698,14 +1632,6 @@ bool LLVertexBuffer::getClothWeightStrider(LLStrider<LLVector4>& strider, U32 in
 // Set for rendering
 void LLVertexBuffer::setBuffer()
 {
-    if(sMappingMode == 3)
-    {
-        if (!mGLBuffer)
-        {
-            return;
-        }
-    }
-
     STOP_GLERROR;
 
     if (mMapped)

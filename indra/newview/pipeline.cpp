@@ -9173,8 +9173,13 @@ void LLPipeline::bindReflectionProbes(LLGLSLShader& shader)
         return;
     }
 
+#if GL_VERSION_4_0
     S32 channel = shader.enableTexture(LLShaderMgr::REFLECTION_PROBES, LLTexUnit::TT_CUBE_MAP_ARRAY);
+#else
+    S32 channel;
+#endif
     bool bound = false;
+#if GL_VERSION_4_0
     if (channel > -1 && mReflectionMapManager.mTexture.notNull())
     {
         mReflectionMapManager.mTexture->bind(channel);
@@ -9205,6 +9210,7 @@ void LLPipeline::bindReflectionProbes(LLGLSLShader& shader)
 
         setEnvMat(shader);
     }
+#endif
 
     // reflection probe shaders generally sample the scene map as well for SSR
     channel = shader.enableTexture(LLShaderMgr::SCENE_MAP);
