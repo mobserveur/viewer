@@ -51,8 +51,6 @@ extern void APIENTRY gl_debug_callback(GLenum source,
 
 thread_local LLRender gGL;
 
-const U32 BATCH_SIZE = 16334;
-
 // Handy copies of last good GL matrices
 F32 gGLModelView[16];
 F32 gGLLastModelView[16];
@@ -69,7 +67,7 @@ S32 gGLViewport[4];
 U32 LLRender::sUICalls = 0;
 U32 LLRender::sUIVerts = 0;
 U32 LLTexUnit::sWhiteTexture = 0;
-bool LLRender::sGLCoreProfile = true;
+bool LLRender::sGLCoreProfile = false;
 bool LLRender::sNsightDebugSupport = false;
 LLVector2 LLRender::sUIGLScaleFactor = LLVector2(1.f, 1.f);
 
@@ -912,7 +910,7 @@ void LLRender::initVertexBuffer()
     llassert_always(mBuffer.isNull());
     stop_glerror();
     mBuffer = new LLVertexBuffer(immediate_mask);
-    mBuffer->allocateBuffer(BATCH_SIZE, 0);
+    mBuffer->allocateBuffer(4096, 0);
     mBuffer->getVertexStrider(mVerticesp);
     mBuffer->getTexCoord0Strider(mTexcoordsp);
     mBuffer->getColorStrider(mColorsp);
@@ -1575,7 +1573,7 @@ void LLRender::end()
     if ((mMode != LLRender::LINES &&
         mMode != LLRender::TRIANGLES &&
         mMode != LLRender::POINTS) ||
-        mCount > (BATCH_SIZE / 2))
+        mCount > 2048)
     {
         flush();
     }
@@ -1748,7 +1746,9 @@ LLVertexBuffer* LLRender::genBuffer(U32 attribute_mask, S32 count)
         vb->setColorData(mColorsp.get());
     }
 
-    if (LLVertexBuffer::sMappingMode == 3) vb->unmapBuffer();
+#if LL_DARWIN
+    vb->unmapBuffer();
+#endif
     vb->unbind();
 
     return vb;
@@ -1772,7 +1772,7 @@ void LLRender::resetStriders(S32 count)
 void LLRender::vertex3f(const GLfloat& x, const GLfloat& y, const GLfloat& z)
 {
     //the range of mVerticesp, mColorsp and mTexcoordsp is [0, 4095]
-    if (mCount > BATCH_SIZE / 2)
+    if (mCount > 2048)
     { //break when buffer gets reasonably full to keep GL command buffers happy and avoid overflow below
         switch (mMode)
         {
@@ -1782,7 +1782,7 @@ void LLRender::vertex3f(const GLfloat& x, const GLfloat& y, const GLfloat& z)
         }
     }
 
-    if (mCount > BATCH_SIZE - 2)
+    if (mCount > 4094)
     {
     //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;
@@ -1806,7 +1806,7 @@ void LLRender::vertex3f(const GLfloat& x, const GLfloat& y, const GLfloat& z)
 
 void LLRender::vertexBatchPreTransformed(LLVector4a* verts, S32 vert_count)
 {
-    if (mCount + vert_count > BATCH_SIZE - 2)
+    if (mCount + vert_count > 4094)
     {
         //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;
@@ -1827,7 +1827,7 @@ void LLRender::vertexBatchPreTransformed(LLVector4a* verts, S32 vert_count)
 
 void LLRender::vertexBatchPreTransformed(LLVector4a* verts, LLVector2* uvs, S32 vert_count)
 {
-    if (mCount + vert_count > BATCH_SIZE - 2)
+    if (mCount + vert_count > 4094)
     {
         //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;
@@ -1851,7 +1851,7 @@ void LLRender::vertexBatchPreTransformed(LLVector4a* verts, LLVector2* uvs, S32 
 
 void LLRender::vertexBatchPreTransformed(LLVector4a* verts, LLVector2* uvs, LLColor4U* colors, S32 vert_count)
 {
-    if (mCount + vert_count > BATCH_SIZE - 2)
+    if (mCount + vert_count > 4094)
     {
         //  LL_WARNS() << "GL immediate mode overflow.  Some geometry not drawn." << LL_ENDL;
         return;

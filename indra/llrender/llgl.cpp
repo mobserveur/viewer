@@ -50,10 +50,6 @@
 #include "llglheaders.h"
 #include "llglslshader.h"
 
-#include "llvertexbuffer.h"
-#include "llcontrol.h"
-extern LLControlGroup gSavedSettings;
-
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_access.hpp>
 #include "glm/gtc/type_ptr.hpp"
@@ -1283,18 +1279,6 @@ bool LLGLManager::initGL()
 
     initGLStates();
 
-    U32 MPVBufferOptiMode = gSavedSettings.getU32("MPVBufferOptiMode");
-    if (MPVBufferOptiMode == 0)
-    {
-        if(mIsApple) MPVBufferOptiMode = 2;
-        else MPVBufferOptiMode = 1;
-        gSavedSettings.setU32("MPVBufferOptiMode",MPVBufferOptiMode);
-    }
-    LLVertexBuffer::sMappingMode = MPVBufferOptiMode;
-    //LLRender::sMappingMode = MPVBufferOptiMode;
-
-    LL_INFOS() << "milo init sMappingMode " << MPVBufferOptiMode << LL_ENDL;
-
     return true;
 }
 
@@ -1411,7 +1395,6 @@ void LLGLManager::asLLSD(LLSD& info)
     info["is_ati"] = mIsAMD;  // note, do not rename is_ati to is_amd without coordinating with DW
     info["is_nvidia"] = mIsNVIDIA;
     info["is_intel"] = mIsIntel;
-    info["is_apple"] = mIsApple;
 
     info["gl_renderer"] = mGLRenderer;
 }

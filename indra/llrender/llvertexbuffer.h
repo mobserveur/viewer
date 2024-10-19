@@ -337,8 +337,6 @@ public:
     static U32 sGLRenderIndices;
     static U32 sLastMask;
     static U32 sVertexCount;
-
-    static U32 sMappingMode;
 };
 
 #ifdef LL_PROFILER_ENABLE_RENDER_DOC
