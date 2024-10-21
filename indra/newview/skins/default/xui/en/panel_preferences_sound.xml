@@ -428,7 +428,7 @@
    label_width="105"
    label_height="15"
    layout="topleft"
-   left_pad="10"
+   left="260"
    max_val="2147483647"
    min_val="-2147483648"
    name="stream_notification_channel"
