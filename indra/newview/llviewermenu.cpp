@@ -6786,6 +6786,35 @@ class LLAvatarToggleSearch : public view_listener_t
     }
 };
 
+// <FS:CR> Resync Animations
+class FSToolsResyncAnimations : public view_listener_t
+{
+    bool handleEvent(const LLSD& userdata)
+    {
+        for (S32 i = 0; i < gObjectList.getNumObjects(); i++)
+        {
+            LLViewerObject* object = gObjectList.getObject(i);
+            if (object &&
+                object->isAvatar())
+            {
+                LLVOAvatar* avatarp = (LLVOAvatar*)object;
+                if (avatarp)
+                {
+                    for (LLVOAvatar::AnimIterator anim_it = avatarp->mPlayingAnimations.begin();
+                         anim_it != avatarp->mPlayingAnimations.end();
+                         anim_it++)
+                    {
+                        avatarp->stopMotion(anim_it->first, true);
+                        avatarp->startMotion(anim_it->first);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};
+// </FS:CR> Resync Animations
+
 class LLAvatarResetSkeleton: public view_listener_t
 {
     bool handleEvent(const LLSD& userdata)
@@ -10197,6 +10226,7 @@ void initialize_menus()
     view_listener_t::addMenu(new LLAvatarToggleMyProfile(), "Avatar.ToggleMyProfile");
     view_listener_t::addMenu(new LLAvatarTogglePicks(), "Avatar.TogglePicks");
     view_listener_t::addMenu(new LLAvatarToggleSearch(), "Avatar.ToggleSearch");
+    view_listener_t::addMenu(new FSToolsResyncAnimations(), "Tools.ResyncAnimations");  // <FS:CR> Resync Animations
     view_listener_t::addMenu(new LLAvatarResetSkeleton(), "Avatar.ResetSkeleton");
     view_listener_t::addMenu(new LLAvatarEnableResetSkeleton(), "Avatar.EnableResetSkeleton");
     view_listener_t::addMenu(new LLAvatarResetSkeletonAndAnimations(), "Avatar.ResetSkeletonAndAnimations");
