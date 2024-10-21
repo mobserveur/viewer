@@ -145,8 +145,10 @@ if (INSTALL)
     elseif (LINUX)
         if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
             set(_LIB lib/${ARCH}-linux-gnu)
-        elseif (EXISTS /lib64)
+        elseif (EXISTS /lib64 AND NOT ${LINUX_DISTRO} MATCHES arch)
             set(_LIB lib64)
+        else (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+            set(_LIB lib)
         endif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
         install(
             PROGRAMS

@@ -13,6 +13,7 @@
 *.depend
 *.stamp
 *.rc
+*.pkg.tar.zst
 
 *~
 
@@ -20,7 +21,7 @@
 CMakeCache.txt
 cmake_install.cmake
 LICENSES
-build/
+pkg/
 build-darwin-*
 build-freebsd-*
 build-linux-*
@@ -94,3 +95,6 @@ web/secondlife.com.*
 
 .env
 .vscode
+.BUILDINFO
+.MTREE
+.PKGINFO
