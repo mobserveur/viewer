@@ -105,7 +105,6 @@ public:
 
     virtual bool    handleKeyHere(KEY key, MASK mask );
     virtual bool    handleUnicodeCharHere(llwchar uni_char);
-    virtual bool    handleUnicodeStringHere(char *uni_str);
 
     virtual void    onMouseCaptureLost();
 
@@ -250,8 +249,6 @@ protected:
     // Undoable operations
     void            addChar(llwchar c); // at mCursorPos
     S32             addChar(S32 pos, llwchar wc);
-    void            addString(char *s);
-    S32             addString(S32 pos, char *str);
     void            addLineBreakChar(bool group_together = false);
     S32             overwriteChar(S32 pos, llwchar wc);
     void            removeChar();
@@ -313,7 +310,6 @@ private:
     // Concrete TextCmd sub-classes used by the LLTextEditor base class
     class TextCmdInsert;
     class TextCmdAddChar;
-    class TextCmdAddString;
     class TextCmdOverwriteChar;
     class TextCmdRemove;
 

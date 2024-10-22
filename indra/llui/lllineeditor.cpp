@@ -1031,21 +1031,6 @@ void LLLineEditor::addChar(const llwchar uni_char)
     getWindow()->hideCursorUntilMouseMove();
 }
 
-void LLLineEditor::addString(char *s)
-{
-	if (hasSelection())
-		deleteSelection();
-	else if (LL_KIM_OVERWRITE == gKeyboard->getInsertMode()) {
-		if (!prevalidateInput(mText.getWString()
-					.substr(getCursor(), 1)))
-			return;
-		mText.erase(getCursor(), 1);
-	}
-	mText.insert(getCursor(), utf8str_to_wstring(s));
-	setCursor(getCursor() + 1);
-	getWindow()->hideCursorUntilMouseMove();
-}
-
 // Extends the selection box to the new cursor position
 void LLLineEditor::extendSelection( S32 new_cursor_pos )
 {
@@ -1700,36 +1685,6 @@ bool LLLineEditor::handleUnicodeCharHere(llwchar uni_char)
     return handled;
 }
 
-bool LLLineEditor::handleUnicodeStringHere(char *uni_str)
-{
-	auto handled = FALSE;
-
-	if ((gFocusMgr.getKeyboardFocus() == this)
-			&& getVisible() && !mReadOnly) {
-		handled = TRUE;
-		LLLineEditorRollback rollback(this);
-
-		addString(uni_str);
-
-		mKeystrokeTimer.reset();
-		deselect();
-		auto need_to_rollback = mPrevalidator
-			&& !mPrevalidator.validate(mText.getWString());
-
-		if (need_to_rollback) {
-			rollback.doRollback(this);
-			LLUI::getInstance()->reportBadKeystroke();
-			mPrevalidator.showLastErrorUsingTimeout();
-		}
-
-		if (!need_to_rollback && handled) {
-			onKeystroke();
-			mSpellCheckTimer.setTimerExpirySec(SPELLCHECK_DELAY);
-		}
-	}
-
-	return handled;
-}
 
 bool LLLineEditor::canDoDelete() const
 {

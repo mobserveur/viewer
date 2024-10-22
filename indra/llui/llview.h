@@ -385,7 +385,6 @@ public:
     /* virtual */ bool  handleKey(KEY key, MASK mask, bool called_from_parent);
     /* virtual */ bool  handleKeyUp(KEY key, MASK mask, bool called_from_parent);
     /* virtual */ bool  handleUnicodeChar(llwchar uni_char, bool called_from_parent);
-    /* virtual */ bool  handleUnicodeString(char *uni_str, bool called_from_parent);
 
     virtual bool    handleDragAndDrop(S32 x, S32 y, MASK mask, bool drop,
                                       EDragAndDropType cargo_type,
@@ -519,7 +518,6 @@ public:
     virtual bool    handleKeyHere(KEY key, MASK mask);
     virtual bool    handleKeyUpHere(KEY key, MASK mask);
     virtual bool    handleUnicodeCharHere(llwchar uni_char);
-    virtual bool    handleUnicodeStringHere(char *uni_str);
 
     virtual void    handleReshape(const LLRect& rect, bool by_user);
     virtual void    dirtyRect();
