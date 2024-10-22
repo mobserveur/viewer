@@ -57,7 +57,7 @@ if (ENABLE_MEDIA_PLUGINS)
     include(CEFPlugin)
 endif (ENABLE_MEDIA_PLUGINS)
 
-if (NOT (USESYSTEMLIBS OR HAVOK_TPV))
+if (NOT HAVOK_TPV)
    # When using HAVOK_TPV, the library is precompiled, so no need for this
 
    # Stub and probably havok lib itself is a hack, autobuild loads a 3p that really is a source tarball
@@ -78,7 +78,7 @@ if (NOT (USESYSTEMLIBS OR HAVOK_TPV))
         target_compile_options( llphysicsextensions  PRIVATE -Wno-unused-local-typedef)
       endif (DARWIN)
    endif()
-endif (NOT (USESYSTEMLIBS OR HAVOK_TPV))
+endif (NOT HAVOK_TPV)
 
 set(viewer_SOURCE_FILES
     gltfscenemanager.cpp
