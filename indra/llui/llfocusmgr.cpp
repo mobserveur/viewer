@@ -59,7 +59,7 @@ bool LLFocusableElement::handleUnicodeChar(llwchar uni_char, bool called_from_pa
 }
 
 // virtual
-bool LLFocusableElement::handleUnicodeString(char *uni_str, bool editing, bool called_from_parent)
+bool LLFocusableElement::handleUnicodeString(char *uni_str, bool called_from_parent)
 {
 	return FALSE;
 }

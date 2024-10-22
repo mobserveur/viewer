@@ -1257,7 +1257,7 @@ void LLTextEditor::addChar(llwchar wc)
     }
 }
 
-void LLTextEditor::addString(char *str, bool editing)
+void LLTextEditor::addString(char *str)
 {
 	if (!getEnabled())
 		return;
@@ -1265,10 +1265,6 @@ void LLTextEditor::addString(char *str, bool editing)
 		deleteSelection(TRUE);
 	else if (LL_KIM_OVERWRITE == gKeyboard->getInsertMode())
 		removeChar(mCursorPos);
-	else if (editing) {
-		clear();
-		setCursorPos(0);
-	}
 
 	setCursorPos(mCursorPos + addString(mCursorPos, str));
 
@@ -2060,12 +2056,12 @@ bool LLTextEditor::handleUnicodeCharHere(llwchar uni_char)
     return handled;
 }
 
-bool LLTextEditor::handleUnicodeStringHere(char *uni_str, bool editing)
+bool LLTextEditor::handleUnicodeStringHere(char *uni_str)
 {
 	auto handled = FALSE;
 
 	if (!mReadOnly) {
-		addString(uni_str, editing);
+		addString(uni_str);
 		getWindow()->hideCursorUntilMouseMove();
 		handled = TRUE;
 	}

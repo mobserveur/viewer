@@ -52,7 +52,7 @@ bool LLWindowCallbacks::handleUnicodeChar(llwchar uni_char, MASK mask)
     return false;
 }
 
-bool LLWindowCallbacks::handleUnicodeString(char *uni_str, bool editing)
+bool LLWindowCallbacks::handleUnicodeString(char *uni_str)
 {
 	return FALSE;
 }

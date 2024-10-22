@@ -1031,7 +1031,7 @@ void LLLineEditor::addChar(const llwchar uni_char)
     getWindow()->hideCursorUntilMouseMove();
 }
 
-void LLLineEditor::addString(char *s, bool editing)
+void LLLineEditor::addString(char *s)
 {
 	if (hasSelection())
 		deleteSelection();
@@ -1040,13 +1040,9 @@ void LLLineEditor::addString(char *s, bool editing)
 					.substr(getCursor(), 1)))
 			return;
 		mText.erase(getCursor(), 1);
-	} else if (editing) {
-		mText.clear();
-		setCursor(0);
 	}
 	mText.insert(getCursor(), utf8str_to_wstring(s));
-	if (editing) setCursor(strlen(s));
-	else setCursor(getCursor() + 1);
+	setCursor(getCursor() + 1);
 	getWindow()->hideCursorUntilMouseMove();
 }
 
@@ -1704,7 +1700,7 @@ bool LLLineEditor::handleUnicodeCharHere(llwchar uni_char)
     return handled;
 }
 
-bool LLLineEditor::handleUnicodeStringHere(char *uni_str, bool editing)
+bool LLLineEditor::handleUnicodeStringHere(char *uni_str)
 {
 	auto handled = FALSE;
 
@@ -1713,7 +1709,7 @@ bool LLLineEditor::handleUnicodeStringHere(char *uni_str, bool editing)
 		handled = TRUE;
 		LLLineEditorRollback rollback(this);
 
-		addString(uni_str, editing);
+		addString(uni_str);
 
 		mKeystrokeTimer.reset();
 		deselect();
