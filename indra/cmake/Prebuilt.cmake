@@ -61,7 +61,7 @@ macro (use_prebuilt_binary _binary)
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                     )
             endif ("${package_url}" STREQUAL "")
-            string(REGEX REPLACE "^https://(megapahit.net/downloads|github.com/secondlife|automated-builds-secondlife-com.s3.amazonaws.com/ct2).*/" "" package_name ${package_url})
+            string(REGEX REPLACE "^https?://(megapahit.net/downloads|github.com/secondlife|automated-builds-secondlife-com.s3.amazonaws.com/ct2).*/" "" package_name ${package_url})
             file(DOWNLOAD
                 ${package_url}
                 ${CMAKE_BINARY_DIR}/${package_name}
