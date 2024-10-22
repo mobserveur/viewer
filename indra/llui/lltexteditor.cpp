@@ -167,50 +167,6 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////
-class LLTextEditor::TextCmdAddString : public LLTextBase::TextCmd
-{
-public:
-	TextCmdAddString(S32 pos, bool group_with_next, char *str,
-			LLTextSegmentPtr segment) :
-		TextCmd(pos, group_with_next, segment),
-		mWString(utf8str_to_wstring(str)),
-		mBlockExtensions(FALSE)
-	{
-	}
-	virtual void blockExtensions()
-	{
-		mBlockExtensions = TRUE;
-	}
-	virtual bool canExtend(S32 pos) const
-	{
-		if (!mSegments.empty()) return FALSE;
-
-		return !mBlockExtensions
-			&& (pos == getPosition() + (S32)mWString.length());
-	}
-	virtual bool execute(LLTextBase* editor, S32* delta)
-	{
-		*delta = insert(editor, getPosition(), mWString);
-		LLWStringUtil::truncate(mWString, *delta);
-		return (*delta != 0);
-	}
-	virtual S32 undo(LLTextBase* editor)
-	{
-		remove(editor, getPosition(), mWString.length());
-		return getPosition();
-	}
-	virtual S32 redo(LLTextBase* editor)
-	{
-		insert(editor, getPosition(), mWString);
-		return getPosition() + mWString.length();
-	}
-
-private:
-	LLWString	mWString;
-	bool		mBlockExtensions;
-};
-
-///////////////////////////////////////////////////////////////////
 
 class LLTextEditor::TextCmdOverwriteChar : public LLTextBase::TextCmd
 {
@@ -1208,18 +1164,6 @@ S32 LLTextEditor::addChar(S32 pos, llwchar wc)
     return execute(new TextCmdAddChar(pos, false, wc, LLTextSegmentPtr()));
 }
 
-S32 LLTextEditor::addString(S32 pos, char *str)
-{
-	if ((wstring_utf8_length(getWText()) + strlen(str))
-			> mMaxTextByteLength) {
-		make_ui_sound("UISndBadKeystroke");
-		return 0;
-	}
-
-	return execute(new TextCmdAddString(pos, FALSE, str,
-				LLTextSegmentPtr()));
-}
-
 void LLTextEditor::addChar(llwchar wc)
 {
     if (!getEnabled())
@@ -1255,38 +1199,6 @@ void LLTextEditor::addChar(llwchar wc)
             setCursorPos(new_cursor_pos);
         }
     }
-}
-
-void LLTextEditor::addString(char *str, bool editing)
-{
-	if (!getEnabled())
-		return;
-	if (hasSelection())
-		deleteSelection(TRUE);
-	else if (LL_KIM_OVERWRITE == gKeyboard->getInsertMode())
-		removeChar(mCursorPos);
-	else if (editing) {
-		clear();
-		setCursorPos(0);
-	}
-
-	setCursorPos(mCursorPos + addString(mCursorPos, str));
-
-	if (!mReadOnly && mAutoreplaceCallback != NULL) {
-		S32 replacement_start;
-		S32 replacement_length;
-		LLWString replacement_string;
-		S32 new_cursor_pos = mCursorPos;
-		mAutoreplaceCallback(replacement_start, replacement_length,
-				replacement_string, new_cursor_pos, getWText());
-
-		if (replacement_length > 0 || !replacement_string.empty()) {
-			remove(replacement_start, replacement_length, true);
-			insert(replacement_start, replacement_string, false,
-					LLTextSegmentPtr());
-			setCursorPos(new_cursor_pos);
-		}
-	}
 }
 
 void LLTextEditor::showEmojiHelper()
@@ -2060,24 +1972,6 @@ bool LLTextEditor::handleUnicodeCharHere(llwchar uni_char)
     return handled;
 }
 
-bool LLTextEditor::handleUnicodeStringHere(char *uni_str, bool editing)
-{
-	auto handled = FALSE;
-
-	if (!mReadOnly) {
-		addString(uni_str, editing);
-		getWindow()->hideCursorUntilMouseMove();
-		handled = TRUE;
-	}
-
-	if (handled) {
-		resetCursorBlink();
-		deselect();
-		onKeyStroke();
-	}
-
-	return handled;
-}
 
 // virtual
 bool LLTextEditor::canDoDelete() const

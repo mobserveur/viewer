@@ -303,4 +303,11 @@
          execute_function="Inventory.OpenFavoriteFolder"
          is_running_function="Inventory.IsFavoriteFolderOpen"
            />
+  <command name="resync_animations"
+           available_in_toybox="true"
+           icon="Command_Resync_Animations"
+           label_ref="Command_ResyncAnimations_Label"
+           tooltip_ref="Command_ResyncAnimations_Tooltip"
+           execute_function="Tools.ResyncAnimations"
+           />
 </commands>

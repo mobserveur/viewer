@@ -92,10 +92,6 @@ target_link_libraries(llprimitive
         ll::glm
         )
 
-if (USESYSTEMLIBS)
-    add_subdirectory(llphysicsextensions)
-endif ()
-
 include(LibraryInstall)
 
 #add unit tests

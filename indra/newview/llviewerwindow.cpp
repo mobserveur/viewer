@@ -3152,14 +3152,6 @@ bool LLViewerWindow::handleUnicodeChar(llwchar uni_char, MASK mask)
     return false;
 }
 
-bool LLViewerWindow::handleUnicodeString(char *uni_str, bool editing)
-{
-	auto keyboard_focus = gFocusMgr.getKeyboardFocus();
-	if (keyboard_focus)
-		keyboard_focus->handleUnicodeString(uni_str, editing, FALSE);
-
-	return TRUE;
-}
 
 void LLViewerWindow::handleScrollWheel(S32 clicks)
 {

@@ -59,7 +59,6 @@ public:
     virtual bool    handleKey(KEY key, MASK mask, bool called_from_parent);
     virtual bool    handleKeyUp(KEY key, MASK mask, bool called_from_parent);
     virtual bool    handleUnicodeChar(llwchar uni_char, bool called_from_parent);
-    virtual bool    handleUnicodeString(char *uni_str, bool editing, bool called_from_parent);
 
     /**
      * If true this LLFocusableElement wants to receive KEYUP and KEYDOWN messages

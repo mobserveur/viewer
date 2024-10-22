@@ -58,7 +58,7 @@ if (ENABLE_MEDIA_PLUGINS)
     include(CEFPlugin)
 endif (ENABLE_MEDIA_PLUGINS)
 
-if (NOT (USESYSTEMLIBS OR HAVOK_TPV))
+if (NOT HAVOK_TPV)
    # When using HAVOK_TPV, the library is precompiled, so no need for this
 
    # Stub and probably havok lib itself is a hack, autobuild loads a 3p that really is a source tarball
@@ -79,7 +79,7 @@ if (NOT (USESYSTEMLIBS OR HAVOK_TPV))
         target_compile_options( llphysicsextensions  PRIVATE -Wno-unused-local-typedef)
       endif (DARWIN)
    endif()
-endif (NOT (USESYSTEMLIBS OR HAVOK_TPV))
+endif (NOT HAVOK_TPV)
 
 set(viewer_SOURCE_FILES
     gltfscenemanager.cpp
@@ -2125,6 +2125,11 @@ if (LINUX)
             "libapr-util1-0, libboost_fiber1_85_0, libboost_program_options1_85_0, libboost_regex1_85_0, libboost_thread1_85_0, expat, libfltk1_3, libGLU1, libhunspell-1_7-0, libnghttp2-14, libSDL2-2_0-0, liburiparser1, libvlc5, vlc-codecs, libvorbis0"
             CACHE STRING "RPM package requirements.")
         endif (${LINUX_DISTRO} MATCHES fedora)
+      elseif (${LINUX_DISTRO} MATCHES arch)
+        configure_file(
+          ${CMAKE_CURRENT_SOURCE_DIR}/PKGBUILD.in
+          ${CMAKE_BINARY_DIR}/PKGBUILD
+          )
       endif (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
     endif (PACKAGE)
   else (USESYSTEMLIBS)
