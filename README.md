@@ -107,6 +107,16 @@ $ sudo pkg set -yA 1 freealut apr1 fltk hunspell meshoptimizer minizip nanosvg p
 $ megapahit
 ```
 
+### Arch
+```
+$ sudo pacman -S cmake base-devel python freealut apr-util boost fltk glm glu hunspell minizip nanosvg libnghttp2 pcre libpipewire sdl2 uriparser vlc libvorbis xxhash
+$ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
+$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:STRING=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DENABLE_MEDIA_PLUGINS:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr ../indra
+$ make -j`nproc`
+$ makepkg -R
+$ sudo pacman -U megapahit-`cat newview/viewer_version.txt`-1-`uname -m`.pkg.tar.zst
+```
+
 ### Gentoo
 ```
 $ sudo su -
@@ -115,16 +125,6 @@ $ sudo su -
 $ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:STRING=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DENABLE_MEDIA_PLUGINS:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF ../indra
 $ make -j`nproc`
-```
-
-### Arch
-```
-$ sudo pacman -S cmake base-devel python freealut apr-util boost fltk glm glu hunspell minizip nanosvg libnghttp2 pcre libpipewire sdl2 uriparser vlc libvorbis xxhash
-$ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
-$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:STRING=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DENABLE_MEDIA_PLUGINS:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=OFF -DCMAKE_INSTALL_PREFIX:PATH=/usr ../indra
-$ make -j`nproc`
-$ cd ..
-$ makepkg -R
 ```
 
 ### Windows
