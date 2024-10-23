@@ -421,27 +421,26 @@
    enabled_control="StreamNotificationChannelEnabled"
    decimal_digits="0"
    follows="left|top"
-   height="20"
+   height="23"
    increment="1"
    initial_value="751751"
    label="Channel number:"
    label_width="105"
-   label_height="15"
    layout="topleft"
    left="260"
    max_val="2147483647"
    min_val="-2147483648"
    name="stream_notification_channel"
-   top_pad="-20"
+   top_pad="-15"
    width="170" />
   <text
    layout="topleft"
    height="15"
    left="260"
-   top_pad="15"
+   top_pad="-18"
    width="100"
    name="noise_suppression_label">
-     Noise suppression:
+     Noise Suppression
   </text>
   <combo_box
    control_name="VoiceNoiseSuppressionLevel"
