@@ -427,7 +427,7 @@
    label="Channel number:"
    label_width="105"
    layout="topleft"
-   left="260"
+   left_pad="10"
    max_val="2147483647"
    min_val="-2147483648"
    name="stream_notification_channel"
