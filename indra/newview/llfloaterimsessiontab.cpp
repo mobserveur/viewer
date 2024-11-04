@@ -556,7 +556,8 @@ void LLFloaterIMSessionTab::deleteAllChildren()
 std::string LLFloaterIMSessionTab::appendTime()
 {
     std::string timeStr = "[" + LLTrans::getString("TimeHour") + "]:"
-                          "[" + LLTrans::getString("TimeMin") + "]";
+                          "[" + LLTrans::getString("TimeMin") + "]:"
+                          "[" + LLTrans::getString("TimeSec") + "]";
 
     LLSD substitution;
     substitution["datetime"] = (S32)time_corrected();
