@@ -1388,7 +1388,8 @@ bool LLAppViewer::frame()
 
 bool LLAppViewer::doFrame()
 {
-    static LLCachedControl<U32> fpsLimitMaxFps(gSavedSettings, "MaxFPS", 0);
+    U32 fpsLimitMaxFps = (U32)gSavedSettings.getU32("MaxFPS");
+    if(fpsLimitMaxFps>120) fpsLimitMaxFps=0;
 
     using TimePoint = std::chrono::steady_clock::time_point;
 

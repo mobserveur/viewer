@@ -942,7 +942,8 @@ void LLVertexBuffer::drawArrays(U32 mode, U32 first, U32 count) const
 void LLVertexBuffer::initClass(LLWindow* window)
 {
     llassert(sVBOPool == nullptr);
-    if (gGLManager.mIsApple)
+    //if (gGLManager.mIsApple)
+    if(0)
     {
         LL_INFOS() << "VBO Pooling Disabled" << LL_ENDL;
         sVBOPool = new LLAppleVBOPool();
@@ -1285,7 +1286,8 @@ U8* LLVertexBuffer::mapVertexBuffer(LLVertexBuffer::AttributeType type, U32 inde
         count = mNumVerts - index;
     }
 
-    if (!gGLManager.mIsApple)
+    //if (!gGLManager.mIsApple)
+    if (1)
     {
         U32 start = mOffsets[type] + sTypeSize[type] * index;
         U32 end = start + sTypeSize[type] * count-1;
@@ -1322,7 +1324,8 @@ U8* LLVertexBuffer::mapIndexBuffer(U32 index, S32 count)
         count = mNumIndices-index;
     }
 
-    if (!gGLManager.mIsApple)
+    //if (!gGLManager.mIsApple)
+    if(1)
     {
         U32 start = sizeof(U16) * index;
         U32 end = start + sizeof(U16) * count-1;
@@ -1359,6 +1362,20 @@ void LLVertexBuffer::flush_vbo(GLenum target, U32 start, U32 end, void* data, U8
 {
     if (gGLManager.mIsApple)
     {
+        U32 MapBits = GL_MAP_WRITE_BIT;
+        U32 buffer_size = end-start+1;
+
+        U8 * mptr = NULL;
+        mptr = (U8*) glMapBufferRange( target, start, end-start+1, MapBits);
+
+        if (mptr)
+        {
+            std::memcpy(mptr, (U8*) data, buffer_size);
+            if(!glUnmapBuffer(target)) LL_WARNS() << "glUnmapBuffer() failed" << LL_ENDL;
+        }
+        else LL_WARNS() << "glMapBufferRange() returned NULL" << LL_ENDL;
+
+        /*
         // on OS X, flush_vbo doesn't actually write to the GL buffer, so be sure to call
         // _mapBuffer to tag the buffer for flushing to GL
         _mapBuffer();
@@ -1366,6 +1383,7 @@ void LLVertexBuffer::flush_vbo(GLenum target, U32 start, U32 end, void* data, U8
         STOP_GLERROR;
         // copy into mapped buffer
         memcpy(dst+start, data, end-start+1);
+        */
     }
     else
     {
@@ -1423,7 +1441,8 @@ void LLVertexBuffer::_unmapBuffer()
         }
     };
 
-    if (gGLManager.mIsApple)
+    //if (gGLManager.mIsApple)
+    if (0)
     {
         STOP_GLERROR;
         if (mMappedData)

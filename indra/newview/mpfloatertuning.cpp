@@ -29,12 +29,11 @@
 
 #include "mpfloatertuning.h"
 #include "llsliderctrl.h"
+#include "lltextbox.h"
 #include "llcheckboxctrl.h"
 #include "llcombobox.h"
 #include "llviewercontrol.h"
 #include "llsdserialize.h"
-
-#include "../llrender/llvertexbuffer.cpp"
 
 MPFloaterTuning::MPFloaterTuning(const LLSD& key) : LLFloater(key)
 {
@@ -45,32 +44,25 @@ void MPFloaterTuning::syncFromPreferenceSetting(void *user_data)
     MPFloaterTuning *self = static_cast<MPFloaterTuning*>(user_data);
 
     U32 fps = gSavedSettings.getU32("MaxFPS");
+    if(fps==0) fps=132;
+
     LLSliderCtrl* fpsSliderCtrl = self->getChild<LLSliderCtrl>("fpsSlider");
     fpsSliderCtrl->setValue(fps,FALSE);
 
-    U32 optBuf = gSavedSettings.getU32("MPVBufferOptiMode");
-
-    if(optBuf == 0)
-    {
-        if(gGLManager.mIsApple) optBuf = 2;
-        else optBuf = 1;
-    }
-
-    LLComboBox * optBufCtrl = self->getChild<LLComboBox>("MPVBuffModeComboBox");
-    optBufCtrl->setCurrentByIndex(optBuf-1);
-
-    LL_INFOS() << "syncFromPreferenceSetting optBuf=" << optBuf << LL_ENDL;
+    LLTextBox* fpsText = self->getChild<LLTextBox>("fpsText");
+    if(fps>120) fpsText->setValue("no limit");
+    else fpsText->setValue(std::to_string(fps)+" fps");
 }
 
 bool MPFloaterTuning::postBuild()
 {
     LLSliderCtrl* fpsSliderCtrl = getChild<LLSliderCtrl>("fpsSlider");
-    fpsSliderCtrl->setMinValue(0);
-    fpsSliderCtrl->setMaxValue(165);
+    fpsSliderCtrl->setMinValue(12);
+    fpsSliderCtrl->setMaxValue(132);
     fpsSliderCtrl->setSliderMouseUpCallback(boost::bind(&MPFloaterTuning::onFinalCommit,this));
 
-    LLComboBox* optBufCtrl = getChild<LLComboBox>("MPVBuffModeComboBox");
-    optBufCtrl->setCommitCallback(boost::bind(&MPFloaterTuning::onFinalCommit,this));
+    LLTextBox* fpsText = getChild<LLTextBox>("fpsText");
+    fpsText->setValue("");
 
     syncFromPreferenceSetting(this);
 
@@ -85,11 +77,9 @@ void MPFloaterTuning::onFinalCommit()
     U32 fps = (U32)fpsSliderCtrl->getValueF32();
     gSavedSettings.setU32("MaxFPS",fps);
 
-    LLComboBox* optBufCtrl = getChild<LLComboBox>("MPVBuffModeComboBox");
-    S16 optBuf = optBufCtrl->getCurrentIndex() + 1;
-    gSavedSettings.setU32("MPVBufferOptiMode",optBuf);
-
-    //LLVertexBuffer::sMappingMode = optBuf;
+    LLTextBox* fpsText = getChild<LLTextBox>("fpsText");
+    if(fps>120) fpsText->setValue("no limit");
+    else fpsText->setValue(std::to_string(fps)+" fps");
 }
 
 void MPFloaterTuning::onClose(bool app_quitting)
