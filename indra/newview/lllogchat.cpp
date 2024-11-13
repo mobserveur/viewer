@@ -312,7 +312,7 @@ std::string LLLogChat::timestamp2LogString(U32 timestamp, bool withdate)
                   + LLTrans::getString ("TimeMonth") + "]/["
                   + LLTrans::getString ("TimeDay") + "] ["
                   + LLTrans::getString ("TimeHour") + "]:["
-                  + LLTrans::getString ("TimeMin") + "]:[";
+                  + LLTrans::getString ("TimeMin") + "]:["
                   + LLTrans::getString ("TimeSec") + "]";
     }
     else
