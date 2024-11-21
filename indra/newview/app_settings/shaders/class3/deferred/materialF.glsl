@@ -136,7 +136,7 @@ vec3 calcPointLightOrSpotLight(vec3 light_col, vec3 npos, vec3 diffuse, vec4 spe
         float lit = 0.0f;
 
         float amb_da = ambiance;
-        if (da >= 0)
+        if (da >= 0.0)
         {
             lit = max(da * dist_atten, 0.0);
             col = lit * light_col * diffuse;
@@ -157,10 +157,10 @@ vec3 calcPointLightOrSpotLight(vec3 light_col, vec3 npos, vec3 diffuse, vec4 spe
             float nv = dot(n, npos);
             float vh = dot(npos, h);
             float sa = nh;
-            float fres = pow(1 - dot(h, npos), 5)*0.4 + 0.5;
+            float fres = pow(1.0 - dot(h, npos), 5.0)*0.4 + 0.5;
 
-            float gtdenom = 2 * nh;
-            float gt = max(0, min(gtdenom * nv / vh, gtdenom * da / vh));
+            float gtdenom = 2.0 * nh;
+            float gt = max(0.0, min(gtdenom * nv / vh, gtdenom * da / vh));
 
             if (nh > 0.0)
             {
@@ -221,7 +221,7 @@ vec3 getNormal(inout float glossiness)
 #ifdef HAS_NORMAL_MAP
     vec4 vNt = texture(bumpMap, vary_texcoord1.xy);
     glossiness *= vNt.a;
-    vNt.xyz = vNt.xyz * 2 - 1;
+    vNt.xyz = vNt.xyz * 2.0 - 1.0;
     float sign = vary_sign;
     vec3 vN = vary_normal;
     vec3 vT = vary_tangent.xyz;
@@ -360,9 +360,9 @@ void main()
             float lit = min(nl*6.0, 1.0);
 
             float sa = nh;
-            float fres = pow(1 - vh, 5) * 0.4+0.5;
-            float gtdenom = 2 * nh;
-            float gt = max(0,(min(gtdenom * nv / vh, gtdenom * nl / vh)));
+            float fres = pow(1.0 - vh, 5.0) * 0.4+0.5;
+            float gtdenom = 2.0 * nh;
+            float gt = max(0.0,(min(gtdenom * nv / vh, gtdenom * nl / vh)));
 
             float scol = shadow*fres*texture(lightFunc, vec2(nh, glossiness)).r*gt/(nh*nl);
             color.rgb += lit*scol*sunlit_linear.rgb*spec.rgb;
@@ -379,7 +379,7 @@ void main()
         applyLegacyEnv(color, legacyenv, spec, pos.xyz, norm.xyz, env);
 
         float cur_glare = max(max(legacyenv.r, legacyenv.g), legacyenv.b);
-        cur_glare = clamp(cur_glare, 0, 1);
+        cur_glare = clamp(cur_glare, 0.0, 1.0);
         cur_glare *= env;
         glare += cur_glare;
     }
