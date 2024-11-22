@@ -147,7 +147,7 @@ vec3 calcPointLightOrSpotLight(vec3 light_col, vec3 diffuse, vec3 v, vec3 n, vec
         float lit = 0.0f;
 
         float amb_da = 0.0;//ambiance;
-        if (da > 0)
+        if (da > 0.0)
         {
             lit = max(da * dist_atten,0.0);
             col = lit * light_col * diffuse;

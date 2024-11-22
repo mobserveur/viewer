@@ -188,7 +188,7 @@ void main()
             proj_tc.x > 0.0 &&
             proj_tc.y > 0.0)
         {
-            float amb_da = 0;
+            float amb_da = 0.0;
             float lit = 0.0;
 
             if (nl > 0.0)
@@ -211,10 +211,10 @@ void main()
         {
             dlit *= min(nl*6.0, 1.0) * dist_atten;
 
-            float fres = pow(1 - vh, 5)*0.4+0.5;
+            float fres = pow(1.0 - vh, 5.0)*0.4+0.5;
 
-            float gtdenom = 2 * nh;
-            float gt = max(0, min(gtdenom * nv / vh, gtdenom * nl / vh));
+            float gtdenom = 2.0 * nh;
+            float gt = max(0.0, min(gtdenom * nv / vh, gtdenom * nl / vh));
 
             if (nh > 0.0)
             {
@@ -248,7 +248,7 @@ void main()
                         stc.x > 0.0 &&
                         stc.y > 0.0)
                     {
-                        final_color += color.rgb * texture2DLodSpecular(stc.xy, (1 - spec.a) * (proj_lod * 0.6)).rgb * shadow * envIntensity;
+                        final_color += color.rgb * texture2DLodSpecular(stc.xy, (1.0 - spec.a) * (proj_lod * 0.6)).rgb * shadow * envIntensity;
                     }
                 }
             }
