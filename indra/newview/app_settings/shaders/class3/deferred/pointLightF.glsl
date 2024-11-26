@@ -133,9 +133,9 @@ void main()
             lit = min(nl*6.0, 1.0) * dist_atten;
 
             float sa = nh;
-            float fres = pow(1 - vh, 5) * 0.4+0.5;
-            float gtdenom = 2 * nh;
-            float gt = max(0,(min(gtdenom * nv / vh, gtdenom * nl / vh)));
+            float fres = pow(1.0 - vh, 5.0) * 0.4+0.5;
+            float gtdenom = 2.0 * nh;
+            float gt = max(0.0,(min(gtdenom * nv / vh, gtdenom * nl / vh)));
 
             if (nh > 0.0)
             {
