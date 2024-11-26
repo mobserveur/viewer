@@ -1,7 +1,7 @@
 /**
- * @file diffuseF.glsl
+ * @file class1/deferred/gbufferUtil.glsl
  *
- * $LicenseInfo:firstyear=2007&license=viewerlgpl$
+ * $LicenseInfo:firstyear=2024&license=viewerlgpl$
  * Second Life Viewer Source Code
  * Copyright (C) 2007, Linden Research, Inc.
  *
@@ -23,31 +23,37 @@
  * $/LicenseInfo$
  */
 
-/*[EXTRA_CODE_HERE]*/
-
-out vec4 frag_data[4];
-
-uniform sampler2D diffuseMap;
-
-in vec3 vary_normal;
-in vec4 vertex_color;
-in vec2 vary_texcoord0;
-in vec3 vary_position;
-
-void mirrorClip(vec3 pos);
-vec4 encodeNormal(vec3 n, float env, float gbuffer_flag);
-
-void main()
-{
-    mirrorClip(vary_position);
-    vec3 col = vertex_color.rgb * texture(diffuseMap, vary_texcoord0.xy).rgb;
-    frag_data[0] = vec4(col, 0.0);
-    frag_data[1] = vertex_color.aaaa; // spec
-    vec3 nvn = normalize(vary_normal);
-    frag_data[2] = encodeNormal(nvn.xyz, vertex_color.a, GBUFFER_FLAG_HAS_ATMOS);
+uniform sampler2D diffuseRect;
+uniform sampler2D specularRect;
 
 #if defined(HAS_EMISSIVE)
-    frag_data[3] = vec4(0, 0, 0, 0);
+uniform sampler2D emissiveRect;
 #endif
-}
 
+vec4 getNormRaw(vec2 screenpos);
+vec4 decodeNormal(vec4 norm);
+
+GBufferInfo getGBuffer(vec2 screenpos)
+{
+    GBufferInfo ret;
+    vec4 diffInfo = vec4(0);
+    vec4 specInfo = vec4(0);
+    vec4 emissInfo = vec4(0);
+
+    diffInfo = texture(diffuseRect, screenpos.xy);
+    specInfo = texture(specularRect, screenpos.xy);
+    vec4 normInfo = getNormRaw(screenpos);
+
+#if defined(HAS_EMISSIVE)
+    emissInfo = texture(emissiveRect, screenpos.xy);
+#endif
+
+    ret.albedo = diffInfo;
+    ret.normal = decodeNormal(normInfo).xyz;
+    ret.specular = specInfo;
+    ret.envIntensity = normInfo.b;
+    ret.gbufferFlag = normInfo.w;
+    ret.emissive = emissInfo;
+
+    return ret;
+}
