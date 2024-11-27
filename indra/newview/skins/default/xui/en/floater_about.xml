@@ -70,7 +70,7 @@
      follows="all"
      left="10"
      name="megapahit_credits_panel"
-     height="390"
+     height="405"
      top="10">
       <text
           follows="top|left|right"
@@ -86,7 +86,7 @@ Megapahit is brought to you by (in order of appearance):
       <text_editor
        enabled="false"
        follows="top|left"
-       height="230"
+       height="245"
        bg_readonly_color="Transparent"
        left="5"
        text_color="LtGray"
@@ -98,17 +98,18 @@ Erik Kundiman
 LinneNoir
 milo (observeur)
 Fritigern Gothly
+Kou Ayashi
 Hadet Sonnenkern
 Remmy (Secret Foxtail)
 Eris Ravenwood
+gwigz (nya)
 EmilyAmiee
 Bavid Dailey
 Aria (Tashia Redrose)
 Cate (32a)
-Melodey
 Hiroo Ono
+Melodey
 Keysin (scoutkeysin)
-gwigz
 Yikes Lopez
     </text_editor>
     <text
