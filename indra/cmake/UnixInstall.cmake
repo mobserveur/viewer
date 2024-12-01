@@ -35,7 +35,13 @@ if (INSTALL)
   set(APP_SHARE_DIR ${INSTALL_SHARE_DIR}/${VIEWER_BINARY_NAME}
       CACHE PATH
       "Installation directory for read-only data files.")
-  set(APP_LIBEXEC_DIR ${INSTALL_PREFIX}/libexec/${VIEWER_BINARY_NAME}
-      CACHE PATH
-      "Installation directory for non-manual executables.")
+  if (${LINUX_DISTRO} MATCHES arch)
+    set(APP_LIBEXEC_DIR ${INSTALL_PREFIX}/lib/${VIEWER_BINARY_NAME}
+        CACHE PATH
+        "Installation directory for non-manual executables.")
+  else (${LINUX_DISTRO} MATCHES arch)
+    set(APP_LIBEXEC_DIR ${INSTALL_PREFIX}/libexec/${VIEWER_BINARY_NAME}
+        CACHE PATH
+        "Installation directory for non-manual executables.")
+  endif (${LINUX_DISTRO} MATCHES arch)
 endif (INSTALL)

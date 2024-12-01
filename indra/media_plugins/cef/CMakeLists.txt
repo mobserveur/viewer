@@ -150,13 +150,23 @@ if (INSTALL)
         else (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
             set(_LIB lib)
         endif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
-        install(
-            PROGRAMS
-                ${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
-                ${AUTOBUILD_INSTALL_DIR}/bin/release/dullahan_host
-            DESTINATION libexec/${VIEWER_BINARY_NAME}
-            #PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-        )
+        if (${LINUX_DISTRO} MATCHES arch)
+            install(
+                PROGRAMS
+                    ${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
+                    ${AUTOBUILD_INSTALL_DIR}/bin/release/dullahan_host
+                DESTINATION lib/${VIEWER_BINARY_NAME}
+                #PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+            )
+        else (${LINUX_DISTRO} MATCHES arch)
+            install(
+                PROGRAMS
+                    ${AUTOBUILD_INSTALL_DIR}/bin/release/chrome-sandbox
+                    ${AUTOBUILD_INSTALL_DIR}/bin/release/dullahan_host
+                DESTINATION libexec/${VIEWER_BINARY_NAME}
+                #PERMISSIONS SETUID OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+            )
+        endif (${LINUX_DISTRO} MATCHES arch)
         install(
             FILES
                 ${AUTOBUILD_INSTALL_DIR}/lib/release/libcef.so
