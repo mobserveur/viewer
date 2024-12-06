@@ -1266,6 +1266,7 @@ bool LLGLManager::initGL()
     glGetIntegerv(GL_MAX_SAMPLE_MASK_WORDS, &mMaxSampleMaskWords);
 #endif
     glGetIntegerv(GL_MAX_SAMPLES, &mMaxSamples);
+    glGetIntegerv(GL_MAX_VARYING_VECTORS, &mMaxVaryingVectors);
     glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &mMaxUniformBlockSize);
 
     // sanity clamp max uniform block size to 64k just in case
