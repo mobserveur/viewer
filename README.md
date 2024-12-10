@@ -93,6 +93,17 @@ $ sudo rpm -i megapahit-`cat newview/viewer_version.txt`-Linux.rpm
 $ megapahit
 ```
 
+### Arch
+```
+$ sudo pacman -S cmake base-devel python freealut apr-util boost fltk glm glu hunspell minizip nanosvg libnghttp2 pcre libpipewire sdl2 uriparser vlc libvorbis xxhash
+$ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
+$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:STRING=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=OFF -DUSE_FMODSTUDIO:BOOL=ON -DENABLE_MEDIA_PLUGINS:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr ../indra
+$ make -j`nproc`
+$ makepkg -R
+$ sudo pacman -U megapahit-`cat newview/viewer_version.txt|sed 's/\(.*\)\./\1-/'`-`uname -m`.pkg.tar.zst
+$ megapahit
+```
+
 ### FreeBSD
 ```
 $ sudo su -
@@ -104,17 +115,6 @@ $ make -j`nproc`
 $ sudo cpack -G FREEBSD
 $ sudo pkg add megapahit-`cat newview/viewer_version.txt`-FreeBSD.pkg
 $ sudo pkg set -yA 1 freealut apr1 fltk hunspell meshoptimizer minizip nanosvg pcre sdl20 uriparser vlc libvorbis
-$ megapahit
-```
-
-### Arch
-```
-$ sudo pacman -S cmake base-devel python freealut apr-util boost fltk glm glu hunspell minizip nanosvg libnghttp2 pcre libpipewire sdl2 uriparser vlc libvorbis xxhash
-$ export LL_BUILD="-O3 -std=c++17 -fPIC -DLL_LINUX=1"
-$ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:STRING=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DENABLE_MEDIA_PLUGINS:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr ../indra
-$ make -j`nproc`
-$ makepkg -R
-$ sudo pacman -U megapahit-`cat newview/viewer_version.txt|sed 's/\(.*\)\./\1-/'`-`uname -m`.pkg.tar.zst
 $ megapahit
 ```
 
