@@ -31,9 +31,11 @@
 #include "lllistener.h"
 
 #include "AL/al.h"
-#ifdef __APPLE__
+#ifdef LL_DARWIN
 #undef __APPLE__
+#endif
 #include "AL/alut.h"
+#ifdef LL_DARWIN
 #define __APPLE__
 #endif
 #include "AL/alext.h"
