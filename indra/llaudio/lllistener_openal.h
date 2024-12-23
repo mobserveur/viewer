@@ -31,7 +31,11 @@
 #include "lllistener.h"
 
 #include "AL/al.h"
+#ifdef __APPLE__
+#undef __APPLE__
 #include "AL/alut.h"
+#define __APPLE__
+#endif
 #include "AL/alext.h"
 
 class LLListener_OpenAL  : public LLListener
