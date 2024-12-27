@@ -303,8 +303,8 @@ S32 LLImageGL::dataFormatBits(S32 dataformat)
     {
 #if GL_VERSION_3_0
     case GL_COMPRESSED_RED:                         return 8;
-#endif
     case GL_COMPRESSED_RG:                          return 16;
+#endif
 #if GL_VERSION_1_3
     case GL_COMPRESSED_RGB:                         return 24;
 #endif
@@ -333,16 +333,16 @@ S32 LLImageGL::dataFormatBits(S32 dataformat)
     case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT:    return 8;
 #endif
     case GL_LUMINANCE:                              return 8;
-    case GL_LUMINANCE8:                             return 8;
     case GL_ALPHA:                                  return 8;
-    case GL_ALPHA8:                                 return 8;
     case GL_RED:                                    return 8;
     case GL_R8:                                     return 8;
 #if GL_VERSION_1_1
+    case GL_LUMINANCE8:                             return 8;
+    case GL_ALPHA8:                                 return 8;
     case GL_COLOR_INDEX:                            return 8;
+    case GL_LUMINANCE8_ALPHA8:                      return 16;
 #endif
     case GL_LUMINANCE_ALPHA:                        return 16;
-    case GL_LUMINANCE8_ALPHA8:                      return 16;
     case GL_RG:                                     return 16;
     case GL_RG8:                                    return 16;
     case GL_RGB:                                    return 24;
@@ -1370,24 +1370,30 @@ void LLImageGL::setManualImage(U32 target, S32 miplevel, S32 intformat, S32 widt
         {
             if (pixformat == GL_ALPHA)
             { //GL_ALPHA is deprecated, convert to RGBA
+#if GL_VERSION_3_3
                 const GLint mask[] = { GL_ZERO, GL_ZERO, GL_ZERO, GL_RED };
                 glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, mask);
+#endif
                 pixformat = GL_RED;
                 intformat = GL_R8;
             }
 
             if (pixformat == GL_LUMINANCE)
             { //GL_LUMINANCE is deprecated, convert to GL_RGBA
+#if GL_VERSION_3_3
                 const GLint mask[] = { GL_RED, GL_RED, GL_RED, GL_ONE };
                 glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, mask);
+#endif
                 pixformat = GL_RED;
                 intformat = GL_R8;
             }
 
             if (pixformat == GL_LUMINANCE_ALPHA)
             { //GL_LUMINANCE_ALPHA is deprecated, convert to RGBA
+#if GL_VERSION_3_3
                 const GLint mask[] = { GL_RED, GL_RED, GL_RED, GL_GREEN };
                 glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, mask);
+#endif
                 pixformat = GL_RG;
                 intformat = GL_RG8;
             }
@@ -1464,11 +1470,15 @@ void LLImageGL::setManualImage(U32 target, S32 miplevel, S32 intformat, S32 widt
         {
         case GL_RED:
         case GL_R8:
+#if GL_VERSION_3_0
             intformat = GL_COMPRESSED_RED;
+#endif
             break;
         case GL_RG:
         case GL_RG8:
+#if GL_VERSION_3_0
             intformat = GL_COMPRESSED_RG;
+#endif
             break;
         case GL_RGB:
         case GL_RGB8:
