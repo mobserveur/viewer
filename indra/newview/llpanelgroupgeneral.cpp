@@ -34,6 +34,7 @@
 #include "llsdparam.h"
 #include "lluictrlfactory.h"
 #include "roles_constants.h"
+#include "llmutelist.h"
 
 // UI elements
 #include "llbutton.h"
@@ -76,6 +77,7 @@ LLPanelGroupGeneral::LLPanelGroupGeneral()
     mCtrlEnrollmentFee(NULL),
     mSpinEnrollmentFee(NULL),
     mCtrlReceiveNotices(NULL),
+    mCtrlReceiveGroupChat(NULL), // <exodus/>
     mCtrlListGroup(NULL),
     mActiveTitleLabel(NULL),
     mComboActiveTitle(NULL)
@@ -154,6 +156,18 @@ bool LLPanelGroupGeneral::postBuild()
         mCtrlReceiveNotices->set(accept_notices);
         mCtrlReceiveNotices->setEnabled(data.mID.notNull());
     }
+    // <exodus>
+    mCtrlReceiveGroupChat = getChild<LLCheckBoxCtrl>("receive_chat", recurse);
+    if(mCtrlReceiveGroupChat)
+    {
+        mCtrlReceiveGroupChat->setCommitCallback(onCommitUserOnly, this);
+        mCtrlReceiveGroupChat->setEnabled(data.mID.notNull());
+        if(data.mID.notNull())
+        {
+            mCtrlReceiveGroupChat->set(!LLMuteList::getInstance()->isMuted(LLUUID::null, std::string{"Group:" + data.mID.asString()}));
+        }
+    }
+    // </exodus>
 
     mCtrlListGroup = getChild<LLCheckBoxCtrl>("list_groups_in_profile", recurse);
     if (mCtrlListGroup)
@@ -389,6 +403,19 @@ bool LLPanelGroupGeneral::apply(std::string& mesg)
         list_in_profile = mCtrlListGroup->get();
 
     gAgent.setUserGroupFlags(mGroupID, receive_notices, list_in_profile);
+    // <exodus>
+    if(mCtrlReceiveGroupChat)
+    {
+        if(mCtrlReceiveGroupChat->get())
+        {
+            LLMuteList::getInstance()->remove(LLMute(LLUUID::null, std::string{"Group:" + mGroupID.asString()}));
+        }
+        else
+        {
+            LLMuteList::getInstance()->add(LLMute(LLUUID::null, std::string{"Group:" + mGroupID.asString()}));
+        }
+    }
+    // </exodus>
 
     resetDirty();
 
@@ -556,6 +583,16 @@ void LLPanelGroupGeneral::update(LLGroupChange gc)
         }
     }
 
+    // <exodus>
+    if (mCtrlReceiveGroupChat)
+    {
+        mCtrlReceiveGroupChat->setVisible(is_member);
+        if (is_member)
+        {
+            mCtrlReceiveGroupChat->setEnabled(mAllowEdit);
+        }
+    }
+    // </exodus>
 
     if (mInsignia) mInsignia->setEnabled(mAllowEdit && can_change_ident);
     if (mEditCharter) mEditCharter->setEnabled(mAllowEdit && can_change_ident);
@@ -598,6 +635,7 @@ void LLPanelGroupGeneral::updateChanged()
         mCtrlEnrollmentFee,
         mSpinEnrollmentFee,
         mCtrlReceiveNotices,
+        mCtrlReceiveGroupChat, // <exodus/>
         mCtrlListGroup,
         mActiveTitleLabel,
         mComboActiveTitle
@@ -653,6 +691,12 @@ void LLPanelGroupGeneral::reset()
 
     mInsignia->setImageAssetName(mInsignia->getDefaultImageName());
 
+    // <exodus>
+    mCtrlReceiveGroupChat->set(false);
+    mCtrlReceiveGroupChat->setEnabled(false);
+    mCtrlReceiveGroupChat->setVisible(true);
+    // </exodus>
+
     {
         std::string empty_str = "";
         mEditCharter->setText(empty_str);
@@ -684,6 +728,7 @@ void    LLPanelGroupGeneral::resetDirty()
         mCtrlEnrollmentFee,
         mSpinEnrollmentFee,
         mCtrlReceiveNotices,
+        mCtrlReceiveGroupChat, // <exodus/>
         mCtrlListGroup,
         mActiveTitleLabel,
         mComboActiveTitle
@@ -729,6 +774,18 @@ void LLPanelGroupGeneral::setGroupID(const LLUUID& id)
         mCtrlListGroup->set(list_in_profile);
         mCtrlListGroup->setEnabled(data.mID.notNull());
     }
+
+    // <exodus>
+    mCtrlReceiveGroupChat = getChild<LLCheckBoxCtrl>("receive_chat");
+    if (mCtrlReceiveGroupChat)
+    {
+        if(data.mID.notNull())
+        {
+            mCtrlReceiveGroupChat->set(!LLMuteList::getInstance()->isMuted(LLUUID::null, std::string{"Group:" + data.mID.asString()}));
+        }
+        mCtrlReceiveGroupChat->setEnabled(data.mID.notNull());
+    }
+    // </exodus>
 
     mCtrlShowInGroupList->setEnabled(data.mID.notNull());
 
