@@ -267,11 +267,6 @@ void notify_of_message(const LLSD& msg, bool is_dnd_msg)
     }
     else if(session->isGroupSessionType())
     {
-        if (LLMuteList::getInstance()->isMuted(LLUUID::null, std::string{"Group:" + session_id.asString()}))
-        {
-            gIMMgr->leaveSession(session_id);
-            return;
-        }
         user_preferences = gSavedSettings.getString("NotificationGroupChatOptions");
         if (!gAgent.isDoNotDisturb() && (gSavedSettings.getBOOL("PlaySoundGroupChatIM")))
         {
@@ -3199,6 +3194,7 @@ void LLIMMgr::addMessage(
         if (session)
         {
             skip_message &= !session->isGroupSessionType();         // Do not skip group chats...
+            skip_message |= LLMuteList::getInstance()->isMuted(LLUUID::null, std::string{"Group:" + session_id.asString()}); // unless the group is muted.
             if (skip_message)
             {
                 gIMMgr->leaveSession(new_session_id);
