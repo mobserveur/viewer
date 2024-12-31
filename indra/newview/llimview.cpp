@@ -3194,7 +3194,7 @@ void LLIMMgr::addMessage(
         if (session)
         {
             skip_message &= !session->isGroupSessionType();         // Do not skip group chats...
-            skip_message |= LLMuteList::getInstance()->isMuted(LLUUID::null, std::string{"Group:" + session_id.asString()}); // unless the group is muted.
+            skip_message |= LLMuteList::getInstance()->isMuted(LLUUID::null, std::string{"Group:" + new_session_id.asString()}); // unless the group is muted.
             if (skip_message)
             {
                 gIMMgr->leaveSession(new_session_id);
