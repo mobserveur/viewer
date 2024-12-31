@@ -14,13 +14,13 @@ if (INSTALL)
       "Top-level installation directory.")
   endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD)
 
-  if (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+  if (${LINUX_DISTRO} MATCHES debian OR (${LINUX_DISTRO} MATCHES ubuntu))
     set(_LIB lib/${ARCH}-linux-gnu)
-  elseif (EXISTS /lib64 AND NOT ${LINUX_DISTRO} MATCHES arch)
-    set(_LIB lib64)
-  else (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+  elseif (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
+    set(_LIB lib${ADDRESS_SIZE})
+  else ()
     set(_LIB lib)
-  endif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+  endif ()
 
   set(INSTALL_LIBRARY_DIR ${INSTALL_PREFIX}/${_LIB} CACHE PATH
       "Installation directory for read-only shared files.")

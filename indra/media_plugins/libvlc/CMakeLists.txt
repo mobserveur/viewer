@@ -90,10 +90,10 @@ if (INSTALL)
                 /Volumes/VLC\ media\ player/VLC.app/Contents/MacOS/lib/libvlccore.dylib
             DESTINATION ${_LIB}/plugins
             )
-    elseif (EXISTS ${CMAKE_SYSROOT}/usr/lib/${ARCH}-linux-gnu)
+    elseif (${LINUX_DISTRO} MATCHES debian OR (${LINUX_DISTRO} MATCHES ubuntu))
         set(_LIB lib/${ARCH}-linux-gnu)
-    elseif (EXISTS /lib64 AND NOT ${LINUX_DISTRO} MATCHES arch)
-        set(_LIB lib64)
+    elseif (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
+        set(_LIB lib${ADDRESS_SIZE})
     else (DARWIN)
         set(_LIB lib)
     endif (DARWIN)
