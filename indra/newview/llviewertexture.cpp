@@ -87,6 +87,7 @@ S32 LLViewerTexture::sRawCount = 0;
 S32 LLViewerTexture::sAuxCount = 0;
 LLFrameTimer LLViewerTexture::sEvaluationTimer;
 F32 LLViewerTexture::sDesiredDiscardBias = 0.f;
+U32 LLViewerTexture::sBiasTexturesUpdated = 0;
 
 S32 LLViewerTexture::sMaxSculptRez = 128; //max sculpt image size
 constexpr S32 MAX_CACHED_RAW_IMAGE_AREA = 64 * 64;
@@ -518,6 +519,7 @@ void LLViewerTexture::updateClass()
 
     bool is_sys_low = isSystemMemoryLow();
     bool is_low = is_sys_low || over_pct > 0.f;
+    F32 discard_bias = sDesiredDiscardBias;
 
     static bool was_low = false;
     static bool was_sys_low = false;
@@ -556,12 +558,13 @@ void LLViewerTexture::updateClass()
         // don't execute above until the slam to 1.5 has a chance to take effect
         sEvaluationTimer.reset();
 
-        // lower discard bias over time when free memory is available
-        if (sDesiredDiscardBias > 1.f && over_pct < 0.f)
+        // lower discard bias over time when at least 10% of budget is free
+        const F32 FREE_PERCENTAGE_TRESHOLD = -0.1f;
+        if (sDesiredDiscardBias > 1.f && over_pct < FREE_PERCENTAGE_TRESHOLD)
         {
             static LLCachedControl<F32> high_mem_discard_decrement(gSavedSettings, "RenderHighMemMinDiscardDecrement", .1f);
 
-            F32 decrement = high_mem_discard_decrement - llmin(over_pct, 0.f);
+            F32 decrement = high_mem_discard_decrement - llmin(over_pct - FREE_PERCENTAGE_TRESHOLD, 0.f);
             sDesiredDiscardBias -= decrement * gFrameIntervalSeconds;
         }
     }
@@ -603,6 +606,12 @@ void LLViewerTexture::updateClass()
     }
 
     sDesiredDiscardBias = llclamp(sDesiredDiscardBias, 1.f, 4.f);
+    if (discard_bias != sDesiredDiscardBias)
+    {
+        // bias changed, reset texture update counter to
+        // let updates happen at an increased rate.
+        sBiasTexturesUpdated = 0;
+    }
 
     LLViewerTexture::sFreezeImageUpdates = false;
 }
