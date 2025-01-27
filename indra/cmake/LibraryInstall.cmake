@@ -2,7 +2,7 @@ list(REMOVE_ITEM ${PROJECT_NAME}_HEADER_FILES CMakeLists.txt)
 #install(FILES ${${PROJECT_NAME}_HEADER_FILES}
 #        DESTINATION include/${PROJECT_NAME})
 if (BUILD_SHARED_LIBS)
-        if (${LINUX_DISTRO} MATCHES debian OR ${LINUX_DISTRO} MATCHES ubuntu)
+        if (${LINUX_DISTRO} MATCHES debian OR (${LINUX_DISTRO} MATCHES ubuntu))
                 set(_LIB lib/${ARCH}-linux-gnu)
         elseif (${LINUX_DISTRO} MATCHES fedora OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
                 set(_LIB lib${ADDRESS_SIZE})
