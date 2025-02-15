@@ -8,7 +8,7 @@
  can_minimize="false"
  can_collapse="false"
  can_close="true"
- width="410"
+ width="370"
  height="114"
  layout="topleft"
  name="camera_floater"
@@ -37,29 +37,28 @@
     <string name="inactive_combo_text">Use preset</string>
     <panel
      border="false"
-     width="220"
-     height="90"
+     width="168"
+     height="96"
      layout="topleft"
      left="2"
      top="18"
      mouse_opaque="false"
      name="controls"
-     >
-         <!--TODO: replace + - images -->
+    >
          <panel
             border="false"
             class="camera_zoom_panel"
-            height="90"
+            height="76"
             layout="topleft"
             left="0"
             mouse_opaque="false"
             name="zoom"
             top="0"
-            width="220">
+            width="168">
            <joystick_rotate
               follows="top|left"
-              width="78"
-              height="78"
+              width="60"
+              height="60"
               layout="topleft"
               left="7"
               top="8"
@@ -70,72 +69,26 @@
               scale_image="true"
               tool_tip="Orbit camera around focus"
               />
-           <button
+              <joystick_track
               follows="top|left"
-              width="18"
-              height="18"
+              width="60"
+              height="60"
               left_pad="4"
-              top="2"
+              image_selected="Cam_Tracking_In"
+              image_unselected="Cam_Tracking_Out"
               layout="topleft"
-              image_disabled="AddItem_Disabled"
-              image_selected="AddItem_Press"
-              image_unselected="AddItem_Off"
-              name="zoom_plus_btn"
-              >
-             <commit_callback
-                function="Zoom.plus" />
-             <mouse_held_callback
-                function="Zoom.plus" />
-           </button>
-           <slider_bar
-              width="18"
-              height="50"
-              top_pad="0"
-              layout="topleft"
-              name="zoom_slider"
-              orientation="vertical"
-              tool_tip="Zoom camera toward focus"
-              min_val="0"
-              max_val="1"
-              >
-             <commit_callback function="Slider.value_changed"/>
-           </slider_bar>
-           <button
-              follows="top|left"
-              width="18"
-              height="18"
-              top_pad="0"
-              layout="topleft"
-              image_disabled="MinusItem_Disabled"
-              image_selected="MinusItem_Press"
-              image_unselected="MinusItem_Off"
-              name="zoom_minus_btn"
-              >
-             <commit_callback
-                function="Zoom.minus" />
-             <mouse_held_callback
-                function="Zoom.minus" />
-           </button>
-         <joystick_track
-         follows="top|left"
-         width="78"
-         height="78"
-         left_pad="4"
-         image_selected="Cam_Tracking_In"
-         image_unselected="Cam_Tracking_Out"
-         layout="topleft"
-         name="cam_track_stick"
-         quadrant="left"
-         scale_image="true"
-         sound_flags="3"
-         tool_tip="Move camera up and down, left and right"
-         />
+              name="cam_track_stick"
+              quadrant="left"
+              scale_image="true"
+              sound_flags="3"
+              tool_tip="Move camera up and down, left and right"
+              />
         <button
           follows="top|left"
           width="18"
           height="18"
           top="8"
-          left_pad="6"
+          left_pad="8"
           layout="topleft"
           name="collapse_btn"
           >
@@ -154,10 +107,67 @@
           >
         </button>
         </panel>
+        <panel
+            border="false"
+            class="camera_zoom_panel"
+            height="18"
+            layout="topleft"
+            left="0"
+            mouse_opaque="false"
+            name="zoom"
+            top_pad="0"
+            width="150">
+          <button
+              follows="top|left"
+              width="18"
+              height="18"
+              left="2"
+              top="0"
+              layout="topleft"
+              image_disabled="MinusItem_Disabled"
+              image_selected="MinusItem_Press"
+              image_unselected="MinusItem_Off"
+              name="zoom_minus_btn"
+              >
+             <commit_callback
+                function="Zoom.minus" />
+             <mouse_held_callback
+                function="Zoom.minus" />
+           </button>
+           <slider_bar
+              width="100"
+              height="18"
+              left_pad="2"
+              layout="topleft"
+              name="zoom_slider"
+              orientation="horizontal"
+              tool_tip="Zoom camera toward focus"
+              min_val="0"
+              max_val="1"
+              >
+             <commit_callback function="Slider.value_changed"/>
+           </slider_bar>
+           <button
+              follows="bottom|left"
+              width="18"
+              height="18"
+              left_pad="2"
+              layout="topleft"
+              image_disabled="AddItem_Disabled"
+              image_selected="AddItem_Press"
+              image_unselected="AddItem_Off"
+              name="zoom_plus_btn"
+              >
+             <commit_callback
+                function="Zoom.plus" />
+             <mouse_held_callback
+                function="Zoom.plus" />
+           </button>
+        </panel>
     </panel>
     <panel
      follows="left|top"
-     height="90"
+     height="110"
      layout="topleft"
      left_pad="2"
      right="-2"
