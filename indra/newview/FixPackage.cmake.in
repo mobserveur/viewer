@@ -235,9 +235,9 @@ execute_process(
     COMMAND lipo libogg.0.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libogg.0.dylib
-    COMMAND lipo libopenal.1.24.1.dylib
+    COMMAND lipo libopenal.1.24.2.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
-        -output libopenal.1.24.1.dylib
+        -output libopenal.1.24.2.dylib
     COMMAND lipo libpcre.1.dylib
         -thin ${CMAKE_OSX_ARCHITECTURES}
         -output libpcre.1.dylib
@@ -310,7 +310,7 @@ execute_process(
         Frameworks/libndofdev.dylib
         Frameworks/libnghttp2.14.dylib
         Frameworks/libogg.0.dylib
-        Frameworks/libopenal.1.24.1.dylib
+        Frameworks/libopenal.1.24.2.dylib
         Frameworks/libpcre.1.dylib
         Frameworks/libpcrecpp.0.dylib
         Frameworks/libpng16.16.dylib
