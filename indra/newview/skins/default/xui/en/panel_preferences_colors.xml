@@ -390,4 +390,46 @@
    show_text="true"
    top_pad="5"
    width="415" />
+
+<text
+    type="string"
+    length="1"
+    follows="left|top"
+    height="15"
+    layout="topleft"
+    left="30"
+    name="skin_selection_label"
+    top_pad="10"
+    width="400">
+       Skin
+   </text>
+   <radio_group
+     control_name="skin_selection"
+     height="20"
+     layout="topleft"
+     left="35"
+     top_pad="0"
+     name="skin_selection">
+        <radio_item
+         label="default"
+         name="radio"
+         top_delta="20"
+         layout="topleft"
+         height="16"
+         left="0"
+         value="default"
+         width="75" />
+        <radio_item
+         label="contrast"
+         left_pad="0"
+         layout="topleft"
+         top_delta="0"
+         height="16"
+         name="radio2"
+         value="contrast"
+         width="75" />
+        <radio_group.commit_callback
+            function="Pref.SelectSkin" />
+    </radio_group>
+
 </panel>

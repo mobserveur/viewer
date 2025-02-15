@@ -753,5 +753,5 @@ void LLFloaterCamera::updateCollapsedView()
     mCollapseCtrl->setImageOverlay(!isCollapsed ? "Conv_toolbar_collapse" : "Conv_toolbar_expand");
     getChild<LLPanel>("buttons_panel")->setVisible(!isCollapsed);
     //mPreciseCtrls->setVisible(!collapse);
-    reshape(!isCollapsed ? 410 : 220, getRect().getHeight(), FALSE);
+    reshape(!isCollapsed ? 362 : 172, getRect().getHeight(), FALSE);
 }

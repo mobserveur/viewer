@@ -439,6 +439,8 @@ void LLImageGL::updateStats(F32 current_time)
 {
     LL_PROFILE_ZONE_SCOPED_CATEGORY_TEXTURE;
     sLastFrameTime = current_time;
+    sBindCount = 0;
+    sUniqueCount = 0;
 }
 
 //----------------------------------------------------------------------------

@@ -39,7 +39,7 @@
     layout="topleft"
     left="10"
     name="QualitySpeed"
-    top_delta="35" 
+    top_delta="35"
     width="400">
       Quality &amp; speed:
   </text>
@@ -207,13 +207,13 @@
     decimal_digits="0"
     follows="left|top"
     height="16"
-    increment="8"
+    increment="32"
     initial_value="160"
     label="Draw distance:"
     label_width="187"
     layout="topleft"
     left="30"
-    min_val="64"
+    min_val="32"
     max_val="512"
     name="DrawDistance"
     top_delta="40"
@@ -311,7 +311,7 @@
          name="2"
          value="2"/>
     </combo_box>
-  
+
   <slider
     control_name="IndirectMaxComplexity"
     tool_tip="Controls at what point a visually complex avatar is drawn as a JellyDoll"
