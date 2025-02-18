@@ -1,28 +1,12 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="doc/sl-logo-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="doc/sl-logo.png">
-  <img alt="Second Life Logo" src="doc/sl-logo.png">
-</picture>
+## Third Party Viewer
 
-**[Second Life][] is a free 3D virtual world where users can create, connect and chat with others from around the
-world.** This repository contains a fork of the source code for the official client.
-
-## Open Source
-
-Second Life provides a huge variety of tools for expression, content creation, socialization and play. Its vibrancy is
-only possible because of input and contributions from its residents. The client codebase has been open source since
-2007 and is available under the LGPL license. The [Open Source Portal][] contains additional information about Linden
-Lab's open source history and projects.
+As a third party maintained fork of the [Second Life][] viewer, which includes Apple Silicon native builds, Megapahit viewer is indexed in the [Third Party Viewer Directory][tpv].
 
 ## Download
 
 Most people use a pre-built viewer release to access Second Life. macOS, GNU/Linux and FreeBSD builds are
 [published on the official website][download]. More experimental viewers, such as release candidates and
-project viewers, are detailed on the same page.
-
-### Third Party Viewer
-
-As a third party maintained fork, which includes Apple Silicon native builds, Megapahit viewer is indexed in the [Third Party Viewer Directory][tpv].
+project viewers, would be detailed on the same page, [in-world group][] notices, or [Discord][] server.
 
 ## Build Instructions
 
@@ -145,3 +129,5 @@ pull requests and more. See the [CONTRIBUTING][] and the [open source portal][] 
 [tpv]: http://wiki.secondlife.com/wiki/Third_Party_Viewer_Directory/Megapahit
 [open source portal]: http://wiki.secondlife.com/wiki/Open_Source_Portal
 [contributing]: https://megapahit.org/viewer.git/tree/CONTRIBUTING.md
+[in-world group]: https://world.secondlife.com/group/1142646c-5fb2-162c-ecf8-c5e422ab5c6d
+[Discord]: https://discord.gg/jpt33HPVEK
