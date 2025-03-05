@@ -148,7 +148,6 @@ LLFontFreetype::LLFontFreetype()
     mIsFallback(false),
     mFTFace(NULL),
     mRenderGlyphCount(0),
-    mAddGlyphCount(0),
     mStyle(0),
     mPointSize(0)
 {
@@ -576,7 +575,6 @@ LLFontGlyphInfo* LLFontFreetype::addGlyphFromFont(const LLFontFreetype *fontp, l
     S32 pos_x, pos_y;
     U32 bitmap_num;
     mFontBitmapCachep->nextOpenPos(width, pos_x, pos_y, bitmap_glyph_type, bitmap_num);
-    mAddGlyphCount++;
 
     LLFontGlyphInfo* gi = new LLFontGlyphInfo(glyph_index, requested_glyph_type);
     gi->mXBitmapOffset = pos_x;
@@ -717,7 +715,7 @@ void LLFontFreetype::renderGlyph(EFontGlyphType bitmap_type, U32 glyph_index, ll
         if (error == FT_Err_Out_Of_Memory)
         {
             LLError::LLUserWarningMsg::showOutOfMemory();
-            LL_ERRS() << "Out of memory loading glyph for character " << wch << LL_ENDL;
+            LL_ERRS() << "Out of memory loading glyph for character " << llformat("U+%xu", U32(wch)) << LL_ENDL;
         }
 
         std::string message = llformat(
