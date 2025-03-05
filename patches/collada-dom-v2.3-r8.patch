@@ -510,7 +510,7 @@ index 17fbaea..d0d5939 100644
 +add_library(collada14dom STATIC ${COLLADA_BASE_SOURCES} ${dom_files})
 +if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 +  target_compile_options(collada14dom PRIVATE
-+          "-pedantic" "-Wno-error=unused-result")
++          "-pedantic" "-Wno-error=unused-result" "-Wno-error=cast-user-defined")
 +elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 +  target_compile_options(collada14dom PRIVATE
 +          "-Wno-error=unused-result"
