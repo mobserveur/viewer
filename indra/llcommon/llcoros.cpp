@@ -303,6 +303,62 @@ std::string LLCoros::launch(const std::string& prefix, const callable_t& callabl
     return name;
 }
 
+namespace
+{
+
+#if LL_WINDOWS
+
+static const U32 STATUS_MSC_EXCEPTION = 0xE06D7363; // compiler specific
+
+U32 exception_filter(U32 code, struct _EXCEPTION_POINTERS* exception_infop)
+{
+    if (LLApp::instance()->reportCrashToBugsplat((void*)exception_infop))
+    {
+        // Handled
+        return EXCEPTION_CONTINUE_SEARCH;
+    }
+    else if (code == STATUS_MSC_EXCEPTION)
+    {
+        // C++ exception, go on
+        return EXCEPTION_CONTINUE_SEARCH;
+    }
+    else
+    {
+        // handle it, convert to std::exception
+        return EXCEPTION_EXECUTE_HANDLER;
+    }
+
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+
+void sehandle(const LLCoros::callable_t& callable)
+{
+    __try
+    {
+        callable();
+    }
+    __except (exception_filter(GetExceptionCode(), GetExceptionInformation()))
+    {
+        // convert to C++ styled exception
+        // Note: it might be better to use _se_set_translator
+        // if you want exception to inherit full callstack
+        char integer_string[512];
+        sprintf(integer_string, "SEH, code: %lu\n", GetExceptionCode());
+        throw std::exception(integer_string);
+    }
+}
+
+#else  // ! LL_WINDOWS
+
+inline void sehandle(const LLCoros::callable_t& callable)
+{
+    callable();
+}
+
+#endif // ! LL_WINDOWS
+
+} // anonymous namespace
+
 // Top-level wrapper around caller's coroutine callable.
 // Normally we like to pass strings and such by const reference -- but in this
 // case, we WANT to copy both the name and the callable to our local stack!
@@ -330,6 +386,7 @@ void LLCoros::toplevel(std::string name, callable_t callable)
         // viewer will carry on.
         LOG_UNHANDLED_EXCEPTION(STRINGIZE("coroutine " << name));
     }
+#ifndef LL_WINDOWS
     catch (...)
     {
         // Stash any OTHER kind of uncaught exception in the rethrow() queue
@@ -338,6 +395,7 @@ void LLCoros::toplevel(std::string name, callable_t callable)
                             << name << LL_ENDL;
         LLCoros::instance().saveException(name, std::current_exception());
     }
+#endif // ! LL_WINDOWS
 }
 
 //static
