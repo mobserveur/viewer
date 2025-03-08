@@ -49,6 +49,11 @@ if (LINUX)
     linux/volume_catcher_pipewire.cpp 
   )
 
+  if (${LINUX_DISTRO} MATCHES opensuse-tumbleweed)
+    message( "Building with Linux volume catcher for PulseAudio only and cancelling PipeWire" )
+    list(REMOVE_ITEM LINUX_VOLUME_CATCHER linux/volume_catcher_pipewire.cpp)
+  endif ()
+
   list(APPEND media_plugin_cef_SOURCE_FILES ${LINUX_VOLUME_CATCHER})
   set(CMAKE_SHARED_LINKER_FLAGS  "-Wl,--build-id -Wl,-rpath,'$ORIGIN:$ORIGIN/../../lib'")
   list(APPEND media_plugin_cef_LINK_LIBRARIES llwindow )
@@ -70,6 +75,10 @@ add_library(media_plugin_cef
     SHARED
     ${media_plugin_cef_SOURCE_FILES}
     )
+
+if (NOT (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
+    target_compile_definitions(media_plugin_cef PRIVATE USE_VOLUME_CATCHER_PW=1)
+endif ()
 
 #add_dependencies(media_plugin_cef
 #  ${MEDIA_PLUGIN_BASE_LIBRARIES}
