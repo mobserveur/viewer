@@ -91,14 +91,14 @@ $ megapahit
 ### FreeBSD
 ```
 $ sudo su -
-# portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 devel/boost-libs x11-toolkits/fltk math/glm textproc/hunspell misc/meshoptimizer archivers/minizip graphics/nanosvg www/libnghttp2 devel/pcre devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis devel/xxhash
+# portmaster devel/cmake devel/pkgconf audio/freealut devel/apr1 devel/boost-libs x11-toolkits/fltk math/glm textproc/hunspell misc/meshoptimizer archivers/minizip graphics/nanosvg www/libnghttp2 devel/sdl20 net/uriparser multimedia/vlc audio/libvorbis devel/xxhash
 # exit
 $ setenv LL_BUILD "-O3 -std=c++20 -fPIC"
 $ cmake -DCMAKE_BUILD_TYPE:STRING=Release -DADDRESS_SIZE:STRING=64 -DUSESYSTEMLIBS:BOOL=ON -DUSE_OPENAL:BOOL=ON -DUSE_FMODSTUDIO:BOOL=OFF -DENABLE_MEDIA_PLUGINS:BOOL=ON -DLL_TESTS:BOOL=OFF -DNDOF:BOOL=OFF -DROOT_PROJECT_NAME:STRING=Megapahit -DVIEWER_CHANNEL:STRING=Megapahit -DVIEWER_BINARY_NAME:STRING=megapahit -DBUILD_SHARED_LIBS:BOOL=OFF -DINSTALL:BOOL=ON -DPACKAGE:BOOL=ON ../indra
 $ make -j`nproc`
 $ sudo cpack -G FREEBSD
 $ sudo pkg add megapahit-`cat newview/viewer_version.txt`-FreeBSD.pkg
-$ sudo pkg set -yA 1 freealut apr1 fltk hunspell meshoptimizer minizip nanosvg pcre sdl20 uriparser vlc libvorbis
+$ sudo pkg set -yA 1 freealut apr1 fltk hunspell meshoptimizer minizip nanosvg sdl20 uriparser vlc libvorbis
 $ megapahit
 ```
 
