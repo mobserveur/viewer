@@ -1436,11 +1436,24 @@ if (DARWIN)
   LIST(APPEND viewer_SOURCE_FILES llfilepicker_mac.mm)
   LIST(APPEND viewer_HEADER_FILES llfilepicker_mac.h)
 
+  set_source_files_properties(
+    llappviewermacosx-objc.mm
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
+  )
+
+  set_source_files_properties(
+    llfilepicker_mac.mm
+    PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
+  )
+
   # This should be compiled with the viewer.
   LIST(APPEND viewer_SOURCE_FILES llappdelegate-objc.mm)
   set_source_files_properties(
     llappdelegate-objc.mm
     PROPERTIES
+    SKIP_PRECOMPILE_HEADERS TRUE
     COMPILE_DEFINITIONS "${VIEWER_CHANNEL_VERSION_DEFINES}"
     # BugsplatMac is a module, imported with @import. That language feature
     # demands these -f switches.
@@ -1729,6 +1742,10 @@ list(APPEND EVENT_HOST_SCRIPTS ${EVENT_HOST_SCRIPT_GLOB_LIST})
 set(PACKAGE ON CACHE BOOL
     "Add a package target that builds an installer package.")
 
+if(USE_PRECOMPILED_HEADERS)
+  target_precompile_headers( ${VIEWER_BINARY_NAME} PRIVATE llviewerprecompiledheaders.h )
+endif(USE_PRECOMPILED_HEADERS)
+
 if (WINDOWS)
     set_target_properties(${VIEWER_BINARY_NAME}
         PROPERTIES
@@ -1738,10 +1755,6 @@ if (WINDOWS)
         LINK_FLAGS_RELEASE "/FORCE:MULTIPLE /MAP\"secondlife-bin.MAP\" /OPT:REF /LARGEADDRESSAWARE"
         )
     target_compile_options(${VIEWER_BINARY_NAME} PRIVATE /bigobj)
-
-    if(USE_PRECOMPILED_HEADERS)
-       target_precompile_headers( ${VIEWER_BINARY_NAME} PRIVATE llviewerprecompiledheaders.h )
-    endif(USE_PRECOMPILED_HEADERS)
 
     # If adding a file to viewer_manifest.py in the WindowsManifest.construct() method, be sure to add the dependency
     # here.
@@ -2042,6 +2055,22 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         COMPILE_FLAGS -Wno-uninitialized)
     set_source_files_properties(llviewerstats.cpp PROPERTIES
         COMPILE_FLAGS -Wno-unused-value)
+    set_source_files_properties(
+        llaisapi.cpp
+        llconversationlog.cpp
+        llconversationmodel.cpp
+        lleventnotifier.cpp
+        llfloateravatarrendersettings.cpp
+        llfloatereditextdaycycle.cpp
+        llfloaternewfeaturenotification.cpp
+        llinventoryfunctions.cpp
+        llnotificationlistitem.cpp
+        llpanelenvironment.cpp
+        llpanelgroupnotices.cpp
+        llpanelteleporthistory.cpp
+        lltoastgroupnotifypanel.cpp
+        llvoavatar.cpp
+        PROPERTIES COMPILE_FLAGS -Wno-stringop-overflow)
     set_source_files_properties(llurl.cpp PROPERTIES COMPILE_FLAGS
         -Wno-stringop-truncation)
     set_source_files_properties(

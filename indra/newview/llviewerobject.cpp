@@ -2928,15 +2928,15 @@ void LLViewerObject::fetchInventoryFromServer()
         else
         {
             LL_WARNS() << "Using old task inventory path!" << LL_ENDL;
-            // Results in processTaskInv
-            LLMessageSystem *msg = gMessageSystem;
-            msg->newMessageFast(_PREHASH_RequestTaskInventory);
-            msg->nextBlockFast(_PREHASH_AgentData);
-            msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
-            msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
-            msg->nextBlockFast(_PREHASH_InventoryData);
-            msg->addU32Fast(_PREHASH_LocalID, mLocalID);
-            msg->sendReliable(mRegionp->getHost());
+        // Results in processTaskInv
+        LLMessageSystem* msg = gMessageSystem;
+        msg->newMessageFast(_PREHASH_RequestTaskInventory);
+        msg->nextBlockFast(_PREHASH_AgentData);
+        msg->addUUIDFast(_PREHASH_AgentID, gAgent.getID());
+        msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+        msg->nextBlockFast(_PREHASH_InventoryData);
+        msg->addU32Fast(_PREHASH_LocalID, mLocalID);
+        msg->sendReliable(mRegionp->getHost());
         }
     }
 }

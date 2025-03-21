@@ -28,6 +28,10 @@
 
 #include "lltemplatemessagebuilder.h"
 
+#if __FreeBSD__
+#include <arpa/inet.h>
+#endif
+
 #include "llmessagetemplate.h"
 #include "llmath.h"
 #include "llquaternion.h"
