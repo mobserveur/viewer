@@ -160,17 +160,16 @@ void assert_glerror();
 void clear_glerror();
 
 
+#if !LL_RELEASE_FOR_DOWNLOAD
 # define stop_glerror() assert_glerror()
 # define llglassertok() assert_glerror()
-
-// stop_glerror is still needed on OS X but has performance implications
-// use macro below to conditionally add stop_glerror to non-release builds
-// on OS X
-#if LL_DARWIN && !LL_RELEASE_FOR_DOWNLOAD
-#define STOP_GLERROR stop_glerror()
+# define STOP_GLERROR stop_glerror()
 #else
-#define STOP_GLERROR
+# define stop_glerror()
+# define llglassertok()
+# define STOP_GLERROR
 #endif
+
 
 #define llglassertok_always() assert_glerror()
 

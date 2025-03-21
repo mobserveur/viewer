@@ -49,6 +49,11 @@ if (LINUX)
     linux/volume_catcher_pipewire.cpp 
   )
 
+  if (${LINUX_DISTRO} MATCHES arch OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed))
+    message( "Building with Linux volume catcher for PulseAudio only and cancelling PipeWire" )
+    list(REMOVE_ITEM LINUX_VOLUME_CATCHER linux/volume_catcher_pipewire.cpp)
+  endif ()
+
   list(APPEND media_plugin_cef_SOURCE_FILES ${LINUX_VOLUME_CATCHER})
   set(CMAKE_SHARED_LINKER_FLAGS  "-Wl,--build-id -Wl,-rpath,'$ORIGIN:$ORIGIN/../../lib'")
   list(APPEND media_plugin_cef_LINK_LIBRARIES llwindow )
@@ -70,6 +75,10 @@ add_library(media_plugin_cef
     SHARED
     ${media_plugin_cef_SOURCE_FILES}
     )
+
+if (NOT (${LINUX_DISTRO} MATCHES arch OR (${LINUX_DISTRO} MATCHES opensuse-tumbleweed)))
+    target_compile_definitions(media_plugin_cef PRIVATE USE_VOLUME_CATCHER_PW=1)
+endif ()
 
 #add_dependencies(media_plugin_cef
 #  ${MEDIA_PLUGIN_BASE_LIBRARIES}
@@ -110,14 +119,14 @@ if (DARWIN)
         -change "/opt/local/lib/libiconv.2.dylib" "@loader_path/../../Frameworks/libiconv.2.dylib"
         -change "/opt/local/lib/libapr-1.0.dylib" "@loader_path/../../Frameworks/libapr-1.0.dylib"
         -change "/opt/local/lib/libexpat.1.dylib" "@loader_path/../../Frameworks/libexpat.1.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_context-mt.dylib" "@loader_path/../../Frameworks/libboost_context-mt.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_fiber-mt.dylib" "@loader_path/../../Frameworks/libboost_fiber-mt.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_filesystem-mt.dylib" "@loader_path/../../Frameworks/libboost_filesystem-mt.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_program_options-mt.dylib" "@loader_path/../../Frameworks/libboost_program_options-mt.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_regex-mt.dylib" "@loader_path/../../Frameworks/libboost_regex-mt.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_system-mt.dylib" "@loader_path/../../Frameworks/libboost_system-mt.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_thread-mt.dylib" "@loader_path/../../Frameworks/libboost_thread-mt.dylib"
-        -change "/opt/local/libexec/boost/1.81/lib/libboost_url-mt.dylib" "@loader_path/../../Frameworks/libboost_url-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_context-mt.dylib" "@loader_path/../../Frameworks/libboost_context-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_fiber-mt.dylib" "@loader_path/../../Frameworks/libboost_fiber-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_filesystem-mt.dylib" "@loader_path/../../Frameworks/libboost_filesystem-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_program_options-mt.dylib" "@loader_path/../../Frameworks/libboost_program_options-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_regex-mt.dylib" "@loader_path/../../Frameworks/libboost_regex-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_system-mt.dylib" "@loader_path/../../Frameworks/libboost_system-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_thread-mt.dylib" "@loader_path/../../Frameworks/libboost_thread-mt.dylib"
+        -change "/opt/local/libexec/boost/1.87/lib/libboost_url-mt.dylib" "@loader_path/../../Frameworks/libboost_url-mt.dylib"
         -change "/opt/local/lib/libz.1.dylib" "@loader_path/../../Frameworks/libz.1.dylib"
         -change "/opt/local/lib/libnghttp2.14.dylib" "@loader_path/../../Frameworks/libnghttp2.14.dylib"
         "$<TARGET_FILE:media_plugin_cef>"

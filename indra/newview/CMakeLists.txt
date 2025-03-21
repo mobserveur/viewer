@@ -2165,7 +2165,7 @@ if (LINUX)
             CACHE STRING "RPM package requirements.")
         elseif (${LINUX_DISTRO} MATCHES opensuse-tumbleweed)
           set(CPACK_RPM_PACKAGE_REQUIRES
-            "libapr-util1-0, libboost_fiber1_87_0, libboost_program_options1_87_0, libboost_regex1_87_0, libboost_thread1_87_0, expat, libfltk1_3, libGLU1, libhunspell-1_7-0, libnghttp2-14, libSDL2-2_0-0, liburiparser1, libvlc5, vlc-codecs, libvorbis0"
+            "libapr-util1-0, libboost_fiber1_87_0, libboost_program_options1_87_0, libboost_regex1_87_0, libboost_thread1_87_0, libboost_url1_87_0, libboost_url1_87_0-x86-64-v3, expat, libfltk1_3, libGLU1, libhunspell-1_7-0, libnghttp2-14, libSDL2-2_0-0, liburiparser1, libvlc5, vlc-codecs, libvorbis0"
             CACHE STRING "RPM package requirements.")
         endif (${LINUX_DISTRO} MATCHES fedora)
       elseif (${LINUX_DISTRO} MATCHES arch)
@@ -2290,7 +2290,7 @@ elseif (USESYSTEMLIBS)
     set(CPACK_FREEBSD_PACKAGE_ORIGIN net/${VIEWER_BINARY_NAME}
       CACHE STRING "FreeBSD package origin.")
     set(CPACK_FREEBSD_PACKAGE_DEPS
-      "audio/freealut;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;archivers/minizip;www/libnghttp2;devel/pcre;net/uriparser;multimedia/vlc;audio/libvorbis"
+      "audio/freealut;graphics/libGLU;textproc/hunspell;misc/meshoptimizer;archivers/minizip;www/libnghttp2;net/uriparser;multimedia/vlc;audio/libvorbis"
       CACHE STRING "FreeBSD package dependencies.")
   endif (CMAKE_SYSTEM_NAME MATCHES FreeBSD AND PACKAGE)
 endif (LINUX)
