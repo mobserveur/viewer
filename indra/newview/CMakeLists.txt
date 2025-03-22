@@ -304,6 +304,7 @@ set(viewer_SOURCE_FILES
     llfloatersettingscolor.cpp
     llfloatersettingsdebug.cpp
     llfloatersidepanelcontainer.cpp
+    llfloaterslapptest.cpp
     llfloatersnapshot.cpp
     llfloatersounddevices.cpp
     llfloaterspellchecksettings.cpp
@@ -981,6 +982,7 @@ set(viewer_HEADER_FILES
     llfloatersettingscolor.h
     llfloatersettingsdebug.h
     llfloatersidepanelcontainer.h
+    llfloaterslapptest.h
     llfloatersnapshot.h
     llfloatersounddevices.h
     llfloaterspellchecksettings.h
