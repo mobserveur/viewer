@@ -26,7 +26,6 @@
 // class3/environment/waterF.glsl
 
 #define WATER_MINIMAL 1
-#define SHORELINE_FADE 1
 
 out vec4 frag_color;
 
@@ -269,9 +268,9 @@ void main()
 #ifdef SHORELINE_FADE
     fade = max(0.0,min(1.0, (pos.z - refPos.z) / 10.0));
 #else
-    fade = 1.0 * water_mask;
+    fade = 1.0;
 #endif
-
+    fade *= water_mask;
     distort2 = mix(distort, distort2, min(1.0, fade * 10.0));
     depth = texture(depthMap, distort2).r;
 
