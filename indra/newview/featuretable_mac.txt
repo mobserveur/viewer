@@ -86,6 +86,7 @@ RenderTonemapMix			1   1
 RenderDisableVintageMode           1   1
 RenderDownScaleMethod       1   0
 RenderMaxTextureResolution         1   2048
+RenderReflectionProbeCount  1   256
 
 //
 // Low Graphics Settings
@@ -128,6 +129,7 @@ RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderDisableVintageMode           1   0
 RenderMaxTextureResolution         1   512
+RenderReflectionProbeCount  1   1
 
 
 //
@@ -171,6 +173,7 @@ RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderDisableVintageMode           1   0
 RenderMaxTextureResolution         1   1024
+RenderReflectionProbeCount  1   32
 
 //
 // Medium Graphics Settings (standard)
@@ -212,6 +215,7 @@ RenderExposure				1   1
 RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderMaxTextureResolution  1   2048
+RenderReflectionProbeCount  1   64
 
 //
 // Medium High Graphics Settings
@@ -253,6 +257,7 @@ RenderExposure				1   1
 RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderMaxTextureResolution  1   2048
+RenderReflectionProbeCount  1   64
 
 //
 // High Graphics Settings (SSAO + sun shadows)
@@ -294,6 +299,7 @@ RenderExposure				1   1
 RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderMaxTextureResolution  1   2048
+RenderReflectionProbeCount  1   128
 
 //
 // High Ultra Graphics Settings (SSAO + all shadows)
@@ -335,6 +341,7 @@ RenderExposure				1   1
 RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderMaxTextureResolution  1   2048
+RenderReflectionProbeCount  1   256
 
 //
 // Ultra graphics (REALLY PURTY!)
@@ -376,6 +383,7 @@ RenderExposure				1   1
 RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderMaxTextureResolution  1   2048
+RenderReflectionProbeCount  1   256
 
 //
 // Class Unknown Hardware (unknown)
@@ -408,6 +416,7 @@ RenderShadowDetail			0	0
 RenderMirrors				0	0
 RenderDisableVintageMode           1   0
 RenderMaxTextureResolution         1   2048
+RenderReflectionProbeCount  0   0
 
 list TexUnit8orLess
 RenderDeferredSSAO			0	0
@@ -448,6 +457,7 @@ RenderReflectionProbeDetail	0	0
 RenderReflectionsEnabled    0   0
 RenderMirrors				0	0
 RenderDisableVintageMode           1   0
+RenderReflectionProbeCount  0   0
 
 list VaryingVectors16orLess
 RenderTerrainPBRPlanarSampleCount 1   1
