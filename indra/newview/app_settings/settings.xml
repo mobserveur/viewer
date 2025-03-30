@@ -8464,7 +8464,7 @@
     <key>Type</key>
     <string>F32</string>
     <key>Value</key>
-    <real>0.8</real>
+    <real>0.7</real>
   </map>
 
   <key>RenderShadowGaussian</key>
@@ -14167,6 +14167,17 @@
       <integer>1</integer>
       <key>Type</key>
       <string>U32</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>MPRenderShadowOpti</key>
+    <map>
+      <key>Comment</key>
+      <string>Shadows Optimisations</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
       <key>Value</key>
       <integer>0</integer>
     </map>

@@ -144,6 +144,7 @@ U32 LLPipeline::RenderFSAAType;
 U32 LLPipeline::RenderResolutionDivisor;
 bool LLPipeline::RenderUIBuffer;
 S32 LLPipeline::RenderShadowDetail;
+S32 LLPipeline::MPRenderShadowOpti;
 S32 LLPipeline::RenderShadowSplits;
 bool LLPipeline::RenderDeferredSSAO;
 F32 LLPipeline::RenderShadowResolutionScale;
@@ -526,6 +527,7 @@ void LLPipeline::init()
     connectRefreshCachedSettingsSafe("RenderResolutionDivisor");
     connectRefreshCachedSettingsSafe("RenderUIBuffer");
     connectRefreshCachedSettingsSafe("RenderShadowDetail");
+    connectRefreshCachedSettingsSafe("MPRenderShadowOpti");
     connectRefreshCachedSettingsSafe("RenderShadowSplits");
     connectRefreshCachedSettingsSafe("RenderDeferredSSAO");
     connectRefreshCachedSettingsSafe("RenderShadowResolutionScale");
@@ -729,7 +731,9 @@ void LLPipeline::resizeShadowTexture()
 {
     releaseSunShadowTargets();
     releaseSpotShadowTargets();
-    allocateShadowBuffer(mRT->width, mRT->height);
+    GLuint resX = gViewerWindow->getWorldViewWidthRaw();
+    GLuint resY = gViewerWindow->getWorldViewHeightRaw();
+    allocateShadowBuffer(resX, resY);
     gResizeShadowTexture = false;
 }
 
@@ -946,7 +950,7 @@ bool LLPipeline::allocateShadowBuffer(U32 resX, U32 resY)
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DISPLAY;
     S32 shadow_detail = RenderShadowDetail;
 
-    F32 scale = gCubeSnapshot ? 1.0f : llmax(0.f, RenderShadowResolutionScale); // Don't scale probe shadow maps
+    F32 scale = gCubeSnapshot ? 1.0f : llmax(0.5f, RenderShadowResolutionScale); // Don't scale probe shadow maps
     U32 sun_shadow_map_width = BlurHappySize(resX, scale);
     U32 sun_shadow_map_height = BlurHappySize(resY, scale);
 
@@ -1058,6 +1062,7 @@ void LLPipeline::refreshCachedSettings()
     RenderResolutionDivisor = gSavedSettings.getU32("RenderResolutionDivisor");
     RenderUIBuffer = gSavedSettings.getBOOL("RenderUIBuffer");
     RenderShadowDetail = gSavedSettings.getS32("RenderShadowDetail");
+    MPRenderShadowOpti = gSavedSettings.getS32("MPRenderShadowOpti");
     RenderShadowSplits = gSavedSettings.getS32("RenderShadowSplits");
     RenderDeferredSSAO = gSavedSettings.getBOOL("RenderDeferredSSAO");
     RenderShadowResolutionScale = gSavedSettings.getF32("RenderShadowResolutionScale");
@@ -1450,7 +1455,7 @@ void LLPipeline::createLUTBuffers()
         }
 
         U32 pix_format = GL_R16F;
-#if LL_DARWIN
+#if 0 && LL_DARWIN
         // Need to work around limited precision with 10.6.8 and older drivers
         //
         pix_format = GL_R32F;
@@ -3968,12 +3973,10 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
 
     llassert(!sRenderingHUDs);
 
-#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
-#endif
 
     if (&camera == LLViewerCamera::getInstance())
     {   // a bit hacky, this is the start of the main render frame, figure out delta between last modelview matrix and
@@ -4093,12 +4096,10 @@ void LLPipeline::renderGeomDeferred(LLCamera& camera, bool do_occlusion)
 
     } // Tracy ZoneScoped
 
-#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
-#endif
 }
 
 // Render all of our geometry that's required after our deferred pass.
@@ -4108,12 +4109,10 @@ void LLPipeline::renderGeomPostDeferred(LLCamera& camera)
     LL_PROFILE_ZONE_SCOPED_CATEGORY_DRAWPOOL;
     LL_PROFILE_GPU_ZONE("renderGeomPostDeferred");
 
-#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
-#endif
 
     U32 cur_type = 0;
 
@@ -4241,12 +4240,10 @@ void LLPipeline::renderGeomPostDeferred(LLCamera& camera)
         renderDebug();
     }
 
-#if GL_VERSION_1_1
     if (gUseWireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
-#endif
 }
 
 void LLPipeline::renderGeomShadow(LLCamera& camera)
@@ -4339,9 +4336,7 @@ void LLPipeline::renderPhysicsDisplay()
     gGL.flush();
     gDebugProgram.bind();
 
-#if GL_VERSION_1_1
     LLGLEnable(GL_POLYGON_OFFSET_LINE);
-#endif
     glPolygonOffset(3.f, 3.f);
     glLineWidth(3.f);
     LLGLEnable blend(GL_BLEND);
@@ -4357,12 +4352,10 @@ void LLPipeline::renderPhysicsDisplay()
 
         bool wireframe = (pass == 2);
 
-#if GL_VERSION_1_1
         if (wireframe)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
-#endif
 
         for (LLWorld::region_list_t::const_iterator iter = LLWorld::getInstance()->getRegionList().begin();
             iter != LLWorld::getInstance()->getRegionList().end(); ++iter)
@@ -4382,12 +4375,10 @@ void LLPipeline::renderPhysicsDisplay()
         }
         gGL.flush();
 
-#if GL_VERSION_1_1
         if (wireframe)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
-#endif
     }
     glLineWidth(1.f);
     gDebugProgram.unbind();
@@ -4467,9 +4458,7 @@ void LLPipeline::renderDebug()
                         glClearColor(clearColor.mV[0],clearColor.mV[1],clearColor.mV[2],0);
                         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // no stencil -- deprecated | GL_STENCIL_BUFFER_BIT);
                         gGL.setColorMask(true, false);
-#if GL_VERSION_1_1
                         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-#endif
                     }
 
                     //NavMesh
@@ -4499,9 +4488,7 @@ void LLPipeline::renderDebug()
                         gPathfindingProgram.bind();
 
                         gGL.flush();
-#if GL_VERSION_1_1
                         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-#endif
                         glLineWidth(1.0f);
                         gGL.flush();
                     }
@@ -4558,9 +4545,8 @@ void LLPipeline::renderDebug()
                             LLGLDisable cull(i >= 2 ? GL_CULL_FACE : 0);
 
                             gGL.flush();
-#if GL_VERSION_1_1
+
                             glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-#endif
 
                             //get rid of some z-fighting
                             LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
@@ -4585,10 +4571,8 @@ void LLPipeline::renderDebug()
                                     gGL.flush();
                                 }
 
-#if GL_VERSION_1_1
                                 LLGLEnable lineOffset(GL_POLYGON_OFFSET_LINE);
                                 glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-#endif
 
                                 F32 offset = gSavedSettings.getF32("PathfindingLineOffset");
 
@@ -4608,14 +4592,10 @@ void LLPipeline::renderDebug()
                                     }
                                     else
                                     {
-#if GL_VERSION_1_1
                                         glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-#endif
                                         gPathfindingProgram.uniform1f(sAmbiance, ambiance);
                                         llPathingLibInstance->renderNavMeshShapesVBO( render_order[i] );
-#if GL_VERSION_1_1
                                         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-#endif
                                     }
                                 }
 
@@ -4632,9 +4612,7 @@ void LLPipeline::renderDebug()
                                     glLineWidth(1.f);
                                 }
 
-#if GL_VERSION_1_1
                                 glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-#endif
                             }
                         }
                     }
@@ -4645,9 +4623,7 @@ void LLPipeline::renderDebug()
                     {   //render navmesh xray
                         F32 ambiance = gSavedSettings.getF32("PathfindingAmbiance");
 
-#if GL_VERSION_1_1
                         LLGLEnable lineOffset(GL_POLYGON_OFFSET_LINE);
-#endif
                         LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
 
                         F32 offset = gSavedSettings.getF32("PathfindingLineOffset");
@@ -4664,14 +4640,10 @@ void LLPipeline::renderDebug()
 
                         if (gSavedSettings.getBOOL("PathfindingXRayWireframe"))
                         { //draw hidden wireframe as darker and less opaque
-#if GL_VERSION_1_1
                             glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-#endif
                             gPathfindingProgram.uniform1f(sAmbiance, 1.f);
                             llPathingLibInstance->renderNavMesh();
-#if GL_VERSION_1_1
                             glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-#endif
                         }
                         else
                         {
@@ -4711,9 +4683,7 @@ void LLPipeline::renderDebug()
 
         gGL.getTexUnit(0)->bind(LLViewerFetchedTexture::sWhiteImagep, true);
 
-#if GL_VERSION_1_1
         glPointSize(8.f);
-#endif
         LLGLDepthTest depth(GL_TRUE, GL_TRUE, GL_ALWAYS);
 
         gGL.begin(LLRender::POINTS);
@@ -4738,9 +4708,7 @@ void LLPipeline::renderDebug()
         }
         gGL.end();
         gGL.flush();
-#if GL_VERSION_1_1
         glPointSize(1.f);
-#endif
     }
 
     // Debug stuff.
@@ -4944,9 +4912,7 @@ void LLPipeline::renderDebug()
                 {
                     //render visible point cloud
                     gGL.flush();
-#if GL_VERSION_1_1
                     glPointSize(8.f);
-#endif
                     gGL.begin(LLRender::POINTS);
 
                     F32* c = col+i*4;
@@ -4960,9 +4926,7 @@ void LLPipeline::renderDebug()
                     gGL.end();
 
                     gGL.flush();
-#if GL_VERSION_1_1
                     glPointSize(1.f);
-#endif
 
                     LLVector3* ext = mShadowExtents[i];
                     LLVector3 pos = (ext[0]+ext[1])*0.5f;
@@ -7584,7 +7548,8 @@ void LLPipeline::applyFXAA(LLRenderTarget* src, LLRenderTarget* dst)
 void LLPipeline::generateSMAABuffers(LLRenderTarget* src)
 {
     llassert(!gCubeSnapshot);
-    bool multisample = RenderFSAAType == 2 && gSMAAEdgeDetectProgram[0].isComplete() && mFXAAMap.isComplete() && mSMAABlendBuffer.isComplete();
+    if(RenderFSAAType < 2) return;
+    bool multisample = gSMAAEdgeDetectProgram[0].isComplete() && mFXAAMap.isComplete() && mSMAABlendBuffer.isComplete();
 
     // Present everything.
     if (multisample)
@@ -7702,7 +7667,13 @@ void LLPipeline::generateSMAABuffers(LLRenderTarget* src)
 void LLPipeline::applySMAA(LLRenderTarget* src, LLRenderTarget* dst)
 {
     llassert(!gCubeSnapshot);
-    bool multisample = RenderFSAAType == 2 && gSMAAEdgeDetectProgram[0].isComplete() && mFXAAMap.isComplete() && mSMAABlendBuffer.isComplete();
+
+    bool multisample = false;
+
+    if(RenderFSAAType > 1)
+    {
+        multisample = gSMAAEdgeDetectProgram[0].isComplete() && mFXAAMap.isComplete() && mSMAABlendBuffer.isComplete();
+    }
 
     // Present everything.
     if (multisample)
@@ -9325,13 +9296,9 @@ void LLPipeline::bindReflectionProbes(LLGLSLShader& shader)
         return;
     }
 
-#if GL_VERSION_4_0
     S32 channel = shader.enableTexture(LLShaderMgr::REFLECTION_PROBES, LLTexUnit::TT_CUBE_MAP_ARRAY);
-#else
-    S32 channel;
-#endif
     bool bound = false;
-#if GL_VERSION_4_0
+
     if (channel > -1 && mReflectionMapManager.mTexture.notNull())
     {
         mReflectionMapManager.mTexture->bind(channel);
@@ -9362,7 +9329,6 @@ void LLPipeline::bindReflectionProbes(LLGLSLShader& shader)
 
         setEnvMat(shader);
     }
-#endif
 
     // reflection probe shaders generally sample the scene map as well for SSR
     channel = shader.enableTexture(LLShaderMgr::SCENE_MAP);
@@ -9528,7 +9494,6 @@ void LLPipeline::renderShadow(const glm::mat4& view, const glm::mat4& proj, LLCa
         }
     };
 
-
     LLVertexBuffer::unbind();
     for (int j = 0; j < 2; ++j) // 0 -- static, 1 -- rigged
     {
@@ -9570,6 +9535,7 @@ void LLPipeline::renderShadow(const glm::mat4& view, const glm::mat4& proj, LLCa
         renderGeomShadow(shadow_cam);
     }
 
+    if(MPRenderShadowOpti < 3)
     {
         LL_PROFILE_ZONE_NAMED_CATEGORY_PIPELINE("shadow alpha");
         LL_PROFILE_GPU_ZONE("shadow alpha");
@@ -9900,7 +9866,7 @@ public:
 
 void LLPipeline::generateSunShadow(LLCamera& camera)
 {
-    if (!sRenderDeferred || RenderShadowDetail <= 0)
+    if (!sRenderDeferred || RenderShadowDetail <= 0 || (MPRenderShadowOpti > 0 && gCubeSnapshot))
     {
         return;
     }
@@ -10182,8 +10148,12 @@ void LLPipeline::generateSunShadow(LLCamera& camera)
 
             std::vector<LLVector3> fp;
 
+            U32 splits = 3;
+            if(MPRenderShadowOpti == 1) splits = 2;
+            else if(MPRenderShadowOpti >= 2) splits = 1;
+
             if (!gPipeline.getVisiblePointCloud(shadow_cam, min, max, fp, lightDir)
-                || j > RenderShadowSplits)
+                || j > splits)
             {
                 //no possible shadow receivers
                 if (!gPipeline.hasRenderDebugMask(LLPipeline::RENDER_DEBUG_SHADOW_FRUSTA) && !gCubeSnapshot)

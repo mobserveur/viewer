@@ -438,9 +438,10 @@ float geometricOcclusion(PBRInfo pbrInputs)
     float NdotL = pbrInputs.NdotL;
     float NdotV = pbrInputs.NdotV;
     float r = pbrInputs.alphaRoughness;
+    float r2 = r * r;
 
-    float attenuationL = 2.0 * NdotL / (NdotL + sqrt(r * r + (1.0 - r * r) * (NdotL * NdotL)));
-    float attenuationV = 2.0 * NdotV / (NdotV + sqrt(r * r + (1.0 - r * r) * (NdotV * NdotV)));
+    float attenuationL = 2.0 * NdotL / (NdotL + sqrt(r2 + (1.0 - r2) * (NdotL * NdotL)));
+    float attenuationV = 2.0 * NdotV / (NdotV + sqrt(r2 + (1.0 - r2) * (NdotV * NdotV)));
     return attenuationL * attenuationV;
 }
 
@@ -625,24 +626,11 @@ vec3 pbrBaseLight(vec3 diffuseColor, vec3 specularColor, float metallic, vec3 v,
 uniform vec4 waterPlane;
 uniform float waterSign;
 
-// discard if given position in eye space is on the wrong side of the waterPlane according to waterSign
 void waterClip(vec3 pos)
 {
-    // TODO: make this less branchy
-    if (waterSign > 0.0)
+    if (((dot(pos.xyz, waterPlane.xyz) + waterPlane.w) * waterSign) < 0.0)
     {
-        if ((dot(pos.xyz, waterPlane.xyz) + waterPlane.w) < 0.0)
-        {
-            discard;
-        }
+        discard;
     }
-    else
-    {
-        if ((dot(pos.xyz, waterPlane.xyz) + waterPlane.w) > 0.0)
-        {
-            discard;
-        }
-    }
-
 }
 

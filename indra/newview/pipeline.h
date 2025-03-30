@@ -702,7 +702,7 @@ public:
         LLRenderTarget          shadow[4];
     };
 
-    // main full resoltuion render target
+    // main full resolution render target
     RenderTargetPack mMainRT;
 
     // auxillary 512x512 render target pack
@@ -1011,6 +1011,7 @@ public:
     static U32 RenderResolutionDivisor;
     static bool RenderUIBuffer;
     static S32 RenderShadowDetail;
+    static S32 MPRenderShadowOpti;
     static S32 RenderShadowSplits;
     static bool RenderDeferredSSAO;
     static F32 RenderShadowResolutionScale;

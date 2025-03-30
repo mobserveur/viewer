@@ -33,20 +33,9 @@ uniform float waterSign;
 
 void waterClip(vec3 pos)
 {
-    // TODO: make this less branchy
-    if (waterSign > 0)
+    if (((dot(pos.xyz, waterPlane.xyz) + waterPlane.w) * waterSign) < 0.0)
     {
-        if ((dot(pos.xyz, waterPlane.xyz) + waterPlane.w) < 0.0)
-        {
-            discard;
-        }
-    }
-    else
-    {
-        if ((dot(pos.xyz, waterPlane.xyz) + waterPlane.w) > 0.0)
-        {
-            discard;
-        }
+        discard;
     }
 }
 

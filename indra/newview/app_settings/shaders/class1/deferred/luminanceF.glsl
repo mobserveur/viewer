@@ -37,14 +37,10 @@ uniform sampler2D emissiveRect;
 uniform sampler2D normalMap;
 uniform float diffuse_luminance_scale;
 
-float lum(vec3 col)
-{
-    vec3 l = vec3(0.2126, 0.7152, 0.0722);
-    return dot(l, col);
-}
 
 void main()
 {
+    const vec3 l = vec3(0.2126, 0.7152, 0.0722);
     vec2 tc = vary_fragcoord*0.6+0.2;
     tc.y -= 0.1; // HACK - nudge exposure sample down a little bit to favor ground over sky
     vec3 c = texture(diffuseRect, tc).rgb;
@@ -62,7 +58,7 @@ void main()
 
     c += texture(emissiveRect, tc).rgb;
 
-    float L = lum(c);
+    float L = dot(l, c);
     frag_color = vec4(max(L, 0.0));
 }
 
