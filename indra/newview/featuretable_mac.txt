@@ -106,7 +106,7 @@ RenderTerrainDetail			1	1
 RenderTerrainLODFactor		1	1.0
 RenderTerrainPBRDetail      1   -1
 RenderTerrainPBRPlanarSampleCount 1   1
-RenderTransparentWater		1	1
+RenderTransparentWater		1	0
 RenderTreeLODFactor			1	0.5
 RenderVolumeLODFactor		1	1.125
 RenderDeferredSSAO			1	0
@@ -114,12 +114,12 @@ RenderShadowDetail			1	0
 WLSkyDetail					1	96
 RenderFSAAType			    1	0
 RenderFSAASamples			1	0
-RenderReflectionsEnabled    1   0
+RenderReflectionsEnabled    1   1
 RenderReflectionProbeDetail	1	0
 RenderScreenSpaceReflections 1  0
 RenderReflectionProbeLevel  1   0
 RenderMirrors				1	0
-RenderHeroProbeResolution	1	256
+RenderHeroProbeResolution	1	64
 RenderHeroProbeDistance		1	4
 RenderHeroProbeUpdateRate	1   6
 RenderHeroProbeConservativeUpdateMultiplier 1 16
@@ -129,7 +129,7 @@ RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderDisableVintageMode           1   0
 RenderMaxTextureResolution         1   512
-RenderReflectionProbeCount  1   1
+RenderReflectionProbeCount  1   8
 
 
 //
