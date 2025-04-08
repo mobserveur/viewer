@@ -61,7 +61,7 @@ void LLDrawPoolWaterExclusion::render(S32 pass)
         pwaterpool->pushWaterPlanes(0);
 
         // Take care of the edge water tiles.
-        pwaterpool->pushWaterPlanes(1);
+        //pwaterpool->pushWaterPlanes(1);
     }
 
     gDrawColorProgram.uniform4f(LLShaderMgr::DIFFUSE_COLOR, 0, 0, 0, 1);
