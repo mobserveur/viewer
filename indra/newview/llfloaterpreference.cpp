@@ -2359,6 +2359,7 @@ private:
 };
 
 static LLPanelInjector<LLPanelPreferenceGraphics> t_pref_graph("panel_preference_graphics");
+static LLPanelInjector<LLPanelPreferenceGraphics3> t_pref_graph3("panel_preference_graphics3");
 static LLPanelInjector<LLPanelPreferencePrivacy> t_pref_privacy("panel_preference_privacy");
 
 bool LLPanelPreferenceGraphics::postBuild()
@@ -2527,6 +2528,110 @@ void LLPanelPreferenceGraphics::setHardwareDefaults()
 {
     resetDirtyChilds();
 }
+
+// LLPanelPreferenceGraphics3 (Visuals Effects)
+
+bool LLPanelPreferenceGraphics3::postBuild()
+{
+    return LLPanelPreference::postBuild();
+}
+
+void LLPanelPreferenceGraphics3::draw()
+{
+    LLPanelPreference::draw();
+}
+
+bool LLPanelPreferenceGraphics3::hasDirtyChilds()
+{
+    LLFloater* advanced = LLFloaterReg::findTypedInstance<LLFloater>("prefs_graphics_advanced");
+    std::list<LLView*> view_stack;
+    view_stack.push_back(this);
+    if (advanced)
+    {
+        view_stack.push_back(advanced);
+    }
+    while(!view_stack.empty())
+    {
+        // Process view on top of the stack
+        LLView* curview = view_stack.front();
+        view_stack.pop_front();
+
+        LLUICtrl* ctrl = dynamic_cast<LLUICtrl*>(curview);
+        if (ctrl)
+        {
+            if (ctrl->isDirty())
+            {
+                LLControlVariable* control = ctrl->getControlVariable();
+                if (control)
+                {
+                    std::string control_name = control->getName();
+                    if (!control_name.empty())
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        // Push children onto the end of the work stack
+        for (child_list_t::const_iterator iter = curview->getChildList()->begin();
+             iter != curview->getChildList()->end(); ++iter)
+        {
+            view_stack.push_back(*iter);
+        }
+    }
+
+    return false;
+}
+
+void LLPanelPreferenceGraphics3::resetDirtyChilds()
+{
+    LLFloater* advanced = LLFloaterReg::findTypedInstance<LLFloater>("prefs_graphics_advanced");
+    std::list<LLView*> view_stack;
+    view_stack.push_back(this);
+    if (advanced)
+    {
+        view_stack.push_back(advanced);
+    }
+    while(!view_stack.empty())
+    {
+        // Process view on top of the stack
+        LLView* curview = view_stack.front();
+        view_stack.pop_front();
+
+        LLUICtrl* ctrl = dynamic_cast<LLUICtrl*>(curview);
+        if (ctrl)
+        {
+            ctrl->resetDirty();
+        }
+        // Push children onto the end of the work stack
+        for (child_list_t::const_iterator iter = curview->getChildList()->begin();
+             iter != curview->getChildList()->end(); ++iter)
+        {
+            view_stack.push_back(*iter);
+        }
+    }
+}
+
+void LLPanelPreferenceGraphics3::cancel(const std::vector<std::string> settings_to_skip)
+{
+    LLPanelPreference::cancel(settings_to_skip);
+}
+void LLPanelPreferenceGraphics3::saveSettings()
+{
+    resetDirtyChilds();
+    std::string preset_graphic_active = gSavedSettings.getString("PresetGraphicActive");
+    if (preset_graphic_active.empty())
+    {
+        LLFloaterPreference* instance = LLFloaterReg::findTypedInstance<LLFloaterPreference>("preferences");
+        if (instance)
+        {
+            //don't restore previous preset after closing Preferences
+            instance->saveGraphicsPreset(preset_graphic_active);
+        }
+    }
+    LLPanelPreference::saveSettings();
+}
+
 
 //------------------------LLPanelPreferenceControls--------------------------------
 static LLPanelInjector<LLPanelPreferenceControls> t_pref_contrls("panel_preference_controls");

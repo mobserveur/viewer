@@ -75,4 +75,9 @@ protected:
     U32 mCount = 0;
     S32 mTextureStage;
     bool mHDR;
+
+    bool mIsAllocated = false;
+    U32 mIntFormat = 0; // GL_RGB, GL_RGBA or GL_RGB16F, GL_RGBA16F, GL_R11F_G11F_B10F
+    U32 mFormat = 0; // GL_RGB, GL_RGBA
+    U32 mType = 0; // GL_UNSIGNED_BYTE, GL_FLOAT ..
 };

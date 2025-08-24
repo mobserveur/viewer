@@ -89,7 +89,7 @@ void LLCubeMap::initGL()
                 mImages[i]->createGLTexture(0, mRawImages[i], texname);
 
                 gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_CUBE_MAP, texname);
-                mImages[i]->setAddressMode(LLTexUnit::TAM_CLAMP);
+                mImages[i]->setAddressMode(LLTexUnit::TAM_MIRROR);
                 stop_glerror();
             }
             gGL.getTexUnit(0)->disable();
@@ -180,7 +180,7 @@ void LLCubeMap::initReflectionMap(U32 resolution, U32 components)
     mImages[0]->setTexName(texname);
     mImages[0]->setTarget(mTargets[0], LLTexUnit::TT_CUBE_MAP);
     gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_CUBE_MAP, texname);
-    mImages[0]->setAddressMode(LLTexUnit::TAM_CLAMP);
+    mImages[0]->setAddressMode(LLTexUnit::TAM_MIRROR);
 }
 
 void LLCubeMap::initEnvironmentMap(const std::vector<LLPointer<LLImageRaw> >& rawimages)
@@ -206,7 +206,7 @@ void LLCubeMap::initEnvironmentMap(const std::vector<LLPointer<LLImageRaw> >& ra
         mImages[i]->createGLTexture(0, mRawImages[i], texname);
 
         gGL.getTexUnit(0)->bindManual(LLTexUnit::TT_CUBE_MAP, texname);
-        mImages[i]->setAddressMode(LLTexUnit::TAM_CLAMP);
+        mImages[i]->setAddressMode(LLTexUnit::TAM_MIRROR);
         stop_glerror();
 
         mImages[i]->setSubImage(mRawImages[i], 0, 0, resolution, resolution);
@@ -214,9 +214,9 @@ void LLCubeMap::initEnvironmentMap(const std::vector<LLPointer<LLImageRaw> >& ra
     enableTexture(0);
     bind();
     mImages[0]->setFilteringOption(LLTexUnit::TFO_ANISOTROPIC);
-#if GL_VERSION_3_2
+
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-#endif
+
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
     gGL.getTexUnit(0)->disable();
     disable();

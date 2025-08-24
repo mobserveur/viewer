@@ -313,6 +313,23 @@ private:
     LOG_CLASS(LLPanelPreferenceGraphics);
 };
 
+class LLPanelPreferenceGraphics3 : public LLPanelPreference
+{
+public:
+    bool postBuild();
+    void draw();
+    void cancel(const std::vector<std::string> settings_to_skip = {});
+    void saveSettings();
+    void resetDirtyChilds();
+
+protected:
+    bool hasDirtyChilds();
+
+private:
+
+    LOG_CLASS(LLPanelPreferenceGraphics3);
+};
+
 class LLPanelPreferenceControls : public LLPanelPreference, public LLKeyBindResponderInterface
 {
     LOG_CLASS(LLPanelPreferenceControls);

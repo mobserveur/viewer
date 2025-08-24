@@ -87,7 +87,8 @@ public:
     {
         TAM_WRAP = 0,           // Standard 2D Texture
         TAM_MIRROR,             // Non power of 2 texture
-        TAM_CLAMP               // No texture type is currently enabled
+        TAM_CLAMP,              // No texture type is currently enabled
+        TAM_CLAMP_BORDER        // Clamp to border
     } eTextureAddressMode;
 
     typedef enum
@@ -421,14 +422,14 @@ public:
     LLVector3 getUITranslation();
     LLVector3 getUIScale();
 
-    void flush();
+    void flush(std::string comment_ = "");
 
     // if list is set, will store buffers in list for later use, if list isn't set, will use cache
     void beginList(std::list<LLVertexBufferData> *list);
     void endList();
 
     void begin(const GLuint& mode);
-    void end();
+    void end(std::string comment_ = "");
 
     U8 getMode() const { return mMode; }
 

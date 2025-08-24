@@ -340,7 +340,8 @@ void LLHeroProbeManager::updateProbeFace(LLReflectionMap* probe, U32 face, bool 
             // horizontal
             gGaussianProgram.uniform2f(direction, 1.f, 0.f);
             gGL.getTexUnit(diffuseChannel)->bind(screen_rt);
-            mRenderTarget.bindTarget();
+            mRenderTarget.bindTarget("", 1);
+            mRenderTarget.clear(0);
             gPipeline.mScreenTriangleVB->setBuffer();
             gPipeline.mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
             mRenderTarget.flush();
@@ -348,7 +349,8 @@ void LLHeroProbeManager::updateProbeFace(LLReflectionMap* probe, U32 face, bool 
             // vertical
             gGaussianProgram.uniform2f(direction, 0.f, 1.f);
             gGL.getTexUnit(diffuseChannel)->bind(&mRenderTarget);
-            screen_rt->bindTarget();
+            screen_rt->bindTarget("", 1);
+            screen_rt->clear(0);
             gPipeline.mScreenTriangleVB->setBuffer();
             gPipeline.mScreenTriangleVB->drawArrays(LLRender::TRIANGLES, 0, 3);
             screen_rt->flush();
@@ -364,7 +366,9 @@ void LLHeroProbeManager::updateProbeFace(LLReflectionMap* probe, U32 face, bool 
         for (int i = 0; i < mMipChain.size(); ++i)
         {
             LL_PROFILE_GPU_ZONE("probe mip");
-            mMipChain[i].bindTarget();
+            mMipChain[i].bindTarget("mipChain", 0);
+            mMipChain[i].clear(0);
+
             if (i == 0)
             {
                 gGL.getTexUnit(diffuseChannel)->bind(screen_rt);
@@ -420,7 +424,9 @@ void LLHeroProbeManager::generateRadiance(LLReflectionMap* probe)
     // Unlike the reflectionmap manager, all probes are considered "realtime" for hero probes.
     sourceIdx += 1;
     {
-        mMipChain[0].bindTarget();
+        mMipChain[0].bindTarget("", 0);
+        mMipChain[0].clear(0);
+
         static LLStaticHashedString sSourceIdx("sourceIdx");
 
         {

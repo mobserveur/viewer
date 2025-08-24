@@ -1290,7 +1290,7 @@ bool LLImageGL::setSubImageFromFrameBuffer(S32 fb_x, S32 fb_y, S32 x_pos, S32 y_
     {
         glCopyTexSubImage2D(GL_TEXTURE_2D, 0, fb_x, fb_y, x_pos, y_pos, width, height);
         mGLTextureCreated = true;
-        stop_glerror();
+        LOG_GLERROR("LLImageGL::setSubImageFromFrameBuffer()");
         return true;
     }
     else
@@ -2583,6 +2583,8 @@ bool LLImageGL::scaleDown(S32 desired_discard)
         return false;
     }
 
+    //LL_WARNS() << "scaleDown" << LL_ENDL;
+
     S32 mip = desired_discard - mCurrentDiscardLevel;
 
     S32 desired_width = getWidth(desired_discard);
@@ -2600,6 +2602,7 @@ bool LLImageGL::scaleDown(S32 desired_discard)
             free_tex_image(mTexName);
             glTexImage2D(mTarget, 0, mFormatInternal, desired_width, desired_height, 0, mFormatPrimary, mFormatType, nullptr);
             glCopyTexSubImage2D(mTarget, 0, 0, 0, 0, 0, desired_width, desired_height);
+            LOG_GLERROR("LLImageGL::scaleDown() - glCopyTexSubImage2D");
             alloc_tex_image(desired_width, desired_height, mFormatInternal, 1);
 
             mTexOptionsDirty = true;
@@ -2609,6 +2612,7 @@ bool LLImageGL::scaleDown(S32 desired_discard)
                 LL_PROFILE_ZONE_NAMED_CATEGORY_TEXTURE("scaleDown - glGenerateMipmap");
                 gGL.getTexUnit(0)->bind(this);
                 glGenerateMipmap(mTarget);
+                LOG_GLERROR("LLImageGL::scaleDown() - glGenerateMipmap");
                 gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
             }
         }

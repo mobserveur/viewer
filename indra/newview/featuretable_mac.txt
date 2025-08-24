@@ -129,7 +129,8 @@ RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderDisableVintageMode           1   0
 RenderMaxTextureResolution         1   512
-RenderReflectionProbeCount  1   8
+RenderReflectionProbeCount  1   4
+RenderReflectionProbeDrawDistance  1   16.0
 
 
 //
@@ -173,7 +174,8 @@ RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderDisableVintageMode           1   0
 RenderMaxTextureResolution         1   1024
-RenderReflectionProbeCount  1   32
+RenderReflectionProbeCount  1   16
+RenderReflectionProbeDrawDistance  1   24.0
 
 //
 // Medium Graphics Settings (standard)
@@ -216,6 +218,7 @@ RenderTonemapType			1   1
 RenderTonemapMix			1   0.7
 RenderMaxTextureResolution  1   2048
 RenderReflectionProbeCount  1   64
+RenderReflectionProbeDrawDistance  1   32.0
 
 //
 // Medium High Graphics Settings

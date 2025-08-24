@@ -110,8 +110,13 @@ LLCubeMapArray::LLCubeMapArray(LLCubeMapArray& lhs, U32 width, U32 count) : mTex
     mWidth = width;
     mCount = count;
 
+    mFormat = lhs.mFormat;
+    mIntFormat = lhs.mIntFormat;
+    mType = lhs.mType;
+
     // Allocate a new cubemap array with the same criteria as the incoming cubemap array
     allocate(mWidth, lhs.mImage->getComponents(), count, lhs.mImage->getUseMipMaps(), lhs.mHDR);
+    LOG_GLERROR("LLCubeMapArray() allocate");
 
     // Copy each cubemap from the incoming array to the new array
     U32 min_count = std::min(count, lhs.mCount);
@@ -120,17 +125,32 @@ LLCubeMapArray::LLCubeMapArray(LLCubeMapArray& lhs, U32 width, U32 count) : mTex
         U32 src_resolution = lhs.mWidth;
         U32 dst_resolution = mWidth;
         {
+            /*
             GLint components = GL_RGB;
             if (mImage->getComponents() == 4)
                 components = GL_RGBA;
             GLint format = GL_RGB;
+            */
 
             // Handle different resolutions by scaling the image
             LLPointer<LLImageRaw> src_image = new LLImageRaw(lhs.mWidth, lhs.mWidth, lhs.mImage->getComponents());
-            glGetTexImage(GL_TEXTURE_CUBE_MAP_ARRAY, 0, components, GL_UNSIGNED_BYTE, src_image->getData());
+            glGetTexImage(GL_TEXTURE_CUBE_MAP_ARRAY, 0, mFormat, mType, src_image->getData());
+            LOG_GLERROR("LLCubeMapArray() glGetTexImage");
 
-            LLPointer<LLImageRaw> scaled_image = src_image->scaled(mWidth, mWidth);
-            glTexSubImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, 0, 0, i, mWidth, mWidth, 1, components, GL_UNSIGNED_BYTE, scaled_image->getData());
+            if(lhs.mWidth != width)
+            {
+                LL_WARNS() << "we scale from " << lhs.mWidth << " to " << width << LL_ENDL;
+                LLPointer<LLImageRaw> scaled_image = src_image->scaled(mWidth, mWidth);
+                glTexSubImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, 0, 0, i, mWidth, mWidth, 1, mFormat, mType, scaled_image->getData());
+            }
+            else
+            {
+                LL_WARNS() << "we don't scale from " << lhs.mWidth << LL_ENDL;
+                glTexSubImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, 0, 0, 0, i, mWidth, mWidth, 1, mFormat, mType, src_image->getData());
+            }
+
+            LOG_GLERROR("LLCubeMapArray() glTexSubImage3D");
+            // this call to glTexSubImage3D cause an invalid operation error
         }
     }
 }
@@ -159,19 +179,51 @@ void LLCubeMapArray::allocate(U32 resolution, U32 components, U32 count, bool us
     bind(0);
     free_cur_tex_image();
 
-    U32 format = components == 4 ? GL_RGBA16F : GL_R11F_G11F_B10F;
     if (!hdr)
     {
-        format = components == 4 ? GL_RGBA8 : GL_RGB8;
+        if(components == 4)
+        {
+            mIntFormat = GL_RGBA8;
+            mFormat = GL_RGBA;
+            mType = GL_UNSIGNED_BYTE;
+        }
+        else
+        {
+            mIntFormat = GL_RGB8;
+            mFormat = GL_RGB;
+            mType = GL_UNSIGNED_BYTE;
+        }
     }
+    else
+    {
+        if(components == 4)
+        {
+            mIntFormat = GL_RGBA16F;
+            mFormat = GL_RGBA;
+            mType = GL_FLOAT;
+        }
+        else
+        {
+            /*
+            mIntFormat = GL_R11F_G11F_B10F;
+            mFormat = GL_RGB;
+            mType = GL_UNSIGNED_INT_10F_11F_11F_REV;
+            */
+
+            mIntFormat = GL_RGB16F;
+            mFormat = GL_RGB;
+            mType = GL_FLOAT;
+        }
+    }
+
+    mIsAllocated = true;
+
     U32 mip = 0;
     U32 mip_resolution = resolution;
     while (mip_resolution >= 1)
     {
-#if GL_VERSION_4_0
-        glTexImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, mip, format, mip_resolution, mip_resolution, count * 6, 0,
-            GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-#endif
+        glTexImage3D(GL_TEXTURE_CUBE_MAP_ARRAY, mip, mIntFormat, mip_resolution, mip_resolution, count * 6, 0,
+            mFormat, mType, nullptr);
 
         if (!use_mips)
         {
@@ -181,9 +233,10 @@ void LLCubeMapArray::allocate(U32 resolution, U32 components, U32 count, bool us
         ++mip;
     }
 
-    alloc_tex_image(resolution, resolution, format, count * 6);
+    alloc_tex_image(resolution, resolution, mFormat, count * 6);
 
-    mImage->setAddressMode(LLTexUnit::TAM_CLAMP);
+    //mImage->setAddressMode(LLTexUnit::TAM_CLAMP);
+    mImage->setAddressMode(LLTexUnit::TAM_MIRROR);
 
     if (use_mips)
     {
