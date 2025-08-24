@@ -871,11 +871,12 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
 
     GLuint screenFormat = hdr ? GL_RGBA16F : GL_RGBA8;
 
-    if (!mRT->screen.allocate(resX, resY, GL_RGBA16F)) return false;
+    //if (!mRT->screen.allocate(resX, resY, GL_RGBA16F)) return false;
+    if (!mRT->screen.allocate(resX, resY, screenFormat)) return false;
 
     mRT->deferredScreen.shareDepthBuffer(mRT->screen);
 
-    if (shadow_detail > 0 || ssao || RenderDepthOfField)
+    if (hdr || shadow_detail > 0 || ssao || RenderDepthOfField)
     { //only need mRT->deferredLight for shadows OR ssao OR dof
         if (!mRT->deferredLight.allocate(resX, resY, screenFormat)) return false;
     }
@@ -925,8 +926,10 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
             LL_WARNS() << "NOT allocating scene map" << LL_ENDL;
         }
 
-        mPostMaps[0].allocate(resX, resY, screenFormat);
-        mPostMaps[1].allocate(resX, resY, screenFormat);
+        //mPostMaps[0].allocate(resX, resY, screenFormat);
+        //mPostMaps[1].allocate(resX, resY, screenFormat);
+        mPostMaps[0].allocate(resX, resY, GL_RGBA);
+        mPostMaps[1].allocate(resX, resY, GL_RGBA);
 
         // The water exclusion mask needs its own depth buffer so we can take care of the problem of multiple water planes.
         // Should we ever make water not just a plane, it also aids with that as well as the water planes will be rendered into the mask.
@@ -7635,14 +7638,17 @@ void LLPipeline::generateSMAABuffers(LLRenderTarget* src)
             {
                 if (!use_sample)
                 {
-                    src->bindTexture(0, channel, LLTexUnit::TFO_POINT);
-                    gGL.getTexUnit(channel)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
+                    //src->bindTexture(0, channel, LLTexUnit::TFO_POINT);
+                    //gGL.getTexUnit(channel)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
+                    src->bindTexture(0, channel, LLTexUnit::TFO_BILINEAR);
                 }
                 else
                 {
                     gGL.getTexUnit(channel)->bindManual(LLTexUnit::TT_TEXTURE, mSMAASampleMap);
-                    gGL.getTexUnit(channel)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
+                    //gGL.getTexUnit(channel)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
+                    gGL.getTexUnit(channel)->setTextureFilteringOption(LLTexUnit::TFO_BILINEAR);
                 }
+                gGL.getTexUnit(channel)->setTextureAddressMode(LLTexUnit::TAM_CLAMP);
             }
 
             //if (use_stencil)
@@ -7731,6 +7737,10 @@ bool LLPipeline::applySMAA(LLRenderTarget* src, LLRenderTarget* dst)
     if(!multisample) return false;
 
     LL_PROFILE_GPU_ZONE("aa");
+
+    generateSMAABuffers(src);
+
+
     static LLCachedControl<U32> aa_quality(gSavedSettings, "RenderFSAASamples", 0U);
     U32 fsaa_quality = std::clamp(aa_quality(), 0U, 3U);
 
@@ -8148,30 +8158,39 @@ void LLPipeline::renderFinalize()
 
     U16 activeRT = 0;
 
+    LLRenderTarget* postHDRBuffer = &mRT->screen;
+
     if (hdr)
     {
         copyScreenSpaceReflections(&mRT->screen, &mSceneMap);
+
         generateLuminance(&mRT->screen, &mLuminanceMap);
+
         generateExposure(&mLuminanceMap, &mExposureMap);
 
-        tonemap(&mRT->screen, &mPostMaps[0]);
-        gammaCorrect(&mPostMaps[0], &mPostMaps[1]);
-        activeRT = 1;
-    }
-    else
-    {
-        gammaCorrect(&mRT->screen, &mPostMaps[0]);
-        activeRT = 0;
+        tonemap(&mRT->screen, &mRT->deferredLight);
+
+        postHDRBuffer = &mRT->deferredLight;
+
+        if(applyCAS(&mRT->deferredLight, &mRT->screen))
+        {
+            postHDRBuffer = &mRT->screen;
+        }
     }
 
+    //generateSMAABuffers(&mRT->screen);
+    gammaCorrect(postHDRBuffer, &mPostMaps[0]);
+
+    /*
     if(applyCAS(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
     {
         activeRT = 1 - activeRT;
     }
+        */
 
-    generateSMAABuffers(&mPostMaps[activeRT]);
+    LLVertexBuffer::unbind();
 
-    generateGlow(&mPostMaps[activeRT]);
+    generateGlow(&mPostMaps[0]);
 
     if(renderBloom(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
     {
@@ -8188,6 +8207,8 @@ void LLPipeline::renderFinalize()
         copyRenderTarget(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]);
         activeRT = 1 - activeRT;
     }
+
+    //generateSMAABuffers(&mPostMaps[activeRT]);
 
     if(applySMAA(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
     {
