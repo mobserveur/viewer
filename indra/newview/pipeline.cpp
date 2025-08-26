@@ -352,7 +352,7 @@ bool addDeferredAttachments(LLRenderTarget& target, bool for_impostor = false)
 {
     U32 orm = GL_RGBA8;
     U32 norm = GL_RGBA16F;
-    U32 emissive = GL_RGB16F;
+    U32 emissive = GL_RGB8;
 
     static LLCachedControl<bool> has_emissive(gSavedSettings, "RenderEnableEmissiveBuffer", false);
     static LLCachedControl<bool> has_hdr(gSavedSettings, "RenderHDREnabled", true);
@@ -871,7 +871,6 @@ bool LLPipeline::allocateScreenBufferInternal(U32 resX, U32 resY)
 
     GLuint screenFormat = hdr ? GL_RGBA16F : GL_RGBA8;
 
-    //if (!mRT->screen.allocate(resX, resY, GL_RGBA16F)) return false;
     if (!mRT->screen.allocate(resX, resY, screenFormat)) return false;
 
     mRT->deferredScreen.shareDepthBuffer(mRT->screen);
@@ -8148,7 +8147,11 @@ void LLPipeline::renderFinalize()
     LLGLDisable blend(GL_BLEND);
     LLGLDisable cull(GL_CULL_FACE);
 
-    enableLightsFullbright();
+    gGLViewport[0] = gViewerWindow->getWorldViewRectRaw().mLeft;
+    gGLViewport[1] = gViewerWindow->getWorldViewRectRaw().mBottom;
+    gGLViewport[2] = gViewerWindow->getWorldViewRectRaw().getWidth();
+    gGLViewport[3] = gViewerWindow->getWorldViewRectRaw().getHeight();
+    glViewport(gGLViewport[0], gGLViewport[1], gGLViewport[2], gGLViewport[3]);
 
     gGL.setColorMask(true, true);
     glClearColor(0, 0, 0, 0);
@@ -8172,25 +8175,13 @@ void LLPipeline::renderFinalize()
 
         postHDRBuffer = &mRT->deferredLight;
 
-        if(applyCAS(&mRT->deferredLight, &mRT->screen))
-        {
-            postHDRBuffer = &mRT->screen;
-        }
     }
 
-    //generateSMAABuffers(&mRT->screen);
     gammaCorrect(postHDRBuffer, &mPostMaps[0]);
 
-    /*
-    if(applyCAS(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
-    {
-        activeRT = 1 - activeRT;
-    }
-        */
+    generateGlow(&mPostMaps[0]);
 
     LLVertexBuffer::unbind();
-
-    generateGlow(&mPostMaps[0]);
 
     if(renderBloom(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
     {
@@ -8200,31 +8191,21 @@ void LLPipeline::renderFinalize()
     combineGlow(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]);
     activeRT = 1 - activeRT;
 
-    static LLCachedControl<bool> dumbcopy(gSavedSettings, "MPDumbCopy", false);
-
-    if(dumbcopy)
+    if(applyFXAA(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
     {
-        copyRenderTarget(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]);
         activeRT = 1 - activeRT;
     }
 
-    //generateSMAABuffers(&mPostMaps[activeRT]);
+    if(applyCAS(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
+    {
+        activeRT = 1 - activeRT;
+    }
 
     if(applySMAA(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
     {
         activeRT = 1 - activeRT;
     }
 
-    if(applyFXAA(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
-    {
-        activeRT = 1 - activeRT;
-    }
-
-    gGLViewport[0] = gViewerWindow->getWorldViewRectRaw().mLeft;
-    gGLViewport[1] = gViewerWindow->getWorldViewRectRaw().mBottom;
-    gGLViewport[2] = gViewerWindow->getWorldViewRectRaw().getWidth();
-    gGLViewport[3] = gViewerWindow->getWorldViewRectRaw().getHeight();
-    glViewport(gGLViewport[0], gGLViewport[1], gGLViewport[2], gGLViewport[3]);
 
     if(renderDoF(&mPostMaps[activeRT], &mPostMaps[1 - activeRT]))
     {
