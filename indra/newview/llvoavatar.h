@@ -1090,6 +1090,13 @@ public:
     AnimationSourceMap                      mAnimationSources; // object ids that triggered anim ids
 
     //--------------------------------------------------------------------
+    // Animation override
+    //--------------------------------------------------------------------
+public:
+    static void     toggleAnimationOverride();
+    static bool     areAnimationsOverridden();
+
+    //--------------------------------------------------------------------
     // Chat
     //--------------------------------------------------------------------
 public:

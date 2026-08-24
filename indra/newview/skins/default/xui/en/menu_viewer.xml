@@ -479,6 +479,14 @@
           <menu_item_check.on_click
            function="World.AlwaysRun" />
         </menu_item_check>
+        <menu_item_check
+         label="Override animations"
+         name="AnimationOverride">
+            <menu_item_check.on_check
+             function="AreAnimationsOverridden" />
+            <menu_item_check.on_click
+             function="ToggleAnimationOverride" />
+        </menu_item_check>
       <menu_item_separator/>
       <menu_item_check
        label="Gestures..."

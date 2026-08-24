@@ -632,6 +632,8 @@ F32 LLVOAvatar::sGreyUpdateTime = 0.f;
 LLPointer<LLViewerTexture> LLVOAvatar::sCloudTexture = NULL;
 std::vector<LLUUID> LLVOAvatar::sAVsIgnoringARTLimit;
 S32 LLVOAvatar::sAvatarsNearby = 0;
+static std::unordered_map<std::string, std::vector<LLUUID>> sAnimationOverriders;
+static bool sOverrideAnimations;
 
 //-----------------------------------------------------------------------------
 // Helper functions
@@ -781,6 +783,7 @@ LLVOAvatar::LLVOAvatar(const LLUUID& id,
     mVisuallyMuteSetting = LLVOAvatar::VisualMuteSettings(LLRenderMuteList::getInstance()->getSavedVisualMuteSetting(getID()));
 
     sInstances.push_back(this);
+    sOverrideAnimations = LLCachedControl<bool>(gSavedPerAccountSettings, "OverrideAnimations", false);
 }
 
 std::string LLVOAvatar::avString() const
@@ -6368,6 +6371,79 @@ LLUUID LLVOAvatar::remapMotionID(const LLUUID& id)
 }
 
 //-----------------------------------------------------------------------------
+// Animation Override
+//-----------------------------------------------------------------------------
+
+void LLVOAvatar::toggleAnimationOverride()
+{
+    gAgent.stopCurrentAnimations();
+    sOverrideAnimations = !sOverrideAnimations;
+    if (!sOverrideAnimations)
+        sAnimationOverriders.clear();
+    gSavedPerAccountSettings.setBOOL("OverrideAnimations", sOverrideAnimations);
+}
+
+bool LLVOAvatar::areAnimationsOverridden()
+{
+    return sOverrideAnimations;
+}
+
+#define AO_GET_ACTION() \
+    std::string action;\
+    if (remap_id == ANIM_AGENT_CROUCH)\
+        action = "Crouching";\
+    else if (remap_id == ANIM_AGENT_CROUCHWALK)\
+        action = "Crouch Walking";\
+    else if (remap_id == ANIM_AGENT_FALLDOWN)\
+        action = "Falling";\
+    else if (remap_id == ANIM_AGENT_FEMALE_RUN_NEW\
+            || remap_id == ANIM_AGENT_RUN\
+            || remap_id == ANIM_AGENT_RUN_NEW)\
+        action = "Running";\
+    else if (remap_id == ANIM_AGENT_FEMALE_WALK\
+            || remap_id == ANIM_AGENT_FEMALE_WALK_NEW\
+            || remap_id == ANIM_AGENT_WALK\
+            || remap_id == ANIM_AGENT_WALK_NEW)\
+        action = "Walking";\
+    else if (remap_id == ANIM_AGENT_FLY)\
+        action = "Flying";\
+    else if (remap_id == ANIM_AGENT_FLYSLOW)\
+        action = "Flying Slow";\
+    else if (remap_id == ANIM_AGENT_HOVER)\
+        action = "Hovering";\
+    else if (remap_id == ANIM_AGENT_HOVER_DOWN)\
+        action = "Flying Down";\
+    else if (remap_id == ANIM_AGENT_HOVER_UP)\
+        action = "Flying Up";\
+    else if (remap_id == ANIM_AGENT_JUMP)\
+        action = "Jumping";\
+    else if (remap_id == ANIM_AGENT_LAND)\
+        action = "Landing";\
+    else if (remap_id == ANIM_AGENT_PRE_JUMP)\
+        action = "Pre Jumping";\
+    else if (remap_id == ANIM_AGENT_SIT\
+            || remap_id == ANIM_AGENT_SIT_FEMALE\
+            || remap_id == ANIM_AGENT_SIT_GENERIC)\
+        action = "Sitting";\
+    else if (remap_id == ANIM_AGENT_SIT_GROUND\
+            || remap_id == ANIM_AGENT_SIT_GROUND_CONSTRAINED)\
+        action = "Sitting On Ground";\
+    else if (remap_id == ANIM_AGENT_STAND\
+            || remap_id == ANIM_AGENT_STAND_1\
+            || remap_id == ANIM_AGENT_STAND_2\
+            || remap_id == ANIM_AGENT_STAND_3\
+            || remap_id == ANIM_AGENT_STAND_4)\
+        action = "Standing";\
+    else if (remap_id == ANIM_AGENT_STANDUP)\
+        action = "Standing Up";\
+    else if (remap_id == ANIM_AGENT_TURNLEFT)\
+        action = "Turning Left";\
+    else if (remap_id == ANIM_AGENT_TURNRIGHT)\
+        action = "Turning Right";\
+    else if (remap_id == ANIM_AGENT_TYPE)\
+        action = "Typing";
+
+//-----------------------------------------------------------------------------
 // startMotion()
 // id is the asset if of the animation to start
 // time_offset is the offset into the animation at which to start playing
@@ -6396,6 +6472,50 @@ bool LLVOAvatar::startMotion(const LLUUID& id, F32 time_offset)
             gAgent.setControlFlags(AGENT_CONTROL_FINISH_ANIM);
             return false;
         }
+
+        if (sOverrideAnimations)
+        {
+            AO_GET_ACTION();
+            if (!action.empty())
+            {
+                if (sAnimationOverriders.empty() || sAnimationOverriders.find(action) == sAnimationOverriders.end())
+                {
+                    auto folderID = gInventory.getRootFolderID();
+                    folderID = findDescendentCategoryIDByName(folderID, "#AO");
+                    LLInventoryModel::cat_array_t* cats;
+                    LLInventoryModel::item_array_t* items;
+                    gInventory.getDirectDescendentsOf(folderID, cats, items);
+                    auto iter = cats->begin();
+                    for(; cats->end() != iter; ++iter)
+                    {
+                        auto name = (*iter)->getName();
+                        if (name.back() == '*')
+                        {
+                            folderID = findDescendentCategoryIDByName(folderID, name);
+                            gInventory.getDirectDescendentsOf(folderID, cats, items);
+                            auto iter = cats->begin();
+                            for(; cats->end() != iter; ++iter)
+                            {
+                                auto name = (*iter)->getName();
+                                auto colon = name.find_first_of(':');
+                                if (name == action || colon != std::string::npos && !name.compare(0, colon, action))
+                                {
+                                    folderID = findDescendentCategoryIDByName(folderID, name);
+                                    gInventory.getDirectDescendentsOf(folderID, cats, items);
+                                    auto iter = items->begin();
+                                    for(; items->end() != iter; ++iter)
+                                        sAnimationOverriders[action].push_back((*iter)->getLinkedItem()->getAssetUUID());
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (sAnimationOverriders.find(action) != sAnimationOverriders.end())
+                    remap_id = sAnimationOverriders[action].front();
+            }
+        }
     }
 
     return LLCharacter::startMotion(remap_id, time_offset);
@@ -6418,6 +6538,12 @@ bool LLVOAvatar::stopMotion(const LLUUID& id, bool stop_immediate)
 
     if (isSelf())
     {
+        if (sOverrideAnimations && !sAnimationOverriders.empty())
+        {
+            AO_GET_ACTION();
+            if (!action.empty() && sAnimationOverriders.find(action) != sAnimationOverriders.end())
+                remap_id = sAnimationOverriders[action].front();
+        }
         gAgent.onAnimStop(remap_id);
     }
 

@@ -10053,6 +10053,8 @@ void initialize_menus()
     commit.add("HoverHeight", boost::bind(&handle_hover_height));
     commit.add("EditPhysics", boost::bind(&handle_edit_physics));
     commit.add("QuickPrefs", boost::bind(&handle_quick_prefs));     // Firestorm port
+    commit.add("ToggleAnimationOverride", boost::bind(&LLVOAvatar::toggleAnimationOverride));
+    enable.add("AreAnimationsOverridden", boost::bind(&LLVOAvatar::areAnimationsOverridden));
 
     // View menu
     view_listener_t::addMenu(new LLViewMouselook(), "View.Mouselook");
