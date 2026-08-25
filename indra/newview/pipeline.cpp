@@ -2711,6 +2711,7 @@ void LLPipeline::doOcclusion(LLCamera& camera)
         gGL.setColorMask(true, true);
     }
 
+    /*
     if (sReflectionProbesEnabled && sUseOcclusion > 1 && !LLPipeline::sShadowRender && !gCubeSnapshot)
     {
         gGL.setColorMask(false, false);
@@ -2730,6 +2731,7 @@ void LLPipeline::doOcclusion(LLCamera& camera)
 
         gGL.setColorMask(true, true);
     }
+    */
 
     if (LLPipeline::sUseOcclusion > 1 &&
         (sCull->hasOcclusionGroups() || LLVOCachePartition::sNeedsOcclusionCheck))
