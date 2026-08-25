@@ -879,10 +879,6 @@ void LLGroupMgr::removeObserver(LLGroupMgrObserver* observer)
             mObservers.erase(it);
             break;
         }
-        else
-        {
-            ++it;
-        }
     }
 }
 
