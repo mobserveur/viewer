@@ -1811,7 +1811,7 @@ LLVertexBuffer* LLRender::genBuffer(U32 attribute_mask, S32 count)
         vb->setColorData(mColorsp.get());
     }
 
-    if(gGLManager.mIsApple && LLVertexBuffer::getVertexBufferMode() == 0)
+    if(gGLManager.mIsApple)
     {
     // unmapBuffer creates the GL buffer, uploads, and leaves it bound,
     // drawBuffer's later setBuffer() then runs setupVertexBuffer against

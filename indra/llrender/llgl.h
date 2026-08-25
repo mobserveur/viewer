@@ -162,7 +162,7 @@ void clear_glerror();
 
 
 //#if !LL_RELEASE_FOR_DOWNLOAD
-#if 1
+#if 0
 # define LOG_GLERROR(COMMENT) log_glerror(COMMENT)
 # define stop_glerror() log_glerror("stop")
 # define llglassertok() log_glerror("ASSERTOK")

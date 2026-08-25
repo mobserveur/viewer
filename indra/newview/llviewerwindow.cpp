@@ -2015,7 +2015,7 @@ LLViewerWindow::LLViewerWindow(const Params& p)
     LL_DEBUGS("Window") << "Loading feature tables." << LL_ENDL;
 
     // Initialize OpenGL Renderer
-    LLVertexBuffer::initClass(mWindow, gSavedSettings.getU32("MPVertexBufferMode"));
+    LLVertexBuffer::initClass(mWindow);
     LL_INFOS("RenderInit") << "LLVertexBuffer initialization done." << LL_ENDL ;
     if (!gGL.init(true))
     {

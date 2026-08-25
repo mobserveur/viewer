@@ -2160,19 +2160,6 @@ left_pad="5"
 top_delta="0"
 />
 
-<check_box
-name="MPAppleVBModeCtrl"
-control_name="MPVertexBufferMode"
-label="Alternative Vertex Buffer Mode (Mac only / needs restart)"
-layout="topleft"
-width="400"
-height="16"
-left="20"
-top_delta="32"
-initial_value="false"
->
-</check_box>
-
 </panel>
 
 

@@ -1098,7 +1098,14 @@ void LLGLSLShader::bind()
         {
             sCurBoundShaderPtr->readProfileQuery();
         }
-        LLVertexBuffer::unbind();
+        // Apple's OpenGL-on-Metal layer pays a high price for rebinding buffer
+        // objects on every shader transition. LLVertexBuffer tracks the
+        // attribute formats needed by the new shader, so the current buffer
+        // can remain bound until a draw actually selects a different one.
+        if (!gGLManager.mIsApple)
+        {
+            LLVertexBuffer::unbind();
+        }
         glUseProgram(mProgramObject);
         sCurBoundShader = mProgramObject;
         sCurBoundShaderPtr = this;
@@ -1194,22 +1201,22 @@ S32 LLGLSLShader::bindTexture(S32 uniform, LLRenderTarget* texture, bool depth, 
         return -1;
     }
 
-    S32 channel = getTextureChannel(uniform);
+    uniform = getTextureChannel(uniform);
 
-    if (channel > -1)
+    if (uniform > -1)
     {
         if (depth) {
-            gGL.getTexUnit(channel)->bind(texture, true);
+            gGL.getTexUnit(uniform)->bind(texture, true);
         }
         else {
             bool has_mips = mode == LLTexUnit::TFO_TRILINEAR || mode == LLTexUnit::TFO_ANISOTROPIC;
-            gGL.getTexUnit(channel)->bindManual(texture->getUsage(), texture->getTexture(index), has_mips);
+            gGL.getTexUnit(uniform)->bindManual(texture->getUsage(), texture->getTexture(index), has_mips);
         }
 
-        gGL.getTexUnit(channel)->setTextureFilteringOption(mode);
+        gGL.getTexUnit(uniform)->setTextureFilteringOption(mode);
     }
 
-    return channel;
+    return uniform;
 }
 
 S32 LLGLSLShader::bindTexture(const std::string& uniform, LLRenderTarget* texture, bool depth, LLTexUnit::eTextureFilterOptions mode)
